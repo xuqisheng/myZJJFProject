@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpVoucherTempMgMapper" >
+<resultMap id="BaseResultMap" type="com.corner.core.beans.SpVoucherTemp"  extends="com.corner.core.dao.SpVoucherTempMapper.BaseResultMap">
+</resultMap>
+ <!-- 通过条件查询 -->
+  <select id="getSpVoucherTempByCondition" parameterType="com.corner.kefu.beans.ro.sp.SpVoucherTempRo" resultType="com.corner.core.beans.SpVoucherTemp">
+  	SELECT * FROM `SpVoucherTemp`
+	<trim prefix="WHERE" prefixOverrides="AND |OR ">
+  	  <if test="id != null" >
+        id = #{id,jdbcType=INTEGER}
+      </if>
+  	  <if test="status != null" >
+        AND status = #{status,jdbcType=TINYINT}
+      </if>
+      <if test="isDelete != null" >
+        AND isDelete = #{isDelete,jdbcType=BIT}
+      </if>
+	</trim>
+  </select>
+  
+  
+  
+  <sql id="pageSql">
+   limit #{pageIndex},#{pageSize}
+  </sql>
+  <sql id="getPageSpVoucherTempList_condition">
+  from SpVoucherTemp where status = 1 and isDelete = 0 
+  <if test="searchKey!=null and searchKey!=''">
+    and ruleName like "%"#{searchKey}"%"
+  </if>
+  </sql>
+  <select id="getPageSpVoucherTempList" parameterType="com.corner.kefu.beans.ro.sp.SpVoucherTempRo" resultMap="BaseResultMap">
+     select *  
+     <include refid="getPageSpVoucherTempList_condition"/>
+     order by addTime desc
+     <include refid="pageSql"/>
+  </select>
+  <select id="getCountPageSpVoucherTempList" parameterType="com.corner.kefu.beans.ro.sp.SpVoucherTempRo" resultType="java.lang.Integer">
+    select count(*)
+    <include refid="getPageSpVoucherTempList_condition"/>
+  </select>
+  
+  
+  <select id="getSpVoucherTemp" parameterType="com.corner.core.beans.SpVoucherTemp" resultType="com.corner.kefu.beans.vo.sp.SpVoucherTempVo">
+    select * from SpVoucherTemp where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  
+  <sql id="getSpVoucherTempList_condition">
+	WHERE a.isDelete = 0 
+	  AND a.status = 1 
+    <if test="keyStr != null and keyStr!=''">
+      AND a.ruleName like "%"#{keyStr}"%"
+    </if>
+    <if test="startDate!=null">
+     AND a.addTime <![CDATA[>=]]> #{startDate}
+    </if> 
+    <if test="endDate!=null">
+    AND a.addTime <![CDATA[<]]> #{endDate} 
+    </if>
+    <if test="useMoneyStr!=null and useMoneyStr!=''">
+    AND a.useMoney=#{useMoneyStr}
+    </if>  
+  </sql>
+  <select id="getCountSpVoucherTempList" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+    SELECT COUNT(1) FROM SpVoucherTemp a
+     <include refid="getSpVoucherTempList_condition"/>
+  </select>
+  <select id="getSpVoucherTempList" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.SpVoucherTempVo">
+  SELECT 
+	  a.*,
+	  COUNT(b.ruleId) AS grantCount
+	  FROM
+	  SpVoucherTemp a 
+	  LEFT JOIN SpVoucher b 
+	    ON a.id = b.ruleId
+     <include refid="getSpVoucherTempList_condition"/>
+     GROUP BY a.id 
+     ORDER BY a.addTime DESC
+     <include refid="pageSql"/>
+  </select>
+  
+  <select id="getGrantCountAndUsedCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+   SELECT COUNT(1) FROM SpVoucher WHERE STATUS IN (2,3) AND ruleId = #{id}
+  </select>
+  
+  <select id="getIsElegalSpVoucherTemp" parameterType="java.lang.Integer" resultType="com.corner.core.beans.SpVoucherTemp">
+     select * from SpVoucherTemp where isDelete=0 and status=1 and id = #{id}
+  </select>
+  
+  <select id="removeSpvoucherTempById" parameterType="java.lang.Integer">
+    update SpVoucherTemp set isDelete = 1 where id = #{id}
+  </select>
+</mapper>

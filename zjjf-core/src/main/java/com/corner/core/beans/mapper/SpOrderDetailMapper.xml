@@ -1,0 +1,638 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SpOrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpOrderDetail" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="orderId2" property="orderId2" jdbcType="VARCHAR" />
+    <result column="itemId" property="itemId" jdbcType="VARCHAR" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="barCode" property="barCode" jdbcType="VARCHAR" />
+    <result column="brand" property="brand" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="spec" property="spec" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="quantity" property="quantity" jdbcType="SMALLINT" />
+    <result column="outStockNum" property="outStockNum" jdbcType="SMALLINT" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="totalPrice" property="totalPrice" jdbcType="DECIMAL" />
+    <result column="plantDisPrice" property="plantDisPrice" jdbcType="DECIMAL" />
+    <result column="plantMemPrice" property="plantMemPrice" jdbcType="DECIMAL" />
+    <result column="maoli" property="maoli" jdbcType="DECIMAL" />
+    <result column="fee" property="fee" jdbcType="DECIMAL" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="spId" property="spId" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="youHui" property="youHui" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="restrict" property="restrict" jdbcType="INTEGER" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+    <result column="goodsType" property="goodsType" jdbcType="INTEGER" />
+    <result column="giftActivityId" property="giftActivityId" jdbcType="INTEGER" />
+    <result column="giftSpId" property="giftSpId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, orderId, orderId2, itemId, itemBaseId, barCode, brand, name, spec, img, quantity, 
+    outStockNum, price, totalPrice, plantDisPrice, plantMemPrice, maoli, fee, storeId, 
+    spGroupId, spId, remark, youHui, addTime, isDelete, `restrict`, col1, col2, col3, goodsType,
+    giftActivityId, giftSpId
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.corner.core.beans.SpOrderDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from SpOrderDetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from SpOrderDetail
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SpOrderDetail
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.corner.core.beans.SpOrderDetailExample" >
+    delete from SpOrderDetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SpOrderDetail" >
+    insert into SpOrderDetail (id, orderId, orderId2,
+    itemId, itemBaseId, barCode,
+    brand, name, spec,
+    img, quantity, outStockNum,
+    price, totalPrice, plantDisPrice,
+    plantMemPrice, maoli, fee,
+    storeId, spGroupId, spId,
+    remark, youHui, addTime,
+    isDelete, `restrict`, col1,
+    col2, col3, goodsType,
+    giftActivityId, giftSpId)
+    values (#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{orderId2,jdbcType=VARCHAR},
+    #{itemId,jdbcType=VARCHAR}, #{itemBaseId,jdbcType=INTEGER}, #{barCode,jdbcType=VARCHAR},
+    #{brand,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{spec,jdbcType=VARCHAR},
+    #{img,jdbcType=VARCHAR}, #{quantity,jdbcType=SMALLINT}, #{outStockNum,jdbcType=SMALLINT},
+    #{price,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL}, #{plantDisPrice,jdbcType=DECIMAL},
+    #{plantMemPrice,jdbcType=DECIMAL}, #{maoli,jdbcType=DECIMAL}, #{fee,jdbcType=DECIMAL},
+    #{storeId,jdbcType=INTEGER}, #{spGroupId,jdbcType=INTEGER}, #{spId,jdbcType=VARCHAR},
+    #{remark,jdbcType=VARCHAR}, #{youHui,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP},
+    #{isDelete,jdbcType=BIT}, #{restrict,jdbcType=INTEGER}, #{col1,jdbcType=VARCHAR},
+    #{col2,jdbcType=VARCHAR}, #{col3,jdbcType=VARCHAR}, #{goodsType,jdbcType=INTEGER},
+    #{giftActivityId,jdbcType=INTEGER}, #{giftSpId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SpOrderDetail" >
+    insert into SpOrderDetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="orderId2 != null" >
+        orderId2,
+      </if>
+      <if test="itemId != null" >
+        itemId,
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId,
+      </if>
+      <if test="barCode != null" >
+        barCode,
+      </if>
+      <if test="brand != null" >
+        brand,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="spec != null" >
+        spec,
+      </if>
+      <if test="img != null" >
+        img,
+      </if>
+      <if test="quantity != null" >
+        quantity,
+      </if>
+      <if test="outStockNum != null" >
+        outStockNum,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="totalPrice != null" >
+        totalPrice,
+      </if>
+      <if test="plantDisPrice != null" >
+        plantDisPrice,
+      </if>
+      <if test="plantMemPrice != null" >
+        plantMemPrice,
+      </if>
+      <if test="maoli != null" >
+        maoli,
+      </if>
+      <if test="fee != null" >
+        fee,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId,
+      </if>
+      <if test="spId != null" >
+        spId,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="youHui != null" >
+        youHui,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="restrict != null" >
+        `restrict`,
+      </if>
+      <if test="col1 != null" >
+        col1,
+      </if>
+      <if test="col2 != null" >
+        col2,
+      </if>
+      <if test="col3 != null" >
+        col3,
+      </if>
+      <if test="goodsType != null" >
+        goodsType,
+      </if>
+      <if test="giftActivityId != null" >
+        giftActivityId,
+      </if>
+      <if test="giftSpId != null" >
+        giftSpId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId2 != null" >
+        #{orderId2,jdbcType=VARCHAR},
+      </if>
+      <if test="itemId != null" >
+        #{itemId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemBaseId != null" >
+        #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="barCode != null" >
+        #{barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="spec != null" >
+        #{spec,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=SMALLINT},
+      </if>
+      <if test="outStockNum != null" >
+        #{outStockNum,jdbcType=SMALLINT},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="plantDisPrice != null" >
+        #{plantDisPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="plantMemPrice != null" >
+        #{plantMemPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="maoli != null" >
+        #{maoli,jdbcType=DECIMAL},
+      </if>
+      <if test="fee != null" >
+        #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="spGroupId != null" >
+        #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="spId != null" >
+        #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="youHui != null" >
+        #{youHui,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="restrict != null" >
+        #{restrict,jdbcType=INTEGER},
+      </if>
+      <if test="col1 != null" >
+        #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        #{col3,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsType != null" >
+        #{goodsType,jdbcType=INTEGER},
+      </if>
+      <if test="giftActivityId != null" >
+        #{giftActivityId,jdbcType=INTEGER},
+      </if>
+      <if test="giftSpId != null" >
+        #{giftSpId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.corner.core.beans.SpOrderDetailExample" resultType="java.lang.Integer" >
+    select count(*) from SpOrderDetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update SpOrderDetail
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderId != null" >
+        orderId = #{record.orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderId2 != null" >
+        orderId2 = #{record.orderId2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemId != null" >
+        itemId = #{record.itemId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemBaseId != null" >
+        itemBaseId = #{record.itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.barCode != null" >
+        barCode = #{record.barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brand != null" >
+        brand = #{record.brand,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.spec != null" >
+        spec = #{record.spec,jdbcType=VARCHAR},
+      </if>
+      <if test="record.img != null" >
+        img = #{record.img,jdbcType=VARCHAR},
+      </if>
+      <if test="record.quantity != null" >
+        quantity = #{record.quantity,jdbcType=SMALLINT},
+      </if>
+      <if test="record.outStockNum != null" >
+        outStockNum = #{record.outStockNum,jdbcType=SMALLINT},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.totalPrice != null" >
+        totalPrice = #{record.totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.plantDisPrice != null" >
+        plantDisPrice = #{record.plantDisPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.plantMemPrice != null" >
+        plantMemPrice = #{record.plantMemPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.maoli != null" >
+        maoli = #{record.maoli,jdbcType=DECIMAL},
+      </if>
+      <if test="record.fee != null" >
+        fee = #{record.fee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.storeId != null" >
+        storeId = #{record.storeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.spGroupId != null" >
+        spGroupId = #{record.spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="record.spId != null" >
+        spId = #{record.spId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.youHui != null" >
+        youHui = #{record.youHui,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null" >
+        addTime = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDelete != null" >
+        isDelete = #{record.isDelete,jdbcType=BIT},
+      </if>
+      <if test="record.restrict != null" >
+        restrict = #{record.restrict,jdbcType=INTEGER},
+      </if>
+      <if test="record.col1 != null" >
+        col1 = #{record.col1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.col2 != null" >
+        col2 = #{record.col2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.col3 != null" >
+        col3 = #{record.col3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsType != null" >
+        goodsType = #{record.goodsType,jdbcType=INTEGER},
+      </if>
+      <if test="record.giftActivityId != null" >
+        giftActivityId = #{record.giftActivityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.giftSpId != null" >
+        giftSpId = #{record.giftSpId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update SpOrderDetail
+    set id = #{record.id,jdbcType=VARCHAR},
+    orderId = #{record.orderId,jdbcType=VARCHAR},
+    orderId2 = #{record.orderId2,jdbcType=VARCHAR},
+    itemId = #{record.itemId,jdbcType=VARCHAR},
+    itemBaseId = #{record.itemBaseId,jdbcType=INTEGER},
+    barCode = #{record.barCode,jdbcType=VARCHAR},
+    brand = #{record.brand,jdbcType=VARCHAR},
+    name = #{record.name,jdbcType=VARCHAR},
+    spec = #{record.spec,jdbcType=VARCHAR},
+    img = #{record.img,jdbcType=VARCHAR},
+    quantity = #{record.quantity,jdbcType=SMALLINT},
+    outStockNum = #{record.outStockNum,jdbcType=SMALLINT},
+    price = #{record.price,jdbcType=DECIMAL},
+    totalPrice = #{record.totalPrice,jdbcType=DECIMAL},
+    plantDisPrice = #{record.plantDisPrice,jdbcType=DECIMAL},
+    plantMemPrice = #{record.plantMemPrice,jdbcType=DECIMAL},
+    maoli = #{record.maoli,jdbcType=DECIMAL},
+    fee = #{record.fee,jdbcType=DECIMAL},
+    storeId = #{record.storeId,jdbcType=INTEGER},
+    spGroupId = #{record.spGroupId,jdbcType=INTEGER},
+    spId = #{record.spId,jdbcType=VARCHAR},
+    remark = #{record.remark,jdbcType=VARCHAR},
+    youHui = #{record.youHui,jdbcType=VARCHAR},
+    addTime = #{record.addTime,jdbcType=TIMESTAMP},
+    isDelete = #{record.isDelete,jdbcType=BIT},
+    restrict = #{record.restrict,jdbcType=INTEGER},
+    col1 = #{record.col1,jdbcType=VARCHAR},
+    col2 = #{record.col2,jdbcType=VARCHAR},
+    col3 = #{record.col3,jdbcType=VARCHAR},
+    goodsType = #{record.goodsType,jdbcType=INTEGER},
+    giftActivityId = #{record.giftActivityId,jdbcType=INTEGER},
+    giftSpId = #{record.giftSpId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SpOrderDetail" >
+    update SpOrderDetail
+    <set >
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId2 != null" >
+        orderId2 = #{orderId2,jdbcType=VARCHAR},
+      </if>
+      <if test="itemId != null" >
+        itemId = #{itemId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="barCode != null" >
+        barCode = #{barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="spec != null" >
+        spec = #{spec,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=SMALLINT},
+      </if>
+      <if test="outStockNum != null" >
+        outStockNum = #{outStockNum,jdbcType=SMALLINT},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="totalPrice != null" >
+        totalPrice = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="plantDisPrice != null" >
+        plantDisPrice = #{plantDisPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="plantMemPrice != null" >
+        plantMemPrice = #{plantMemPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="maoli != null" >
+        maoli = #{maoli,jdbcType=DECIMAL},
+      </if>
+      <if test="fee != null" >
+        fee = #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="storeId != null" >
+        storeId = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId = #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="spId != null" >
+        spId = #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="youHui != null" >
+        youHui = #{youHui,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="restrict != null" >
+        `restrict` = #{restrict,jdbcType=INTEGER},
+      </if>
+      <if test="col1 != null" >
+        col1 = #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        col2 = #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        col3 = #{col3,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsType != null" >
+        goodsType = #{goodsType,jdbcType=INTEGER},
+      </if>
+      <if test="giftActivityId != null" >
+        giftActivityId = #{giftActivityId,jdbcType=INTEGER},
+      </if>
+      <if test="giftSpId != null" >
+        giftSpId = #{giftSpId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SpOrderDetail" >
+    update SpOrderDetail
+    set orderId = #{orderId,jdbcType=VARCHAR},
+      orderId2 = #{orderId2,jdbcType=VARCHAR},
+      itemId = #{itemId,jdbcType=VARCHAR},
+      itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      barCode = #{barCode,jdbcType=VARCHAR},
+      brand = #{brand,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      spec = #{spec,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR},
+      quantity = #{quantity,jdbcType=SMALLINT},
+      outStockNum = #{outStockNum,jdbcType=SMALLINT},
+      price = #{price,jdbcType=DECIMAL},
+      totalPrice = #{totalPrice,jdbcType=DECIMAL},
+      plantDisPrice = #{plantDisPrice,jdbcType=DECIMAL},
+      plantMemPrice = #{plantMemPrice,jdbcType=DECIMAL},
+      maoli = #{maoli,jdbcType=DECIMAL},
+      fee = #{fee,jdbcType=DECIMAL},
+      storeId = #{storeId,jdbcType=INTEGER},
+      spGroupId = #{spGroupId,jdbcType=INTEGER},
+      spId = #{spId,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      youHui = #{youHui,jdbcType=VARCHAR},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      isDelete = #{isDelete,jdbcType=BIT},
+      `restrict` = #{restrict,jdbcType=INTEGER},
+      col1 = #{col1,jdbcType=VARCHAR},
+      col2 = #{col2,jdbcType=VARCHAR},
+      col3 = #{col3,jdbcType=VARCHAR},
+      goodsType = #{goodsType,jdbcType=INTEGER},
+      giftActivityId = #{giftActivityId,jdbcType=INTEGER},
+      giftSpId = #{giftSpId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

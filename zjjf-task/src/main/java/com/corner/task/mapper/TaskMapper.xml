@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.task.dao.TaskMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.task.beans.Task" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="taskName" property="taskName" jdbcType="VARCHAR" />
+    <result column="taskGroup" property="taskGroup" jdbcType="VARCHAR" />
+    <result column="taskTrigger" property="taskTrigger" jdbcType="VARCHAR" />
+    <result column="taskClassName" property="taskClassName" jdbcType="VARCHAR" />
+    <result column="taskMethod" property="taskMethod" jdbcType="VARCHAR" />
+    <result column="taskAction" property="taskAction" jdbcType="VARCHAR" />
+    <result column="taskParams" property="taskParams" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, taskName, taskGroup, taskTrigger, taskClassName, taskMethod, taskAction, taskParams, 
+    status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from Task
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from Task
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.task.beans.Task" >
+    insert into Task (id, taskName, taskGroup, 
+      taskTrigger, taskClassName, taskMethod, 
+      taskAction, taskParams, status, 
+      isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, #{taskGroup,jdbcType=VARCHAR}, 
+      #{taskTrigger,jdbcType=VARCHAR}, #{taskClassName,jdbcType=VARCHAR}, #{taskMethod,jdbcType=VARCHAR}, 
+      #{taskAction,jdbcType=VARCHAR}, #{taskParams,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.task.beans.Task" >
+    insert into Task
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="taskName != null" >
+        taskName,
+      </if>
+      <if test="taskGroup != null" >
+        taskGroup,
+      </if>
+      <if test="taskTrigger != null" >
+        taskTrigger,
+      </if>
+      <if test="taskClassName != null" >
+        taskClassName,
+      </if>
+      <if test="taskMethod != null" >
+        taskMethod,
+      </if>
+      <if test="taskAction != null" >
+        taskAction,
+      </if>
+      <if test="taskParams != null" >
+        taskParams,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="taskName != null" >
+        #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskGroup != null" >
+        #{taskGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="taskTrigger != null" >
+        #{taskTrigger,jdbcType=VARCHAR},
+      </if>
+      <if test="taskClassName != null" >
+        #{taskClassName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskMethod != null" >
+        #{taskMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="taskAction != null" >
+        #{taskAction,jdbcType=VARCHAR},
+      </if>
+      <if test="taskParams != null" >
+        #{taskParams,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.task.beans.Task" >
+    update Task
+    <set >
+      <if test="taskName != null" >
+        taskName = #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskGroup != null" >
+        taskGroup = #{taskGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="taskTrigger != null" >
+        taskTrigger = #{taskTrigger,jdbcType=VARCHAR},
+      </if>
+      <if test="taskClassName != null" >
+        taskClassName = #{taskClassName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskMethod != null" >
+        taskMethod = #{taskMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="taskAction != null" >
+        taskAction = #{taskAction,jdbcType=VARCHAR},
+      </if>
+      <if test="taskParams != null" >
+        taskParams = #{taskParams,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.task.beans.Task" >
+    update Task
+    set taskName = #{taskName,jdbcType=VARCHAR},
+      taskGroup = #{taskGroup,jdbcType=VARCHAR},
+      taskTrigger = #{taskTrigger,jdbcType=VARCHAR},
+      taskClassName = #{taskClassName,jdbcType=VARCHAR},
+      taskMethod = #{taskMethod,jdbcType=VARCHAR},
+      taskAction = #{taskAction,jdbcType=VARCHAR},
+      taskParams = #{taskParams,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

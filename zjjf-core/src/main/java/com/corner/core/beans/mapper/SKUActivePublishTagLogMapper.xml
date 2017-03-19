@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SKUActivePublishTagLogMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SKUActivePublishTagLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="actype" property="actype" jdbcType="INTEGER" />
+    <result column="actTime" property="actTime" jdbcType="TIMESTAMP" />
+    <result column="opUser" property="opUser" jdbcType="VARCHAR" />
+    <result column="skuActiveId" property="skuActiveId" jdbcType="VARCHAR" />
+    <result column="goodsType" property="goodsType" jdbcType="INTEGER" />
+    <result column="plantItemId" property="plantItemId" jdbcType="VARCHAR" />
+    <result column="tagId" property="tagId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, actype, actTime, opUser, skuActiveId, goodsType, plantItemId, tagId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SKUActivePublishTagLog
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SKUActivePublishTagLog
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SKUActivePublishTagLog" >
+    insert into SKUActivePublishTagLog (id, actype, actTime, 
+      opUser, skuActiveId, goodsType, 
+      plantItemId, tagId)
+    values (#{id,jdbcType=VARCHAR}, #{actype,jdbcType=INTEGER}, #{actTime,jdbcType=TIMESTAMP}, 
+      #{opUser,jdbcType=VARCHAR}, #{skuActiveId,jdbcType=VARCHAR}, #{goodsType,jdbcType=INTEGER}, 
+      #{plantItemId,jdbcType=VARCHAR}, #{tagId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SKUActivePublishTagLog" >
+    insert into SKUActivePublishTagLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="actype != null" >
+        actype,
+      </if>
+      <if test="actTime != null" >
+        actTime,
+      </if>
+      <if test="opUser != null" >
+        opUser,
+      </if>
+      <if test="skuActiveId != null" >
+        skuActiveId,
+      </if>
+      <if test="goodsType != null" >
+        goodsType,
+      </if>
+      <if test="plantItemId != null" >
+        plantItemId,
+      </if>
+      <if test="tagId != null" >
+        tagId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="actype != null" >
+        #{actype,jdbcType=INTEGER},
+      </if>
+      <if test="actTime != null" >
+        #{actTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opUser != null" >
+        #{opUser,jdbcType=VARCHAR},
+      </if>
+      <if test="skuActiveId != null" >
+        #{skuActiveId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsType != null" >
+        #{goodsType,jdbcType=INTEGER},
+      </if>
+      <if test="plantItemId != null" >
+        #{plantItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="tagId != null" >
+        #{tagId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SKUActivePublishTagLog" >
+    update SKUActivePublishTagLog
+    <set >
+      <if test="actype != null" >
+        actype = #{actype,jdbcType=INTEGER},
+      </if>
+      <if test="actTime != null" >
+        actTime = #{actTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opUser != null" >
+        opUser = #{opUser,jdbcType=VARCHAR},
+      </if>
+      <if test="skuActiveId != null" >
+        skuActiveId = #{skuActiveId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsType != null" >
+        goodsType = #{goodsType,jdbcType=INTEGER},
+      </if>
+      <if test="plantItemId != null" >
+        plantItemId = #{plantItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="tagId != null" >
+        tagId = #{tagId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SKUActivePublishTagLog" >
+    update SKUActivePublishTagLog
+    set actype = #{actype,jdbcType=INTEGER},
+      actTime = #{actTime,jdbcType=TIMESTAMP},
+      opUser = #{opUser,jdbcType=VARCHAR},
+      skuActiveId = #{skuActiveId,jdbcType=VARCHAR},
+      goodsType = #{goodsType,jdbcType=INTEGER},
+      plantItemId = #{plantItemId,jdbcType=VARCHAR},
+      tagId = #{tagId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

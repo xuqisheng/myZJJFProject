@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.auth.dao.mg.PositionMgMapper" >
+	<!-- 获取会计列表条件 -->
+	<sql id="getPositionList_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			isDelete = 0
+			<if test="deptId != null and deptId != 0">
+				and deptId = #{deptId}	
+			</if>
+		</trim>
+	</sql>
+	<!-- 获取列表 -->
+	<select id="getPositionList" parameterType="com.corner.auth.beans.ro.JobRo" resultType="com.corner.auth.beans.Position">
+		SELECT * from Position
+		<include refid="getPositionList_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取列表 总记录数 -->
+	<select id="getPositionListCount" parameterType="com.corner.auth.beans.ro.JobRo" resultType="int">
+		SELECT count(1) from Position
+		<include refid="getPositionList_condition" />
+	</select>
+</mapper>

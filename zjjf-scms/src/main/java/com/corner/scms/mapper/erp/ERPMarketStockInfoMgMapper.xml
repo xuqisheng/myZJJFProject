@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.erp.ERPMarketStockInfoMgMapper" >
+  
+  
+
+  <sql id="pageSql">
+   limit #{pageIndex},#{pageSize}
+  </sql>
+  
+  <resultMap type="com.corner.scms.beans.vo.SpOrderInfoMgVo" id="orderInfoMap">
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="pId" property="pId" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="tradeNo" property="tradeNo" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="goodsPrice" property="goodsPrice" jdbcType="DECIMAL" />
+    <result column="orderPrice" property="orderPrice" jdbcType="DECIMAL" />
+    <result column="itemPrice" property="itemPrice" jdbcType="DECIMAL" />
+    <result column="rebate" property="rebate" jdbcType="DECIMAL" />
+    <result column="rebatePlat" property="rebatePlat" jdbcType="DECIMAL" />
+    <result column="rebateSp2Sp" property="rebateSp2Sp" jdbcType="DECIMAL" />
+    <result column="rebateSp2Plat" property="rebateSp2Plat" jdbcType="DECIMAL" />
+    <result column="coupon" property="coupon" jdbcType="DECIMAL" />
+    <result column="platCoupon" property="platCoupon" jdbcType="DECIMAL" />
+    <result column="couponId" property="couponId" jdbcType="VARCHAR" />
+    <result column="spCoupon" property="spCoupon" jdbcType="DECIMAL" />
+    <result column="spCouponId" property="spCouponId" jdbcType="VARCHAR" />
+    <result column="spCouponPlat" property="spCouponPlat" jdbcType="DECIMAL" />
+    <result column="spCouponSp" property="spCouponSp" jdbcType="DECIMAL" />
+    <result column="kfId" property="kfId" jdbcType="VARCHAR" />
+    <result column="kfName" property="kfName" jdbcType="VARCHAR" />
+    <result column="kfnote" property="kfnote" jdbcType="VARCHAR" />
+    <result column="kfStatus" property="kfStatus" jdbcType="TINYINT" />
+    <result column="kfCheckTime" property="kfCheckTime" jdbcType="TIMESTAMP" />
+    <result column="userId" property="userId" jdbcType="VARCHAR" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="userRemark" property="userRemark" jdbcType="VARCHAR" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="storeName" property="storeName" jdbcType="VARCHAR" />
+    <result column="consignee" property="consignee" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="userTel" property="userTel" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="evaluation" property="evaluation" jdbcType="TINYINT" />
+    <result column="supportStatus" property="supportStatus" jdbcType="TINYINT" />
+    <result column="supportmetho" property="supportmetho" jdbcType="TINYINT" />
+    <result column="supportTime" property="supportTime" jdbcType="TIMESTAMP" />
+    <result column="ordertype" property="ordertype" jdbcType="TINYINT" />
+    <result column="closemsg" property="closemsg" jdbcType="VARCHAR" />
+    <result column="gaveTime" property="gaveTime" jdbcType="TIMESTAMP" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="supplierTel" property="supplierTel" jdbcType="VARCHAR" />
+    <result column="supplierNam" property="supplierNam" jdbcType="VARCHAR" />
+    <result column="spStatus" property="spStatus" jdbcType="TINYINT" />
+    <result column="spRemark" property="spRemark" jdbcType="VARCHAR" />
+    <result column="spCheckTime" property="spCheckTime" jdbcType="TIMESTAMP" />
+    <result column="warningStatus" property="warningStatus" jdbcType="TINYINT" />
+    <result column="logisticsStatus" property="logisticsStatus" jdbcType="TINYINT" />
+    <result column="whSendTime" property="whSendTime" jdbcType="TIMESTAMP" />
+    <result column="whAckTime" property="whAckTime" jdbcType="TIMESTAMP" />
+    <result column="printTime" property="printTime" jdbcType="TIMESTAMP" />
+    <result column="deliveryTime" property="deliveryTime" jdbcType="TIMESTAMP" />
+    <result column="getOrderTime" property="getOrderTime" jdbcType="TIMESTAMP" />
+    <result column="ackTime" property="ackTime" jdbcType="TIMESTAMP" />
+    <result column="ackCode" property="ackCode" jdbcType="SMALLINT" />
+    <result column="isStar" property="isStar" jdbcType="TINYINT" />
+    <result column="sendDate" property="sendDate" jdbcType="DATE" />
+    <result column="fistTime" property="fistTime" jdbcType="TIMESTAMP" />
+    <result column="endTime" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="qrcodeurl" property="qrcodeurl" jdbcType="VARCHAR" />
+    <result column="isRemind" property="isRemind" jdbcType="TINYINT" />
+    <result column="zmaoli" property="zmaoli" jdbcType="DECIMAL" />
+    <result column="zfee" property="zfee" jdbcType="DECIMAL" />
+    <result column="acId" property="acId" jdbcType="VARCHAR" />
+    <result column="acStatus" property="acStatus" jdbcType="INTEGER" />
+    <result column="acRemark" property="acRemark" jdbcType="VARCHAR" />
+    <result column="acCheckTime" property="acCheckTime" jdbcType="TIMESTAMP" />
+    <result column="acSettleTime" property="acSettleTime" jdbcType="TIMESTAMP" />
+    <result column="acPayTime" property="acPayTime" jdbcType="TIMESTAMP" />
+    <result column="level" property="level" jdbcType="TINYINT" />
+    <result column="freight" property="freight" jdbcType="DECIMAL" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+    <result column="ziOrderId" property="ziOrderId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="getSpOrderInfoList_condition">
+	   FROM
+		(
+			SELECT
+				*
+			FROM
+				SpOrderInfo
+			WHERE
+				`level` = 2
+			AND isDelete = 0
+			AND `status` NOT IN (1, 5, 6)
+			AND supplierId = #{supplierId}
+			AND isOutStock = 0
+		) AS ziOrder
+	JOIN SpOrderInfo AS fuOrder ON ziOrder.pId = fuOrder.id
+	<where>
+	  <if test="keyStr!=null and keyStr!=''">
+	    and (
+	           fuOrder.orderId like concat('%',#{keyStr},'%')
+	           or
+	           fuOrder.mobile like concat('%',#{keyStr},'%')
+	        )
+	  </if>
+	</where>
+  </sql>
+  
+  <select id="getSpOrderInfoList" parameterType="com.corner.scms.beans.ro.erp.SpOrderInfoMgRo" resultMap="orderInfoMap">
+   SELECT
+		fuOrder.*, ziOrder.orderId AS ziOrderId
+	<include refid="getSpOrderInfoList_condition"/>
+	ORDER BY
+		fuOrder.addTime DESC
+	<include refid="pageSql"/>
+  </select>
+  
+  <select id="getCountSpOrderInfoList" parameterType="com.corner.scms.beans.ro.erp.SpOrderInfoMgRo" resultType="java.lang.Integer">
+     select count(1)
+     <include refid="getSpOrderInfoList_condition"/>
+  </select>
+  
+  
+  <sql id="getInfoListPageByRo_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			a.supplierId = #{supplierId}
+			and a.isDelete = 0
+			<if test="managerName != null and managerName != ''">
+				and a.managerName like concat('%' , #{managerName} , '%')
+			</if>
+			<if test="level != null and level != 0">
+				and a.level = #{level}
+			</if>
+			<if test="orderId != null and orderId != ''">
+				and (a.orderId like concat('%' , #{orderId} , '%') or a.storeName like concat('%' , #{orderId} , '%'))
+			</if>
+			<if test="checkStatus != null and checkStatus != 0">
+				and a.checkStatus = #{checkStatus}
+			</if>
+			<if test="status != null and status != 0">
+				and a.status = #{status}
+			</if>
+			<if test="beginTime != null">
+				and a.addTime &gt; #{beginTime}
+			</if>
+			<if test="endTime != null">
+				and a.addTime &lt; #{endTime}
+			</if>
+		</trim>
+	</sql>
+	<select id="getInfoListPageByRo" parameterType="com.corner.scms.beans.ro.erp.ERPMarketStockRo" resultType="com.corner.core.beans.ERPMarketStockInfo">
+		SELECT * FROM ERPMarketStockInfo a
+		<include refid="getInfoListPageByRo_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+	<select id="getInfoListPageByRoCOUNT" parameterType="com.corner.scms.beans.ro.erp.ERPMarketStockRo" resultType="java.lang.Integer">
+		SELECT COUNT(1) FROM ERPMarketStockInfo a
+		<include refid="getInfoListPageByRo_condition" />
+	</select>
+	
+	
+	<sql id="getOrDerDetailList_condition">
+	   FROM SpOrderDetail WHERE orderId2=#{ziOrderId} AND IFNULL(outStockNum,0) &lt; quantity
+	   
+	</sql>
+	<select id="getOrDerDetailList" parameterType="com.corner.scms.beans.ro.erp.SpOrderInfoMgRo" resultType="com.corner.scms.beans.vo.SpOrderDetailMgVo">
+	   SELECT *
+	   <include refid="getOrDerDetailList_condition"/> 
+	</select>
+	
+	<select id="getCountOrDerDetailList" parameterType="com.corner.scms.beans.ro.erp.SpOrderInfoMgRo" resultType="java.lang.Integer">
+	   select count(1)
+	   <include refid="getOrDerDetailList_condition"/> 
+	</select>
+	
+	<sql id="getSaleOutList_condition">
+	FROM ERPMarketStockInfo
+	  where status = 1 and isDelete = 0 and supplierId=#{supplierId}
+	  <if test="level==null">
+	    and level = 1
+	  </if>
+	  <if test="level!=null">
+	    and level = #{level}
+	  </if>
+	  <if test="keyStr!=null and keyStr!=''">
+	     and (
+	           pOrderId like "%"#{keyStr}"%"
+	           or
+	           orderId like "%"#{keyStr}"%"
+	           or
+	           storeName like "%"#{keyStr}"%"
+	         )
+	  </if>
+	  <if test="startTime!=null">
+	    and addTime &gt;= #{startTime}
+	  </if>
+	  <if test="endTime!=null">
+	    and addTime &lt; #{endTime}
+	  </if>
+	  <if test="stockStatus!=null and stockStatus!=-1">
+	   <if test="stockStatus==1">
+	     and logisticsStatus in(4,5)
+	   </if>
+	   <if test="stockStatus==0">
+	     and logisticsStatus in(1,2,3)
+	   </if>
+	  </if>
+	</sql>
+	<select id="getSaleOutList" parameterType="com.corner.scms.beans.ro.erp.ERPMarketStockInfoRo" resultType="com.corner.scms.beans.vo.erp.ERPMarketStockInfoVo">
+	   SELECT *
+	   <include refid="getSaleOutList_condition"/>  
+	   ORDER BY addTime DESC
+	   <include refid="pageSql"/>
+	</select>
+	<select id="getCountSaleOutList" parameterType="com.corner.scms.beans.ro.erp.ERPMarketStockInfoRo" resultType="java.lang.Integer">
+	 select count(1)
+	   <include refid="getSaleOutList_condition"/>  
+	</select>
+	
+	<select id="getERPMarketStockInfoVoById" parameterType="com.corner.scms.beans.ro.erp.ERPMarketStockInfoRo" resultType="com.corner.scms.beans.vo.erp.ERPMarketStockInfoVo">
+	   SELECT * FROM ERPMarketStockInfo where id = #{id} AND isDelete = 0
+	</select>
+	
+	<select id="getStockDetailList" parameterType="com.corner.scms.beans.vo.erp.ERPMarketStockInfoVo" resultType="com.corner.scms.beans.vo.erp.ERPMarketStockDetailVo">
+	   SELECT * FROM ERPMarketStockDetail where orderId = #{orderId} and isDelete = 0
+	</select>
+	
+	<update id="updateStatus" parameterType="java.util.HashMap">
+	   update ERPMarketStockInfo set checkStatus = 2,checkTime=NOW(),checkUserName=#{supplier.supplierName},
+	   checkUser=#{supplier.id} where id in
+	   <foreach collection="idArr" open="(" separator="," close=")" item="item">
+	     #{item}
+	   </foreach>
+	</update>
+	
+	<update id="updateOutStock" parameterType="java.util.HashMap">
+	   UPDATE ERPMarketStockInfo
+		SET logisticsStatus = 4,
+		 whSendTime = NOW()
+		WHERE
+			id IN
+	   <foreach collection="idArr" open="(" separator="," close=")" item="item">
+	     #{item}
+	   </foreach>
+	</update>
+	
+	<update id="updateSend" parameterType="java.util.HashMap">
+	  update ERPMarketStockInfo set logisticsStatus = 5,whAckTime=NOW() where id in
+	   <foreach collection="idArr" open="(" separator="," close=")" item="item">
+	     #{item}
+	   </foreach>
+	</update>
+	
+	<update id="updateOrderBack" parameterType="java.util.HashMap">
+	    update ERPMarketStockInfo set level = 2,checkUser = null,
+	    checkUserName = null,checkTime = null,checkStatus = 1,
+	    whSendTime = null,whAckTime = null,addTime = NOW()
+	    where id in
+	   <foreach collection="idArr" open="(" separator="," close=")" item="item">
+	     #{item}
+	   </foreach>
+	</update>
+	
+	<select id="getListByIds" parameterType="java.lang.String" resultType="com.corner.scms.beans.vo.erp.ERPMarketStockInfoVo">
+	   select * from ERPMarketStockInfo where id in
+	   <foreach collection="array" open="(" separator="," close=")" item="item">
+	     #{item}
+	   </foreach>
+	</select>
+	
+	<update id="updateBatchDelete" parameterType="java.util.ArrayList">
+	  update ERPMarketStockInfo set isDelete = 1 where id in
+	  <foreach collection="list" open="(" separator="," close=")" item="item">
+	     #{item.id}
+	  </foreach>
+	</update>
+	
+	<update id="updateBatchDetailDelete" parameterType="java.util.ArrayList">
+	  <foreach collection="list" separator=";" item="item">
+	      UPDATE ERPMarketStockDetail SET isDelete = 1 WHERE orderId = #{item.orderId}
+	  </foreach>
+	</update>
+	
+	<select id="getStockInfoByIds" parameterType="java.util.HashMap" resultType="com.corner.core.beans.ERPMarketStockInfo">
+	   select * from ERPMarketStockInfo WHERE id in
+	   <foreach collection="idArr" open="(" separator="," close=")" item="item">
+	     #{item}
+	   </foreach>
+	</select>
+	
+	<select id="getMarketStockDetails" parameterType="com.corner.core.beans.ERPMarketStockInfo" resultType="com.corner.core.beans.ERPMarketStockDetail">
+	   SELECT * FROM ERPMarketStockDetail WHERE orderId = #{orderId}
+	</select>
+	
+	
+	<update id="updateSpOrderInfoStockNum" parameterType="java.util.ArrayList">
+	   <foreach collection="list" separator=";" item="item">
+	     UPDATE SpOrderDetail SET outStockNum=IFNULL(outStockNum,0)+#{item.operateStock} where id = #{item.pId}
+	   </foreach>
+	</update>
+	
+	<select id="getSpOrDerDetails" parameterType="com.corner.core.beans.ERPMarketStockInfo" resultType="com.corner.core.beans.SpOrderDetail">
+		SELECT
+			*
+		FROM
+			SpOrderDetail
+		WHERE
+			IFNULL(outStockNum, 0) &lt; quantity
+		AND id IN (
+			SELECT
+				pId
+			FROM
+				ERPMarketStockDetail
+			WHERE
+				orderId = #{orderId}
+		)
+	</select>
+	
+	<select id="getSpOrderInfoById" parameterType="java.lang.String" resultType="com.corner.core.beans.SpOrderInfo">
+	   SELECT * FROM SpOrderInfo WHERE orderId = (
+			SELECT orderId2 FROM SpOrderDetail where id = #{id}
+			)
+	</select>
+	
+	<update id="updateSpOrderInfoIsOutStock" parameterType="com.corner.core.beans.SpOrderInfo">
+	  update SpOrderInfo set isOutStock = 1 where id = #{id}
+	</update>
+	
+	
+	<sql id="getErpMarketStockInfos_condition">
+	  FROM ERPMarketStockInfo where logisticsStatus = 5 and isSaleBack = 0 and level = 1 and supplierId = #{supplierId}
+	  <if test="orderId != null and orderId != ''">
+		  and orderId like concat('%' ,#{orderId}, '%')
+	  </if>
+	</sql>
+	<select id="getErpMarketStockInfos" parameterType="com.corner.scms.beans.ro.erp.ERPMarketStockInfoRo" resultType="java.util.HashMap">
+        SELECT * 
+        <include refid="getErpMarketStockInfos_condition"/>
+        order by addTime desc
+        <include refid="pageSql"/>
+	</select>
+	
+	
+	<select id="getCountErpMarketStockInfos" parameterType="com.corner.scms.beans.ro.erp.ERPMarketStockInfoRo" resultType="java.lang.Integer">
+	  select count(1)
+      <include refid="getErpMarketStockInfos_condition"/>
+	</select>
+	
+	<select id="getStockDetailListByStockInfoId" parameterType="java.lang.String" resultType="com.corner.scms.beans.vo.erp.ERPMarketStockDetailVo">
+	   SELECT
+			*
+		FROM
+			ERPMarketStockDetail
+		WHERE
+			orderId = (
+				SELECT
+					orderId
+				FROM
+					ERPMarketStockInfo
+				WHERE
+					id = #{id}
+				AND isDelete = 0
+				AND `status` = 1
+			)
+		AND isDelete = 0  
+	</select>
+	
+	<select id="selectMarketStockVoById" parameterType="com.corner.scms.beans.ro.erp.ERPMarketStockInfoRo" resultType="com.corner.scms.beans.vo.erp.ERPMarketStockInfoVo">
+	    SELECT
+			a.*, b.sendDate,
+			b.mobile,
+			b.address,
+			b.userTel,
+			b.userRemark,
+			b.supportmetho
+		FROM
+			ERPMarketStockInfo a
+		JOIN SpOrderInfo b ON a.pId = b.id
+		WHERE
+			a.isDelete = 0
+		AND a.`status` = 1
+		AND a.id = #{id}
+	</select>
+	
+	<select id="selectMarketStockDetail" parameterType="com.corner.scms.beans.vo.erp.ERPMarketStockInfoVo" resultType="com.corner.scms.beans.vo.erp.ERPMarketStockDetailVo">
+	   SELECT
+		a.*, b.outStockNum AS spDetailOutStockNum
+	FROM
+		ERPMarketStockDetail a
+	JOIN SpOrderDetail b ON a.pId = b.id
+	WHERE
+		a.isDelete = 0
+	AND a.orderId = #{orderId}
+	</select>
+	
+	<delete id="deleteERPMarketStockDetailByOrderId" parameterType="com.corner.core.beans.ERPMarketStockInfo">
+	  DELETE FROM ERPMarketStockDetail where orderId = #{orderId}
+	</delete>
+	
+	<select id="getAllSendStockVo" parameterType="com.corner.scms.beans.vo.erp.ERPMarketStockInfoVo" resultType="com.corner.scms.beans.vo.erp.ERPMarketStockInfoVo">
+	  SELECT * FROM ERPMarketStockInfo where logisticsStatus not in(4,5) AND pId = #{pId}
+	</select>
+	
+	<select id="getAllConfrimStokVo" parameterType="com.corner.scms.beans.vo.erp.ERPMarketStockInfoVo" resultType="com.corner.scms.beans.vo.erp.ERPMarketStockInfoVo">
+	  SELECT * FROM ERPMarketStockInfo where logisticsStatus not in(5) AND pId = #{pId}
+	</select>
+</mapper>

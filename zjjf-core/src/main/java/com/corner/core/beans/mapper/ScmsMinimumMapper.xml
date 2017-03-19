@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ScmsMinimumMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ScmsMinimum" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="brandId" property="brandId" jdbcType="INTEGER" />
+    <result column="brandName" property="brandName" jdbcType="VARCHAR" />
+    <result column="managerId" property="managerId" jdbcType="VARCHAR" />
+    <result column="minimum" property="minimum" jdbcType="SMALLINT" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="kfId" property="kfId" jdbcType="VARCHAR" />
+    <result column="kfName" property="kfName" jdbcType="VARCHAR" />
+    <result column="kfnote" property="kfnote" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, brandId, brandName, managerId, minimum, addTime, updateTime, kfId, kfName, kfnote, 
+    status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ScmsMinimum
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ScmsMinimum
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ScmsMinimum" >
+    insert into ScmsMinimum (id, brandId, brandName, 
+      managerId, minimum, addTime, 
+      updateTime, kfId, kfName, 
+      kfnote, status, isDelete
+      )
+    values (#{id,jdbcType=VARCHAR}, #{brandId,jdbcType=INTEGER}, #{brandName,jdbcType=VARCHAR}, 
+      #{managerId,jdbcType=VARCHAR}, #{minimum,jdbcType=SMALLINT}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{kfId,jdbcType=VARCHAR}, #{kfName,jdbcType=VARCHAR}, 
+      #{kfnote,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ScmsMinimum" >
+    insert into ScmsMinimum
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="brandId != null" >
+        brandId,
+      </if>
+      <if test="brandName != null" >
+        brandName,
+      </if>
+      <if test="managerId != null" >
+        managerId,
+      </if>
+      <if test="minimum != null" >
+        minimum,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="kfId != null" >
+        kfId,
+      </if>
+      <if test="kfName != null" >
+        kfName,
+      </if>
+      <if test="kfnote != null" >
+        kfnote,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="brandId != null" >
+        #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="brandName != null" >
+        #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerId != null" >
+        #{managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="minimum != null" >
+        #{minimum,jdbcType=SMALLINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="kfId != null" >
+        #{kfId,jdbcType=VARCHAR},
+      </if>
+      <if test="kfName != null" >
+        #{kfName,jdbcType=VARCHAR},
+      </if>
+      <if test="kfnote != null" >
+        #{kfnote,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ScmsMinimum" >
+    update ScmsMinimum
+    <set >
+      <if test="brandId != null" >
+        brandId = #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="brandName != null" >
+        brandName = #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerId != null" >
+        managerId = #{managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="minimum != null" >
+        minimum = #{minimum,jdbcType=SMALLINT},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="kfId != null" >
+        kfId = #{kfId,jdbcType=VARCHAR},
+      </if>
+      <if test="kfName != null" >
+        kfName = #{kfName,jdbcType=VARCHAR},
+      </if>
+      <if test="kfnote != null" >
+        kfnote = #{kfnote,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ScmsMinimum" >
+    update ScmsMinimum
+    set brandId = #{brandId,jdbcType=INTEGER},
+      brandName = #{brandName,jdbcType=VARCHAR},
+      managerId = #{managerId,jdbcType=VARCHAR},
+      minimum = #{minimum,jdbcType=SMALLINT},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      kfId = #{kfId,jdbcType=VARCHAR},
+      kfName = #{kfName,jdbcType=VARCHAR},
+      kfnote = #{kfnote,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

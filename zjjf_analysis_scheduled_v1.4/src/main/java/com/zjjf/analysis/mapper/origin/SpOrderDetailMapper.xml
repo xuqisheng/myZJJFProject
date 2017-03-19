@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.origin.SpOrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.origin.orders.SpOrderDetail" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="itemId" property="itemId" jdbcType="VARCHAR" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="barCode" property="barCode" jdbcType="VARCHAR" />
+    <result column="brand" property="brand" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="spec" property="spec" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="quantity" property="quantity" jdbcType="SMALLINT" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="totalPrice" property="totalPrice" jdbcType="DECIMAL" />
+    <result column="plantMemPrice" property="plantMemPrice" jdbcType="DECIMAL" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+    <result column="maoli" property="maoli" jdbcType="DECIMAL" />
+    <result column="fee" property="fee" jdbcType="DECIMAL" />
+    <result column="plantDisPrice" property="plantDisPrice" jdbcType="DECIMAL" />
+    <result column="orderId2" property="orderId2" jdbcType="VARCHAR" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="spId" property="spId" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="youHui" property="youHui" jdbcType="VARCHAR" />
+    <result column="restrict" property="restrict" jdbcType="INTEGER" />
+    <result column="sku" property="sku" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, orderId, itemId, barCode, brand, name, spec, img, quantity, price, totalPrice, 
+    plantMemPrice, storeId, itemBaseId, addTime, isDelete, col1, col2, col3, maoli, fee, plantDisPrice, 
+    orderId2, spGroupId, spId, remark, youHui, `restrict`
+  </sql>
+
+  <select id="getTodayData" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    	t1.id, t1.orderId, t1.itemId, t1.barCode, t1.brand, t1.name, t1.spec, t1.img, t1.quantity, t1.price, t1.totalPrice, 
+    	t1.plantMemPrice, t1.storeId, t1.itemBaseId, t1.`addTime`, t1.isDelete, t1.col1, t1.col2, t1.col3, t1.maoli, t1.fee, t1.plantDisPrice, 
+   		t1.orderId2, t1.spGroupId, t1.spId, t1.remark, t1.youHui, t1.`restrict`, t2.gaveTime
+      from SpOrderDetail t1 
+      left join SpOrderInfo t2 on t2.orderId = t1.orderId2
+    where t2.status not in (1, 6) 
+    	and t2.`gaveTime` &gt;= #{gaveTimeBegin} 
+    	and t2.`gaveTime` &lt;= #{gaveTimeEnd} 
+    limit #{offset}, 1000
+  </select>
+  
+  <select id="getDetaiGatherByOrderId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+   	select sum(quantity) as "quantity", count(id) as "sku" from SpOrderDetail where orderId2 = #{orderId}
+  </select>
+  
+  <select id="getTurnOverByItemId" resultType="com.zjjf.analysis.beans.origin.orders.SpOrderDetailVo" parameterType="java.lang.String" >
+   	select  sum(t1.totalPrice) as "turnover", 
+   			sum(t1.quantity) as "quantity",
+   			sum(t1.maoli) as "maoli",
+   			sum(t1.fee) as "fee",
+   			count(t1.id) as "orderCount",
+   			t1.price
+   		from SpOrderDetail t1 left join SpOrderInfo t2 on t2.orderId = t1.orderId
+   		where t1.itemId = #{itemId} and t1.spGroupId = #{spGroupId} and date_format(t2.`gavetime`, '%Y%m%d')=#{addTime}
+  </select>
+  
+  <select id="getPlantItemList" resultType="com.zjjf.analysis.beans.origin.orders.SpOrderDetailVo" parameterType="java.lang.String" >
+     select t1.itemId, 
+    		t1.itemBaseId,
+    		t1.spGroupId
+    	from SpOrderDetail t1 
+   			 left join SpOrderInfo t2 on t2.orderId = t1.orderId 
+   		where t2.status not in (1, 6) 
+   			and t2.`gaveTime` &gt;= #{gaveTimeBegin} 
+   			and t2.`gaveTime` &lt;= #{gaveTimeEnd} 
+   		group by t1.itemId, t1.spGroupId order by null limit #{offset}, 1000 
+  </select>
+  
+  <select id="getByOrderId2" resultType="com.zjjf.analysis.beans.origin.orders.SpOrderDetail" parameterType="java.lang.String" >
+     select orderId2, spGroupId from SpOrderDetail where orderId2 = #{chirdOrderNo} limit 1
+  </select>
+  
+</mapper>

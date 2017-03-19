@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>增加促销管理</title>
+		<link rel="stylesheet" type="text/css" href="../../../resources/css/base.css" />
+		<link rel="stylesheet" type="text/css" href="../../../resources/vendor/jquery/ztree/css/zTreeStyle/zTreeStyle.css" />
+		<link href="../../../resources/css/imgupload.css" rel="stylesheet">
+		<script src="../../../resources/vendor/My97DatePicker/WdatePicker.js"></script>
+		<script src="../../../resources/vendor/jquery/jquery-1.12.4.min.js"></script>
+		<script src="../../../resources/vendor/jquery/ztree/js/jquery.ztree.all.js"></script>
+		<script src="../../../resources/js/comm.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../resources/js/imgupload.js"></script>
+
+		<style type="text/css">
+			.ctr-num {
+				width: 82px;
+				height: 24px;
+				position: relative;
+				display: inline-block;
+			}
+			
+			.ctr-num a {
+				display: block;
+				position: absolute;
+				top: 0;
+				width: 22px;
+				height: 22px;
+				border: 1px solid #ccc;
+				text-align: center;
+				text-decoration: none;
+				line-height: 22px;
+				color: black;
+			}
+			
+			.ctr-num input {
+				width: 32px;
+				height: 20px;
+				text-align: center;
+				border: 1px solid #ccc;
+				position: absolute;
+				left: 24px;
+				top: 0;
+			}
+			
+			#goods tr td {
+				padding: 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wrap-bd">
+			<div class="mb-small">
+				<a href="#" class="crumb">促销管理</a>
+				<a href="#" class="crumb">套装促销</a>
+			</div>
+			<div class="bg wrap-bd">
+				<form action="">
+					<div class="mb-default">
+						<label class="label">
+						活动名称：
+					</label>
+						<input type="text" name="" value="" class="input input-default mr-default" />
+
+					</div>
+					<div class="mb-default">
+						<label for="" class="label">
+						套装类型：
+						</label>
+						<select name="" class="select" id="J_select">
+							<option value="1" data-groupname="tab" data-tab="item" id="bs">买送</option>
+							<option value="2" data-groupname="tab" data-tab="item" id="cb">套装</option>
+						</select>
+						<script>
+							$(function() {
+								$('#J_select').on('change', function() {
+									var ii = $(this).get(0).selectedIndex;
+									$(this).find('option:selected').trigger('click');
+								});
+								$('#bs').click(function() {
+									$('#combine').hide();
+									$('#buy-send').show();
+									$('#cbPri').hide();
+									$('#bs-goods').show();
+									$('#cb-goods').hide();
+								})
+								$('#cb').click(function() {
+									$('#combine').show();
+									$('#buy-send').hide();
+									$('#cbPri').show();
+									$('#bs-goods').hide();
+									$('#cb-goods').show();
+								})
+							})
+						</script>
+					</div>
+					<div id="" class="clearfix mb-default">
+						<div class="mr-default fl">
+							<div class="mr-default">
+								<label for="" class="label va-t">
+								主商品：
+								</label>
+								<button class="button button-operate J_dialog-addGoods" type="button">选择商品</button>
+							</div>
+							<div>
+								<label class="label">
+								
+							</label>
+								<div class="dis-ib">
+									<table class="table" border="0" id="goods">
+										<tr>
+											<td><img src="" style="width: 100px;height: 100px;" /></td>
+										</tr>
+										<tr class="mb-small">
+											<td>商品名称</td>
+										</tr>
+										<tr class="mb-small">
+											<td>商品规格</td>
+										</tr>
+										<tr class="mb-default">
+											<td>
+												价格
+												<input type="text" name="" id="" value="" class="input input-date ml-default" />
+											</td>
+										</tr>
+										<tr class="mb-small">
+											<td class="clearfix">
+												<span class="va-t">数量</span>
+												<div class=" ml-default ctr-num">
+													<a href="javascript:void(0);" class="fl" style="left: 0;" data="-">-</a>
+													<input type="text" name="" class="num" value="1" />
+													<a href="javascript:void(0);" class="fr" style="right: 0;" data="+">+</a>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+
+						</div>
+						<div class="mr-default fl hidden" id="cb-goods">
+							<div class="mr-default">
+								<label for="" class="label va-t">
+								组合商品：
+								</label>
+								<button class="button button-operate J_dialog-addGoods" type="button">选择商品</button>
+							</div>
+							<div>
+								<label class="label">
+								
+							</label>
+								<div class="dis-ib">
+									<table class="table" border="0" id="goods">
+										<tr>
+											<td><img src="" style="width: 100px;height: 100px;" /></td>
+										</tr>
+										<tr class="mb-small">
+											<td>商品名称</td>
+										</tr>
+										<tr class="mb-small">
+											<td>商品规格</td>
+										</tr>
+										<tr class="mb-default">
+											<td>
+												价格
+												<input type="text" name="" id="" value="" class="input input-date ml-default" />
+											</td>
+										</tr>
+										<tr class="mb-small">
+											<td class="clearfix">
+												<span class="va-t">数量</span>
+												<div class="ml-default ctr-num">
+													<a href="javascript:void(0);" class="fl" style="left: 0;" data="-">-</a>
+													<input type="text" name="" class="num" value="1" />
+													<a href="javascript:void(0);" class="fr" style="right: 0;" data="+">+</a>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+
+						</div>
+						<div class="mr-default fl" id="bs-goods">
+							<div class="mr-default">
+								<label for="" class="label va-t">
+								赠送商品：
+								</label>
+								<button class="button button-operate J_dialog-addGoods" type="button">选择商品</button>
+							</div>
+							<div>
+								<label class="label">								
+								</label>
+								<div class="dis-ib">
+									<table class="table" border="0" id="goods">
+										<tr>
+											<td><img src="" style="width: 100px;height: 100px;" /></td>
+										</tr>
+										<tr class="mb-small">
+											<td>商品名称</td>
+										</tr>
+										<tr class="mb-small">
+											<td>商品规格</td>
+										</tr>
+										<tr class="mb-small">
+											<td class="clearfix">
+												<span class="va-t">数量</span>
+												<div class="ml-default ctr-num">
+													<a href="javascript:void(0);" class="fl" style="left: 0;" data="-">-</a>
+													<input type="text " name=" " value="1 " class="num " />
+													<a href="javascript:void(0);" class="fr" style="right: 0;" data="+">+</a>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="mb-default hidden" id="cbPri">
+						<label class="label">
+						组合售价：
+					</label>
+						<input type="text" name="" value="" class="input input-default" />
+					</div>
+					<div class="mb-default">
+						<label class="label">
+						组合说明：
+					</label>
+						<input type="text" name="" value="" class="input input-default mr-default" />
+					</div>
+					<div class="mb-default">
+						<label for="" class="label">
+							活动时间：
+							</label>
+						<input type="text" name="" id="" value="" class="input input-date J_timeS" /> -
+						<input type="text" name="" onblur="time()" id="" value="" class="input input-date J_timeE mr-default" />
+						<span id="times">	
+						</span>
+					</div>
+					<div class="mb-default">
+						<label for=" " class="label">
+							发布区域：
+						</label>
+						<span id="buy-send">
+							<input type="checkbox" name="" id="" value="" class="checkbox" />热销区域
+							<input type="checkbox" name="" id="" value="" class="checkbox ml-default" />特价专区
+							<input type="checkbox" name="" id="" value="" class="checkbox ml-default" />爆款推荐
+							<input type="checkbox" name="" id="" value="" class="checkbox ml-default" />新品推荐
+							<input type="checkbox" name="" id="" value="" class="checkbox ml-default" />品牌促销
+						</span>
+						<span class="hidden" id="combine">
+							<input type="checkbox" name="" id="" value="" class="checkbox combine" />超值套餐							
+						</span>
+					</div>
+					<div class="mb-default">
+						<label class="label">
+						单个ID限购：
+						</label>
+						<input type="text" name="" value="" class="input input-default mr-default" />
+					</div>
+					<div class="mb-default">
+						<label class="label">
+						商品标签：
+					</label>
+						<select name="" class="select">
+							<option value="">爆款</option>
+							<option value="">热销</option>
+							<option value="">特价</option>
+							<option value="">新品</option>
+							<option value="">自营</option>
+							<option value="">限时</option>
+							<option value="">限量</option>
+							<option value="">套餐</option>
+						</select>
+					</div>
+					<div class="mb-default">
+						<label for="" class="label">活动互斥：
+						</label>
+						<input type="checkbox" name="" id="" value="" class="checkbox J_chkone" />满赠活动
+						<input type="checkbox" name="" id="" value="" class="checkbox ml-default J_chkone" />满减活动
+						<span class="ml-default txt-warn">
+勾选互斥后，此商品活动不可同时与优惠券、满送、满减活动使用。
+</span>
+					</div>
+					<div class="mb-default">
+						<label class="label">
+						参与批发商：
+					</label>
+						<button class="button button-operate" id="J_dialog-addSupplier" type="button">增加批发商</button>
+					</div>
+					<table class="table-list mb-default">
+						<thead>
+							<tr>
+								<th>序号</th>
+								<th>所属区域</th>
+								<th>所属定格</th>
+								<th>批发商编号</th>
+								<th>批发商名称</th>
+								<th>手机号码</th>
+								<th>商品限量</th>
+								<th>操作 </th>
+							</tr>
+						</thead>
+						<tbody class="table-tbody" id="supplier_info">
+							<tr>
+								<td>1</td>
+								<td>广东/深圳/南山</td>
+								<td>定格的名称</td>
+								<td>粤B1111</td>
+								<td>批发商1</td>
+								<td>12345654</td>
+								<td><input type="text" name="" id="" value="" class="input input-date" /></td>
+								<td><span class="icon-op icon-op-del J_del" title="删除 "></span></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="">
+						<span class="button button-ok">确认</span>
+						<span class="button button-cancel ml-small">取消</span>
+					</div>
+				</form>
+			</div>
+
+			<div class="dialog hidden J_dialog" id="J_dialogArea">
+				<div class="dialog-head">
+					选择商品
+					<div id="" class="dialog-close">
+					</div>
+				</div>
+
+				<div class="dialog-body clearfix">
+					<div class="mb-default mb-default clearfix">
+						<div class="fl mr-default ">
+							<label for="">商品分类:
+								<select name="">
+									<option value="" class="select">一级分类</option>
+									<option value="" class="select">一级分类</option>
+									<option value="" class="select">一级分类</option>
+								</select>
+								<select name="">
+									<option value="" class="select">二级分类</option>
+									<option value="" class="select">二级分类</option>
+									<option value="" class="select">二级分类</option>
+								</select>
+							</label>
+						</div>
+						<div class="fr ml-default">
+							<label for=" ">商品品牌:
+								<input type="text" name="" id="" value="" class="input input-default"/>
+							</label>
+						</div>
+					</div>
+					<div class="mb-default clearfix">
+						<div class="fl mr-default">
+							<label for="">商品条码:
+								<input type="text" name="" id="" value="" class="input input-default mr-small"/>						
+							</label>
+						</div>
+						<div class="fr ml-default">
+							<label for="">商品名称:
+								<input type="text" name="" id="" value="" class="input input-default"/>
+							</label>
+						</div>
+					</div>
+					<div class="fr mb-default">
+						<span class="dialog-button dialog-ok ml-default">查询</span>
+						<span class="dialog-button ml-small dialog-cancel">重置</span>
+					</div>
+					<table class="table-list mb-default">
+						<thead>
+							<tr>
+								<th>
+									<input type="checkbox" name=" " id="J_selectAll" value="" />
+								</th>
+								<th>商品品牌</th>
+								<th>商品条码</th>
+								<th>商品名称</th>
+								<th>规格</th>
+								<th>价格</th>
+							</tr>
+						</thead>
+						<tbody class="table-tbody">
+
+							<tr>
+								<td>
+									<input type="checkbox" name="" id="" value="" class="checkbox J_chk" />
+								</td>
+								<td>百事</td>
+								<td>1234 5</td>
+								<td>
+									我的名称
+								</td>
+								<td>24*300ml</td>
+								<td>100</td>
+							</tr>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="dialog-foot">
+					<div class=" ">
+						<span class="dialog-button dialog-ok ml-default" id="add">增加</span>
+						<span class="dialog-button ml-small dialog-cancel">关闭</span>
+					</div>
+				</div>
+				</form>
+			</div>
+			<div class="cover-all">
+
+			</div>
+			<div class="dialog hidden J_dialog" id="J_dialogSupplier">
+				<form action="" method="post">
+					<div class="dialog-head">
+						选择批发商
+						<div id="" class="dialog-close">
+						</div>
+					</div>
+					<div class="dialog-body">
+						<form action="" method="post">
+							<div class="mb-default">
+
+								<input type="text" name="" id="" value="" class="input input-default" placeholder="批发商名称" />
+								<input type="button" name="" id="" value="搜索" class="button button-default" />
+							</div>
+						</form>
+						<div class="wrap-bd zTreeDemoBackground">
+							<ul id="treeDemo" class="ztree" style="height:140px; overflow:auto">
+							</ul>
+						</div>
+					</div>
+					<div class="dialog-foot">
+						<div class="">
+							<span class="dialog-button dialog-ok ml-default" id="conf">确认</span>
+							<span class="dialog-button ml-small dialog-cancel">取消</span>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			//日期
+			dateRange('.J_timeS', '.J_timeE', 1);
+			if('' == 1) {
+				$('#isVoluntary').attr('checked', true);
+			} else {
+				$('#isVoluntary').attr('checked', false);
+			}
+			$('#ruleType').val('-1');
+			//上传单个图片
+			$('#imguploadChose').fileupload({
+				complete: function(v) {
+					console.log(v);
+				}
+			});
+			
+			$('#imguploadSend').fileupload({
+				complete: function(v) {
+					console.log(v);
+				}
+			});
+			
+			//dialog
+			dialogPosCenter('#J_dialogArea');
+			dialogPosCenter('#J_dialogSupplier');
+			$('#J_dialog-addSupplier').on('click', function() {
+				$('#J_dialogSupplier, .cover-all').fadeIn();
+			});
+			$('.J_dialog-addGoods').on('click', function() {
+				$('#J_dialogArea, .cover-all').fadeIn();
+			});
+			$('.J_dialog').on('click', '.dialog-cancel', function() {
+
+				$('.J_dialog, .cover-all').fadeOut();
+			})
+			$('.dialog').on('click', '.dialog-close', function() {
+
+				$('.J_dialog, .cover-all').fadeOut();
+			})
+			selectAll('#J_selectAll', '.J_chk');
+			$('.J_chkone').click(function() {
+				$(this).attr("checked", true).siblings().attr("checked", false)
+			})
+			
+			//数量添加
+			$(".ctr-num a").click(function() {
+				var count = $(this).attr("data");
+				$(this).parent().find('input').val(function() {
+					var numb = $(this).val();
+					count == "-" ? numb-- : numb++;
+					if(numb > 1) {
+						return numb;
+					} else if(numb = 1) {
+						var numb = 1;
+						return numb;
+					}
+				})
+			});
+			
+			//定格区域
+			var html = "";
+			html +=
+				'<tr>' +
+				'<td>1</td>' +
+				'<td>广州/深圳/南山</td>' +
+				'<td>定格的名称</td>' +
+				'<td>粤B111</td>' +
+				'<td>我的名称</td>' +
+				'<td>15465653453</td>' +
+				'<td><input type="text " name=" " id=" " value=" " class="input input-date" /></td>' +
+				'<td><span class="icon-op icon-op-del J_del " title="删除 "></span></td>' +
+				'</tr>';
+			$('#conf').click(function() {
+				$('#supplier_info').append(html);
+				$('.J_dialog, .cover-all').fadeOut();
+			})
+			$('#supplier_info').on('click', '.J_del', function() {
+				if(confirm('确认删除？')) {
+					$(this).parent('td').parent('tr').remove();
+				}
+			})
+
+		})
+		//地域树
+		var setting = {
+			view: {
+				showIcon: false
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			},
+			check: {
+				enable: true,
+				nocheckInherit: false
+			}
+		};
+
+		var zNodes = [{
+				name: "广东 ",
+				open: true,
+				children: [{
+					name: "深圳 ",
+					children: [{
+						name: "南山 ",
+					}, {
+						name: "福田 ",
+					}, {
+						name: "宝安 ",
+					}, {
+						name: "罗湖 ",
+					}]
+				}, {
+					name: "广州 ",
+					children: [{
+						name: "广州1 "
+					}, {
+						name: "广州2 "
+					}, {
+						name: "广州3 "
+					}, {
+						name: "广州4 "
+					}]
+				}, {
+					name: "汕头 ",
+					isParent: true
+				}]
+			}, {
+				name: "北京 ",
+				isParent: true
+			}
+
+		];
+		$(document).ready(function() {
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		});
+	</script>
+
+</html>

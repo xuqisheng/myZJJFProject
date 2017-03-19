@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SpAdminVerifyRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpAdminVerifyRecord" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="VerifyadminId" property="verifyadminId" jdbcType="VARCHAR" />
+    <result column="VerifyAdminNm" property="verifyAdminNm" jdbcType="VARCHAR" />
+    <result column="VerifyObjIntId" property="verifyObjIntId" jdbcType="INTEGER" />
+    <result column="VerifyObjectId" property="verifyObjectId" jdbcType="VARCHAR" />
+    <result column="VerifyObjectNm" property="verifyObjectNm" jdbcType="VARCHAR" />
+    <result column="ActionNm" property="actionNm" jdbcType="VARCHAR" />
+    <result column="ActionTime" property="actionTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, VerifyadminId, VerifyAdminNm, VerifyObjIntId, VerifyObjectId, VerifyObjectNm, 
+    ActionNm, ActionTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from SpAdminVerifyRecord
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SpAdminVerifyRecord
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SpAdminVerifyRecord" >
+    insert into SpAdminVerifyRecord (Id, VerifyadminId, VerifyAdminNm, 
+      VerifyObjIntId, VerifyObjectId, VerifyObjectNm, 
+      ActionNm, ActionTime)
+    values (#{id,jdbcType=INTEGER}, #{verifyadminId,jdbcType=VARCHAR}, #{verifyAdminNm,jdbcType=VARCHAR}, 
+      #{verifyObjIntId,jdbcType=INTEGER}, #{verifyObjectId,jdbcType=VARCHAR}, #{verifyObjectNm,jdbcType=VARCHAR}, 
+      #{actionNm,jdbcType=VARCHAR}, #{actionTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SpAdminVerifyRecord" >
+    insert into SpAdminVerifyRecord
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="verifyadminId != null" >
+        VerifyadminId,
+      </if>
+      <if test="verifyAdminNm != null" >
+        VerifyAdminNm,
+      </if>
+      <if test="verifyObjIntId != null" >
+        VerifyObjIntId,
+      </if>
+      <if test="verifyObjectId != null" >
+        VerifyObjectId,
+      </if>
+      <if test="verifyObjectNm != null" >
+        VerifyObjectNm,
+      </if>
+      <if test="actionNm != null" >
+        ActionNm,
+      </if>
+      <if test="actionTime != null" >
+        ActionTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="verifyadminId != null" >
+        #{verifyadminId,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyAdminNm != null" >
+        #{verifyAdminNm,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyObjIntId != null" >
+        #{verifyObjIntId,jdbcType=INTEGER},
+      </if>
+      <if test="verifyObjectId != null" >
+        #{verifyObjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyObjectNm != null" >
+        #{verifyObjectNm,jdbcType=VARCHAR},
+      </if>
+      <if test="actionNm != null" >
+        #{actionNm,jdbcType=VARCHAR},
+      </if>
+      <if test="actionTime != null" >
+        #{actionTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SpAdminVerifyRecord" >
+    update SpAdminVerifyRecord
+    <set >
+      <if test="verifyadminId != null" >
+        VerifyadminId = #{verifyadminId,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyAdminNm != null" >
+        VerifyAdminNm = #{verifyAdminNm,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyObjIntId != null" >
+        VerifyObjIntId = #{verifyObjIntId,jdbcType=INTEGER},
+      </if>
+      <if test="verifyObjectId != null" >
+        VerifyObjectId = #{verifyObjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyObjectNm != null" >
+        VerifyObjectNm = #{verifyObjectNm,jdbcType=VARCHAR},
+      </if>
+      <if test="actionNm != null" >
+        ActionNm = #{actionNm,jdbcType=VARCHAR},
+      </if>
+      <if test="actionTime != null" >
+        ActionTime = #{actionTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SpAdminVerifyRecord" >
+    update SpAdminVerifyRecord
+    set VerifyadminId = #{verifyadminId,jdbcType=VARCHAR},
+      VerifyAdminNm = #{verifyAdminNm,jdbcType=VARCHAR},
+      VerifyObjIntId = #{verifyObjIntId,jdbcType=INTEGER},
+      VerifyObjectId = #{verifyObjectId,jdbcType=VARCHAR},
+      VerifyObjectNm = #{verifyObjectNm,jdbcType=VARCHAR},
+      ActionNm = #{actionNm,jdbcType=VARCHAR},
+      ActionTime = #{actionTime,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

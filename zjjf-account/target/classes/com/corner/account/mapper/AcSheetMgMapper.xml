@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.account.dao.AcSheetMgMapper" >
+
+	<!-- 获取会计列表条件 -->
+	<sql id="getPageList_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id != null">
+				id = #{id}
+			</if>
+			<if test="xtype != null">
+				AND  xtype = #{xtype}
+			</if>
+			<if test="isDelete != null">
+				AND isDelete = #{isDelete}
+			</if>
+			<if test="status != null">
+				AND status = #{status}
+			</if>
+			<if test="keyword != null and keyword !=''">
+				AND ( sheetNum like CONCAT('%','${keyword}','%') 
+				or payBankNum like CONCAT('%','${keyword}','%') )
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 获取会计列表 -->
+ 	<select id="getPageList" parameterType="com.corner.account.beans.ro.BillSheetCondition"  resultType="AcSheet">
+		SELECT * FROM AcSheet
+		<include refid="getPageList_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取会计列表 总记录数-->
+ 	<select id="getPageListSize" parameterType="com.corner.account.beans.ro.BillSheetCondition"  resultType="int">
+		SELECT count(1) FROM AcSheet
+		<include refid="getPageList_condition" />
+	</select>
+	
+	<!-- 检查费用单是否存在 -->
+ 	<select id="checkSheetExit" parameterType="com.corner.account.beans.ro.BillSheetCondition"  resultType="AcSheetOrderMapKey">
+		SELECT * FROM AcSheetOrderMap
+		WHERE orderId in 
+    	<foreach collection="spOrderIdArray" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<!-- 插入数据 -->
+ 	<insert id="addOrderSheetMapBatch" parameterType="com.corner.account.beans.ro.BillSheetCondition">
+		update SpOrderInfo set acStatus=3,acSettleTime=now() where id in
+    	<foreach collection="spOrderIdArray" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		;insert into AcSheetOrderMap(sheetId,orderId) values
+		<foreach collection="spOrderIdArray" item="item"  separator="," >  
+        (#{id},#{item})
+    	</foreach> 
+	</insert>
+
+	
+</mapper>

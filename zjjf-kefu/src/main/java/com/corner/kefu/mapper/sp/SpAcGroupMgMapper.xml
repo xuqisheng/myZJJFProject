@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpAcGroupMgMapper" >
+	<sql id="getSpAcGroupList_condition">
+	  from SpAcGroup a
+	  LEFT JOIN SpActiveStoreMap b
+	  ON a.id = b.acGroupId
+	  LEFT JOIN SpVoucherActive c ON c.id = b.activeId 
+	  where 1=1
+	  <if test="keyStr!=null">
+	   and (name like "%"#{keyStr}"%" or code like "%"#{keyStr}"%")
+	  </if>
+	  and a.isDelete = 0 and a.status=1
+	  GROUP BY a.id
+  	</sql>
+	<select id="getSpAcGroupListCount" parameterType="com.corner.kefu.beans.ro.sp.SpAcGroupRo" resultType="java.lang.Integer">
+	   SELECT
+			count(1)
+		FROM
+		( select a.id
+	   <include refid="getSpAcGroupList_condition"/>
+	    )as xx
+	</select>
+	<select id="getSpAcGroupList" parameterType="com.corner.kefu.beans.ro.sp.SpAcGroupRo" resultType="com.corner.kefu.beans.vo.sp.SpAcGroupVo">
+    select a.*,(select count(1) from Store where acGroupId=a.id  AND `status`=1 AND isDelete=0 ) as totalStore,
+    count(b.activeId) as huodong,SUM(c.ruleType=1) AS zhuce,SUM(c.ruleType=2) AS mansong,SUM(c.ruleType=3) AS manjian
+    <include refid="getSpAcGroupList_condition"/>
+    order by a.addTime desc
+    <include refid="BasePublicMapper.pageSql" />
+  </select>
+  
+  
+  <sql id="getSpAcGroupWithStoreList_condition">
+    FROM
+		(
+			SELECT
+				*
+			FROM
+				Store
+			WHERE
+				acGroupId = #{id}  AND `status`=1 AND isDelete = 0
+		) a
+	JOIN SpAcGroup b ON a.acGroupId = b.id
+	where 1=1
+	<if test="keyStr!=null">
+	   and (a.supplierCode like "%"#{keyStr}"%" or a.name like "%"#{keyStr}"%"
+	    or a.contact like "%"#{keyStr}"%" or a.mobile like "%"#{keyStr}"%" 
+	    or b.name like "%"#{keyStr}"%"
+	   )
+	</if>
+  </sql>
+  <select id="getSpAcGroupWithStoreList" parameterType="com.corner.kefu.beans.ro.sp.SpAcGroupRo" resultType="com.corner.kefu.beans.vo.sp.StoreVo">
+    SELECT
+		a.id,
+		a.supplierCode as suppliercode,
+		a.name,
+		a.contact,
+		a.mobile,
+		a.acGroupId,
+		b.name as spGropName
+	<include refid="getSpAcGroupWithStoreList_condition"/>
+	<include refid="BasePublicMapper.pageSql" />
+  </select>
+  <select id="getSpAcGroupWithStoreListCount" parameterType="com.corner.kefu.beans.ro.sp.SpAcGroupRo" resultType="java.lang.Integer">
+   select count(1) 
+   <include refid="getSpAcGroupWithStoreList_condition"/>
+  </select>
+  
+  <update id="addStoreIntoSpACGroup" parameterType="java.util.HashMap">
+     update Store set acGroupId = #{spAcGroupId} where id in
+    <foreach collection="storeIdArr" open="(" separator="," close=")" index="index" item="item">
+    #{item}
+    </foreach> 
+  </update>
+  
+  <update id="deleteStoreFromSpACGroup" parameterType="java.util.HashMap">
+    update Store set acGroupId = NULL where id in
+    <foreach collection="storeIdArr" open="(" separator="," close=")" index="index" item="item">
+    #{item}
+    </foreach>
+  </update>
+  <update id="deleteStoreFromAcStore" parameterType="java.lang.String">
+   update Store set acGroupId=NULL where acGroupId=#{id,jdbcType=VARCHAR}
+  </update>
+  
+  <sql id="getAllNoShopGroupStoreList_condition">
+   FROM
+		(
+			SELECT
+				*
+			FROM
+				Store
+			WHERE
+				isDelete = 0
+			AND `status` = 1
+			AND (acGroupId != #{id} OR acGroupId is NULL)
+		) a
+	JOIN SpGroup b ON a.spGroupId = b.id
+	where 1=1
+	<if test="keyStr!=null">
+	   and (a.supplierCode like "%"#{keyStr}"%" or a.name like "%"#{keyStr}"%"
+	    or a.contact like "%"#{keyStr}"%" or a.mobile like "%"#{keyStr}"%" 
+	    or b.name like "%"#{keyStr}"%"
+	   )
+	</if>
+  </sql>
+  <select id="getAllNoShopGroupStoreList" parameterType="com.corner.kefu.beans.ro.sp.SpAcGroupRo" resultType="com.corner.kefu.beans.vo.sp.StoreVo">
+    SELECT
+		a.id,
+		a.supplierCode as suppliercode,
+		a.name,
+		a.contact,
+		a.mobile,
+		a.acGroupId,
+		b.name as spGropName
+	<include refid="getAllNoShopGroupStoreList_condition"/>
+	<include refid="BasePublicMapper.pageSql" />
+  </select>
+  <select id="getAllNoShopGroupStoreListCount" parameterType="com.corner.kefu.beans.ro.sp.SpAcGroupRo" resultType="java.lang.Integer">
+    select count(1)
+    <include refid="getAllNoShopGroupStoreList_condition"/>
+  </select>
+  
+  <select id="getAllStoreGroupList" resultType="com.corner.core.beans.SpAcGroup">
+     select * from SpAcGroup where status = 1 and isDelete = 0
+     <if test="keyStr!=null">
+      and (name like "%"#{keyStr}"%" or code like "%"#{keyStr}"%")
+     </if>
+  </select>
+  
+  <update id="batchAddStore" parameterType="java.util.HashMap">
+     update Store set acGroupId = #{spAcGroupId} where isDelete = 0 and status = 1 and id in
+     <foreach collection="list" open="(" close=")" separator="," index="index" item="item">
+        #{item}
+     </foreach> 
+  </update>
+</mapper>

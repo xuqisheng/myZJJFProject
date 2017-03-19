@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.MaWithdrawDealLogMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.MaWithdrawDealLog" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="withDrawId" property="withDrawId" jdbcType="BIGINT" />
+    <result column="objectStatus" property="objectStatus" jdbcType="TINYINT" />
+    <result column="objectDate" property="objectDate" jdbcType="VARCHAR" />
+    <result column="dealTime" property="dealTime" jdbcType="TIMESTAMP" />
+    <result column="dealerId" property="dealerId" jdbcType="VARCHAR" />
+    <result column="dealerName" property="dealerName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, withDrawId, objectStatus, objectDate, dealTime, dealerId, dealerName
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from MaWithdrawDealLog
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from MaWithdrawDealLog
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.MaWithdrawDealLog" >
+    insert into MaWithdrawDealLog (id, withDrawId, objectStatus, 
+      objectDate, dealTime, dealerId, 
+      dealerName)
+    values (#{id,jdbcType=BIGINT}, #{withDrawId,jdbcType=BIGINT}, #{objectStatus,jdbcType=TINYINT}, 
+      #{objectDate,jdbcType=VARCHAR}, #{dealTime,jdbcType=TIMESTAMP}, #{dealerId,jdbcType=VARCHAR}, 
+      #{dealerName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.MaWithdrawDealLog" >
+    insert into MaWithdrawDealLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="withDrawId != null" >
+        withDrawId,
+      </if>
+      <if test="objectStatus != null" >
+        objectStatus,
+      </if>
+      <if test="objectDate != null" >
+        objectDate,
+      </if>
+      <if test="dealTime != null" >
+        dealTime,
+      </if>
+      <if test="dealerId != null" >
+        dealerId,
+      </if>
+      <if test="dealerName != null" >
+        dealerName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="withDrawId != null" >
+        #{withDrawId,jdbcType=BIGINT},
+      </if>
+      <if test="objectStatus != null" >
+        #{objectStatus,jdbcType=TINYINT},
+      </if>
+      <if test="objectDate != null" >
+        #{objectDate,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null" >
+        #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealerId != null" >
+        #{dealerId,jdbcType=VARCHAR},
+      </if>
+      <if test="dealerName != null" >
+        #{dealerName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.MaWithdrawDealLog" >
+    update MaWithdrawDealLog
+    <set >
+      <if test="withDrawId != null" >
+        withDrawId = #{withDrawId,jdbcType=BIGINT},
+      </if>
+      <if test="objectStatus != null" >
+        objectStatus = #{objectStatus,jdbcType=TINYINT},
+      </if>
+      <if test="objectDate != null" >
+        objectDate = #{objectDate,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null" >
+        dealTime = #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealerId != null" >
+        dealerId = #{dealerId,jdbcType=VARCHAR},
+      </if>
+      <if test="dealerName != null" >
+        dealerName = #{dealerName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.MaWithdrawDealLog" >
+    update MaWithdrawDealLog
+    set withDrawId = #{withDrawId,jdbcType=BIGINT},
+      objectStatus = #{objectStatus,jdbcType=TINYINT},
+      objectDate = #{objectDate,jdbcType=VARCHAR},
+      dealTime = #{dealTime,jdbcType=TIMESTAMP},
+      dealerId = #{dealerId,jdbcType=VARCHAR},
+      dealerName = #{dealerName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SpHelpTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpHelpType" >
+    <id column="id" property="id" jdbcType="TINYINT" />
+    <result column="typeName" property="typeName" jdbcType="VARCHAR" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, typeName, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Byte" >
+    select 
+    <include refid="Base_Column_List" />
+    from SpHelpType
+    where id = #{id,jdbcType=TINYINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Byte" >
+    delete from SpHelpType
+    where id = #{id,jdbcType=TINYINT}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SpHelpType" >
+    insert into SpHelpType (id, typeName, isDelete
+      )
+    values (#{id,jdbcType=TINYINT}, #{typeName,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SpHelpType" >
+    insert into SpHelpType
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="typeName != null" >
+        typeName,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=TINYINT},
+      </if>
+      <if test="typeName != null" >
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SpHelpType" >
+    update SpHelpType
+    <set >
+      <if test="typeName != null" >
+        typeName = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=TINYINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SpHelpType" >
+    update SpHelpType
+    set typeName = #{typeName,jdbcType=VARCHAR},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=TINYINT}
+  </update>
+</mapper>

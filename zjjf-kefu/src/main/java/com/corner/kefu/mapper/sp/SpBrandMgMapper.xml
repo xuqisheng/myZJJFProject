@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpBrandMgMapper">
+	<!-- 根据名称查询所有的品牌  begin-->
+	  <select id="getBrandByName" parameterType="java.util.Map" resultType="com.corner.core.beans.Brand">
+	  	select * from Brand where isDelete = 0 and status = 1 
+	  	<if test="brandName != null and brandName != ''">
+	  		and name like "%"#{brandName}"%"
+	  	</if>
+	  	<if test="str != null and str=='brand'">
+	  		and upId != 0 and xLevel > 1
+	  	</if>
+	  	<if test="str != null and str=='branding'">
+	  		and upId = 0 and xLevel = 1
+	  	</if>
+	  </select>
+	<!-- 根据名称查询所有的品牌 end -->  
+  
+  	<!-- 品牌列表  begin -->
+	  <sql id="selectParam">
+	  	WHERE a.upId &gt; 0
+		AND a.xLevel &gt; 1
+		<if test="noAndName!=null and noAndName!=''">
+			AND (a.brandNo like "%"#{noAndName}"%" OR a.name like "%"#{noAndName}"%")
+		</if>
+	  </sql>
+	  <select id="getAllBrandByParam" parameterType="com.corner.kefu.beans.ro.BrandRo" resultType="com.corner.kefu.beans.vo.BrandVo">
+	  	SELECT
+			a.*, b.NAME AS s_name
+		FROM
+			`Brand` AS a
+		LEFT JOIN `Brand` AS b ON a.upId = b.id
+		<include refid="selectParam"/>
+		order by createTime desc
+		limit #{pageIndex},#{pageSize}
+	  </select>
+	  <select id="getCount" parameterType="com.corner.kefu.beans.ro.BrandRo" resultType="java.lang.Integer">
+	  	select 
+	  		count(1) 
+	  	from 
+			`Brand` AS a LEFT JOIN `Brand` AS b ON a.upId = b.id
+		<include refid="selectParam"/>
+	  </select>
+	<!-- 品牌列表 end -->  
+	
+	<!-- 品牌商列表 begin -->
+	  <sql id="selectParamA">
+	  	WHERE upId = 0
+		AND xLevel = 1
+	  	<if test="noAndName!=null and noAndName!=''">
+			AND (brandNo like "%"#{noAndName}"%" OR name like "%"#{noAndName}"%")
+		</if>
+	  </sql>
+	  <select id="getAllBrandingByParam" parameterType="com.corner.kefu.beans.ro.BrandRo" resultType="com.corner.kefu.beans.vo.BrandVo">
+	  	SELECT
+			*
+		FROM
+			`Brand`
+		<include refid="selectParamA"/>
+		order by createTime desc
+		limit #{pageIndex},#{pageSize}
+	  </select>
+	  <select id="getCountA" parameterType="com.corner.kefu.beans.ro.BrandRo" resultType="java.lang.Integer">
+	  	select 
+	  		count(1) 
+	  	from 
+	  		`Brand` 
+	  	<include refid="selectParamA"/>
+	  </select>
+	 <!-- 品牌商列表 end -->  
+	
+	 <!-- 更新时根据 id获取品牌 begin-->
+	  <select id="getBrandById" parameterType="java.util.Map" resultType="com.corner.kefu.beans.vo.BrandVo">
+	  	select a.*,b.name as s_name from Brand a join Brand b on a.upId = b.id where a.id = #{id}
+	  </select>
+	 <!-- 根据 id获取品牌 end--> 
+	  
+	 <!-- 更新时根据 id获取品牌商  begin -->
+	  <select id="getBrandingById" parameterType="java.util.Map" resultType="com.corner.core.beans.Brand">
+	  	select * from Brand where id = #{id}
+	  </select>
+	 <!-- 根据 id获取品牌商  end -->
+	 
+	 <!-- 验证品牌和品牌商编号的唯一性  begin-->
+	  <select id="chickBrandNo" parameterType="java.util.Map"  resultType="java.lang.Integer">
+	  	select 
+	  		count(1) 
+	  	from 
+	  		Brand 
+	  	where 
+	  		isDelete=0
+  		<if test="brandNo != null and brandNo != ''">
+  			and brandNo=#{brandNo}
+  		</if>
+	  </select>
+	 <!-- 验证品牌和品牌商编号的唯一性 end -->
+	  
+	  <!-- 添加品牌和品牌商 begin -->
+	  <insert id="addBrandAndBranding" parameterType="com.corner.core.beans.Brand" >
+	    insert into Brand
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="brandNo != null" >
+	        brandNo,
+	      </if>
+	      <if test="name != null" >
+	        name,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="upId != null" >
+	        upId,
+	      </if>
+	      <if test="xLevel != null" >
+	        xLevel,
+	      </if>
+	      <if test="xType != null" >
+	        xType,
+	      </if>
+	      <if test="logo != null" >
+	        logo,
+	      </if>
+	      <if test="imgB != null" >
+	        imgB,
+	      </if>
+	      <if test="createTime != null" >
+	        createTime,
+	      </if>
+	      <if test="updateTime != null" >
+	        updateTime,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="isDelete != null" >
+	        isDelete,
+	      </if>
+	      <if test="ordId != null" >
+	        ordId,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id,jdbcType=INTEGER},
+	      </if>
+	      <if test="brandNo != null" >
+	        #{brandNo,jdbcType=VARCHAR},
+	      </if>
+	      <if test="name != null" >
+	        #{name,jdbcType=VARCHAR},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark,jdbcType=VARCHAR},
+	      </if>
+	      <if test="upId != null" >
+	        #{upId,jdbcType=INTEGER},
+	      </if>
+	      <if test="xLevel != null" >
+	        #{xLevel,jdbcType=TINYINT},
+	      </if>
+	      <if test="xType != null" >
+	        #{xType,jdbcType=TINYINT},
+	      </if>
+	      <if test="logo != null" >
+	        #{logo,jdbcType=VARCHAR},
+	      </if>
+	      <if test="imgB != null" >
+	        #{imgB,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="updateTime != null" >
+	        #{updateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=TINYINT},
+	      </if>
+	      <if test="isDelete != null" >
+	        #{isDelete,jdbcType=BIT},
+	      </if>
+	      <if test="ordId != null" >
+	        #{ordId,jdbcType=INTEGER},
+	      </if>
+	    </trim>
+  	</insert>
+  	<!-- 添加品牌和品牌商 end -->
+  	
+  	<!-- 更新品牌商 begin -->
+  	 <update id="updateBrandAndBranding" parameterType="com.corner.core.beans.Brand" >
+	    update Brand
+	    <set >
+	      <if test="brandNo != null" >
+	        brandNo = #{brandNo,jdbcType=VARCHAR},
+	      </if>
+	      <if test="name != null" >
+	        name = #{name,jdbcType=VARCHAR},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark,jdbcType=VARCHAR},
+	      </if>
+	      <if test="upId != null" >
+	        upId = #{upId,jdbcType=INTEGER},
+	      </if>
+	      <if test="xLevel != null" >
+	        xLevel = #{xLevel,jdbcType=TINYINT},
+	      </if>
+	      <if test="xType != null" >
+	        xType = #{xType,jdbcType=TINYINT},
+	      </if>
+	      <if test="logo != null" >
+	        logo = #{logo,jdbcType=VARCHAR},
+	      </if>
+	      <if test="imgB != null" >
+	        imgB = #{imgB,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        createTime = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="updateTime != null" >
+	        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=TINYINT},
+	      </if>
+	      <if test="isDelete != null" >
+	        isDelete = #{isDelete,jdbcType=BIT},
+	      </if>
+	      <if test="ordId != null" >
+	        ordId = #{ordId,jdbcType=INTEGER},
+	      </if>
+	    </set>
+	    where id = #{id,jdbcType=INTEGER}
+	  </update>
+	  <!-- 更新品牌商 end -->
+	  
+	  <!-- 删除品牌商前查出有没有品牌 -->
+	  <select id="getBrandIsNull" parameterType="java.util.Map" resultType="java.lang.Integer">
+	  	select count(1) from Brand where isDelete = 0 and upId=#{id}
+	  </select>
+	  <!-- 删除品牌前查出有没有商品 -->
+	  <select id="getItemBaseIsNull" parameterType="java.util.Map" resultType="java.lang.Integer">
+	  	select count(1) from ItemBase where isDelete = 0 and brandId=#{id}
+	  </select>
+	  <!-- 删除品牌或品牌商 -->
+	  <update id="deleteBrandAndBranding" parameterType="java.util.Map">
+	  	update Brand set isDelete = 1 where id = #{id}
+	  </update>
+	  
+</mapper>

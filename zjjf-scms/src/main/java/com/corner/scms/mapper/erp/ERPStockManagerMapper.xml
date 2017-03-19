@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.erp.ERPStockManagerMapper">
+	<!-- 获取仓库库存 begin -->
+	<sql id="getSupplierStockSql">
+		FROM
+			ERPLogicStock a
+		JOIN ItemBase b ON a.itemBaseId = b.id
+
+		AND b.`status` = 1
+		AND b.isDelete = 0
+		<if test="nameAndMdseId != null and nameAndMdseId != ''">
+			AND (b.name like concat('%' , #{nameAndMdseId} ,'%') or b.mdseId like  concat('%' , #{nameAndMdseId} ,'%'))
+		</if>
+		JOIN ERPWarehouse c ON a.warehouseId = c.id
+		AND c.`status` = 1
+		AND c.isDelete = 0
+		<if test="managerId != null and managerId != ''">
+			JOIN ERPManagerItem d on d.itemBaseId = a.itemBaseId and d.managerId = #{managerId} AND d.status = 1
+			LEFT JOIN ItemBase e ON  e.tgId = b.tgId AND e.upId = 0
+		</if>
+		<where>
+			a.`status` = 1
+			AND a.isDelete = 0
+			AND a.typeSale=1
+		<if test="supplierId != null and supplierId != ''">
+			AND a.supplierId=#{supplierId}
+		</if>
+		</where>
+		GROUP BY a.warehouseId ,a.itemBaseId
+		<choose>
+			<when test="beginStock != null and endStock != null">
+				HAVING (SUM(a.stockNum) &gt;= #{beginStock} and SUM(a.stockNum) &lt;= #{endStock})
+			</when>
+			<when test="beginStock != null">
+				HAVING SUM(a.stockNum) &gt;= #{beginStock}
+			</when>
+			<when test="endStock != null">
+				HAVING SUM(a.stockNum) &lt;= #{endStock}
+			</when>
+		</choose>
+		
+		<!-- FROM
+			ERPLogicStock a
+		JOIN ItemBase b ON a.itemBaseId = b.id
+		AND b.`status` = 1
+		AND b.isDelete = 0
+		JOIN ERPWarehouse c ON a.warehouseId = c.id
+		AND c.`status` = 1
+		AND c.isDelete = 0
+		WHERE
+			a.`status` = 1
+		AND a.isDelete = 0
+		AND a.typeSale=1
+		<if test="supplierId != null and supplierId != ''">
+			AND a.supplierId=#{supplierId}
+		</if>
+		<if test="beginStock != null">
+			AND a.stockNum &gt;= #{beginStock}
+		</if>
+		<if test="endStock != null">
+			AND a.stockNum &lt;= #{endStock}	
+		</if>
+		<if test="nameAndMdseId != null and nameAndMdseId != ''">
+			AND (b.name like "%"#{nameAndMdseId}"%" or b.mdseId like #{nameAndMdseId}"%")
+		</if> -->
+	</sql>
+	<select id="getSupplierStock" parameterType="com.corner.scms.beans.ro.erp.ERPLogicStockRo" resultType="com.corner.scms.beans.vo.erp.ERPLogicStockVo"> 
+		SELECT
+			c.`name` AS whName,
+			b.`name` AS goodsName,
+			b.mdseId,
+			b.spec,
+			b.pkg,
+			SUM(a.stockNum) AS stockNum,
+			SUM(a.lockStock) AS lockStock,
+			SUM(a.examineStock) AS examineStock,
+			SUM(a.transportStock) AS transportStock,
+			SUM(a.sendStock) AS sendStock,
+			a.warehouseId,
+			<if test="managerId != null and managerId != ''">
+				d.itemCode as itemCode,
+				d.id as itemId,
+				d.areaPrice as areaPrice,
+				e.mdseId as barCode,
+			</if>
+			a.itemBaseId
+
+		<!-- SELECT
+			c.`name` AS whName,
+			b.`name` AS goodsName,
+			b.mdseId,
+			b.spec,
+			b.pkg,
+			a.typeMg,
+			CASE 
+				when a.typeMg=1 THEN '正常库存'
+				when a.typeMg=2 THEN '促销库存'
+				when a.typeMg=3 THEN '安全库存'
+				when a.typeMg=4 THEN '炒货库存'
+				when a.typeMg=5 THEN '积压库存'
+				ELSE '其他' 
+			END AS typeMgName,
+			a.stockNum,
+			a.lockStock,
+			a.examineStock,
+			a.transportStock,
+			a.sendStock,
+			a.warehouseId,
+			a.itemBaseId -->
+		<include refid="getSupplierStockSql"/>
+		<!-- ORDER BY a.stockNum -->
+		ORDER BY stockNum
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+	<select id="getSupplierStockCount" parameterType="com.corner.scms.beans.ro.erp.ERPLogicStockRo" resultType="java.lang.Integer">
+		select count(1) from (
+			SELECT
+			c.`name` AS whName,
+			b.`name` AS goodsName,
+			b.mdseId,
+			b.spec,
+			b.pkg,
+			SUM(a.stockNum) AS stockNum,
+			SUM(a.lockStock) AS lockStock,
+			SUM(a.examineStock) AS examineStock,
+			SUM(a.transportStock) AS transportStock,
+			SUM(a.sendStock) AS sendStock,
+			a.warehouseId,
+			<if test="managerId != null and managerId != ''">
+				d.itemCode as itemCode,
+				d.areaPrice as areaPrice,
+				e.mdseId as barCode,
+			</if>
+			a.itemBaseId
+			<include refid="getSupplierStockSql"/>
+			) a
+		<!-- select count(1) -->
+	</select>
+	<!-- 获取仓库库存 end -->
+	
+	<!-- 更据批发商id,仓库id，商品id,库存类型查出逻辑库存id -->
+	<select id="getlogicStockId" parameterType="com.corner.scms.beans.ro.erp.ERPPhysicsStockRo" resultType="java.lang.String">
+		SELECT
+			id
+		FROM
+			ERPLogicStock
+		WHERE
+			`status` = 1
+		AND isDelete = 0
+		<if test="supplierId != null and supplierId != ''">
+			AND supplierId = #{supplierId}
+		</if>
+		<if test="warehouseId != null and warehouseId != ''">
+			AND warehouseId = #{warehouseId}
+		</if>
+		<if test="itemBaseId != null">
+			AND itemBaseId = #{itemBaseId}
+		</if>
+		<if test="typeMg != null">
+			AND typeMg = #{typeMg}
+		</if>
+	</select>
+	<!-- 更据批发商id,仓库id，商品id查出商品所放在的位置 -->
+	<select id="getSupplierStockDetail" parameterType="com.corner.scms.beans.ro.erp.ERPPhysicsStockRo" resultType="com.corner.scms.beans.vo.erp.ERPPhysicsStockVo">
+		<!-- SELECT
+			a.batchNum,
+			a.productionTime,
+			a.batchStock,
+			d.name as whName,
+			c.name as waName,
+			b.name as wpName,
+			e.logicStockId
+		FROM
+			ERPPhysicsStock a
+		JOIN ERPWarehouse b ON a.warehouseId = b.id
+		AND b.`status` = 1
+		AND b.isDelete = 0
+		JOIN ERPWarehouse c ON b.upId = c.id
+		AND c.`status` = 1
+		AND c.isDelete = 0
+		JOIN ERPWarehouse d ON c.upId = d.id
+		AND d.`status` = 1
+		AND d.isDelete = 0
+		<if test="warehouseId != null and warehouseId != ''">
+			AND d.id = #{warehouseId}
+		</if>
+		<if test="supplierId != null">
+			AND d.supplierId = #{supplierId}
+		</if>
+		LEFT JOIN ERPPhysicsLogicMap e ON a.id = e.physicsStockId
+		WHERE
+			a.`status` = 1
+		AND a.isDelete = 0
+		<if test="itemBaseId != null">
+			AND a.itemBaseId = #{itemBaseId}
+		</if> -->
+		
+		SELECT
+			a.typeMg,
+			CASE
+				WHEN a.typeMg=1 THEN '正常库存'
+				WHEN a.typeMg=2 THEN '促销库存'
+				WHEN a.typeMg=3 THEN '安全库存'
+				WHEN a.typeMg=4 THEN '炒货库存'
+				WHEN a.typeMg=5 THEN '积压库存'
+			END AS typeMgName,
+			b.allocationNum,
+			b.physicsStockId,
+			c.batchNum,
+			c.productionTime,
+			c.batchStock,
+			f. NAME AS whName,
+			e. NAME AS waName,
+			d. NAME AS wpName
+		FROM
+			ERPLogicStock a
+		JOIN ERPPhysicsLogicMap b ON a.id = b.logicStockId
+		JOIN ERPPhysicsStock c ON c.id = b.physicsStockId
+		JOIN ERPWarehouse d ON c.warehouseId = d.id
+		JOIN ERPWarehouse e ON d.upId = e.id
+		JOIN ERPWarehouse f ON e.upId = f.id
+		<where>
+			<if test="warehouseId != null and warehouseId != ''">
+				AND f.id = #{warehouseId}
+			</if>
+			<if test="supplierId != null">
+				AND a.supplierId = #{supplierId}
+			</if>
+			<if test="itemBaseId != null">
+				AND a.itemBaseId = #{itemBaseId}
+			</if>
+		</where>
+		order by a.typeMg,a.warehouseId,c.batchNum,productionTime
+	</select>
+	
+	<!-- 查询物理库存流水 -->
+	<sql id="getPhysicsStockLogSql">
+		FROM
+			ERPPhysicsStockLog a
+		JOIN ERPPhysicsStock b ON a.physicsStockId = b.id
+		AND b.`status` = 1
+		AND b.isDelete = 0
+		<if test="itemBaseId != null">
+			AND b.itemBaseId = #{itemBaseId}
+		</if>
+		JOIN ERPWarehouse c ON b.warehouseId = c.id
+		AND c.`status` = 1
+		AND c.isDelete = 0
+		JOIN ERPWarehouse d ON c.upId = d.id
+		AND d.`status` = 1
+		AND d.isDelete = 0
+		JOIN ERPWarehouse e ON d.upId = e.id
+		AND e.`status` = 1
+		AND e.isDelete = 0
+		<if test="warehouseId != null and warehouseId != ''">
+			AND e.id = #{warehouseId}
+		</if>
+		<if test="supplierId != null">
+			AND e.supplierId = #{supplierId}
+		</if>
+		where
+			a.`status` = 1
+		AND a.isDelete = 0
+		<if test="beginTime != null">
+			AND a.operationTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null">
+			AND a.operationTime &lt;= #{endTime}
+		</if>
+		<if test="operationType != null">
+			AND a.operationType = #{operationType}
+		</if>
+	</sql>
+	<select id="getPhysicsStockLog" parameterType="com.corner.scms.beans.ro.erp.ERPPhysicsStockLogRo" resultType="com.corner.scms.beans.vo.erp.ERPPhysicsStockLogVo">
+		SELECT
+			a.*,
+			CASE 
+				when a.operationType=1 THEN '出库'
+				when a.operationType=2 THEN '入库'
+				when a.operationType=3 THEN '修正'
+				ELSE '其他' 
+			END AS typeName,
+			e.name as whName,
+			d.name as waName,
+			c.name as wpName,
+			(SELECT IFNULL(orderNo,'') FROM ERPLogicStockLog WHERE `status`=1 AND isDelete=0 AND id=a.logicStockLogId) as orderNo
+		<include refid="getPhysicsStockLogSql"/>
+		order by a.operationTime desc
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<select id="getPhysicsStockLogCount" parameterType="com.corner.scms.beans.ro.erp.ERPPhysicsStockLogRo" resultType="java.lang.Integer">
+		SELECT
+			count(1)
+		<include refid="getPhysicsStockLogSql"/>
+	</select>
+	
+	<select id="executionStockProcedure" statementType="CALLABLE" parameterType="java.util.Map" resultType="java.lang.String">
+		 <![CDATA[
+           {call socktOperateLog(
+              #{businessType,mode=IN,jdbcType=INTEGER},
+              #{voucherMain,mode=IN,jdbcType=VARCHAR},
+              #{resultData,mode=OUT,jdbcType=VARCHAR}
+           )}    
+       ]]>
+	</select>
+</mapper>

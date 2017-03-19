@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.SpVoucherGradedMgMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpVoucherGraded" extends="com.corner.core.dao.SpVoucherGradedMapper.BaseResultMap">
+  </resultMap>
+
+  <delete id="deleteSpVoucherGradeByActiveId" parameterType="com.corner.core.beans.SpVoucherActive">
+    DELETE FROM SpVoucherGraded where activeId = #{id}
+  </delete>
+  
+  <insert id="batchSave" parameterType="java.util.ArrayList">
+   <foreach collection="list" separator=";" index="index" item="item">
+     insert into SpVoucherGraded
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="item.id != null" >
+        id,
+      </if>
+      <if test="item.activeId != null" >
+        activeId,
+      </if>
+      <if test="item.tempId != null" >
+        tempId,
+      </if>
+      <if test="item.sendLimit != null" >
+        sendLimit,
+      </if>
+      <if test="item.startPrice != null" >
+        startPrice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="item.id != null" >
+        #{item.id,jdbcType=INTEGER},
+      </if>
+      <if test="item.activeId != null" >
+        #{item.activeId,jdbcType=INTEGER},
+      </if>
+      <if test="item.tempId != null" >
+        #{item.tempId,jdbcType=INTEGER},
+      </if>
+      <if test="item.sendLimit != null" >
+        #{item.sendLimit,jdbcType=TINYINT},
+      </if>
+      <if test="item.startPrice != null" >
+        #{item.startPrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+   </foreach>
+  </insert>
+  
+  
+  <resultMap id="GradeVoMap" type="com.corner.kefu.beans.vo.sp.SpVoucherGradedVo">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="activeId" property="activeId" jdbcType="INTEGER" />
+    <result column="tempId" property="tempId" jdbcType="INTEGER" />
+    <result column="sendLimit" property="sendLimit" jdbcType="TINYINT" />
+    <result column="startPrice" property="startPrice" jdbcType="DECIMAL" />
+    <association property="spVoucherTemp" javaType="com.corner.core.beans.SpVoucherTemp">
+        <id column="voucherTempId" property="id" jdbcType="INTEGER" />
+	    <result column="ruleName" property="ruleName" jdbcType="VARCHAR" />
+	    <result column="useMoney" property="useMoney" jdbcType="DECIMAL" />
+	    <result column="useDay" property="useDay" jdbcType="TINYINT" />
+	    <result column="tempStartPrice" property="startPrice" jdbcType="DECIMAL" />
+    </association>
+  </resultMap>
+  
+  <select id="getListByActiveId" parameterType="com.corner.core.beans.SpVoucherActive" resultMap="GradeVoMap">
+    SELECT
+        a.id,
+		a.startPrice,
+		a.sendLimit,
+		a.tempId,
+		b.id as voucherTempId,
+		b.ruleName,
+		b.useMoney,
+		b.useDay,
+		b.startPrice as tempStartPrice
+	FROM
+		(
+			SELECT
+				*
+			FROM
+				SpVoucherGraded
+			WHERE
+				activeId = #{id}
+		) a
+	JOIN SpVoucherTemp b ON a.tempId = b.id
+	order by a.id,b.id
+  </select>
+</mapper>

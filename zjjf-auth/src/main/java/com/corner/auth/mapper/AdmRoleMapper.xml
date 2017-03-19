@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.auth.dao.AdmRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.auth.beans.AdmRole" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="roleNo" property="roleNo" jdbcType="VARCHAR" />
+    <result column="roleName" property="roleName" jdbcType="VARCHAR" />
+    <result column="roleRemark" property="roleRemark" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="updateUser" property="updateUser" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="ordId" property="ordId" jdbcType="INTEGER" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, roleNo, roleName, roleRemark, createTime, createUser, updateTime, updateUser, 
+    status, ordId, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from AdmRole
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from AdmRole
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.auth.beans.AdmRole" >
+    insert into AdmRole (id, roleNo, roleName, 
+      roleRemark, createTime, createUser, 
+      updateTime, updateUser, status, 
+      ordId, isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{roleNo,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, 
+      #{roleRemark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{ordId,jdbcType=INTEGER}, #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.auth.beans.AdmRole" >
+    insert into AdmRole
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="roleNo != null" >
+        roleNo,
+      </if>
+      <if test="roleName != null" >
+        roleName,
+      </if>
+      <if test="roleRemark != null" >
+        roleRemark,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="createUser != null" >
+        createUser,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="updateUser != null" >
+        updateUser,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="ordId != null" >
+        ordId,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="roleNo != null" >
+        #{roleNo,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleRemark != null" >
+        #{roleRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="ordId != null" >
+        #{ordId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.auth.beans.AdmRole" >
+    update AdmRole
+    <set >
+      <if test="roleNo != null" >
+        roleNo = #{roleNo,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        roleName = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleRemark != null" >
+        roleRemark = #{roleRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        createUser = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        updateUser = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="ordId != null" >
+        ordId = #{ordId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.auth.beans.AdmRole" >
+    update AdmRole
+    set roleNo = #{roleNo,jdbcType=VARCHAR},
+      roleName = #{roleName,jdbcType=VARCHAR},
+      roleRemark = #{roleRemark,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      createUser = #{createUser,jdbcType=VARCHAR},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      updateUser = #{updateUser,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      ordId = #{ordId,jdbcType=INTEGER},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

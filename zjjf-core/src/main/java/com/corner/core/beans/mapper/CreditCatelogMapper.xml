@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.CreditCatelogMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.CreditCatelog" >
+    <id column="id" property="id" jdbcType="SMALLINT" />
+    <result column="ordId" property="ordId" jdbcType="SMALLINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, ordId, name, img, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Short" >
+    select 
+    <include refid="Base_Column_List" />
+    from CreditCatelog
+    where id = #{id,jdbcType=SMALLINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Short" >
+    delete from CreditCatelog
+    where id = #{id,jdbcType=SMALLINT}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.CreditCatelog" >
+    insert into CreditCatelog (id, ordId, name, 
+      img, status, isDelete)
+    values (#{id,jdbcType=SMALLINT}, #{ordId,jdbcType=SMALLINT}, #{name,jdbcType=VARCHAR}, 
+      #{img,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.CreditCatelog" >
+    insert into CreditCatelog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="ordId != null" >
+        ordId,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="img != null" >
+        img,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=SMALLINT},
+      </if>
+      <if test="ordId != null" >
+        #{ordId,jdbcType=SMALLINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.CreditCatelog" >
+    update CreditCatelog
+    <set >
+      <if test="ordId != null" >
+        ordId = #{ordId,jdbcType=SMALLINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=SMALLINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.CreditCatelog" >
+    update CreditCatelog
+    set ordId = #{ordId,jdbcType=SMALLINT},
+      name = #{name,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=SMALLINT}
+  </update>
+</mapper>

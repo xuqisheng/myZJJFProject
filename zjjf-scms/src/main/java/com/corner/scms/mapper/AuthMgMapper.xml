@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.AuthMgMapper" >
+
+	<!-- 获取会计列表条件 -->
+	<sql id="getPageList_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id != null">
+				id = #{id}
+			</if>
+			<if test="isDelete != null">
+				AND isDelete = #{isDelete}
+			</if>
+			<if test="status != null">
+				AND status = #{status}
+			</if>
+			<if test="authname != null">
+				AND authname like CONCAT('%','${authname}','%')
+			</if>
+			    AND position=4
+		</trim>
+	</sql>
+	
+	<!-- 获取列表 -->
+ 	<select id="getPageList" parameterType="com.corner.scms.beans.ro.auth.AuthCondition"  resultType="Auth">
+		select * from Auth
+		<include refid="getPageList_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取列表 总记录数-->
+ 	<select id="getPageListSize" parameterType="com.corner.scms.beans.ro.auth.AuthCondition"  resultType="int">
+		select count(1) from Auth
+		<include refid="getPageList_condition" />
+	</select>
+	
+	<!-- 获取所有财务系统的菜单 -->
+ 	<select id="getAllAccountAuth" resultType="Auth">
+ 		select * from Auth where position=4  AND isDelete=0 AND `status`=1
+	</select>
+	
+	<resultMap id="BaseResultMap" type="com.corner.scms.beans.vo.sc.ScmsAuthVo" extends="com.corner.core.dao.AuthMapper.BaseResultMap">
+		<collection property="auths" ofType="com.corner.core.beans.Auth" >
+		    <id column="id2" property="id" jdbcType="VARCHAR" />
+		    <result column="authString2" property="authString" jdbcType="VARCHAR" />
+		    <result column="authName2" property="authName" jdbcType="VARCHAR" />
+		    <result column="icon2" property="icon" jdbcType="VARCHAR" />
+		    <result column="action2" property="action" jdbcType="VARCHAR" />
+		    <result column="ordId2" property="ordId" jdbcType="INTEGER" />
+		    <result column="upId2" property="upId" jdbcType="VARCHAR" />
+		    <result column="roleRemark2" property="roleRemark" jdbcType="VARCHAR" />
+		    <result column="createTime2" property="createTime" jdbcType="TIMESTAMP" />
+		    <result column="createUser2" property="createUser" jdbcType="VARCHAR" />
+		    <result column="appId2" property="appId" jdbcType="TINYINT" />
+		    <result column="position2" property="position" jdbcType="TINYINT" />
+		    <result column="type2" property="type" jdbcType="TINYINT" />
+		    <result column="level2" property="level" jdbcType="TINYINT" />
+		    <result column="status2" property="status" jdbcType="TINYINT" />
+		    <result column="isDelete2" property="isDelete" jdbcType="BIT" />
+	    </collection>
+	</resultMap>
+	<!-- 通过用户角色查出用户的菜单权限 -->
+	<select id="getAuthByAppIdOrRoleId" parameterType="java.util.Map" resultMap="BaseResultMap">
+		SELECT a.id id, a.authName authName, a.type as type ,a.upId upId, a.action , a.icon, a.ordId ,a.`level` as level,b.`level` as level2,b.id as id2 ,b.authName as authName2,b.upId as upId2 , b.type as type2,b.action action2, b.icon icon2,b.ordId ordId2 from 
+			(SELECT a.id id, a.authName authName, a.type as type ,a.upId upId, a.action ,a.`level` as level, a.icon, a.ordId,b.roleId,a.appId from Auth a 
+				LEFT JOIN RoleAuthMap b on a.id = b.authId where a.`level` = 1 and a.isDelete = 0 and `status` =1 AND b.roleId = #{roleId}
+			) a LEFT JOIN 
+			(SELECT a.id id, a.authName authName, a.type as type ,a.upId upId, a.action  ,a.`level` as level, a.icon, a.ordId,b.roleId,a.appId from Auth a 
+				LEFT JOIN RoleAuthMap b on a.id = b.authId where a.`level` = 2 and a.isDelete = 0 and `status` =1 AND b.roleId = #{roleId}
+			) b on a.id = b.upId
+			WHERE 1=1
+			<if test="appId != null and appId != ''"> and (a.appId =  #{appId} or b.appId = #{appId})</if>
+		ORDER BY a.ordId ,a.id, b.ordId asc
+	</select>
+</mapper>

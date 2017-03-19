@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ERPManagerItemMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ERPManagerItem" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="itemCode" property="itemCode" jdbcType="VARCHAR" />
+    <result column="serialNum" property="serialNum" jdbcType="INTEGER" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="managerId" property="managerId" jdbcType="VARCHAR" />
+    <result column="areaPrice" property="areaPrice" jdbcType="DECIMAL" />
+    <result column="taxRate" property="taxRate" jdbcType="DECIMAL" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, itemCode, serialNum, itemBaseId, supplierId, managerId, areaPrice, taxRate, addTime, 
+    updateTime, status, isDelete
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.corner.core.beans.ERPManagerItemExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ERPManagerItem
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ERPManagerItem
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ERPManagerItem
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.corner.core.beans.ERPManagerItemExample" >
+    delete from ERPManagerItem
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ERPManagerItem" >
+    insert into ERPManagerItem (id, itemCode, serialNum, 
+      itemBaseId, supplierId, managerId, 
+      areaPrice, taxRate, addTime, 
+      updateTime, status, isDelete
+      )
+    values (#{id,jdbcType=VARCHAR}, #{itemCode,jdbcType=VARCHAR}, #{serialNum,jdbcType=INTEGER}, 
+      #{itemBaseId,jdbcType=INTEGER}, #{supplierId,jdbcType=VARCHAR}, #{managerId,jdbcType=VARCHAR}, 
+      #{areaPrice,jdbcType=DECIMAL}, #{taxRate,jdbcType=DECIMAL}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ERPManagerItem" >
+    insert into ERPManagerItem
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="itemCode != null" >
+        itemCode,
+      </if>
+      <if test="serialNum != null" >
+        serialNum,
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId,
+      </if>
+      <if test="supplierId != null" >
+        supplierId,
+      </if>
+      <if test="managerId != null" >
+        managerId,
+      </if>
+      <if test="areaPrice != null" >
+        areaPrice,
+      </if>
+      <if test="taxRate != null" >
+        taxRate,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCode != null" >
+        #{itemCode,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNum != null" >
+        #{serialNum,jdbcType=INTEGER},
+      </if>
+      <if test="itemBaseId != null" >
+        #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="managerId != null" >
+        #{managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="areaPrice != null" >
+        #{areaPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="taxRate != null" >
+        #{taxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.corner.core.beans.ERPManagerItemExample" resultType="java.lang.Integer" >
+    select count(*) from ERPManagerItem
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ERPManagerItem
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemCode != null" >
+        itemCode = #{record.itemCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serialNum != null" >
+        serialNum = #{record.serialNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.itemBaseId != null" >
+        itemBaseId = #{record.itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.supplierId != null" >
+        supplierId = #{record.supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.managerId != null" >
+        managerId = #{record.managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.areaPrice != null" >
+        areaPrice = #{record.areaPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.taxRate != null" >
+        taxRate = #{record.taxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.addTime != null" >
+        addTime = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.isDelete != null" >
+        isDelete = #{record.isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ERPManagerItem
+    set id = #{record.id,jdbcType=VARCHAR},
+      itemCode = #{record.itemCode,jdbcType=VARCHAR},
+      serialNum = #{record.serialNum,jdbcType=INTEGER},
+      itemBaseId = #{record.itemBaseId,jdbcType=INTEGER},
+      supplierId = #{record.supplierId,jdbcType=VARCHAR},
+      managerId = #{record.managerId,jdbcType=VARCHAR},
+      areaPrice = #{record.areaPrice,jdbcType=DECIMAL},
+      taxRate = #{record.taxRate,jdbcType=DECIMAL},
+      addTime = #{record.addTime,jdbcType=TIMESTAMP},
+      updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=TINYINT},
+      isDelete = #{record.isDelete,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ERPManagerItem" >
+    update ERPManagerItem
+    <set >
+      <if test="itemCode != null" >
+        itemCode = #{itemCode,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNum != null" >
+        serialNum = #{serialNum,jdbcType=INTEGER},
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierId != null" >
+        supplierId = #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="managerId != null" >
+        managerId = #{managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="areaPrice != null" >
+        areaPrice = #{areaPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="taxRate != null" >
+        taxRate = #{taxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ERPManagerItem" >
+    update ERPManagerItem
+    set itemCode = #{itemCode,jdbcType=VARCHAR},
+      serialNum = #{serialNum,jdbcType=INTEGER},
+      itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      supplierId = #{supplierId,jdbcType=VARCHAR},
+      managerId = #{managerId,jdbcType=VARCHAR},
+      areaPrice = #{areaPrice,jdbcType=DECIMAL},
+      taxRate = #{taxRate,jdbcType=DECIMAL},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

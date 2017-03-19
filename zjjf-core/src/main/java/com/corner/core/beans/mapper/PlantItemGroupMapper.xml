@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.PlantItemGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.PlantItemGroup" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="groupId" property="groupId" jdbcType="VARCHAR" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="isDelete" property="isDelete" jdbcType="TINYINT" />
+    <result column="delTime" property="delTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, groupId, itemBaseId, price, num, level, addTime, isDelete, delTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from PlantItemGroup
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from PlantItemGroup
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.PlantItemGroup" >
+    insert into PlantItemGroup (id, groupId, itemBaseId, 
+      price, num, level, 
+      addTime, isDelete, delTime
+      )
+    values (#{id,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{itemBaseId,jdbcType=INTEGER}, 
+      #{price,jdbcType=DECIMAL}, #{num,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=TINYINT}, #{delTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.PlantItemGroup" >
+    insert into PlantItemGroup
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="groupId != null" >
+        groupId,
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="delTime != null" >
+        delTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemBaseId != null" >
+        #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="delTime != null" >
+        #{delTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.PlantItemGroup" >
+    update PlantItemGroup
+    <set >
+      <if test="groupId != null" >
+        groupId = #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="delTime != null" >
+        delTime = #{delTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.PlantItemGroup" >
+    update PlantItemGroup
+    set groupId = #{groupId,jdbcType=VARCHAR},
+      itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
+      num = #{num,jdbcType=INTEGER},
+      level = #{level,jdbcType=INTEGER},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      isDelete = #{isDelete,jdbcType=TINYINT},
+      delTime = #{delTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

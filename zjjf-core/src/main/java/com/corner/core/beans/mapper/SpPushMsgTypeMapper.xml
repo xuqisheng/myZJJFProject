@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SpPushMsgTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpPushMsgType" >
+    <id column="id" property="id" jdbcType="TINYINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="xtype" property="xtype" jdbcType="INTEGER" />
+    <result column="iconPic" property="iconPic" jdbcType="VARCHAR" />
+    <result column="largeIcon" property="largeIcon" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, xtype, iconPic, largeIcon
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Byte" >
+    select 
+    <include refid="Base_Column_List" />
+    from SpPushMsgType
+    where id = #{id,jdbcType=TINYINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Byte" >
+    delete from SpPushMsgType
+    where id = #{id,jdbcType=TINYINT}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SpPushMsgType" >
+    insert into SpPushMsgType (id, name, xtype, 
+      iconPic, largeIcon)
+    values (#{id,jdbcType=TINYINT}, #{name,jdbcType=VARCHAR}, #{xtype,jdbcType=INTEGER}, 
+      #{iconPic,jdbcType=VARCHAR}, #{largeIcon,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SpPushMsgType" >
+    insert into SpPushMsgType
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="xtype != null" >
+        xtype,
+      </if>
+      <if test="iconPic != null" >
+        iconPic,
+      </if>
+      <if test="largeIcon != null" >
+        largeIcon,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=TINYINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="xtype != null" >
+        #{xtype,jdbcType=INTEGER},
+      </if>
+      <if test="iconPic != null" >
+        #{iconPic,jdbcType=VARCHAR},
+      </if>
+      <if test="largeIcon != null" >
+        #{largeIcon,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SpPushMsgType" >
+    update SpPushMsgType
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="xtype != null" >
+        xtype = #{xtype,jdbcType=INTEGER},
+      </if>
+      <if test="iconPic != null" >
+        iconPic = #{iconPic,jdbcType=VARCHAR},
+      </if>
+      <if test="largeIcon != null" >
+        largeIcon = #{largeIcon,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=TINYINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SpPushMsgType" >
+    update SpPushMsgType
+    set name = #{name,jdbcType=VARCHAR},
+      xtype = #{xtype,jdbcType=INTEGER},
+      iconPic = #{iconPic,jdbcType=VARCHAR},
+      largeIcon = #{largeIcon,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=TINYINT}
+  </update>
+</mapper>

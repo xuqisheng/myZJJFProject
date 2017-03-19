@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.PlantRebateMapMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.PlantRebateMapKey" >
+    <id column="rebateId" property="rebateId" jdbcType="INTEGER" />
+    <id column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.corner.core.beans.PlantRebateMapKey" >
+    delete from PlantRebateMap
+    where rebateId = #{rebateId,jdbcType=INTEGER}
+      and spGroupId = #{spGroupId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.PlantRebateMapKey" >
+    insert into PlantRebateMap (rebateId, spGroupId)
+    values (#{rebateId,jdbcType=INTEGER}, #{spGroupId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.PlantRebateMapKey" >
+    insert into PlantRebateMap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rebateId != null" >
+        rebateId,
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rebateId != null" >
+        #{rebateId,jdbcType=INTEGER},
+      </if>
+      <if test="spGroupId != null" >
+        #{spGroupId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

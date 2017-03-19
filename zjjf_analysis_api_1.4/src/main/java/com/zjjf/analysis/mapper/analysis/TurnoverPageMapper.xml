@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.TurnoverPageMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.base.TurnoverPage" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="VARCHAR" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="todayTurnover" property="todayTurnover" jdbcType="DECIMAL" />
+    <result column="yesTodayTurnover" property="yesTodayTurnover" jdbcType="DECIMAL" />
+    <result column="dailyIncrease" property="dailyIncrease" jdbcType="DECIMAL" />
+    <result column="thisMonthTurnover" property="thisMonthTurnover" jdbcType="DECIMAL" />
+    <result column="lastMonthTurnover" property="lastMonthTurnover" jdbcType="DECIMAL" />
+    <result column="monthIncrease" property="monthIncrease" jdbcType="DECIMAL" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, supplierId, addTime, cityId, areaId, spGroupId, todayTurnover, yesTodayTurnover, 
+    dailyIncrease, thisMonthTurnover, lastMonthTurnover, monthIncrease, updateTime, createTime
+  </sql>
+  
+  <select id="getTurnoverData" resultType="com.zjjf.analysis.beans.analysis.base.TurnoverPage" parameterType="java.util.Map" >
+    select 
+    	t1.supplierId,
+    	t1.dayTime,
+    	t1.cityId,
+    	t1.areaId,
+    	t1.spGroupId,
+    	IFNULL(t1.turnover, 0)  AS todayTurnover,
+    	t1.supplierName,
+    	t1.cityName,
+    	t1.areaName,
+    	t1.spGroupName
+    from supplier_daily t1
+   	 <where>
+   	      <if test="areaIdList != null and areaIdList != '' " >
+  		  	  and t1.areaId in 
+	          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="cityIdList != null and cityIdList != '' " >
+  		  	  and t1.cityId in 
+	          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+   	 	  <if test="dayTime != null and dayTime != '' " >
+	        and t1.dayTime=#{dayTime} 
+	      </if>
+	      <if test="cityId != null and cityId != '' " >
+	        and t1.cityId = #{cityId}
+	      </if>
+	      <if test="areaId != null and areaId != ''  " >
+	        and t1.areaId = #{areaId}
+	      </if>
+	      <if test="spGroupId != null and spGroupId != '' " >
+	        and t1.spGroupId = #{spGroupId}
+	      </if>
+	      <if test="supplierName != null and supplierName != '' " >
+	        and t1.`supplierName` like "%"#{supplierName}"%"
+	      </if>
+   	 </where>
+	  order by t1.cityId, t1.areaId, t1.id limit #{offset}, #{limit} 
+  </select>
+  
+  <select id="getTurnoverDataCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+    select 
+    	count(*)
+    from supplier_daily t1
+   	 <where>
+   	      <if test="areaIdList != null and areaIdList != '' " >
+  		  	  and t1.areaId in 
+	          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="cityIdList != null and cityIdList != '' " >
+  		  	  and t1.cityId in 
+	          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+   	 	  <if test="dayTime != null and dayTime != '' " >
+	        and t1.dayTime=#{dayTime} 
+	      </if>
+	      <if test="cityId != null and cityId != '' " >
+	        and t1.cityId = #{cityId}
+	      </if>
+	      <if test="areaId != null and areaId != ''  " >
+	        and t1.areaId = #{areaId}
+	      </if>
+	      <if test="spGroupId != null and spGroupId != '' " >
+	        and t1.spGroupId = #{spGroupId}
+	      </if>
+	      <if test="supplierName != null and supplierName != '' " >
+	        and t1.`supplierName` like "%"#{supplierName}"%"
+	      </if>
+   	 </where>
+  </select>
+  
+  <select id="getTurnoverDataExcel" resultType="com.zjjf.analysis.beans.analysis.base.TurnoverPage" parameterType="java.util.Map" >
+     select 
+    	t1.supplierId,
+    	t1.dayTime,
+    	t1.cityId,
+    	t1.areaId,
+    	t1.spGroupId,
+    	IFNULL(t1.turnover, 0)  AS todayTurnover,
+    	t1.supplierName,
+    	t1.cityName,
+    	t1.areaName,
+    	t1.spGroupName
+     from supplier_daily t1
+   	  <where>
+   	      <if test="areaIdList != null and areaIdList != '' " >
+  		  	  and t1.areaId in 
+	          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="cityIdList != null and cityIdList != '' " >
+  		  	  and t1.cityId in 
+	          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+   	 	  <if test="dayTime != null and dayTime != '' " >
+	        and t1.dayTime=#{dayTime} 
+	      </if>
+	      <if test="cityId != null and cityId != '' " >
+	        and t1.cityId = #{cityId}
+	      </if>
+	      <if test="areaId != null and areaId != ''  " >
+	        and t1.areaId = #{areaId}
+	      </if>
+	      <if test="spGroupId != null and spGroupId != '' " >
+	        and t1.spGroupId = #{spGroupId}
+	      </if>
+	      <if test="supplierName != null and supplierName != '' " >
+	        and t1.`supplierName` like "%"#{supplierName}"%"
+	      </if>
+   	 </where>
+	  order by t1.cityId, t1.areaId, t1.id limit 10000
+  </select>
+  
+  <select id="getTurnoverBySpIdSpGroupId" resultType="com.zjjf.analysis.beans.vo.orders.sporder.SpOrderTurnoverVo" parameterType="java.util.Map" >
+    select IFNULL(sum(t1.turnover), 0)  AS turnover from supplier_daily t1
+    <where>
+      <if test="supplierId != null and supplierId != '' " >
+        and t1.supplierId =#{supplierId} 
+      </if>
+	  <if test="spGroupId != null and spGroupId != '' " >
+        and t1.spGroupId =#{spGroupId} 
+      </if>
+      <if test="dayTime != null and dayTime != '' " >
+        and t1.dayTime =#{dayTime} 
+      </if>
+      <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+        and t1.dayTime &gt;=#{dayTimeBegin} 
+      </if>
+	  <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+        and t1.dayTime &lt;=#{dayTimeEnd} 
+      </if>
+    </where>
+  </select>
+  
+  <select id="getTurnoverByTime" resultType="com.zjjf.analysis.beans.vo.orders.sporder.SpOrderTurnoverVo" parameterType="java.util.Map" >
+    select 
+    	IFNULL(sum(t1.turnover), 0)  AS turnover 
+    from supplier_daily t1
+   	 <where>
+   	      <if test="areaIdList != null and areaIdList != '' " >
+  		  	  and t1.areaId in 
+	          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="cityIdList != null and cityIdList != '' " >
+  		  	  and t1.cityId in 
+	          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+   	 	  <if test="dayTime != null and dayTime != '' " >
+	        and t1.dayTime =#{dayTime} 
+	      </if>
+	      <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+	        and t1.dayTime &gt;=#{dayTimeBegin} 
+	      </if>
+		  <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+	        and t1.dayTime &lt;=#{dayTimeEnd} 
+	      </if>
+	      <if test="cityId != null and cityId != '' " >
+	        and t1.cityId = #{cityId}
+	      </if>
+	      <if test="areaId != null and areaId != ''  " >
+	        and t1.areaId = #{areaId}
+	      </if>
+	      <if test="spGroupId != null and spGroupId != '' " >
+	        and t1.spGroupId = #{spGroupId}
+	      </if>
+	      <if test="supplierName != null and supplierName != '' " >
+	        and t1.`supplierName` like "%"#{supplierName}"%"
+	      </if>
+   	 </where>
+  </select>
+</mapper>

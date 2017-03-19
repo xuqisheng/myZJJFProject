@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.ScmsOrderInfoMgMapper">
+
+	<!-- 获取会计列表条件 -->
+	<sql id="getPageList_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			isDelete = '0' 
+			<if test="orderId != null and orderId != ''">
+				and (orderId like CONCAT('%',#{orderId},'%' ) or storeName like CONCAT('%',#{orderId},'%' ) or mobile like CONCAT('%',#{orderId},'%' ))
+			</if>
+			<if test="jsType != null and jsType != ''">
+				and jsType = #{jsType}
+			</if>
+			<if test="supportStatus != null and supportStatus != ''">
+				and supportStatus = #{supportStatus}
+			</if>
+			<if test="status != null and status != ''">
+				and status = #{status}
+			</if>
+			<if test="supplierId != null and supplierId != ''">
+				and supplierId = #{supplierId}
+			</if>
+			<if test="getOrderTimeStart != null and getOrderTimeStart != '' and getOrderTimeEnd != null and getOrderTimeEnd != ''">
+				and getOrderTime BETWEEN DATE_FORMAT(#{getOrderTimeStart}, '%Y-%m-%d') AND DATE_FORMAT(#{getOrderTimeEnd}, '%Y-%m-%d')
+			</if>
+		</trim>
+	</sql>
+	<!-- 获取列表 -->
+	<select id="getPageList" parameterType="com.corner.scms.beans.ro.ScmsOrderInfoMgCondition"
+		resultType="ScmsOrderInfo">
+		select *  from ScmsOrderInfo
+		<include refid="getPageList_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取列表 总记录数 -->
+	<select id="getPageListSize" parameterType="com.corner.scms.beans.ro.ScmsOrderInfoMgCondition"
+		resultType="int">
+		select count(1) from ScmsOrderInfo
+		<include refid="getPageList_condition" />
+	</select>
+	
+	<select id="getScmsOrderTodayAll"  parameterType="java.lang.String" resultType="java.util.Map">
+		select count(1) as total ,sum(orderPrice) as totalPrice from ScmsOrderInfo
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			AND isDelete = 0 AND status not in ('6')
+			AND DATE_FORMAT(ADDTIME, '%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d') and supplierId=#{spId}
+		</trim>
+	</select>
+	<select id="getOrderTodayAll"  parameterType="java.lang.String" resultType="java.util.Map">
+		select count(1) as total ,sum(orderPrice) as totalPrice from SpOrderInfo
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			status != '1' and status != '6' and isDelete = 0
+			AND DATE_FORMAT(ADDTIME, '%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d') and supplierId=#{spId}
+		</trim>
+	</select>
+	<!-- 获取单条信息通过OrderId -->
+	<select id="selectByOrderId" resultType="com.corner.scms.beans.ro.ScmsOrderInfoMgCondition">
+		select * from ScmsOrderInfo
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+				orderId = #{orderId}
+		</trim>
+	</select>
+	
+	<!-- 获取单条信息通过OrderId -->
+	<select id="getDetailByOrderId" resultType="ScmsOrderDetail">
+		select * from ScmsOrderDetail
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+				orderId = #{orderId}
+		</trim>
+	</select>
+</mapper>

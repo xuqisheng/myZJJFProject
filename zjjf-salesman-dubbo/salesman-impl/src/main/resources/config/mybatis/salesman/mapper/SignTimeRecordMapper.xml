@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.rpc.salesman.dao.SignTimeRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.rpc.salesman.model.SignTimeRecord" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="outWorkStart" property="outWorkStart" jdbcType="TIMESTAMP" />
+    <result column="outWorkEnd" property="outWorkEnd" jdbcType="TIMESTAMP" />
+    <result column="endTime" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="userId" property="userId" jdbcType="VARCHAR" />
+    <result column="week" property="week" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, startTime, outWorkStart, outWorkEnd, endTime, userId, week
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_sign_time_record_t
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tbl_sign_time_record_t
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.rpc.salesman.model.SignTimeRecord" >
+    insert into tbl_sign_time_record_t (id, startTime, outWorkStart, 
+      outWorkEnd, endTime, userId, 
+      week)
+    values (#{id,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{outWorkStart,jdbcType=TIMESTAMP}, 
+      #{outWorkEnd,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=VARCHAR}, 
+      #{week,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.rpc.salesman.model.SignTimeRecord" >
+    insert into tbl_sign_time_record_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="startTime != null" >
+        startTime,
+      </if>
+      <if test="outWorkStart != null" >
+        outWorkStart,
+      </if>
+      <if test="outWorkEnd != null" >
+        outWorkEnd,
+      </if>
+      <if test="endTime != null" >
+        endTime,
+      </if>
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="week != null" >
+        week,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outWorkStart != null" >
+        #{outWorkStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outWorkEnd != null" >
+        #{outWorkEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="week != null" >
+        #{week,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.rpc.salesman.model.SignTimeRecord" >
+    update tbl_sign_time_record_t
+    <set >
+      <if test="startTime != null" >
+        startTime = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outWorkStart != null" >
+        outWorkStart = #{outWorkStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outWorkEnd != null" >
+        outWorkEnd = #{outWorkEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        endTime = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null" >
+        userId = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="week != null" >
+        week = #{week,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.rpc.salesman.model.SignTimeRecord" >
+    update tbl_sign_time_record_t
+    set startTime = #{startTime,jdbcType=TIMESTAMP},
+      outWorkStart = #{outWorkStart,jdbcType=TIMESTAMP},
+      outWorkEnd = #{outWorkEnd,jdbcType=TIMESTAMP},
+      endTime = #{endTime,jdbcType=TIMESTAMP},
+      userId = #{userId,jdbcType=VARCHAR},
+      week = #{week,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

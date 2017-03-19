@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpItemCatelogMgMapper">
+	<!-- 根据pid分类获取所有分类 -->
+	<select id="getAllItemCateByPid" parameterType="java.util.Map" resultType="com.corner.core.beans.ItemCatelog">
+		SELECT * FROM ItemCatelog 
+		WHERE isDelete = 0 
+		<if test="pid != null">
+			and pid = #{pid} 
+		</if>
+	</select>
+	
+	<select id="getSecondCateList" resultType="com.corner.core.beans.ItemCatelog">
+	   SELECT id,name FROM ItemCatelog WHERE spid !=0 AND spid IS NOT NULL
+	</select>
+</mapper>

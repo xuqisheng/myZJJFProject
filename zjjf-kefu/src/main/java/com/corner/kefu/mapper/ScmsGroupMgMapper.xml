@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.ScmsGroupMgMapper">
+	<!-- 获取经销区域条件 -->
+	<sql id="getPageList_condition">
+		ScmsGroup s1 left join ScmsGroup s2 on (s1.upId=s2.id) where 1=1 and
+		s1.isDelete=0
+		<if test="upId != null">
+			and s1.upId =#{upId}
+		</if>
+		<if test="upId == null">
+			and s1.upId !=0
+		</if>
+	</sql>
+	<select id="findOrders" parameterType="java.lang.String" resultType="java.lang.Integer">
+	 	select count(1) from ScOrderInfo where warehouseId=#{warehouseId} and isDelete=0 and status in (1,2,3)
+	</select>
+	
+	<update id="deletecategory">
+		update ScmsGroup set isDelete=1 where id=#{id}
+	</update>
+	
+	<update id="updateAreaByUid">
+		update ScmsGroup set upId=-1 where upId=#{id}
+	</update>
+	
+	<select id="findBywarehouseId" parameterType="java.lang.String"
+		resultType="com.corner.core.beans.ScmsGroup">
+			select * from ScmsGroup where warehouseId=#{warehouseId} and isDelete=0
+	</select>
+
+	<!-- 获取经销区域 -->
+	<select id="getPageList"
+		parameterType="com.corner.kefu.beans.ro.scms.ScmsDistributionAreaRo"
+		resultType="com.corner.kefu.beans.vo.ScmsGroupVo">
+		select s1.*,s2.name as areaName from
+		<include refid="getPageList_condition" />
+		order by id desc
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取经销区域总记录数 -->
+	<select id="getPageListSize"
+		parameterType="com.corner.kefu.beans.ro.scms.ScmsDistributionAreaRo"
+		resultType="int">
+		select count(1) from
+		<include refid="getPageList_condition" />
+	</select>
+	
+	<select id="findScmsGroupByUpId" parameterType="java.lang.String"
+		resultType="com.corner.core.beans.ScmsGroup">
+		select * from ScmsGroup where upId = #{upId} and isDelete=0 and status = 1
+	</select>
+	<select id="findScmsGroupBy0" resultType="com.corner.core.beans.ScmsGroup">
+		select * from ScmsGroup where upId = 0 and isDelete=0 and status = 1 and id in (SELECT upId from ScmsGroup where isDelete=0 and status = 1 and upId != 0)
+	</select>
+	
+	<select id="findItemByAreaid" parameterType="java.lang.Integer" resultType="com.corner.core.beans.ScmsItem">
+		select ScmsItem.* from ItemBase INNER JOIN ScmsItem on ScmsItem.itemBaseId=ItemBase.id 
+		WHERE 1=1  and ItemBase.isDelete=0 and ScmsItem.isDelete=0  and 
+		 ScmsItem.groupId =#{id}
+	</select>
+	
+	<select id="findSupplierByAreaId" parameterType="java.lang.Integer" resultType="com.corner.core.beans.Supplier">
+	select * from Supplier where isDelete=0 and bsCircleId=#{id}
+	</select>
+	
+	<select id="getScmsGroupname" parameterType="java.lang.String" resultType="com.corner.core.beans.ScmsGroup">
+			select * from ScmsGroup where upId!=0 
+				<if test="name != null">
+					and name like CONCAT('%','${name}','%') 
+				</if>
+	</select>
+	<!-- 获取经销商信息 获取经销区域信息-->
+ 	<select id="findScmsGroupByManagerId" parameterType="java.lang.String" resultType="com.corner.core.beans.ScmsGroup">
+		select * from ScmsGroup sg join ScmsGroupMap sgm on sg.id = sgm.groupId where sgm.managerId =#{managerId} and sg.isDelete=0 and sg.status = 1
+	</select>
+	
+	<!-- 获取联合采购汇总信息条件add by   孟星魂  2016年1月25日11:30:13-->
+	<sql id="selectGorupItemListPage_condition">
+		where sg.upId != 0 and sg.isDelete = 0
+		<if test="name != null and name != ''">
+			and sg.name like CONCAT('%',#{name},'%') 
+		</if>
+		GROUP BY sg.id
+	</sql>
+
+	<!-- 获取联合采购汇总信息 add by   孟星魂  2016年1月25日11:30:13-->
+	<select id="selectGorupItemListPage" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT a.* FROM (
+			SELECT sg.id,sg.`name`,sg.`code`,a.totItem,b.totSupplier from ScmsGroup sg 
+			LEFT JOIN (SELECT ScmsItem.groupId, count(1) AS totItem FROM ( SELECT groupId, COUNT(1) AS totItem FROM ScmsItem WHERE itemBaseId NOT IN ( SELECT id FROM ItemBase WHERE isDelete = 1 ) AND isDelete = 0 GROUP BY groupId, itemBaseId, `year`, `month` ) ScmsItem GROUP BY ScmsItem.groupId) a ON a.groupId = sg.id 
+			LEFT JOIN (SELECT bsCircleId, COUNT(1) AS totSupplier FROM Supplier WHERE isDelete = 0 and bsCircleId IS NOT NULL and bsCircleId !=0 GROUP BY bsCircleId) b ON bsCircleId = sg.id 
+			<include refid="selectGorupItemListPage_condition" />
+			<if test="sortName != null and sortName != ''">
+				<if test="sortOrder != null and sortOrder != ''">
+					<include refid="BasePublicMapper.orderSql" />
+				</if>
+			</if>
+		) as a
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+	<!--获取联合采购汇总信息总记录数add by   孟星魂  2016年1月25日11:30:13 -->
+	<select id="selectGorupItemListPageSize" parameterType="java.util.Map" resultType="int">
+		SELECT count(1) FROM (
+		select count(1) FROM ScmsGroup sg 
+		<include refid="selectGorupItemListPage_condition" />
+		) as a
+	</select>
+</mapper>

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.rpc.salesman.dao.LinePlansMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.rpc.salesman.model.LinePlans" >
+    <id column="lineId" property="lineId" jdbcType="VARCHAR" />
+    <result column="lineName" property="lineName" jdbcType="VARCHAR" />
+    <result column="deptId" property="deptId" jdbcType="VARCHAR" />
+    <result column="salesmanId" property="salesmanId" jdbcType="VARCHAR" />
+    <result column="shopTotal" property="shopTotal" jdbcType="INTEGER" />
+    <result column="visitTotal" property="visitTotal" jdbcType="INTEGER" />
+    <result column="week" property="week" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    lineId, lineName, deptId, salesmanId, shopTotal, visitTotal, week
+  </sql>
+  
+  <select id="getMyVisitLineList" resultType="java.util.HashMap"  parameterType="java.lang.String">
+  		select lineId,lineName from tbl_line_plans_t where salesmanId=#{salesmanId} ORDER BY lineName ASC
+  </select>
+  
+  <select id="getMyVisitShopList" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
+	SELECT
+		t.shopNo,
+		t.shopName
+	FROM
+		tbl_shop_t t
+	INNER JOIN tbl_line_shop_mapper_t ls ON t.shopNo = ls.shopNo
+	where ls.lineId = #{lineId} and t.salesmanId = #{salesmanId}
+  </select>
+  
+  <select id="getShopBySalesmanIdList" resultType="java.util.HashMap"  parameterType="java.lang.String">
+	SELECT
+		t.shopNo,
+		t.shopName
+	FROM
+		tbl_shop_t t
+	where t.salesmanId=#{salesmanId}
+  </select>
+
+  <select id="getVisitLineByUserId" resultType="java.util.HashMap"  parameterType="java.lang.String">
+	  select 'ALL' AS lineId,'暂无安排' AS lineName,0 as shopTotal 
+		UNION ALL
+  	  select lineId,lineName,IFNULL(shopTotal,0) as shopTotal from tbl_line_plans_t where salesmanId=#{salesmanId} ORDER BY lineName ASC
+  </select>
+  
+  <select id="getMyVisitPlansList" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
+	SELECT
+		CC.`value` AS `week`, CC.lineId, CC.lineName, CC.shopTotal,CC.sort
+	FROM
+		(SELECT * FROM (
+			SELECT t.`value`,t.sort FROM sys_dict t WHERE t.type = 'aj_visit_plans_type'
+		) AA LEFT JOIN (
+				SELECT
+					lp.lineId, lp.lineName, lp.shopTotal, wp.`week`
+				FROM
+					tbl_line_plans_t lp  
+					INNER JOIN tbl_week_plans_mapper_t wp 
+					on lp.lineId=wp.lineId and lp.salesmanId=wp.salesmanId
+				WHERE 1=1 
+				<if test="salesmanId != null and salesmanId != ''">
+					and lp.salesmanId = #{salesmanId}
+				</if>
+				<!-- 如果用户ID为空则,默认给定空 -->
+				<if test="salesmanId == null or salesmanId == ''">
+					and lp.salesmanId = '0'
+				</if>
+			) BB ON AA.`value` = BB.`week`
+		) CC WHERE 1=1 
+		<if test="week !=null and week !=''">
+			AND CC.`week`= #{week}
+		</if>
+		ORDER BY CC.sort ASC
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_line_plans_t
+    where lineId = #{lineId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="queryLinePlansList" resultMap="BaseResultMap" parameterType="com.corner.rpc.salesman.model.LinePlans" >
+     SELECT 
+      <include refid="Base_Column_List" />
+     FROM tbl_line_plans_t
+    WHERE deptId = #{deptId,jdbcType=VARCHAR}
+      AND salesmanId = #{salesmanId,jdbcType=VARCHAR}
+    ORDER BY lineName ASC
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tbl_line_plans_t
+    where lineId = #{lineId,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteLinePlans" parameterType="java.util.HashMap" >
+    delete from tbl_line_plans_t  
+   	where salesmanId = #{userId} and deptId=#{deptId}
+  </delete>
+  
+  <delete id="deleteShopLineByShopNo" parameterType="java.lang.String" >
+    delete from tbl_line_shop_mapper_t  where shopNo = #{shopNo,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteShopLineMapperByShopNos" parameterType="java.util.HashMap" >
+    delete from tbl_line_shop_mapper_t where shopNo in(${shopNos})
+  </delete>
+  
+  <delete id="deleteShopLineMapperByLineId" parameterType="java.lang.String" >
+    delete from tbl_line_shop_mapper_t where lineId = #{lineId,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteShopLineByLineId" parameterType="java.util.HashMap" >
+    delete from tbl_line_shop_mapper_t
+    where lineId in(
+    	select lineId from tbl_line_plans_t t 
+   		 where t.salesmanId = #{userId} 
+   		 and t.deptId=#{deptId}
+   	  )
+  </delete>
+  
+  <insert id="insertLineShopMapper" parameterType="com.corner.rpc.salesman.model.LinePlans" >
+    insert into tbl_line_shop_mapper_t (lineId, shopNo)
+    values (#{lineId,jdbcType=VARCHAR}, #{shopNo,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insert" parameterType="com.corner.rpc.salesman.model.LinePlans" >
+    insert into tbl_line_plans_t (lineId, lineName, deptId, 
+      salesmanId, shopTotal, visitTotal, 
+      week)
+    values (#{lineId,jdbcType=VARCHAR}, #{lineName,jdbcType=VARCHAR}, #{deptId,jdbcType=VARCHAR}, 
+      #{salesmanId,jdbcType=VARCHAR}, #{shopTotal,jdbcType=INTEGER}, #{visitTotal,jdbcType=INTEGER}, 
+      #{week,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.rpc.salesman.model.LinePlans" >
+    insert into tbl_line_plans_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="lineId != null" >
+        lineId,
+      </if>
+      <if test="lineName != null" >
+        lineName,
+      </if>
+      <if test="deptId != null" >
+        deptId,
+      </if>
+      <if test="salesmanId != null" >
+        salesmanId,
+      </if>
+      <if test="shopTotal != null" >
+        shopTotal,
+      </if>
+      <if test="visitTotal != null" >
+        visitTotal,
+      </if>
+      <if test="week != null" >
+        week,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="lineId != null" >
+        #{lineId,jdbcType=VARCHAR},
+      </if>
+      <if test="lineName != null" >
+        #{lineName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null" >
+        #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="salesmanId != null" >
+        #{salesmanId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopTotal != null" >
+        #{shopTotal,jdbcType=INTEGER},
+      </if>
+      <if test="visitTotal != null" >
+        #{visitTotal,jdbcType=INTEGER},
+      </if>
+      <if test="week != null" >
+        #{week,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.rpc.salesman.model.LinePlans" >
+    update tbl_line_plans_t
+    <set >
+      <if test="lineName != null" >
+        lineName = #{lineName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null" >
+        deptId = #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="salesmanId != null" >
+        salesmanId = #{salesmanId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopTotal != null" >
+        shopTotal = #{shopTotal,jdbcType=INTEGER},
+      </if>
+      <if test="visitTotal != null" >
+        visitTotal = #{visitTotal,jdbcType=INTEGER},
+      </if>
+      <if test="week != null" >
+        week = #{week,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where lineId = #{lineId,jdbcType=VARCHAR}
+      <if test="salesmanId != null and salesmanId !=''" >
+         and salesmanId = #{salesmanId,jdbcType=VARCHAR}
+      </if>
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.rpc.salesman.model.LinePlans" >
+    update tbl_line_plans_t
+    set lineName = #{lineName,jdbcType=VARCHAR},
+      deptId = #{deptId,jdbcType=VARCHAR},
+      salesmanId = #{salesmanId,jdbcType=VARCHAR},
+      shopTotal = #{shopTotal,jdbcType=INTEGER},
+      visitTotal = #{visitTotal,jdbcType=INTEGER},
+      week = #{week,jdbcType=VARCHAR}
+    where lineId = #{lineId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateDeptIdByUserId" parameterType="java.util.HashMap" >
+    update tbl_line_plans_t set deptId = #{deptId} 
+    where salesmanId = #{userId} and deptId=#{oldDeptId}
+  </update>
+  
+  <delete id="deleteWeekPlansMapperById" parameterType="com.corner.rpc.salesman.model.LinePlans" >
+    delete from tbl_week_plans_mapper_t 
+    where salesmanId = #{salesmanId,jdbcType=VARCHAR}
+      and week = #{week,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insertWeekPlansMapper" parameterType="com.corner.rpc.salesman.model.LinePlans" >
+    insert into tbl_week_plans_mapper_t (week, lineId,salesmanId, createTime)
+    values (#{week,jdbcType=VARCHAR}, #{lineId,jdbcType=VARCHAR}, 
+      #{salesmanId,jdbcType=VARCHAR}, now())
+  </insert>
+  
+</mapper>

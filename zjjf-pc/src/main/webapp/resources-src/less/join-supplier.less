@@ -1,0 +1,184 @@
+@import "__normalize";
+@import "__base";
+@import "__comm";
+
+.btn-join {
+    width: 200px;
+    height: 60px;
+    line-height: 60px;
+    display: inline-block;
+    background: #eb4207;
+    font-size: 22px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 30px;
+    &:hover {
+        background: #ef4f08;
+    }
+}
+.btn-join-box {
+    position: relative;
+    height:100%;
+    .btn-join {
+        position: absolute;
+        bottom: 50px;
+        left: 500px;
+    }
+}
+.banner {
+    width: 100%;
+    height:320px;
+    background: url(../images/join-supplier-banner.png) no-repeat center;
+}
+main {
+    padding-bottom: 100px;
+}
+.content-advantage {
+    .g-title {
+        padding: 65px 0 25px;
+    }
+    .info {
+        dl {
+            float: left;
+            margin-bottom: 65px;
+            width: 33.33%;
+            color: #666;
+            text-align: center;
+            dt {
+                float: left;
+                width: 100%;
+                height: 130px;
+                line-height:130px;
+            }
+            dd {
+                float: left;
+                width: 100%;
+            }
+        }
+    }
+
+}
+.content-support {
+    padding: 65px 0 35px;
+    background: #f6f6f6;
+    .info {
+        margin-top: 30px;
+        .ml {
+            margin-left: 118px;
+        }
+        .mr {
+            margin-right: 118px;
+        }
+        dl {
+            float: left;
+            margin-bottom: 40px;
+            width: 600px - 118px;
+            height: 100px;
+            color: #666;
+            dt {
+                float: left;
+                margin: 0 30px;
+                width: 100px;
+                height: 100px;
+                background: url(../images/join-supplier-support.png) no-repeat;
+                &.icon1 { background-position: 0 0; }
+                &.icon2 { background-position: -101px 0; }
+                &.icon3 { background-position: 0 -101px; }
+                &.icon4 { background-position: -101px -101px; }
+                &.icon5 { background-position: 0 -202px;; }
+                &.icon6 { background-position: -101px -202px; }
+            }
+            dd {
+                float: left;
+                width: 600px - 160px - 118px;
+                line-height: 30px;
+                overflow: hidden;
+                &.title {
+                    font-size: 22px;
+                    margin-bottom: 15px;
+                }
+            }
+        }
+    }
+}
+.content-demo {
+    .g-title {
+        padding: 65px 0 25px;
+    }
+    .nav {
+        float: left;
+        width: 530px;
+        padding-bottom: 60px;
+        .nav-item {
+            margin-top: 24px;
+            height: 60px;
+            line-height: 60px;
+            color: #666;
+            &.active {
+                color: #239ae9;
+                cursor: pointer;
+                .icon {
+                    &.icon1 { background-position: -61px 0; }
+                    &.icon2 { background-position: -61px -61px; }
+                    &.icon3 { background-position: -61px -122px; }
+                    &.icon4 { background-position: -61px -183px; }
+                }
+            }
+        }
+        .icon {
+            margin-right: 8px;
+            width: 60px;
+            height: 60px;
+            display: inline-block;
+            vertical-align: middle;
+            background: url(../images/join-supplier-demo-icon.png) no-repeat;
+            &.icon1 { background-position: 0 0; }
+            &.icon2 { background-position: 0 -61px; }
+            &.icon3 { background-position: 0 -122px; }
+            &.icon4 { background-position: 0 -183px; }
+        }
+    }
+    .show {
+        float: left;
+        width: 1200px - 530px;
+        height: 460px;
+        &.bg1 {
+            background: url(../images/join-supplier-demo-pic1.png) no-repeat bottom center;
+        }
+        &.bg2 {
+            background: url(../images/join-supplier-demo-pic2.png) no-repeat bottom center;
+        }
+        &.bg3 {
+            background: url(../images/join-supplier-demo-pic3.png) no-repeat bottom center;
+        }
+        &.bg4 {
+            background: url(../images/join-supplier-demo-pic4.png) no-repeat bottom center;
+        }
+    }
+}
+.content-partner {
+    .g-title {
+        padding: 65px 0 25px;
+    }
+    .info {
+        .img1 {
+            height: 560px;
+            background: url(../images/join-supplier-partner1.png) no-repeat center top;
+        }
+        .img2 {
+            height: 349px;
+            background: url(../images/join-supplier-partner2.png) no-repeat center top;
+        }
+    }
+}
+.content-process {
+    background: #f6f6f6;
+    .g-title {
+        padding: 65px 0 25px;
+    }
+    .info {
+        height: 428px;
+        background: url(../images/join-shop-supplier-process.png) no-repeat center bottom;
+    }
+}

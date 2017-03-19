@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.DepartmentMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.salesman.model.Department" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="deptName" property="deptName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="isDelete" property="isDelete" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="deptId" property="deptId" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    
+    <result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, deptName, status, isDelete, pid, remarks, deptId, createTime, createBy, updateTime,updateBy,provinceId,cityId,areaId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_department_t
+    where deptId = #{deptId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tbl_department_t
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.salesman.model.Department" >
+    insert into tbl_department_t (id, deptName, status, 
+      isDelete, pid, remarks, 
+      deptId, createTime, createBy, 
+      updateTime, updateBy,provinceId,cityId,areaId)
+    values (#{id,jdbcType=INTEGER}, #{deptName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{isDelete,jdbcType=INTEGER}, #{pid,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, 
+      #{deptId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR},
+      #{provinceId,jdbcType=INTEGER},#{cityId,jdbcType=INTEGER},#{areaId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.salesman.model.Department" >
+    insert into tbl_department_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="deptName != null" >
+        deptName,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="deptId != null" >
+        deptId,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="createBy != null" >
+        createBy,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="updateBy != null" >
+        updateBy,
+      </if>
+      <if test="provinceId != null" >
+        provinceId,
+      </if>
+      <if test="cityId != null" >
+        cityId,
+      </if>
+      <if test="areaId != null" >
+        areaId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="deptName != null" >
+        #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null" >
+        #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.salesman.model.Department" >
+    update tbl_department_t
+    <set >
+      <if test="deptName != null" >
+        deptName = #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null" >
+        deptId = #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        createBy = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        updateBy = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        provinceId = #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        cityId = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        areaId = #{areaId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.salesman.model.Department" >
+    update tbl_department_t
+    set deptName = #{deptName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      isDelete = #{isDelete,jdbcType=INTEGER},
+      pid = #{pid,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      deptId = #{deptId,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      createBy = #{createBy,jdbcType=VARCHAR},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      updateBy = #{updateBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateDeptmentByDeptId" parameterType="com.corner.salesman.model.Department" >
+    update tbl_department_t
+     set 
+        provinceId = #{provinceId,jdbcType=INTEGER},
+        cityId = #{cityId,jdbcType=INTEGER},
+        areaId = #{areaId,jdbcType=INTEGER},
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+        updateBy = #{updateBy,jdbcType=VARCHAR}
+    where deptId = #{deptId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="findDeptList" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_department_t where isDelete=0
+  </select>
+  
+  <select id="getDeptPageList" parameterType="com.corner.salesman.model.Department" resultType="com.corner.salesman.model.Department">
+		SELECT
+			t.id,
+			t.deptName,
+			t.deptId,
+			t.`status`,
+			t.isDelete,
+			t.pid,
+			t.remarks,
+		    t2.deptName as parentName
+		FROM
+			tbl_department_t t
+		LEFT JOIN tbl_department_t t2 on t.pid = t2.deptId
+		where t.isDelete =0 
+	    <if test="deptName !=null and deptName!=''">
+	    	AND t.deptName like CONCAT('%',#{deptName},'%') or t.deptId like CONCAT('%',#{deptName},'%')
+	    </if>
+	     order by t.updateTime desc
+	   <include refid="BasePublicMapper.pageSql" />
+	</select>
+  
+	<select id="getDeptPageSize" parameterType="com.corner.salesman.model.Department" resultType="int">
+		SELECT count(1) FROM tbl_department_t t
+		where t.isDelete =0 
+	    <if test="deptName !=null and deptName!=''">
+	    	AND t.deptName like CONCAT('%',#{deptName},'%') or t.deptId like CONCAT('%',#{deptName},'%')
+	    </if>
+	</select>
+	
+	<select id="getDeptLeaders" parameterType="int" resultType="java.lang.String">
+		SELECT
+			GROUP_CONCAT(u.userName) leaders
+		FROM
+			tbl_department_t d
+		INNER JOIN tbl_dept_manager_t dm ON dm.deptId = d.deptId
+		LEFT JOIN salesman u ON u.id=dm.leaderId
+		where d.id = #{id}
+	</select>
+	
+	<select id="checkDeptIsExist" parameterType="java.lang.String" resultType="int">
+		SELECT count(1) FROM tbl_department_t t
+		where t.isDelete =0 and t.deptId = #{deptId}
+	</select>
+	
+	<select id="checkIsDeptLeader" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT
+			GROUP_CONCAT(d.deptName)
+		FROM
+			tbl_department_t d
+		INNER JOIN tbl_dept_manager_t dm ON dm.deptId = d.deptId
+		where dm.leaderId = #{userId}
+	</select>
+	
+</mapper>

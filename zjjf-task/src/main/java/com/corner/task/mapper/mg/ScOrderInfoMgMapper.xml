@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.task.dao.mg.ScOrderInfoMgMapper">
+	<select id="getAllNoPayOrderInfoList"  resultType="com.corner.task.beans.ScOrderInfo">
+    SELECT * FROM ScOrderInfo WHERE `status` = 1 AND level = 1
+	AND HOUR (timediff(NOW(), addTime)) > 24
+	<!-- AND MINUTE (timediff(NOW(), addTime)) > 5 -->
+	AND isDelete = 0
+   </select>
+	<insert id="bakSpShoppingCart">
+		INSERT INTO SpShoppingCart_bak SELECT * FROM SpShoppingCart WHERE isDelete = 1;
+		DELETE FROM SpShoppingCart WHERE isDelete = 1;
+	</insert>
+</mapper>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ERPManagerContractMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ERPManagerContract" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="erpManagerId" property="erpManagerId" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="endTime" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="dayNum" property="dayNum" jdbcType="INTEGER" />
+    <result column="usePlatFormFee" property="usePlatFormFee" jdbcType="DECIMAL" />
+    <result column="useTecFee" property="useTecFee" jdbcType="DECIMAL" />
+    <result column="generalizeFee" property="generalizeFee" jdbcType="DECIMAL" />
+    <result column="logisticsFee" property="logisticsFee" jdbcType="DECIMAL" />
+    <result column="margin" property="margin" jdbcType="DECIMAL" />
+    <result column="penalty" property="penalty" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, erpManagerId, code, startTime, endTime, dayNum, usePlatFormFee, useTecFee, generalizeFee, 
+    logisticsFee, margin, penalty, remark, addTime, updateTime, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ERPManagerContract
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ERPManagerContract
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ERPManagerContract" >
+    insert into ERPManagerContract (id, erpManagerId, code, 
+      startTime, endTime, dayNum, 
+      usePlatFormFee, useTecFee, generalizeFee, 
+      logisticsFee, margin, penalty, 
+      remark, addTime, updateTime, 
+      isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{erpManagerId,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{dayNum,jdbcType=INTEGER}, 
+      #{usePlatFormFee,jdbcType=DECIMAL}, #{useTecFee,jdbcType=DECIMAL}, #{generalizeFee,jdbcType=DECIMAL}, 
+      #{logisticsFee,jdbcType=DECIMAL}, #{margin,jdbcType=DECIMAL}, #{penalty,jdbcType=DECIMAL}, 
+      #{remark,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ERPManagerContract" >
+    insert into ERPManagerContract
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="erpManagerId != null" >
+        erpManagerId,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="startTime != null" >
+        startTime,
+      </if>
+      <if test="endTime != null" >
+        endTime,
+      </if>
+      <if test="dayNum != null" >
+        dayNum,
+      </if>
+      <if test="usePlatFormFee != null" >
+        usePlatFormFee,
+      </if>
+      <if test="useTecFee != null" >
+        useTecFee,
+      </if>
+      <if test="generalizeFee != null" >
+        generalizeFee,
+      </if>
+      <if test="logisticsFee != null" >
+        logisticsFee,
+      </if>
+      <if test="margin != null" >
+        margin,
+      </if>
+      <if test="penalty != null" >
+        penalty,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="erpManagerId != null" >
+        #{erpManagerId,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dayNum != null" >
+        #{dayNum,jdbcType=INTEGER},
+      </if>
+      <if test="usePlatFormFee != null" >
+        #{usePlatFormFee,jdbcType=DECIMAL},
+      </if>
+      <if test="useTecFee != null" >
+        #{useTecFee,jdbcType=DECIMAL},
+      </if>
+      <if test="generalizeFee != null" >
+        #{generalizeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="logisticsFee != null" >
+        #{logisticsFee,jdbcType=DECIMAL},
+      </if>
+      <if test="margin != null" >
+        #{margin,jdbcType=DECIMAL},
+      </if>
+      <if test="penalty != null" >
+        #{penalty,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ERPManagerContract" >
+    update ERPManagerContract
+    <set >
+      <if test="erpManagerId != null" >
+        erpManagerId = #{erpManagerId,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        startTime = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        endTime = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dayNum != null" >
+        dayNum = #{dayNum,jdbcType=INTEGER},
+      </if>
+      <if test="usePlatFormFee != null" >
+        usePlatFormFee = #{usePlatFormFee,jdbcType=DECIMAL},
+      </if>
+      <if test="useTecFee != null" >
+        useTecFee = #{useTecFee,jdbcType=DECIMAL},
+      </if>
+      <if test="generalizeFee != null" >
+        generalizeFee = #{generalizeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="logisticsFee != null" >
+        logisticsFee = #{logisticsFee,jdbcType=DECIMAL},
+      </if>
+      <if test="margin != null" >
+        margin = #{margin,jdbcType=DECIMAL},
+      </if>
+      <if test="penalty != null" >
+        penalty = #{penalty,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ERPManagerContract" >
+    update ERPManagerContract
+    set erpManagerId = #{erpManagerId,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      startTime = #{startTime,jdbcType=TIMESTAMP},
+      endTime = #{endTime,jdbcType=TIMESTAMP},
+      dayNum = #{dayNum,jdbcType=INTEGER},
+      usePlatFormFee = #{usePlatFormFee,jdbcType=DECIMAL},
+      useTecFee = #{useTecFee,jdbcType=DECIMAL},
+      generalizeFee = #{generalizeFee,jdbcType=DECIMAL},
+      logisticsFee = #{logisticsFee,jdbcType=DECIMAL},
+      margin = #{margin,jdbcType=DECIMAL},
+      penalty = #{penalty,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

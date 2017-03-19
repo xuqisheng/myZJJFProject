@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.UserMapper">
+
+	<sql id="Base_Column_List">
+		id,userName,nickName,gender,mobile,email,birthday,province,city,area,address,deviceUUID,password,userType
+	</sql>
+	<!-- 分页查询用户信息 -->
+	<select id="findUserByMobile" resultType="com.corner.salesman.model.User" >
+		SELECT
+			u.id as userId,
+			u.userName,
+			u.nickName,
+			u.gender,
+			u.mobile,
+			u.email,
+			u.birthday,
+			u.province,
+			u.city,
+			u.area,
+			u.address,
+			u.deviceUUID,
+			u. PASSWORD,
+			u.userType,
+			u.postType,
+			u.token,
+			dic.label AS postName,
+		    d.deptId,d.deptName,d.areaId
+		FROM
+			salesman u
+		LEFT JOIN tbl_user_dept_t ud ON ud.userId = u.id
+		LEFT JOIN tbl_department_t d on d.deptId = ud.deptId
+		LEFT JOIN tbl_dict_t dic ON u.postType = dic.`value`
+		AND dic.type = 'post_type'
+		AND dic.isDelete = 0
+		where u.mobile = #{mobile,jdbcType=VARCHAR} and u.isDelete=0
+	</select>
+	
+	<select id="findUserBydeviceUUID" resultType="com.corner.salesman.model.User" >
+		SELECT
+			u.id as userId,
+			u.userName,
+			u.nickName,
+			u.gender,
+			u.mobile,
+			u.email,
+			u.birthday,
+			u.province,
+			u.city,
+			u.area,
+			u.address,
+			u.deviceUUID,
+			u. PASSWORD,
+			u.userType,
+			u.postType,u.token,
+			dic.label AS postName,
+		    d.deptId,d.deptName,d.areaId
+		FROM
+			salesman u
+		LEFT JOIN tbl_user_dept_t ud ON ud.userId = u.id
+		LEFT JOIN tbl_department_t d on d.deptId = ud.deptId
+		LEFT JOIN tbl_dict_t dic ON u.postType = dic.`value`
+		AND dic.type = 'post_type'
+		AND dic.isDelete = 0
+		where u.deviceUUID = #{deviceUUID,jdbcType=VARCHAR} and u.isDelete=0
+	</select>
+	
+	<select id="findLeaderInfoById" resultType="com.corner.salesman.model.User" parameterType="java.lang.String">
+		SELECT
+			s.id as userId,
+			s.userName,
+			s.mobile,
+			s.userType,
+			d.deptName,
+			d.deptId
+		FROM
+			salesman s
+		INNER JOIN tbl_user_dept_t ud ON s.id = ud.userId
+		INNER JOIN tbl_department_t d ON d.deptId = ud.deptId
+		INNER JOIN tbl_dept_manager_t dm ON dm.deptId = d.deptId
+		AND s.id = dm.leaderId
+		WHERE s.id = #{userId}
+	</select>
+	
+	<select id="findUserInfoById" resultType="com.corner.salesman.model.User" parameterType="java.lang.String">
+		SELECT
+			s.id as userId,
+			s.userName,
+			s.mobile,
+			s.userType,
+			d.deptName,
+			d.deptId
+		FROM
+			salesman s
+		INNER JOIN tbl_user_dept_t ud ON s.id = ud.userId
+		INNER JOIN tbl_department_t d ON d.deptId = ud.deptId
+		WHERE s.id = #{userId}
+	</select>
+	
+	<!-- 选择用户查询sql -->
+	<select id="findUserSelectList" resultType="com.corner.salesman.model.User" >
+		select id,userName from salesman
+	</select>
+	
+	<update id="updateUserPwd">
+		update salesman  
+		 <set >
+	      <if test="newPwd != null and newPwd !=''" >
+	        password = #{newPwd,jdbcType=VARCHAR},
+	      </if>
+    	</set>
+   		 where mobile = #{mobile,jdbcType=VARCHAR}
+	       and password = #{password,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateLoginLastTime" parameterType="com.corner.salesman.model.User">
+		update salesman 
+		   set token = #{token,jdbcType=VARCHAR},
+			   lastTime = NOW(),
+			   version = #{version,jdbcType=VARCHAR} 
+		where id = #{userId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateUserDeviceInfo" parameterType="com.corner.salesman.model.User" >
+    update salesman
+    <set >
+      <if test="deviceName != null" >
+        deviceName = #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceUUID != null" >
+        deviceUUID = #{deviceUUID,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        updateBy = #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where mobile = #{mobile,jdbcType=VARCHAR}
+  </update>
+ 
+	<select id="getTimeHzThresholdVal" resultType="java.lang.String" parameterType="java.lang.String">
+		SELECT t.`value` FROM tbl_dict_t t where t.type='time_hz_type' and t.label='time_hz_val' and t.isDelete=0 LIMIT 1
+	</select>
+	
+	<select id="getUserNameById" resultType="java.lang.String" parameterType="java.lang.String">
+		SELECT
+			s.userName
+		FROM
+			salesman s WHERE s.id = #{userId} limit 1
+	</select>
+	
+	<select id="getEffectiveUserIdList" resultType="java.lang.String" >
+		select u.id from salesman u where u.isDelete=0
+	</select>
+	
+	<select id="getDeptUserIdList" resultType="java.lang.String" parameterType="com.corner.salesman.model.User">
+		SELECT DISTINCT
+			s.id as userId
+		FROM
+			salesman s
+		INNER JOIN tbl_user_dept_t ud ON s.id = ud.userId
+		INNER JOIN tbl_department_t d ON d.deptId = ud.deptId
+		INNER JOIN tbl_dept_manager_t dm ON dm.deptId = d.deptId
+		WHERE d.deptId = #{deptId}
+        <if test="userId != null and userId !=''" >
+            AND dm.leaderId = #{userId}
+        </if>
+		AND s.isDelete = 0
+	</select>
+	
+  	<select id="getLeaderIdList" resultType="java.lang.String">
+		SELECT
+			t.leaderId as userId
+		FROM
+			tbl_dept_manager_t t
+	</select>
+	
+  	<select id="getKPIDeptLevelList" resultType="java.util.HashMap" parameterType="java.lang.String">
+		select  a.*  
+		  from (select t.deptId,t.deptName,t.pid,
+<!-- 		  			CAST(t.provinceId AS CHAR) AS provinceId, -->
+<!-- 		  			CAST(t.cityId AS CHAR) AS cityId, -->
+<!-- 		  			CAST(t.areaId AS CHAR) AS areaId, -->
+					t.provinceId,t.cityId,t.areaId,
+		  			'' as 'salesmanId',
+		  			'1' as 'level'
+		          from tbl_department_t  t
+		         where t.isDelete = 0 AND t.deptId = #{deptId}
+		         
+		        UNION  
+		        
+		        select n2.deptId,n2.deptName,n2.pid,
+<!-- 		  			    CAST(n2.provinceId AS CHAR) AS provinceId, -->
+<!-- 		  			    CAST(n2.cityId AS CHAR) AS cityId, -->
+<!-- 		  			    CAST(n2.areaId AS CHAR) AS areaId, -->
+						n2.provinceId,n2.cityId,n2.areaId,
+		                '' as 'salesmanId',
+		                '2' as 'level'
+		          from tbl_department_t n1, tbl_department_t n2  
+		         where n2.isDelete = 0 AND n1.deptId = #{deptId}
+		           and n2.pid = n1.deptId  
+		      ) a
+	</select>
+	
+  	<select id="getKPIDeptLevelSpGroupList" resultType="java.util.HashMap" parameterType="java.lang.String">
+		SELECT
+			d.deptId,
+			u.userName AS deptName,
+			'' AS pid,
+			d.provinceId,
+			d.cityId,
+			d.areaId,
+			u.id as salesmanId,
+			'2' AS 'level'
+		FROM salesman u 
+		LEFT JOIN tbl_user_dept_t ud ON ud.userId = u.id
+		LEFT JOIN tbl_department_t d ON d.deptId = ud.deptId
+		WHERE d.deptId = #{deptId}
+	</select>
+	
+</mapper>

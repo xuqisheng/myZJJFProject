@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.StoreDailyMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.store.StoreDaily" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="storeCode" property="storeCode" jdbcType="VARCHAR" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="turnover" property="turnover" jdbcType="DECIMAL" />
+    <result column="totalRebate" property="totalRebate" jdbcType="DECIMAL" />
+    <result column="totalCoupon" property="totalCoupon" jdbcType="DECIMAL" />
+    <result column="totalFreight" property="totalFreight" jdbcType="DECIMAL" />
+    <result column="orderCount" property="orderCount" jdbcType="INTEGER" />
+    <result column="sku" property="sku" jdbcType="INTEGER" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+    <result column="isVisit" property="isVisit" jdbcType="INTEGER" />
+    <result column="registerTime" property="registerTime" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, storeId, spGroupId, storeCode, dayTime, turnover, totalRebate, totalCoupon, totalFreight, 
+    orderCount, sku, quantity, updateTime, createTime, isVisit, registerTime
+  </sql>
+  
+  <select id="getDailyReportData" resultType="com.zjjf.analysis.beans.analysis.store.StoreDailyVo" parameterType="java.util.Map" >
+       select 
+          t1.storeId,
+		  t1.storeCode,
+		  t1.storeName,
+		  t1.registerTime,
+		  sum(t1.`turnover`) as "turnover",
+  		  sum(t1.`orderCount`) as "orderCount",
+          sum(t1.`quantity`) as "quantity",
+		  t1.areaName,
+		  t1.cityName,
+		  t1.spGroupName as "spGroupName"
+		from
+		  store_daily t1
+		  <where>
+			  <if test="dayTimeBegin != null and dayTimeBegin != ''  " >
+			    and t1.`dayTime` &gt;= #{dayTimeBegin}
+			  </if>
+			  <if test="dayTimeEnd != null and dayTimeEnd != ''  " >
+			    and t1.`dayTime` &lt;= #{dayTimeEnd}
+			  </if>
+			  <if test="registerTimeBegin != null and registerTimeBegin != ''  " >
+			    and date_format(t1.registerTime, '%Y-%m-%d') &gt;= #{registerTimeBegin}
+			  </if>
+			  <if test="registerTimeEnd != null and registerTimeEnd != ''  " >
+			    and date_format(t1.registerTime, '%Y-%m-%d') &lt;= #{registerTimeEnd}
+			  </if>
+			  <if test="spGroupId != null and spGroupId != '' " >
+		      	and t1.spGroupId = #{spGroupId}
+		      </if>
+		      <if test="cityId != null and cityId != '' " >
+		      	and t1.cityId = #{cityId}
+		      </if>
+		      <if test="areaId != null and areaId != '' " >
+		      	and t1.areaId = #{areaId}
+		      </if>
+		      <if test="nameOrStoreCode != null and nameOrStoreCode != '' " >
+		      	and (t1.storeCode like "%"#{nameOrStoreCode}"%" or t1.storeName like "%"#{nameOrStoreCode}"%")
+		      </if>
+		      <if test="areaIdList != null and areaIdList != '' " >
+		 		  and t1.`areaId` in 
+		          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+		      <if test="cityIdList != null and cityIdList != '' " >
+		 		  and t1.`cityId` in 
+		          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+	      </where>
+	      group by t1.storeId 
+	    <if test="turnover != null and turnover != ''" >
+	         ${turnover}
+		</if>
+	    order by t1.`cityId`, t1.areaId, t1.spGroupId limit #{pageNo}, #{offset}
+  </select>
+  
+  <select id="getReportDataCount" resultType="com.zjjf.analysis.beans.analysis.store.StoreDailyVo" parameterType="java.util.Map" >
+       select 
+          count(*)
+		from
+		  store_daily t1
+		  <where>
+			  <if test="dayTimeBegin != null and dayTimeBegin != ''  " >
+			    and t1.`dayTime` &gt;= #{dayTimeBegin}
+			  </if>
+			  <if test="dayTimeEnd != null and dayTimeEnd != ''  " >
+			    and t1.`dayTime` &lt;= #{dayTimeEnd}
+			  </if>
+			  <if test="registerTimeBegin != null and registerTimeBegin != ''  " >
+			    and date_format(t1.registerTime, '%Y-%m-%d') &gt;= #{registerTimeBegin}
+			  </if>
+			  <if test="registerTimeEnd != null and registerTimeEnd != ''  " >
+			    and date_format(t1.registerTime, '%Y-%m-%d') &lt;= #{registerTimeEnd}
+			  </if>
+			  <if test="spGroupId != null and spGroupId != '' " >
+		      	and t1.spGroupId = #{spGroupId}
+		      </if>
+		      <if test="cityId != null and cityId != '' " >
+		      	and t1.cityId = #{cityId}
+		      </if>
+		      <if test="areaId != null and areaId != '' " >
+		      	and t1.areaId = #{areaId}
+		      </if>
+		      <if test="nameOrStoreCode != null and nameOrStoreCode != '' " >
+		      	and (t1.storeCode like "%"#{nameOrStoreCode}"%" or t1.storeName like "%"#{nameOrStoreCode}"%")
+		      </if>
+		      <if test="areaIdList != null and areaIdList != '' " >
+		 		  and t1.`areaId` in 
+		          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+		      <if test="cityIdList != null and cityIdList != '' " >
+		 		  and t1.`cityId` in 
+		          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+	      </where>
+  </select>
+  
+  <select id="getData" resultType="com.zjjf.analysis.beans.analysis.store.StoreDailyVo" parameterType="java.util.Map" >
+       select 
+          t1.storeId,
+		  t1.storeCode,
+		  t1.storeName,
+		  t1.registerTime,
+		  sum(t1.`turnover`) as "turnover",
+  		  sum(t1.`orderCount`) as "orderCount",
+          sum(t1.`quantity`) as "quantity",
+		  t1.areaName,
+		  t1.cityName,
+		  t1.spGroupName as "spGroupName"
+		from
+		  store_daily t1
+		  <where>
+			  <if test="dayTimeBegin != null and dayTimeBegin != ''  " >
+			    and t1.`dayTime` &gt;= #{dayTimeBegin}
+			  </if>
+			  <if test="dayTimeEnd != null and dayTimeEnd != ''  " >
+			    and t1.`dayTime` &lt;= #{dayTimeEnd}
+			  </if>
+			  <if test="registerTimeBegin != null and registerTimeBegin != ''  " >
+			    and date_format(t1.registerTime, '%Y-%m-%d') &gt;= #{registerTimeBegin}
+			  </if>
+			  <if test="registerTimeEnd != null and registerTimeEnd != ''  " >
+			    and date_format(t1.registerTime, '%Y-%m-%d') &lt;= #{registerTimeEnd}
+			  </if>
+			  <if test="spGroupId != null and spGroupId != '' " >
+		      	and t1.spGroupId = #{spGroupId}
+		      </if>
+		      <if test="cityId != null and cityId != '' " >
+		      	and t1.cityId = #{cityId}
+		      </if>
+		      <if test="areaId != null and areaId != '' " >
+		      	and t1.areaId = #{areaId}
+		      </if>
+		      <if test="nameOrStoreCode != null and nameOrStoreCode != '' " >
+		      	and (t1.storeCode like "%"#{nameOrStoreCode}"%" or t1.storeName like "%"#{nameOrStoreCode}"%")
+		      </if>
+		      <if test="areaIdList != null and areaIdList != '' " >
+		 		  and t1.`areaId` in 
+		          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+		      <if test="cityIdList != null and cityIdList != '' " >
+		 		  and t1.`cityId` in 
+		          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+	      </where>
+	      group by t1.storeId 
+	    <if test="turnover != null and turnover != ''" >
+	         ${turnover}
+		</if>
+	    order by t1.`cityId`, t1.areaId, t1.spGroupId limit #{pageNo}, #{offset}
+  </select>
+
+  <select id="getDataCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+	   select count(u.a) from (select 
+		  count(*) as a
+		 from
+		  store_daily t1
+		  <where>
+			  <if test="dayTimeBegin != null and dayTimeBegin != ''  " >
+			    and t1.`dayTime` &gt;= #{dayTimeBegin}
+			  </if>
+			  <if test="dayTimeEnd != null and dayTimeEnd != ''  " >
+			    and t1.`dayTime` &lt;= #{dayTimeEnd}
+			  </if>
+			  <if test="registerTimeBegin != null and registerTimeBegin != ''  " >
+			    and date_format(t1.registerTime, '%Y-%m-%d') &gt;= #{registerTimeBegin}
+			  </if>
+			  <if test="registerTimeEnd != null and registerTimeEnd != ''  " >
+			    and date_format(t1.registerTime, '%Y-%m-%d') &lt;= #{registerTimeEnd}
+			  </if>
+			  <if test="spGroupId != null and spGroupId != '' " >
+		      	and t1.spGroupId = #{spGroupId}
+		      </if>
+		      <if test="cityId != null and cityId != '' " >
+		      	and t1.cityId = #{cityId}
+		      </if>
+		      <if test="areaId != null and areaId != '' " >
+		      	and t1.areaId = #{areaId}
+		      </if>
+		      <if test="nameOrStoreCode != null and nameOrStoreCode != '' " >
+		      	and (t1.storeCode like "%"#{nameOrStoreCode}"%" or t1.storeName like "%"#{nameOrStoreCode}"%")
+		      </if>
+		      <if test="areaIdList != null and areaIdList != '' " >
+		 		  and t1.`areaId` in 
+		          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+		      <if test="cityIdList != null and cityIdList != '' " >
+		 		  and t1.`cityId` in 
+		          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+	      </where>
+	      group by t1.storeId 
+	    <if test="turnover != null and turnover != ''" >
+	         ${turnover}
+		</if>) u
+  </select>
+  
+  <select id="getDataExcel" resultType="com.zjjf.analysis.beans.analysis.store.StoreDailyVo" parameterType="java.util.Map" >
+  	  select 
+  	      t1.storeId,
+		  t1.storeCode,
+		  t1.storeName,
+		  t1.registerTime,
+		  sum(t1.`turnover`) as "turnover",
+  		  sum(t1.`orderCount`) as "orderCount",
+          sum(t1.`quantity`) as "quantity",
+		  t1.areaName,
+		  t1.cityName,
+		  t1.spGroupName
+		from
+		  store_daily t1 
+		  <where>
+			  <if test="dayTimeBegin != null and dayTimeBegin != ''  " >
+			    and t1.`dayTime` &gt;= #{dayTimeBegin}
+			  </if>
+			  <if test="dayTimeEnd != null and dayTimeEnd != ''  " >
+			    and t1.`dayTime` &lt;= #{dayTimeEnd}
+			  </if>
+			  <if test="registerTimeBegin != null and registerTimeBegin != ''  " >
+			    and date_format(t1.registerTime, '%Y-%m-%d') &gt;= #{registerTimeBegin}
+			  </if>
+			  <if test="registerTimeEnd != null and registerTimeEnd != ''  " >
+			    and date_format(t1.registerTime, '%Y-%m-%d') &lt;= #{registerTimeEnd}
+			  </if>
+			  <if test="spGroupId != null and spGroupId != '' " >
+		      	and t1.spGroupId = #{spGroupId}
+		      </if>
+		      <if test="cityId != null and cityId != '' " >
+		      	and t1.cityId = #{cityId}
+		      </if>
+		      <if test="areaId != null and areaId != '' " >
+		      	and t1.areaId = #{areaId}
+		      </if>
+		      <if test="nameOrStoreCode != null and nameOrStoreCode != '' " >
+		      	and (t1.storeCode like "%"#{nameOrStoreCode}"%" or t1.storeName like "%"#{nameOrStoreCode}"%")
+		      </if>
+		      <if test="areaIdList != null and areaIdList != '' " >
+		 		  and t1.`areaId` in 
+		          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+		      <if test="cityIdList != null and cityIdList != '' " >
+		 		  and t1.`cityId` in 
+		          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+	      </where>
+	      group by t1.storeId 
+	    <if test="turnover != null and turnover != ''" >
+	         ${turnover}
+		</if>
+	    order by t1.`cityId`, t1.areaId, t1.spGroupId limit 10000
+  </select>
+  
+  <select id="getTurnoverDistributed" resultType="com.zjjf.analysis.beans.analysis.store.StoreDailyVo" parameterType="java.util.Map" >
+   select count(*) as "col1TurnoverTimes" from (select count(distinct storeId) as "a" from store_daily
+   <where>
+		<if test="spGroupId != null and spGroupId != '' " > and spGroupId &gt;= #{spGroupId}</if>
+		<if test="dayTimeBegin != null and dayTimeBegin != '' " > and dayTime &gt;= #{dayTimeBegin}</if>
+		<if test="dayTimeEnd != null and dayTimeEnd != '' " > and dayTime &lt;= #{dayTimeEnd}</if>
+	</where>
+	group by `storeId` having sum(turnover) &gt; 0 and sum(turnover) &lt;= 5000) u 
+	union all
+	select count(*) as "col1TurnoverTimes" from (select count(distinct storeId) as "a" from store_daily
+	<where>
+		<if test="spGroupId != null and spGroupId != '' " > and spGroupId &gt;= #{spGroupId}</if>
+		<if test="dayTimeBegin != null and dayTimeBegin != '' " > and dayTime &gt;= #{dayTimeBegin}</if>
+		<if test="dayTimeEnd != null and dayTimeEnd != '' " > and dayTime &lt;= #{dayTimeEnd}</if>
+	</where>
+	group by `storeId` having sum(turnover) &gt; 5000 and sum(turnover) &lt;= 10000) u 
+	union all
+	select count(*) as "col1TurnoverTimes" from (select count(distinct storeId) as "a" from store_daily
+	<where>
+		<if test="spGroupId != null and spGroupId != '' " > and spGroupId &gt;= #{spGroupId}</if>
+		<if test="dayTimeBegin != null and dayTimeBegin != '' " > and dayTime &gt;= #{dayTimeBegin}</if>
+		<if test="dayTimeEnd != null and dayTimeEnd != '' " > and dayTime &lt;= #{dayTimeEnd}</if>
+	</where>
+	group by `storeId` having sum(turnover) &gt; 10000 and sum(turnover) &lt;= 20000) u 
+	union all
+	select count(*) as "col1TurnoverTimes" from (select count(distinct storeId) as "a" from store_daily 
+	<where>
+		<if test="spGroupId != null and spGroupId != '' " > and spGroupId &gt;= #{spGroupId}</if>
+		<if test="dayTimeBegin != null and dayTimeBegin != '' " > and dayTime &gt;= #{dayTimeBegin}</if>
+		<if test="dayTimeEnd != null and dayTimeEnd != '' " > and dayTime &lt;= #{dayTimeEnd}</if>
+	</where>
+	group by `storeId` having sum(turnover) &gt; 20000 and sum(turnover) &lt;= 30000) u 
+	union all
+	select count(*) as "col1TurnoverTimes" from (select count(distinct storeId) as "a" from store_daily
+	<where>
+		<if test="spGroupId != null and spGroupId != '' " > and spGroupId &gt;= #{spGroupId}</if>
+		<if test="dayTimeBegin != null and dayTimeBegin != '' " > and dayTime &gt;= #{dayTimeBegin}</if>
+		<if test="dayTimeEnd != null and dayTimeEnd != '' " > and dayTime &lt;= #{dayTimeEnd}</if>
+	</where>
+	group by `storeId` having sum(turnover) &gt; 30000 and sum(turnover) &lt;= 40000) u 
+	union all
+	select count(*) as "col1TurnoverTimes" from (select count(distinct storeId) as "a" from store_daily
+	<where>
+		<if test="spGroupId != null and spGroupId != '' " > and spGroupId &gt;= #{spGroupId}</if>
+		<if test="dayTimeBegin != null and dayTimeBegin != '' " > and dayTime &gt;= #{dayTimeBegin}</if>
+		<if test="dayTimeEnd != null and dayTimeEnd != '' " > and dayTime &lt;= #{dayTimeEnd}</if>
+	</where>
+	group by `storeId` having sum(turnover) &gt; 40000) u 
+  </select>
+
+  <select id="getOrdercountDistributed" resultType="com.zjjf.analysis.beans.analysis.store.StoreDailyVo" parameterType="java.util.Map" >
+	select count(u.a) as "col1OrderCountTimes" from (select count(distinct storeId) as "a" from store_daily
+	<where>
+		<if test="spGroupId != null and spGroupId != '' " > and spGroupId &gt;= #{spGroupId}</if>
+		<if test="dayTimeBegin != null and dayTimeBegin != '' " > and dayTime &gt;= #{dayTimeBegin}</if>
+		<if test="dayTimeEnd != null and dayTimeEnd != '' " > and dayTime &lt;= #{dayTimeEnd}</if>
+	</where>
+	group by `storeId` having sum(orderCount) = 1) u 
+	union all
+	select count(u.a) as "col1OrderCountTimes" from (select count(distinct storeId) as "a" from store_daily
+	<where>
+		<if test="spGroupId != null and spGroupId != '' " > and spGroupId &gt;= #{spGroupId}</if>
+		<if test="dayTimeBegin != null and dayTimeBegin != '' " > and dayTime &gt;= #{dayTimeBegin}</if>
+		<if test="dayTimeEnd != null and dayTimeEnd != '' " > and dayTime &lt;= #{dayTimeEnd}</if>
+	</where>
+	group by `storeId` having sum(orderCount) = 2) u 
+	union all
+	select count(u.a) as "col1OrderCountTimes" from (select count(distinct storeId) as "a" from store_daily 
+	<where>
+		<if test="spGroupId != null and spGroupId != '' " > and spGroupId &gt;= #{spGroupId}</if>
+		<if test="dayTimeBegin != null and dayTimeBegin != '' " > and dayTime &gt;= #{dayTimeBegin}</if>
+		<if test="dayTimeEnd != null and dayTimeEnd != '' " > and dayTime &lt;= #{dayTimeEnd}</if>
+	</where>
+	group by `storeId` having sum(orderCount) = 3) u 
+	union all
+	select count(u.a) as "col1OrderCountTimes" from (select count(distinct storeId) as "a" from store_daily
+	<where>
+		<if test="spGroupId != null and spGroupId != '' " > and spGroupId &gt;= #{spGroupId}</if>
+		<if test="dayTimeBegin != null and dayTimeBegin != '' " > and dayTime &gt;= #{dayTimeBegin}</if>
+		<if test="dayTimeEnd != null and dayTimeEnd != '' " > and dayTime &lt;= #{dayTimeEnd}</if>
+	</where>
+	group by `storeId` having sum(orderCount) &gt; 3) u 
+  </select>
+  
+  <select id="getSalemanSummrization" parameterType="java.util.Map" resultType="java.util.Map">
+  	 SELECT COUNT(DISTINCT storeId) AS 'activeStore' FROM `store_daily` 
+  	 <where>
+  	 	<if test="dayTime != null">
+			and dayTime = #{dayTime}
+		</if>
+		<if test="dayTimeBegin != null">
+			and dayTime &gt;= #{dayTimeBegin} 
+		</if>
+		<if test="dayTimeEnd != null">
+			and dayTime &lt;= #{dayTimeEnd} 
+		</if>
+		<if test="storeId != null">
+			and storeId in ${storeIds}
+		</if>
+  	 </where>
+  </select>
+  
+  
+</mapper>

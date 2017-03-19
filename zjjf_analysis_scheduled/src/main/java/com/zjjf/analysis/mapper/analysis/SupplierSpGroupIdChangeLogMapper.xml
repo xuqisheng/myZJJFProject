@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.SupplierSpGroupIdChangeLogMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.supplier.SupplierSpGroupIdChangeLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, supplierId, spGroupId, dayTime, cityId , areaId , updateTime, createTime
+  </sql>
+  
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.analysis.supplier.SupplierSpGroupIdChangeLog" >
+    insert into supplier_spgroupid_change_log (supplierId, spGroupId, 
+      dayTime, cityId, areaId, updateTime, createTime
+      )
+    values (#{supplierId,jdbcType=VARCHAR}, #{spGroupId,jdbcType=INTEGER}, 
+      #{dayTime,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=INTEGER}
+      )
+  </insert>
+  
+  <select id="queryByIndex" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select <include refid="Base_Column_List" />
+  	from supplier_spgroupid_change_log
+  	where id &gt; #{id} order by id
+  </select>
+  
+  <update id="updateDayTime" parameterType="java.util.Map">
+  	UPDATE supplier_spgroupid_change_log s SET s.`dayTime` = #{dayTime}
+		WHERE s.`supplierId` = #{supplierId}
+		AND s.`spGroupId` = #{spGroupId}
+  </update>
+ 
+ <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+ 	select <include refid="Base_Column_List" />
+ 	from supplier_spgroupid_change_log
+ 	<where>
+ 		<if test="supplierId != null">
+ 			and supplierId = #{supplierId}
+ 		</if>
+ 		<if test="spGroupId != null">
+ 			and spGroupId = #{spGroupId}
+ 		</if>
+ 		<if test="dayTime != null">
+ 			and dayTime = #{dayTime}
+ 		</if>
+ 	</where>
+ 	<if test="offset != null">
+ 	LIMIT #{offset},1000
+ 	</if>
+ </select>
+ 
+ <select id="getAll" resultMap="BaseResultMap" >
+    select <include refid="Base_Column_List" /> from `supplier_spgroupid_change_log` limit #{offset}, 1000
+ </select>
+</mapper>

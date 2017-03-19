@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache  updateCheck="false"  name="cornerEhcache">
+
+	<diskStore path="java.io.tmpdir" />
+
+    <defaultCache
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            overflowToDisk="false"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="120"
+            />
+
+    <cache name="passwordRetryCache" 
+    	maxElementsInMemory="500" 
+    	eternal="false"
+        overflowToDisk="false" 
+        timeToLiveSeconds="600"   
+        memoryStoreEvictionPolicy="LRU" />
+        
+    <cache name="phoneMsgCache" 
+    	maxElementsInMemory="500" 
+    	eternal="false"
+        overflowToDisk="false" 
+        timeToLiveSeconds="1800"   
+        memoryStoreEvictionPolicy="LRU" />
+        
+    <cache name="wxTicketCache" 
+    	maxElementsInMemory="5" 
+    	eternal="false"
+        overflowToDisk="false" 
+        timeToLiveSeconds="7000"   
+        memoryStoreEvictionPolicy="LRU" />
+        
+    <cache name="itemCatalogCache" 
+    	maxElementsInMemory="1000" 
+    	eternal="false"
+        overflowToDisk="false" 
+        timeToLiveSeconds="600"   
+        memoryStoreEvictionPolicy="LRU" />
+        
+    <cache name="orderTempCache" 
+    	maxElementsInMemory="10000" 
+    	eternal="false"
+        overflowToDisk="false" 
+        timeToLiveSeconds="600"   
+        memoryStoreEvictionPolicy="LRU" />
+        
+    <cache name="httpRetryCache" 
+    	maxElementsInMemory="10000" 
+    	eternal="false"
+        overflowToDisk="false" 
+        timeToLiveSeconds="6000"   
+        memoryStoreEvictionPolicy="LRU" />
+        
+    <cache name="shiro-activeSessionCache"
+           maxElementsInMemory="10000"
+           overflowToDisk="true"
+           eternal="true"
+           timeToLiveSeconds="0"
+           timeToIdleSeconds="0"
+           diskPersistent="true"
+           diskExpiryThreadIntervalSeconds="600"/>
+
+    <cache name="org.apache.shiro.realm.text.PropertiesRealm-0-accounts"
+           maxElementsInMemory="1000"
+           eternal="true"
+           overflowToDisk="true"/>
+
+</ehcache>

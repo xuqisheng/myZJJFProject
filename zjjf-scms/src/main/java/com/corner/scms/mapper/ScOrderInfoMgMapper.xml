@@ -1,0 +1,1015 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.ScOrderInfoMgMapper">
+
+ <resultMap id="BaseResultMap" type="com.corner.core.beans.ScOrderInfo" extends="com.corner.core.dao.ScOrderInfoMapper.BaseResultMap">
+  </resultMap>
+
+	
+	<!-- 修改订单状态 -->
+	<update id="updateOrderStatus" parameterType="java.util.Map">
+		update
+			MaOrderInfo 
+		<set>
+			<if test="str != null and str == 'shipments'">
+				managerStatus = #{status},
+				warehouseStatus = 1,
+				managerCheckTime = #{publicTime},
+			</if>
+			<if test="str != null and str =='warehousing'">
+				managerStatus = 3,
+				warehouseStatus = #{status},
+				warehouseTime = #{publicTime},
+			</if>
+			<if test="str != null and str == 'dispatch'">
+				warehouseTime = #{publicTime},
+				fistTime = #{publicTime},
+			</if>
+		</set>
+		 where
+		 	id = #{id};
+	 	<!-- 如果采购单入库就把采购单下所有的商品全部入库 -->	
+		 <if test="str != null and str =='warehousing'"> 
+			 <if test="status != null and status == 2">
+			 	UPDATE ScOrderDetail
+				SET STATUS = 1
+				WHERE
+					maOrderInfoId = #{id}
+			 </if>	
+		 </if>	 	
+	</update>
+
+	<!-- 获取经销商订单列表条件 -->
+	
+	
+	
+	<!-- 获取经销商列表条件 -->
+	<sql id="getPageList_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			isDelete = 0 
+		and kfStatus = 3
+		<choose>
+			<when test="queryStatus != null">
+				and managerStatus = #{queryStatus}
+			</when>
+			<otherwise>
+				and managerStatus in (1,2,3)
+			</otherwise>
+		</choose>
+		<if test="managerId != null">
+			AND managerId=#{managerId}
+		</if>	
+		</trim>
+	</sql>
+	<!-- 获取经销商订单列表 -->
+	<select id="getPageList" parameterType="com.corner.scms.beans.ro.sc.MaOrderInfoMgRo"
+		resultType="com.corner.scms.beans.vo.sc.MaOrderInfoMgVo">
+		select * from MaOrderInfo
+		<include refid="getPageList_condition" />
+		<choose>
+			<when test="queryStatus != null and queryStatus==1">
+				order by kfSubmitTime desc
+			</when>
+			<when test="queryStatus != null and queryStatus==2">
+				order by managerCheckTime desc
+			</when>
+			<when test="queryStatus != null and queryStatus==3">
+				order by warehouseTime desc
+			</when>
+			<otherwise>
+				order by managerStatus
+			</otherwise>
+		</choose>
+		<include refid="BasePublicMapper.pageSql"/>
+	</select>
+
+	<!-- 获取列表 总记录数 -->
+	<select id="getPageListSize" parameterType="com.corner.scms.beans.ro.sc.MaOrderInfoMgRo"
+		resultType="int">
+		select count(1) from MaOrderInfo
+		<include refid="getPageList_condition" />
+	</select>
+	
+	<!-- **************************************************************************************************************************** -->
+	<!-- 获取仓库入库订单列表条件 -->
+	<sql id="getWarehouseOrderList_condition">
+		<trim prefix="WHERE" suffixOverrides="AND | OR">
+			isDelete = 0
+			AND kfStatus = 3
+			<choose>
+				<when test="whPayStatus != null">
+					AND whPayStatus = #{whPayStatus}
+				</when>
+				<when test="queryStatus == 2">
+					AND whPayStatus = 1
+					AND warehouseStatus in (2,3,4)
+				</when>
+				<when test="queryStatus != null">
+					AND whPayStatus = 1
+					AND warehouseStatus = #{queryStatus}
+				</when>
+				<otherwise>
+					AND warehouseStatus in (1,2,3,4)
+				</otherwise>
+			</choose>
+			<if test="warehouseId != null">
+				AND warehouseId=#{warehouseId}
+			</if>
+			<if test="orderIdAndSupply != null and orderIdAndSupply != ''">
+				AND (orderId like "%"#{orderIdAndSupply}"%" or managerName like "%"#{orderIdAndSupply}"%") 
+			</if>
+		</trim>
+	</sql>
+	<!-- 获取仓库入库订单列 -->
+	<select id="getWarehouseOrderList" parameterType="com.corner.scms.beans.ro.sc.MaOrderInfoMgRo" resultType="com.corner.scms.beans.vo.sc.MaOrderInfoMgVo">
+		SELECT
+			*
+		FROM
+			MaOrderInfo
+		<include refid="getWarehouseOrderList_condition"/>
+		<choose>
+			<when test="queryStatus != null and queryStatus==1">
+				order by managerCheckTime desc
+			</when>
+			<when test="queryStatus != null and queryStatus==2">
+				order by warehouseTime desc
+			</when>
+			<otherwise>
+				order by warehouseStatus
+			</otherwise>
+		</choose>
+		<include refid="BasePublicMapper.pageSql"/>
+	</select>
+	<!-- 获取入库列表 总记录数 -->
+	<select id="getWarehouseOrderCount" parameterType="com.corner.scms.beans.ro.sc.MaOrderInfoMgRo"
+		resultType="int">
+		select count(1) from MaOrderInfo
+		<include refid="getWarehouseOrderList_condition" />
+	</select>
+	
+	<!-- 仓库打印订单begin -->
+	 <select id="printWarehouseOrder" parameterType="java.util.Map" resultType="com.corner.scms.beans.vo.sc.ScOrderInfoMgVo">
+		SELECT
+			id,
+			orderId,
+			address,
+			supplierName,
+			ordertype,
+			mobile,
+			`status`,
+			supportStatus,
+			consignee,
+			addTime,
+			goodsPrice,
+			outOfPrice,
+			groupName
+		FROM
+			ScOrderInfo
+		WHERE
+			isDelete = 0
+			<if test="orderId != null and orderId != ''">
+				AND orderId = #{orderId}
+			</if>
+	</select>
+	
+	<!-- 根据id查询选中打印的商品 -->
+	<select id="getPrintGoodsById" parameterType="java.util.Map" resultType="com.corner.scms.beans.vo.sc.ScOrderDetailVo">
+		select * from ScOrderDetail where isDelete = 0 
+		<if test="ids != null">
+			and id in 
+			<foreach collection="ids" open="(" close=")" separator="," item="item">
+			 #{item}
+			</foreach>
+		</if>
+		<if test="orderId != null and orderId != ''">
+			and orderId = #{orderId}
+		</if>
+	</select>
+	
+	<!-- 仓库打印订单end -->
+	<sql id="selectWarehouseOrderPageList_condition">
+		FROM
+			ScOrderInfo a
+		JOIN (
+			SELECT
+				*
+			FROM
+				ScOrderDetail
+			WHERE 1=1
+			 	AND	maOrderInfoId in (select id from MaOrderInfo where isDelete = 0 and kfStatus = 3 and warehouseId = #{warehouseId} and warehouseStatus != 1)
+			<if test="status != null">
+				AND status = #{status}
+			</if>
+		) b ON a.orderId = b.orderId
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			a.isDelete = 0
+			AND a.`level` = 1
+			<if test="warehouseId != null">
+				and a.warehouseId = #{warehouseId}
+			</if>
+			<if test="ordertype != null">
+				and a.ordertype = #{ordertype}
+			</if>
+			<if test="supplierName != null">
+				and (a.consignee like CONCAT('%',#{supplierName},'%') or a.mobile  like CONCAT('%',#{supplierName},'%') or a.orderId like CONCAT('%',#{supplierName},'%'))
+			</if>
+		</trim>
+		group by a.orderId
+	</sql>
+	<!-- 查询仓库订单列表 -->
+	<select id="selectWarehouseOrderPageList" parameterType="com.corner.scms.beans.ro.sc.ScOrderInfoMgRo" resultType="com.corner.scms.beans.vo.sc.ScOrderInfoMgVo">
+		SELECT
+			a.id,
+			a.orderId,
+			a.address,
+			a.supplierName,
+			a.ordertype,
+			a.mobile,
+			a.orderPrice,
+			a.freight,
+			a.`status`,
+			a.supportStatus,
+			a.consignee,
+			a.addTime,
+			a.goodsPrice,
+			b.status as goodsStatus
+		<include refid="selectWarehouseOrderPageList_condition"></include>
+		<choose>
+			<when test="status != null">
+				order by supportTime desc
+			</when>
+			<otherwise>
+				order by a.status
+			</otherwise>
+		</choose>
+		<include refid="BasePublicMapper.pageSql"/>
+	</select>
+	<!-- 查询仓库订单列表总条数 -->
+	<select id="selectWarehouseOrderPageListCount" parameterType="com.corner.scms.beans.ro.sc.ScOrderInfoMgRo" resultType="java.lang.Integer">
+		SELECT 
+			count(1) 
+		FROM (
+			SELECT
+				a.id,
+				a.orderId,
+				a.address,
+				a.supplierName,
+				a.ordertype,
+				a.mobile,
+				a.`status`,
+				a.supportStatus,
+				a.consignee,
+				a.addTime,
+				a.goodsPrice,
+				b.status as goodsStatus
+				<include refid="selectWarehouseOrderPageList_condition"/>
+			) a
+		
+	</select>
+	<!-- 仓库配送 -->
+	<!-- 根据id查出采购单的状态 -->
+	<select id="getStatusById" parameterType="java.util.Map" resultType="java.lang.Byte">
+		select warehouseStatus from MaOrderInfo where isDelete=0 and id = (select maOrderInfoId from ScOrderDetail where isDelete=0 and id = #{id} and orderId = #{orderId})
+	</select>
+	<!-- 修改采购单状态的仓库部分 -->
+	<update id="updatePurchaseOrderStatus" parameterType="java.util.Map">
+	 	update MaOrderInfo 
+	 	<set>
+	 		<if test="warehouseStatus != null">
+	 			warehouseStatus = #{warehouseStatus},
+	 		</if>
+	 		<if test="fistTime != null and fistTime != ''">
+	 			fistTime = #{fistTime},
+	 		</if>
+	 	</set>
+	 	<trim prefix="WHERE" prefixOverrides="AND | OR">
+	 		id = (
+				SELECT
+					b.maOrderInfoId
+				FROM
+					(
+					SELECT
+						maOrderInfoId
+					FROM
+						ScOrderDetail
+					WHERE
+						id = #{id}
+					AND orderId = #{orderId}
+					) AS b
+				)
+	 	</trim>
+	</update>
+	
+	<!-- 修改批发商订单的状态 -->
+	<update id="updateSupplierGoodsStatus" parameterType="java.util.Map">
+		update ScOrderInfo 
+		<set>
+			<if test="status != null">
+	 			status = #{status},
+	 		</if>
+	 		<if test="fistTime != null and fistTime != ''">
+	 			fistTime = #{fistTime},
+	 		</if>
+		</set>
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			and orderId=#{orderId}
+		</trim>
+	</update>
+	<!-- **************************************************************************************************************************** -->
+	
+	
+	
+	
+	<!-- 查询出需要合单的子订单 ,根据orderId2 和 状态为启用 的进行筛选-->
+	<select id="findNeedSingle" resultType="com.corner.core.beans.ScOrderDetail">
+		select itemId from ScOrderDetail where orderId2 is null and status = '1' group by itemId
+	</select>
+	<!-- 查询出需要合单的子订单 通过itemId -->
+	<select id="findDetailByItemId" parameterType="java.lang.String" resultType="com.corner.core.beans.ScOrderDetail">
+		SELECT
+		id,
+		orderId,
+		orderId2,
+		itemId,
+		barCode,
+		brand,
+		NAME,
+		spec,
+		img,
+		sum(quantity) AS quantity,
+		price,
+		sum(totalPrice) AS totalPrice,
+		areaId,
+		areaPrice,
+		areaName,
+		sum(zjjfPrice) AS zjjfPrice,
+		sum(marketPrice) AS marketPrice,
+		sum(maoli) AS maoli,
+		fee,
+		spId,
+		scmsGroupId,
+		managerId,
+		remark,
+		youHui,
+		addTime,
+		isDelete,
+		`restrict`,
+		`status`
+	FROM
+		ScOrderDetail
+	WHERE
+		orderId2 IS NULL
+	AND isDelete = '0' 
+	AND `status` = '1'
+	AND itemId = #{itemId}
+	AND orderId in (select orderId from ScOrderInfo where supportStatus='1' and isSingle = '0' and isDelete ='0' and `status`!='6')
+	GROUP BY itemId
+	</select>
+	
+	<select id="getScOrderInfo" parameterType="java.util.HashMap" resultMap="com.corner.core.dao.ScOrderInfoMapper.BaseResultMap">
+	   SELECT
+			*
+		FROM
+			ScOrderInfo
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			1=1 
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="orderId != null">
+				and orderId = #{orderId}
+			</if>
+		</trim>
+	</select>
+	
+	
+   <select id="selectScOrderInfoByManagerIdAndScmsGroupId" parameterType="com.corner.core.beans.ScOrderDetail" resultMap="BaseResultMap">
+      select * from ScOrderInfo where managerId = #{managerId} and groupId = #{scmsGroupId} and level=2 and status=6
+   </select>
+
+   <select id="findMyOrderInfoSize" resultType="java.lang.Integer" parameterType="com.corner.scms.beans.ro.sc.ScOrderInfoMgRo">
+   		SELECT count(1)
+			      <include refid="conditions_findMyOrder"></include>
+   </select >
+   
+   <sql id="conditions_findMyOrder">
+   		FROM
+			ScOrderInfo
+		WHERE 
+			ScOrderInfo.isDelete = 0
+			<if test="supplierId != null" >
+        		AND ScOrderInfo.supplierId =#{supplierId}
+        	</if>
+			<if test="orderId != null" >
+        		AND ScOrderInfo.orderId =#{orderId}
+        	</if>
+        	<if test="state == 1" >
+        		AND ScOrderInfo.status =1
+        	</if>	
+        	<if test="state == 2" >
+        		AND (ScOrderInfo.status =2 or ScOrderInfo.status =3)
+        	</if>
+        	 and level = 1
+   </sql>
+   
+   <select id="findMyOrderInfo" resultType="com.corner.scms.beans.vo.sc.ScOrderInfoVo" parameterType="com.corner.scms.beans.ro.sc.ScOrderInfoMgRo">
+		SELECT
+		   *
+		<include refid="conditions_findMyOrder"></include>
+		ORDER BY addTime DESC	       
+	 <include refid="BasePublicMapper.pageSql" />       
+   </select >
+   
+   <select id="getAllOrderInfo" resultType="com.corner.scms.beans.vo.sc.ScOrderInfoVo" parameterType="com.corner.scms.beans.ro.sc.ScOrderInfoMgRo">
+     SELECT
+		    *
+		FROM
+			ScOrderInfo
+		WHERE 
+			1=1
+			<if test="supplierId != null" >
+        		AND ScOrderInfo.supplierId =#{supplierId}
+        	</if>
+			<if test="orderId != null" >
+        		AND ScOrderInfo.orderId =#{orderId}
+        	</if>
+        	<if test="state == 1" >
+        		AND ScOrderInfo.status =1
+        	</if>	
+        	<if test="state == 2" >
+        		AND (ScOrderInfo.status =2 or ScOrderInfo.status =3)
+        	</if>
+		ORDER BY addTime DESC	       
+	 <include refid="BasePublicMapper.pageSql" />
+   </select>
+   
+   
+	<select id="findMyorderInfoByRo" parameterType="com.corner.scms.beans.ro.sc.ScOrderInfoMgRo" resultType="com.corner.core.beans.ScOrderInfo">
+			select * from ScOrderInfo where supplierId=#{supplierId} and orderId=#{orderId}
+	</select>
+	
+	<update id="updateStatesInfo" parameterType="com.corner.scms.beans.ro.sc.ScOrderInfoMgRo">
+		update ScOrderInfo set status=4 where orderId=#{orderId}
+	</update>
+	
+	<update id="updateStatesDetail" parameterType="com.corner.scms.beans.ro.sc.ScOrderInfoMgRo">
+		update ScOrderDetail set status=3 where orderId=#{orderId}
+	</update>
+	
+	<update id="updateStatesDetailByid" parameterType="com.corner.scms.beans.ro.sc.ScOrderInfoMgRo">
+		update ScOrderDetail set status=3 where id=#{id}
+	</update>
+	
+	<update id="deleteMyOrderinfo" parameterType="com.corner.scms.beans.ro.sc.ScOrderInfoMgRo">
+			update ScOrderInfo set isDelete=1 where orderId=#{orderId}
+ 	</update>
+ 	
+ 	<update id="deletedetail" parameterType="com.corner.scms.beans.ro.sc.ScOrderInfoMgRo">
+ 			update ScOrderDetail set isDelete=1 where orderId=#{orderId}
+ 	</update>
+   
+   <update id="updatePaymentStatus" parameterType="com.corner.core.beans.ScOrderInfo">
+      update ScOrderInfo
+      <set>
+        <if test="tradeNo != null" >
+        tradeNo = #{tradeNo,jdbcType=VARCHAR},
+        </if>
+        <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+        </if>
+        <if test="supportStatus != null" >
+        supportStatus = #{supportStatus,jdbcType=TINYINT},
+        </if>
+        <if test="supportmetho != null" >
+        supportmetho = #{supportmetho,jdbcType=TINYINT},
+        </if>
+        <if test="supportTime != null" >
+        supportTime = #{supportTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="isUsedBalance != null" >
+        isUsedBalance = #{isUsedBalance,jdbcType=BIT},
+        </if>
+        <if test="balanceUsedNum != null" >
+        balanceUsedNum = #{balanceUsedNum,jdbcType=DECIMAL},
+        </if>
+        <if test="thirdPaymentNum != null" >
+        thirdPaymentNum = #{thirdPaymentNum,jdbcType=DECIMAL},
+        </if>
+      </set>
+      where id = #{id,jdbcType=VARCHAR}
+   </update>
+   
+   <select id="getAllNoPayOrderInfoList"  resultMap="BaseResultMap">
+    SELECT
+		*
+	FROM
+		ScOrderInfo
+	WHERE
+		`status` = 1 AND level = 1
+	AND HOUR (timediff(NOW(), addTime)) > 24
+	<!-- AND MINUTE (timediff(NOW(), addTime)) > 5 -->
+	AND isDelete = 0
+   </select>
+
+  <delete id="deleteNoPayOrderInfo" parameterType="com.corner.core.beans.ScOrderInfo">
+   update ScOrderInfo set isDelete=1,status=5 where id = #{id}
+  </delete>
+  
+  <update id="updateOrderPrice" parameterType="com.corner.core.beans.ScOrderInfo">
+   update ScOrderInfo set goodsPrice = #{goodsPrice},orderPrice = #{orderPrice},freight = #{freight}
+   where id = #{id}
+  </update>
+  <select id="selectByForWxTradeNo" parameterType="java.lang.String" resultType="com.corner.core.beans.ScOrderInfo">
+     select * from ScOrderInfo where isDelete=0 and forWxTradeNo = #{out_trade_no,jdbcType=VARCHAR}    
+  </select>  
+  
+  
+  <select id="getOrderByOrderId" parameterType="java.lang.String" resultType="com.corner.core.beans.ScOrderInfo">
+    select * from ScOrderInfo where orderId = #{orderId,jdbcType=VARCHAR}
+  </select>
+  
+  <update id="updateLeve2OrderStatus" parameterType="com.corner.core.beans.ScOrderInfo">
+    update ScOrderInfo set `status`=13 where id = #{id}
+  </update>
+  
+  
+  
+  <update id="updateThirdPayment" parameterType="com.corner.core.beans.ScOrderInfo">
+     update ScOrderInfo 
+     set thirdPaymentNum = #{thirdPaymentNum},
+     thirdPayRealNum=#{thirdPayRealNum},
+     thirdPayFee=#{thirdPayFee},
+     outOfPrice=orderPrice+thirdPayFee 
+     where id = #{id} 
+  </update>
+  
+  <update id="updateMarketPrice" parameterType="com.corner.core.beans.ScOrderInfo">
+     update ScOrderInfo set markePrice =#{markePrice} where id = #{id}
+  </update>
+  
+  <select id="findSonInfosByPid" parameterType="java.util.Map" resultType="com.corner.core.beans.ScOrderInfo">
+  		select * from ScOrderInfo where pId=#{pId} 
+  		<if test="level != null and level != ''">
+  			and level = #{level}
+  		</if>
+  </select>
+  
+  <insert id="batchSaveLevel2" parameterType="java.util.ArrayList">
+    <foreach collection="list" separator=";" index="index" item="item">
+    insert into ScOrderInfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="item.id != null" >
+        id,
+      </if>
+      <if test="item.pId != null" >
+        pId,
+      </if>
+      <if test="item.orderId != null" >
+        orderId,
+      </if>
+      <if test="item.maOrderInfoId != null" >
+        maOrderInfoId,
+      </if>
+      <if test="item.addTime != null" >
+        addTime,
+      </if>
+      <if test="item.orderPrice != null" >
+        orderPrice,
+      </if>
+      <if test="item.goodsPrice != null" >
+        goodsPrice,
+      </if>
+      <if test="item.markePrice != null" >
+        markePrice,
+      </if>
+      <if test="item.outOfPrice != null" >
+        outOfPrice,
+      </if>
+      <if test="item.rebate != null" >
+        rebate,
+      </if>
+      <if test="item.coupon != null" >
+        coupon,
+      </if>
+      <if test="item.couponId != null" >
+        couponId,
+      </if>
+      <if test="item.kfId != null" >
+        kfId,
+      </if>
+      <if test="item.kfName != null" >
+        kfName,
+      </if>
+      <if test="item.kfnote != null" >
+        kfnote,
+      </if>
+      <if test="item.kfStatus != null" >
+        kfStatus,
+      </if>
+      <if test="item.kfCheckTime != null" >
+        kfCheckTime,
+      </if>
+      <if test="item.supplierId != null" >
+        supplierId,
+      </if>
+      <if test="item.supplierName != null" >
+        supplierName,
+      </if>
+      <if test="item.supplierRemark != null" >
+        supplierRemark,
+      </if>
+      <if test="item.groupId != null" >
+        groupId,
+      </if>
+      <if test="item.groupName != null" >
+        groupName,
+      </if>
+      <if test="item.consignee != null" >
+        consignee,
+      </if>
+      <if test="item.mobile != null" >
+        mobile,
+      </if>
+      <if test="item.userTel != null" >
+        userTel,
+      </if>
+      <if test="item.address != null" >
+        address,
+      </if>
+      <if test="item.status != null" >
+        status,
+      </if>
+      <if test="item.evaluation != null" >
+        evaluation,
+      </if>
+      <if test="item.supportStatus != null" >
+        supportStatus,
+      </if>
+      <if test="item.supportmetho != null" >
+        supportmetho,
+      </if>
+      <if test="item.supportTime != null" >
+        supportTime,
+      </if>
+      <if test="item.ordertype != null" >
+        ordertype,
+      </if>
+      <if test="item.closemsg != null" >
+        closemsg,
+      </if>
+      <if test="item.gaveTime != null" >
+        gaveTime,
+      </if>
+      <if test="item.managerId != null" >
+        managerId,
+      </if>
+      <if test="item.managerTel != null" >
+        managerTel,
+      </if>
+      <if test="item.managerName != null" >
+        managerName,
+      </if>
+      <if test="item.spStatus != null" >
+        spStatus,
+      </if>
+      <if test="item.spRemark != null" >
+        spRemark,
+      </if>
+      <if test="item.spCheckTime != null" >
+        spCheckTime,
+      </if>
+      <if test="item.printTime != null" >
+        printTime,
+      </if>
+      <if test="item.deliveryTime != null" >
+        deliveryTime,
+      </if>
+      <if test="item.getOrderTime != null" >
+        getOrderTime,
+      </if>
+      <if test="item.ackTime != null" >
+        ackTime,
+      </if>
+      <if test="item.ackCode != null" >
+        ackCode,
+      </if>
+      <if test="item.isStar != null" >
+        isStar,
+      </if>
+      <if test="item.sendDate != null" >
+        sendDate,
+      </if>
+      <if test="item.fistTime != null" >
+        fistTime,
+      </if>
+      <if test="item.endTime != null" >
+        endTime,
+      </if>
+      <if test="item.qrcodeurl != null" >
+        qrcodeurl,
+      </if>
+      <if test="item.isRemind != null" >
+        isRemind,
+      </if>
+      <if test="item.zmaoli != null" >
+        zmaoli,
+      </if>
+      <if test="item.zfee != null" >
+        zfee,
+      </if>
+      <if test="item.warehouseId != null" >
+        warehouseId,
+      </if>
+      <if test="item.warehouseName != null" >
+        warehouseName,
+      </if>
+      <if test="item.warehouseTime != null" >
+        warehouseTime,
+      </if>
+      <if test="item.forWxTradeNo != null" >
+        forWxTradeNo,
+      </if>
+      <if test="item.acId != null" >
+        acId,
+      </if>
+      <if test="item.acStatus != null" >
+        acStatus,
+      </if>
+      <if test="item.acRemark != null" >
+        acRemark,
+      </if>
+      <if test="item.acCheckTime != null" >
+        acCheckTime,
+      </if>
+      <if test="item.acSettleTime != null" >
+        acSettleTime,
+      </if>
+      <if test="item.acPayTime != null" >
+        acPayTime,
+      </if>
+      <if test="item.level != null" >
+        level,
+      </if>
+      <if test="item.freight != null" >
+        freight,
+      </if>
+      <if test="item.jsType != null" >
+        jsType,
+      </if>
+      <if test="item.isDelete != null" >
+        isDelete,
+      </if>
+      <if test="item.balandeId != null" >
+        balandeId,
+      </if>
+      <if test="item.balanceUsedNum != null" >
+        balanceUsedNum,
+      </if>
+      <if test="item.isUsedBalance != null" >
+        isUsedBalance,
+      </if>
+      <if test="item.tradeNo != null" >
+        tradeNo,
+      </if>
+      <if test="item.thirdPaymentNum != null" >
+        thirdPaymentNum,
+      </if>
+      <if test="item.thirdPayRealNum != null" >
+        thirdPayRealNum,
+      </if>
+      <if test="item.thirdPayFee != null" >
+        thirdPayFee,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="item.id != null" >
+        #{item.id,jdbcType=VARCHAR},
+      </if>
+      <if test="item.pId != null" >
+        #{item.pId,jdbcType=VARCHAR},
+      </if>
+      <if test="item.orderId != null" >
+        #{item.orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="item.maOrderInfoId != null" >
+        #{item.maOrderInfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="item.addTime != null" >
+        #{item.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item.orderPrice != null" >
+        #{item.orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="item.goodsPrice != null" >
+        #{item.goodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="item.markePrice != null" >
+        #{item.markePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="item.outOfPrice != null" >
+        #{item.outOfPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="item.rebate != null" >
+        #{item.rebate,jdbcType=DECIMAL},
+      </if>
+      <if test="item.coupon != null" >
+        #{item.coupon,jdbcType=DECIMAL},
+      </if>
+      <if test="item.couponId != null" >
+        #{item.couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="item.kfId != null" >
+        #{item.kfId,jdbcType=VARCHAR},
+      </if>
+      <if test="item.kfName != null" >
+        #{item.kfName,jdbcType=VARCHAR},
+      </if>
+      <if test="item.kfnote != null" >
+        #{item.kfnote,jdbcType=VARCHAR},
+      </if>
+      <if test="item.kfStatus != null" >
+        #{item.kfStatus,jdbcType=TINYINT},
+      </if>
+      <if test="item.kfCheckTime != null" >
+        #{item.kfCheckTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item.supplierId != null" >
+        #{item.supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="item.supplierName != null" >
+        #{item.supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="item.supplierRemark != null" >
+        #{item.supplierRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="item.groupId != null" >
+        #{item.groupId,jdbcType=INTEGER},
+      </if>
+      <if test="item.groupName != null" >
+        #{item.groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="item.consignee != null" >
+        #{item.consignee,jdbcType=VARCHAR},
+      </if>
+      <if test="item.mobile != null" >
+        #{item.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="item.userTel != null" >
+        #{item.userTel,jdbcType=VARCHAR},
+      </if>
+      <if test="item.address != null" >
+        #{item.address,jdbcType=VARCHAR},
+      </if>
+      <if test="item.status != null" >
+        #{item.status,jdbcType=TINYINT},
+      </if>
+      <if test="item.evaluation != null" >
+        #{item.evaluation,jdbcType=TINYINT},
+      </if>
+      <if test="item.supportStatus != null" >
+        #{item.supportStatus,jdbcType=TINYINT},
+      </if>
+      <if test="item.supportmetho != null" >
+        #{item.supportmetho,jdbcType=TINYINT},
+      </if>
+      <if test="item.supportTime != null" >
+        #{item.supportTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item.ordertype != null" >
+        #{item.ordertype,jdbcType=TINYINT},
+      </if>
+      <if test="item.closemsg != null" >
+        #{item.closemsg,jdbcType=VARCHAR},
+      </if>
+      <if test="item.gaveTime != null" >
+        #{item.gaveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item.managerId != null" >
+        #{item.managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="item.managerTel != null" >
+        #{item.managerTel,jdbcType=VARCHAR},
+      </if>
+      <if test="item.managerName != null" >
+        #{item.managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="item.spStatus != null" >
+        #{item.spStatus,jdbcType=TINYINT},
+      </if>
+      <if test="item.spRemark != null" >
+        #{item.spRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="item.spCheckTime != null" >
+        #{item.spCheckTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item.printTime != null" >
+        #{item.printTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item.deliveryTime != null" >
+        #{item.deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item.getOrderTime != null" >
+        #{item.getOrderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item.ackTime != null" >
+        #{item.ackTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item.ackCode != null" >
+        #{item.ackCode,jdbcType=SMALLINT},
+      </if>
+      <if test="item.isStar != null" >
+        #{item.isStar,jdbcType=TINYINT},
+      </if>
+      <if test="item.sendDate != null" >
+        #{item.sendDate,jdbcType=DATE},
+      </if>
+      <if test="item.fistTime != null" >
+        #{item.fistTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item.endTime != null" >
+        #{item.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item.qrcodeurl != null" >
+        #{item.qrcodeurl,jdbcType=VARCHAR},
+      </if>
+      <if test="item.isRemind != null" >
+        #{item.isRemind,jdbcType=TINYINT},
+      </if>
+      <if test="item.zmaoli != null" >
+        #{item.zmaoli,jdbcType=DECIMAL},
+      </if>
+      <if test="item.zfee != null" >
+        #{item.zfee,jdbcType=DECIMAL},
+      </if>
+      <if test="item.warehouseId != null" >
+        #{item.warehouseId,jdbcType=VARCHAR},
+      </if>
+      <if test="item.warehouseName != null" >
+        #{item.warehouseName,jdbcType=VARCHAR},
+      </if>
+      <if test="item.warehouseTime != null" >
+        #{item.warehouseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item.forWxTradeNo != null" >
+        #{item.forWxTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="item.acId != null" >
+        #{item.acId,jdbcType=VARCHAR},
+      </if>
+      <if test="item.acStatus != null" >
+        #{item.acStatus,jdbcType=INTEGER},
+      </if>
+      <if test="item.acRemark != null" >
+        #{item.acRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="item.acCheckTime != null" >
+        #{item.acCheckTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item.acSettleTime != null" >
+        #{item.acSettleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item.acPayTime != null" >
+        #{item.acPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item.level != null" >
+        #{item.level,jdbcType=TINYINT},
+      </if>
+      <if test="item.freight != null" >
+        #{item.freight,jdbcType=DECIMAL},
+      </if>
+      <if test="item.jsType != null" >
+        #{item.jsType,jdbcType=TINYINT},
+      </if>
+      <if test="item.isDelete != null" >
+        #{item.isDelete,jdbcType=BIT},
+      </if>
+      <if test="item.balandeId != null" >
+        #{item.balandeId,jdbcType=BIGINT},
+      </if>
+      <if test="item.balanceUsedNum != null" >
+        #{item.balanceUsedNum,jdbcType=DECIMAL},
+      </if>
+      <if test="item.isUsedBalance != null" >
+        #{item.isUsedBalance,jdbcType=BIT},
+      </if>
+      <if test="item.tradeNo != null" >
+        #{item.tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="item.thirdPaymentNum != null" >
+        #{item.thirdPaymentNum,jdbcType=DECIMAL},
+      </if>
+      <if test="item.thirdPayRealNum != null" >
+        #{item.thirdPayRealNum,jdbcType=DECIMAL},
+      </if>
+      <if test="item.thirdPayFee != null" >
+        #{item.thirdPayFee,jdbcType=DECIMAL},
+      </if>
+    </trim>
+    </foreach>
+  </insert>
+  
+  
+  <select id="getLevel2List" parameterType="com.corner.core.beans.ScOrderInfo" resultMap="BaseResultMap">
+    select * from ScOrderInfo where pId = #{id} and level = 2
+  </select>
+</mapper>

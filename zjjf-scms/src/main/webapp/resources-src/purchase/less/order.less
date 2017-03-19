@@ -1,0 +1,138 @@
+@import 'global-comm';
+@import 'footer-comm';
+@import 'order-comm';
+
+.nav {
+    margin-top: 10px;
+    .li {
+            height: 28px;
+            line-height: 28px;
+            display: inline-block;
+        margin-right: 24px;
+        cursor: pointer;
+        &:hover {
+            color: @main-color;
+        }
+    }
+    .active {
+        border-bottom: 2px solid @main-color;
+        color: @main-color;
+    }
+}
+.goods-list {
+    font-size: 12px;
+    // width
+    .w-goods-info {
+        float: left;
+        width: 600px;
+        box-sizing: border-box;
+        display: block;
+    }
+    .w-goods-price {
+        float: left;
+        width: 119px;
+        box-sizing: border-box;
+        display: block;
+        text-align: center;
+    }
+    .list-head {
+        height: 50px;
+        line-height: 50px;
+        background: #f4f5f8;
+    }
+    .list-body {
+        margin-top: 10px;
+        box-sizing: border-box;
+        border: 1px solid #e7e8eb;
+        .clearfix();
+        .list-title {
+            padding: 0 20px;
+            box-sizing: border-box;
+            .size(100%,40px);
+            line-height: 40px;
+            background: #f4f5f8;
+            .icon-del {
+                float: right;
+                margin-top: 12px;
+                .size(16px);
+                display: inline-block;
+                background: url(../images/del-order.png) no-repeat center center;
+                cursor: pointer;
+            }
+        }
+        .list-box {
+            float: left;
+            .list-box-item {
+                padding: 10px 0;
+                box-sizing: border-box;
+                border-top: 1px solid   #e7e8eb;
+                .clearfix();
+                .name {
+                    position: relative;
+                    height: 80px;
+                    .pic {
+                        float: left;
+                        margin-left: 20px;
+                        border: 1px solid #eee;
+                    }
+                    .text {
+                        float: left;
+                        margin-left: 10px;
+                        width: 485px;
+                        height: 55px;
+                        display: block;
+                        overflow: hidden;
+                    }
+                    .info {
+                        float: left;
+                        margin-left: 10px;
+                        color: #aaa
+                    }
+                }
+                .price {
+                    line-height: 80px;
+                    font-size: 14px;
+                    font-weight: bold;
+                    color: #333;
+                }
+                .number {
+                    line-height: 80px;
+                }
+            }
+        }
+        .list-totleprice {
+            float: left;
+            margin-left: -1px;
+            padding-top: 24px;
+            border-left: 1px solid #e7e8eb;
+            height: 100px;
+            font-size: 12px;
+            color: #aaa;
+            text-align: center;
+            .clearfix();
+            .price {
+                font-size: 14px;
+                font-weight: bold;
+                color: @main-color;
+            }
+        }
+        .list-operate {
+            float: left;
+            margin-left: -1px;
+            padding-top: 24px;
+            border-left: 1px solid #e7e8eb;
+            height: 100px;
+            text-align: center;
+            .clearfix();
+            a {
+                margin-top: 6px;
+                display: block;
+                text-decoration: none;
+                color: #007fbf;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}

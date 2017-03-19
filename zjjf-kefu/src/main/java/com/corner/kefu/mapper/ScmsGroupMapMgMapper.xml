@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.ScmsGroupMapMgMapper" >
+	<!-- 删除关系，通过用户ID -->
+	<delete id="deleteByManagerId" parameterType="java.lang.String" >
+		delete from ScmsGroupMap where managerId = #{managerId,jdbcType=VARCHAR}
+  	</delete>
+  	<!-- 查询关系信息，通过用户ID -->
+  	<select id="findByManagerId" parameterType="java.lang.String"  resultType="com.corner.core.beans.ScmsGroupMapKey">
+		select * from ScmsGroupMap
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			managerId = #{managerId}
+		</trim>
+	</select>
+</mapper>

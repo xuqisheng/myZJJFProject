@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.corner.ErpPurchaseStockInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.corner.ErpPurchaseStockInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="pId" property="pId" jdbcType="VARCHAR" />
+    <result column="pOrderId" property="pOrderId" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="itemPrice" property="itemPrice" jdbcType="DECIMAL" />
+    <result column="itemQuantity" property="itemQuantity" jdbcType="SMALLINT" />
+    <result column="whId" property="whId" jdbcType="VARCHAR" />
+    <result column="whName" property="whName" jdbcType="VARCHAR" />
+    <result column="addUser" property="addUser" jdbcType="VARCHAR" />
+    <result column="addUserName" property="addUserName" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="taskTime" property="taskTime" jdbcType="TIMESTAMP" />
+    <result column="managerId" property="managerId" jdbcType="VARCHAR" />
+    <result column="managerName" property="managerName" jdbcType="VARCHAR" />
+    <result column="managerCode" property="managerCode" jdbcType="VARCHAR" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="supplierName" property="supplierName" jdbcType="VARCHAR" />
+    <result column="checkUser" property="checkUser" jdbcType="VARCHAR" />
+    <result column="checkUserName" property="checkUserName" jdbcType="VARCHAR" />
+    <result column="checkTime" property="checkTime" jdbcType="TIMESTAMP" />
+    <result column="checkStatus" property="checkStatus" jdbcType="TINYINT" />
+    <result column="level" property="level" jdbcType="TINYINT" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="settleStatus" property="settleStatus" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pId, pOrderId, orderId, itemPrice, itemQuantity, whId, whName, addUser, addUserName, 
+    addTime, taskTime, managerId, managerName, managerCode, supplierId, supplierName, 
+    checkUser, checkUserName, checkTime, checkStatus, level, remark, settleStatus, status, 
+    isDelete
+  </sql>
+ 
+  <select id="getByMap" resultType="com.zjjf.analysis.beans.analysis.corner.ErpPurchaseStockInfo" parameterType="java.util.Map">
+  	SELECT <include refid="Base_Column_List" /> 
+  	FROM ERPPurchaseStockInfo 
+  	<where>
+  		<if test="managerId != null">and managerId = #{managerId}</if>
+  		<if test="supplierId != null">and supplierId = #{supplierId}</if>
+  		<if test="addTimeBegin != null">and DATE_FORMAT(ADDTIME, '%Y%m%d') &gt;= #{addTimeBegin}</if>
+  		<if test="addTimeEnd != null">and DATE_FORMAT(ADDTIME, '%Y%m%d') &lt;= #{addTimeEnd}</if>
+  		<if test="pOrderId != null">and pOrderId = #{pOrderId}</if>
+  	</where>
+  </select>
+  
+  <select id="getByManagerIdSupplierId" resultType="com.zjjf.analysis.beans.analysis.corner.ErpPurchaseStockInfo">
+  	select  
+  		itemPrice, itemQuantity from ERPPurchaseStockInfo where managerId=#{managerId} and supplierId=#{supplierId} 
+  	and pOrderId in 
+       <foreach collection="orderIdList" index="index" item="item" open="(" separator="," close=")">
+         #{item}
+       </foreach> 
+  </select>
+  
+  <select id="getByOrderId" resultType="com.zjjf.analysis.beans.analysis.corner.ErpPurchaseStockInfo">
+  	select  id, pId, pOrderId, orderId, itemPrice, itemQuantity, whId, whName, addUser, addUserName, 
+    addTime, taskTime, managerId, managerName, managerCode, supplierId, supplierName, 
+    checkUser, checkUserName, checkTime, checkStatus, level, remark, settleStatus, status, isDelete,
+      case
+	    when `status` = 0
+	    then '未结算'
+	    when `status` = 1
+	    then '结算中'
+	    when `status` = 2
+	    then '已结算'
+	    else '' 
+	   end as "settleStatusName"
+     from  ERPPurchaseStockInfo where orderId = #{orderId}
+  </select>
+  
+</mapper>

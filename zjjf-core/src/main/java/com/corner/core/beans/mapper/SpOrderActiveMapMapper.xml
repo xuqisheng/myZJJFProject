@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SpOrderActiveMapMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpOrderActiveMap" >
+    <result column="fOrderId" property="fOrderId" jdbcType="VARCHAR" />
+    <result column="sOrderId" property="sOrderId" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="spVoucherActiveId" property="spVoucherActiveId" jdbcType="INTEGER" />
+    <result column="rebeatMoney" property="rebeatMoney" jdbcType="DECIMAL" />
+    <result column="rebeatSp" property="rebeatSp" jdbcType="DECIMAL" />
+    <result column="rebeatSp2Sp" property="rebeatSp2Sp" jdbcType="DECIMAL" />
+    <result column="rebeatSp2Plat" property="rebeatSp2Plat" jdbcType="DECIMAL" />
+    <result column="rebatePlat" property="rebatePlat" jdbcType="DECIMAL" />
+    <result column="spId" property="spId" jdbcType="VARCHAR" />
+    <result column="plantHalve" property="plantHalve" jdbcType="DOUBLE" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <insert id="insert" parameterType="com.corner.core.beans.SpOrderActiveMap" >
+    insert into SpOrderActiveMap (fOrderId, sOrderId, level, 
+      spVoucherActiveId, rebeatMoney, rebeatSp, 
+      rebeatSp2Sp, rebeatSp2Plat, rebatePlat, 
+      spId, plantHalve, storeId, 
+      time, addTime)
+    values (#{fOrderId,jdbcType=VARCHAR}, #{sOrderId,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, 
+      #{spVoucherActiveId,jdbcType=INTEGER}, #{rebeatMoney,jdbcType=DECIMAL}, #{rebeatSp,jdbcType=DECIMAL}, 
+      #{rebeatSp2Sp,jdbcType=DECIMAL}, #{rebeatSp2Plat,jdbcType=DECIMAL}, #{rebatePlat,jdbcType=DECIMAL}, 
+      #{spId,jdbcType=VARCHAR}, #{plantHalve,jdbcType=DOUBLE}, #{storeId,jdbcType=INTEGER}, 
+      #{time,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SpOrderActiveMap" >
+    insert into SpOrderActiveMap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fOrderId != null" >
+        fOrderId,
+      </if>
+      <if test="sOrderId != null" >
+        sOrderId,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="spVoucherActiveId != null" >
+        spVoucherActiveId,
+      </if>
+      <if test="rebeatMoney != null" >
+        rebeatMoney,
+      </if>
+      <if test="rebeatSp != null" >
+        rebeatSp,
+      </if>
+      <if test="rebeatSp2Sp != null" >
+        rebeatSp2Sp,
+      </if>
+      <if test="rebeatSp2Plat != null" >
+        rebeatSp2Plat,
+      </if>
+      <if test="rebatePlat != null" >
+        rebatePlat,
+      </if>
+      <if test="spId != null" >
+        spId,
+      </if>
+      <if test="plantHalve != null" >
+        plantHalve,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fOrderId != null" >
+        #{fOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="sOrderId != null" >
+        #{sOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="spVoucherActiveId != null" >
+        #{spVoucherActiveId,jdbcType=INTEGER},
+      </if>
+      <if test="rebeatMoney != null" >
+        #{rebeatMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="rebeatSp != null" >
+        #{rebeatSp,jdbcType=DECIMAL},
+      </if>
+      <if test="rebeatSp2Sp != null" >
+        #{rebeatSp2Sp,jdbcType=DECIMAL},
+      </if>
+      <if test="rebeatSp2Plat != null" >
+        #{rebeatSp2Plat,jdbcType=DECIMAL},
+      </if>
+      <if test="rebatePlat != null" >
+        #{rebatePlat,jdbcType=DECIMAL},
+      </if>
+      <if test="spId != null" >
+        #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="plantHalve != null" >
+        #{plantHalve,jdbcType=DOUBLE},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

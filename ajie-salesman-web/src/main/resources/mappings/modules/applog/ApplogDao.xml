@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.corner.salesman.modules.applog.dao.ApplogDao">
+    
+	<sql id="applogColumns">
+		a.logId AS "logId",
+		a.errorMsg AS "errorMsg",
+		a.errorTime AS "errorTime",
+		a.deviceType AS "deviceType",
+		a.version AS "version",
+		a.createTime AS "createTime",
+		a.createBy AS "createBy"
+	</sql>
+	
+	<sql id="applogJoins">
+	</sql>
+    
+	<select id="get" resultType="Applog">
+		SELECT 
+			<include refid="applogColumns"/>
+		FROM tbl_device_error_log_t a
+		<include refid="applogJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Applog">
+	select
+		t.logId,
+			u.mobile,
+			u.userName,
+			u.deviceUUID,
+			u.deviceName,
+			CONCAT(left(t.errorMsg,100),'...') errorMsg,
+			t.errorTime,
+			t.createTime,
+			t.version
+		FROM tbl_device_error_log_t t
+		LEFT JOIN salesman u ON t.createBy = u.id
+		WHERE 1 = 1
+		<include refid="applogJoins"/>
+		<where>
+			<if test="logId != null and logId != ''">
+				AND u.mobile LIKE 
+					<if test="dbName == 'oracle'">'%'||#{mobile}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{mobile}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{mobile},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findErrorLogList" resultType="Applog">
+		SELECT
+			t.logId,
+			u.mobile,
+			u.userName,
+			u.deviceUUID,
+			u.deviceName,
+			t.errorMsg,
+			t.errorTime,
+			t.createTime,
+			t.version
+		FROM tbl_device_error_log_t t
+		LEFT JOIN salesman u ON t.createBy = u.id
+		WHERE 1 = 1
+	    <if test="userName !=null and userName!=''">
+	    	AND (u.userName like CONCAT('%',#{userName},'%') or u.mobile like CONCAT('%',#{userName},'%'))
+	    </if>
+	    order by t.createTime desc
+	</select>
+	
+	
+	<select id="findAllList" resultType="Applog">
+		SELECT 
+			<include refid="applogColumns"/>
+		FROM tbl_device_error_log_t a
+		<include refid="applogJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tbl_device_error_log_t(
+			logId,
+			errorMsg,
+			errorTime,
+			deviceType,
+			version,
+			createTime,
+			createBy
+		) VALUES (
+			#{logId},
+			#{errorMsg},
+			#{errorTime},
+			#{deviceType},
+			#{version},
+			#{createTime},
+			#{createBy}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tbl_device_error_log_t SET 	
+			logId = #{logId},
+			errorMsg = #{errorMsg},
+			errorTime = #{errorTime},
+			deviceType = #{deviceType},
+			version = #{version},
+			createTime = #{createTime},
+			createBy = #{createBy}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM tbl_device_error_log_t
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

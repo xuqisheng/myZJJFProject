@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.FinWalletLogMgMapper" >
+  
+  
+  <sql id="pageSql">
+   limit #{pageIndex},#{pageSize}
+  </sql>
+  
+  <sql id="getWalletLog_condition">
+	  FROM
+		FinWalletLog a
+	LEFT JOIN SpOrderInfo b ON a.voucherMain = b.pId
+	AND a.voucherSub = b.id
+	WHERE 1=1
+	   AND(
+		a.payerWalletId = #{id}
+	   OR a.geterWalletId = #{id}
+	   )
+	<if test="startTime!=null">
+	   AND a.addTime <![CDATA[>=]]> #{startTime} 
+	</if>
+	<if test="endTime!=null">
+	   AND a.addTime <![CDATA[<]]> #{endTime} 
+	</if>
+  </sql>
+  <select id="getWalletLog" parameterType="com.corner.kefu.beans.ro.sp.FinWalletMgRo" resultType="com.corner.kefu.beans.vo.sp.FinWalletLogVo">
+    SELECT
+	a.*, b.pId AS faOrderId,
+	b.id AS sonOrderId
+	<include refid="getWalletLog_condition"/>
+	ORDER BY businessLogNo DESC, addTime DESC
+	<include refid="pageSql"/>
+  </select>
+  
+  <select id="getCountWalletLog" parameterType="com.corner.kefu.beans.ro.sp.FinWalletMgRo" resultType="java.lang.Integer">
+    select count(1)
+    <include refid="getWalletLog_condition"/>
+  </select>
+  
+  
+  
+  
+  
+  
+</mapper>

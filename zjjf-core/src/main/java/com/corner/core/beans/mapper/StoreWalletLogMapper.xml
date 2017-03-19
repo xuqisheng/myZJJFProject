@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.StoreWalletLogMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.StoreWalletLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="stroeWalletId" property="stroeWalletId" jdbcType="INTEGER" />
+    <result column="actionType" property="actionType" jdbcType="SMALLINT" />
+    <result column="actionTime" property="actionTime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, stroeWalletId, actionType, actionTime, remark, money, isDelete, col1, col2, col3
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from StoreWalletLog
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from StoreWalletLog
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.StoreWalletLog" >
+    insert into StoreWalletLog (id, stroeWalletId, actionType, 
+      actionTime, remark, money, 
+      isDelete, col1, col2, col3
+      )
+    values (#{id,jdbcType=VARCHAR}, #{stroeWalletId,jdbcType=INTEGER}, #{actionType,jdbcType=SMALLINT}, 
+      #{actionTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, 
+      #{isDelete,jdbcType=BIT}, #{col1,jdbcType=VARCHAR}, #{col2,jdbcType=VARCHAR}, #{col3,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.StoreWalletLog" >
+    insert into StoreWalletLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="stroeWalletId != null" >
+        stroeWalletId,
+      </if>
+      <if test="actionType != null" >
+        actionType,
+      </if>
+      <if test="actionTime != null" >
+        actionTime,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="col1 != null" >
+        col1,
+      </if>
+      <if test="col2 != null" >
+        col2,
+      </if>
+      <if test="col3 != null" >
+        col3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="stroeWalletId != null" >
+        #{stroeWalletId,jdbcType=INTEGER},
+      </if>
+      <if test="actionType != null" >
+        #{actionType,jdbcType=SMALLINT},
+      </if>
+      <if test="actionTime != null" >
+        #{actionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null" >
+        #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        #{col3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.StoreWalletLog" >
+    update StoreWalletLog
+    <set >
+      <if test="stroeWalletId != null" >
+        stroeWalletId = #{stroeWalletId,jdbcType=INTEGER},
+      </if>
+      <if test="actionType != null" >
+        actionType = #{actionType,jdbcType=SMALLINT},
+      </if>
+      <if test="actionTime != null" >
+        actionTime = #{actionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null" >
+        col1 = #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        col2 = #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        col3 = #{col3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.StoreWalletLog" >
+    update StoreWalletLog
+    set stroeWalletId = #{stroeWalletId,jdbcType=INTEGER},
+      actionType = #{actionType,jdbcType=SMALLINT},
+      actionTime = #{actionTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DECIMAL},
+      isDelete = #{isDelete,jdbcType=BIT},
+      col1 = #{col1,jdbcType=VARCHAR},
+      col2 = #{col2,jdbcType=VARCHAR},
+      col3 = #{col3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.task.dao.mg.SpOrderInfoMgMapper">
+	<select id="getAllNoPayOrderInfoList" parameterType="java.util.Map"  resultType="com.corner.task.beans.SpOrderInfo">
+    SELECT * FROM SpOrderInfo WHERE `status` = 1 and supportStatus = 0 AND level = 1 AND  isDelete = 0
+	    <choose>
+	    	<when test="hour != null and hour != ''">
+	    		AND HOUR (timediff(NOW(), addTime)) > #{hour}
+	    	</when>
+	    	<otherwise>
+	    		AND HOUR (timediff(NOW(), addTime)) > 24
+	    	</otherwise>
+	    </choose>
+   </select>
+	<select id="selectSpOrderSales" parameterType="com.corner.task.beans.ro.OrderRo"  resultType="java.util.Map">
+		SELECT c.id , c.supplierName ,COUNT(1) as sales, d.`name` , d.mdseId , d.spec from SpOrderDetail a 
+		JOIN PlantItem b on a.itemId = b.id
+		JOIN Supplier c on c.id = b.spId
+		JOIN ItemBase d on d.id = b.itemBaseId WHERE 
+		a.isDelete = 0 AND c.areaId in (707 , 709)
+		<if test="addTime != null and addTime != ''">
+			AND DATE_FORMAT(a.addTime,'%Y-%m-%d') = DATE_FORMAT(#{addTime},'%Y-%m-%d')
+		</if>
+		<if test="mdseIds != null and mdseIds != ''">
+			AND d.mdseId in
+			<foreach collection="mdseIds" open="(" close=")" separator="," item="mdseId">
+					#{mdseId}
+			</foreach>
+		</if>
+		<if test="spName != null and spName != ''">
+			AND c.supplierName like CONCAT ('%' , #{spName} , '%') 
+		</if>
+		<if test="itemIds != null and itemIds != ''">
+			AND d.id in
+			<foreach collection="itemIds" open="(" close=")" separator="," item="itemId">
+					#{itemId}
+			</foreach>
+		</if>
+		GROUP BY b.id , c.id ORDER BY sales desc,c.id asc
+   </select>
+   
+</mapper>

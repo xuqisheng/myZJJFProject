@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.data.analysis.dao.AnalysisShopMapper" >
+ 
+	<select id="findShopSummaryList" parameterType ="com.corner.data.analysis.beans.vo.AnalysisShopVo" resultType="com.corner.data.analysis.beans.vo.AnalysisShopVo">
+		SELECT CCC.areaName,AAA.*,BBB.* FROM (
+		SELECT SS.areaId,SS.zdsl,AA.xd1,BB.xd2,CC.xd3,DD.xd4 FROM 
+		(SELECT areaId,COUNT(id) zdsl  FROM Store WHERE addTime <![CDATA[<=]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') GROUP BY areaId) SS LEFT JOIN
+		(SELECT A.areaId,count(A.id) xd1 FROM (SELECT id,areaId FROM Store) as A,(SELECT storeId,count(storeId) from SpOrderInfo WHERE addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND addTime <![CDATA[<=]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') group by storeId having count(storeId)=1) as B WHERE A.id = B.storeId GROUP BY A.areaId) AA ON SS.areaId = AA.areaId LEFT JOIN 
+		(SELECT A.areaId,count(A.id) xd2 FROM (SELECT id,areaId FROM Store) as A,(SELECT storeId,count(storeId) from SpOrderInfo WHERE addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND addTime <![CDATA[<=]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') group by storeId having count(storeId)=2) as B WHERE A.id = B.storeId GROUP BY A.areaId) BB ON AA.areaId = BB.areaId LEFT JOIN
+		(SELECT A.areaId,count(A.id) xd3 FROM (SELECT id,areaId FROM Store) as A,(SELECT storeId,count(storeId) from SpOrderInfo WHERE addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND addTime <![CDATA[<=]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') group by storeId having count(storeId)=3) as B WHERE A.id = B.storeId GROUP BY A.areaId) CC ON BB.areaId = CC.areaId LEFT JOIN
+		(SELECT A.areaId,count(A.id) xd4 FROM (SELECT id,areaId FROM Store) as A,(SELECT storeId,count(storeId) from SpOrderInfo WHERE addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND addTime <![CDATA[<=]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') group by storeId having count(storeId)>3) as B WHERE A.id = B.storeId GROUP BY A.areaId) DD ON CC.areaId = DD.areaId) AS AAA LEFT JOIN 
+		(	
+		SELECT AA.areaId,AA.xse1,BB.xse2,CC.xse3,DD.xse4 FROM 
+		(SELECT A.areaId,COUNT(A.id) xse1 FROM
+		(SELECT id,areaId FROM Store) AS A,
+		(SELECT storeId,SUM(orderPrice) FROM SpOrderInfo WHERE addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND addTime <![CDATA[<=]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') GROUP BY storeId HAVING SUM(orderPrice)<![CDATA[<]]>5000) AS B
+		WHERE A.id= B.storeId GROUP BY A.areaId) AS AA LEFT JOIN
+		(SELECT A.areaId,COUNT(A.id) xse2 FROM
+		(SELECT id,areaId FROM Store) AS A,
+		(SELECT storeId,SUM(orderPrice) FROM SpOrderInfo WHERE addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND addTime <![CDATA[<=]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') GROUP BY storeId HAVING SUM(orderPrice)>5000 AND SUM(orderPrice)<![CDATA[<]]>10000) AS B
+		WHERE A.id= B.storeId GROUP BY A.areaId) AS BB ON AA.areaId = BB.areaId LEFT JOIN 
+		(SELECT A.areaId,COUNT(A.id) xse3 FROM
+		(SELECT id,areaId FROM Store) AS A,
+		(SELECT storeId,SUM(orderPrice) FROM SpOrderInfo WHERE addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND addTime <![CDATA[<=]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') GROUP BY storeId HAVING SUM(orderPrice)>10000 AND SUM(orderPrice)<![CDATA[<]]>30000) AS B
+		WHERE A.id= B.storeId GROUP BY A.areaId) AS CC ON BB.areaId = CC.areaId LEFT JOIN
+		(SELECT A.areaId,COUNT(A.id) xse4 FROM
+		(SELECT id,areaId FROM Store) AS A,
+		(SELECT storeId,SUM(orderPrice) FROM SpOrderInfo WHERE addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND addTime <![CDATA[<=]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') GROUP BY storeId HAVING SUM(orderPrice)>30000) AS B
+		WHERE A.id= B.storeId GROUP BY A.areaId) AS DD ON CC.areaId = DD.areaId) AS BBB ON AAA.areaId = BBB.areaId LEFT JOIN
+		(SELECT id,name as areaName FROM Region) AS CCC ON AAA.areaId = CCC.id
+	</select>
+ 
+	<select id="findShopSaleList" parameterType ="com.corner.data.analysis.beans.vo.AnalysisShopSaleVo" resultType="com.corner.data.analysis.beans.vo.AnalysisShopSaleVo">
+		SELECT AA.id,AA.areaName,AA.areaId,AA.shopNo,AA.shopName,AA.xdcs,AA.xssl,AA.xsje,AA.ylspxse,AA.ylsplr,AA.fyje FROM 
+			(SELECT A.id,D.name areaName,A.areaId,A.supplierCode shopNo,A.name shopName,count(DISTINCT B.orderId) xdcs,SUM(C.quantity) xssl,
+			SUM(C.totalPrice) xsje,SUM(IF(fee<![CDATA[<]]>0,C.totalPrice,0)) ylspxse,SUM(IF(fee<![CDATA[<]]>0,C.fee*C.quantity,0)) ylsplr,SUM(B.zfee) fyje  FROM 
+			(SELECT id,supplierCode,name,areaId FROM Store WHERE 1=1 
+				<if test="areaId !=null and areaId !=''">
+					and areaId=#{areaId}
+				</if>
+				<if test="shopNo !=null and shopNo !=''">
+					and supplierCode like CONCAT('%',#{shopNo},'%') or name like CONCAT('%',#{shopNo},'%')
+				</if>
+			) A LEFT JOIN 
+			(SELECT orderId,storeId,addTime,zfee FROM SpOrderInfo where status != 6 AND addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND addTime <![CDATA[<=]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d')) B ON A.id = B.storeId 
+		LEFT JOIN 
+			(SELECT orderId,quantity,totalPrice,fee FROM SpOrderDetail) C ON B.orderId = C.orderId 
+		LEFT JOIN
+			(SELECT id,name FROM Region WHERE 1=1 
+				<if test="areaId !=null and areaId !=''">
+					and id=#{areaId}
+				</if>
+			) D ON D.id = A.areaId   
+			GROUP BY A.id) AA 
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+	
+	<select id="getShopSaleListSize" parameterType ="com.corner.data.analysis.beans.vo.AnalysisShopSaleVo" resultType="int">
+		SELECT count(1) FROM 
+			(SELECT A.id FROM 
+			(SELECT id,supplierCode,name,areaId FROM Store WHERE 1=1 
+				<if test="areaId !=null and areaId !=''">
+					and areaId=#{areaId}
+				</if>
+				<if test="shopNo !=null and shopNo !=''">
+					and supplierCode like CONCAT('%',#{shopNo},'%') or name like CONCAT('%',#{shopNo},'%')
+				</if>
+			) A LEFT JOIN 
+			(SELECT orderId,storeId,addTime,zfee FROM SpOrderInfo where status != 6 AND addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND addTime <![CDATA[<=]]> DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d')) B ON A.id = B.storeId 
+		LEFT JOIN 
+			(SELECT orderId,quantity,totalPrice,fee FROM SpOrderDetail) C ON B.orderId = C.orderId  
+			GROUP BY A.id) AA 
+	</select> 
+	
+	<select id="findShopSaleBaseById" parameterType ="com.corner.data.analysis.beans.vo.AnalysisShopSaleVo" resultType="com.corner.data.analysis.beans.vo.AnalysisShopSaleVo">
+		SELECT RR.name,AA.* FROM 
+			(SELECT id,name FROM Region) RR,
+			(
+			SELECT A.id,A.addTime,D.name areaName,A.areaId,A.supplierCode shopNo,A.name shopName,count(DISTINCT B.orderId) xdcs,SUM(C.quantity) xssl,SUM(C.totalPrice) xsje,SUM(IF(fee<![CDATA[<]]>0,C.totalPrice,0)) ylspxse,SUM(IF(fee<![CDATA[<]]>0,C.fee*C.quantity,0)) ylsplr,SUM(B.zfee) fyje  FROM 
+			(SELECT id,supplierCode,name,areaId,addTime FROM Store WHERE 1=1
+			<if test="id !=null and id !=''">
+				and id=#{id}
+			</if> 
+			) A LEFT JOIN 
+			(SELECT orderId,storeId,addTime,zfee FROM SpOrderInfo where status != 6 AND addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d')  AND addTime <![CDATA[<=]]> DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d')) B ON A.id = B.storeId LEFT JOIN 
+			(SELECT orderId,quantity,totalPrice,fee FROM SpOrderDetail) C ON B.orderId = C.orderId LEFT JOIN
+			(SELECT id,name FROM Region) D ON D.id = A.areaId  
+			GROUP BY A.id
+			) AA 
+			WHERE RR.id = AA.areaId
+	</select> 
+	<select id="findShopSaleDetailList" parameterType ="com.corner.data.analysis.beans.vo.AnalysisShopSaleVo" resultType="com.corner.data.analysis.beans.vo.AnalysisShopSaleVo">
+		SELECT orderId,addTime,storeId,orderPrice,zfee,zfee/orderPrice fyl,status FROM SpOrderInfo
+	        	WHERE storeId = #{id} AND addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d')  AND addTime <![CDATA[<=]]> DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') AND status != 6
+	</select> 
+</mapper>

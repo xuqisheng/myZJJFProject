@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.AppMonitorLogsMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.salesman.model.AppMonitorLogs" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="keepAlive" property="keepAlive" jdbcType="INTEGER" />
+    <result column="uploadState" property="uploadState" jdbcType="INTEGER" />
+    <result column="network" property="network" jdbcType="INTEGER" />
+    <result column="gps" property="gps" jdbcType="INTEGER" />
+    <result column="appTime" property="appTime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="deviceType" property="deviceType" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.corner.salesman.model.AppMonitorLogs" extends="BaseResultMap" >
+    <result column="dataInfo" property="dataInfo" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, keepAlive, uploadState, network, gps, appTime, remark, createBy, createTime, 
+    deviceType
+  </sql>
+  <sql id="Blob_Column_List" >
+    dataInfo
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tbl_app_monitor_logs_t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tbl_app_monitor_logs_t
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.salesman.model.AppMonitorLogs" >
+    insert into tbl_app_monitor_logs_t (id, keepAlive, uploadState, 
+      network, gps, appTime, 
+      remark, createBy, createTime, 
+      deviceType, dataInfo)
+    values (#{id,jdbcType=INTEGER}, #{keepAlive,jdbcType=INTEGER}, #{uploadState,jdbcType=INTEGER}, 
+      #{network,jdbcType=INTEGER}, #{gps,jdbcType=INTEGER}, #{appTime,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{deviceType,jdbcType=INTEGER}, #{dataInfo,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.salesman.model.AppMonitorLogs" >
+    insert into tbl_app_monitor_logs_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="keepAlive != null" >
+        keepAlive,
+      </if>
+      <if test="uploadState != null" >
+        uploadState,
+      </if>
+      <if test="network != null" >
+        network,
+      </if>
+      <if test="gps != null" >
+        gps,
+      </if>
+      <if test="appTime != null" >
+        appTime,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="createBy != null" >
+        createBy,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="deviceType != null" >
+        deviceType,
+      </if>
+      <if test="dataInfo != null" >
+        dataInfo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="keepAlive != null" >
+        #{keepAlive,jdbcType=INTEGER},
+      </if>
+      <if test="uploadState != null" >
+        #{uploadState,jdbcType=INTEGER},
+      </if>
+      <if test="network != null" >
+        #{network,jdbcType=INTEGER},
+      </if>
+      <if test="gps != null" >
+        #{gps,jdbcType=INTEGER},
+      </if>
+      <if test="appTime != null" >
+        #{appTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deviceType != null" >
+        #{deviceType,jdbcType=INTEGER},
+      </if>
+      <if test="dataInfo != null" >
+        #{dataInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.salesman.model.AppMonitorLogs" >
+    update tbl_app_monitor_logs_t
+    <set >
+      <if test="keepAlive != null" >
+        keepAlive = #{keepAlive,jdbcType=INTEGER},
+      </if>
+      <if test="uploadState != null" >
+        uploadState = #{uploadState,jdbcType=INTEGER},
+      </if>
+      <if test="network != null" >
+        network = #{network,jdbcType=INTEGER},
+      </if>
+      <if test="gps != null" >
+        gps = #{gps,jdbcType=INTEGER},
+      </if>
+      <if test="appTime != null" >
+        appTime = #{appTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        createBy = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deviceType != null" >
+        deviceType = #{deviceType,jdbcType=INTEGER},
+      </if>
+      <if test="dataInfo != null" >
+        dataInfo = #{dataInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.corner.salesman.model.AppMonitorLogs" >
+    update tbl_app_monitor_logs_t
+    set keepAlive = #{keepAlive,jdbcType=INTEGER},
+      uploadState = #{uploadState,jdbcType=INTEGER},
+      network = #{network,jdbcType=INTEGER},
+      gps = #{gps,jdbcType=INTEGER},
+      appTime = #{appTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      createBy = #{createBy,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      deviceType = #{deviceType,jdbcType=INTEGER},
+      dataInfo = #{dataInfo,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.salesman.model.AppMonitorLogs" >
+    update tbl_app_monitor_logs_t
+    set keepAlive = #{keepAlive,jdbcType=INTEGER},
+      uploadState = #{uploadState,jdbcType=INTEGER},
+      network = #{network,jdbcType=INTEGER},
+      gps = #{gps,jdbcType=INTEGER},
+      appTime = #{appTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      createBy = #{createBy,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      deviceType = #{deviceType,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.AppItemTagProductMapMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.AppItemTagProductMapKey" >
+    <id column="productId" property="productId" jdbcType="VARCHAR" />
+    <id column="tagId" property="tagId" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.corner.core.beans.AppItemTagProductMapKey" >
+    delete from AppItemTagProductMap
+    where productId = #{productId,jdbcType=VARCHAR}
+      and tagId = #{tagId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.AppItemTagProductMapKey" >
+    insert into AppItemTagProductMap (productId, tagId)
+    values (#{productId,jdbcType=VARCHAR}, #{tagId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.AppItemTagProductMapKey" >
+    insert into AppItemTagProductMap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="productId != null" >
+        productId,
+      </if>
+      <if test="tagId != null" >
+        tagId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="productId != null" >
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="tagId != null" >
+        #{tagId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

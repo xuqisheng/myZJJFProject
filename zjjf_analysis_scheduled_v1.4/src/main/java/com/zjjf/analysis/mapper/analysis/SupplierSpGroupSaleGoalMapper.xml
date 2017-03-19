@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.zjjf.analysis.mapper.analysis.SupplierSpGroupSaleGoalMapper">
+	<resultMap id="BaseResultMap"
+		type="com.zjjf.analysis.beans.analysis.supplier.SupplierSpGroupSaleGoal">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+		<result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+		<result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+		<result column="monthGoal" property="monthGoal" jdbcType="INTEGER" />
+		<result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="INTEGER" />
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, cityId, areaId, spGroupId, supplierId, monthGoal,
+		dailyGoal,dayTime,
+		createTime, updateTime
+	</sql>
+	<insert id="insert"
+		parameterType="com.zjjf.analysis.beans.analysis.supplier.SupplierSpGroupSaleGoal">
+		insert into supplier_spgroup_sale_goal (id, cityId,
+		areaId,
+		spGroupId, supplierId, monthGoal, dailyGoal,
+		dayTime,
+		createTime, updateTime
+		)
+		values (#{id,jdbcType=INTEGER},
+		#{cityId,jdbcType=INTEGER},
+		#{areaId,jdbcType=INTEGER},
+		#{spGroupId,jdbcType=INTEGER}, #{supplierId,jdbcType=VARCHAR},
+		#{monthGoal,jdbcType=INTEGER},#{dailyGoal,jdbcType=INTEGER},
+		#{dayTime,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER},
+		#{updateTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<select id="getBySpIdAndSpGroupIdAndDayTime" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from supplier_spgroup_sale_goal
+		where supplierId = #{supplierId} and
+		spGroupId = #{spGroupId}
+		<if test="dayTime != null">
+			and dayTime = #{dayTime}
+		</if>
+	</select>
+	
+	<select id="getGoal" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> from supplier_spgroup_sale_goal where supplierId = #{supplierId} and spGroupId = #{spGroupId} and dayTime = #{dayTime}
+	</select>
+
+	<update id="updateById" parameterType="java.util.Map">
+		update
+		supplier_spgroup_sale_goal
+		set dayTime = #{dayTime}
+		where id = #{id}
+	</update>
+
+</mapper>

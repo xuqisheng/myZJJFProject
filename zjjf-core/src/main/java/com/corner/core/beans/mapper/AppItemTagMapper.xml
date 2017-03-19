@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.AppItemTagMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.AppItemTag" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="weekDay" property="weekDay" jdbcType="TINYINT" />
+    <result column="beginTime" property="beginTime" jdbcType="TIME" />
+    <result column="stopTime" property="stopTime" jdbcType="TIME" />
+    <result column="appModuleId" property="appModuleId" jdbcType="VARCHAR" />
+    <result column="detailPosition" property="detailPosition" jdbcType="VARCHAR" />
+    <result column="canClick" property="canClick" jdbcType="BIT" />
+    <result column="tagId1" property="tagId1" jdbcType="VARCHAR" />
+    <result column="tagId2" property="tagId2" jdbcType="VARCHAR" />
+    <result column="tagId3" property="tagId3" jdbcType="VARCHAR" />
+    <result column="title1" property="title1" jdbcType="VARCHAR" />
+    <result column="color1" property="color1" jdbcType="VARCHAR" />
+    <result column="title2" property="title2" jdbcType="VARCHAR" />
+    <result column="color2" property="color2" jdbcType="VARCHAR" />
+    <result column="title3" property="title3" jdbcType="VARCHAR" />
+    <result column="color3" property="color3" jdbcType="VARCHAR" />
+    <result column="picUrl" property="picUrl" jdbcType="VARCHAR" />
+    <result column="skipType" property="skipType" jdbcType="TINYINT" />
+    <result column="skipObjectId" property="skipObjectId" jdbcType="VARCHAR" />
+    <result column="adBoardId" property="adBoardId" jdbcType="INTEGER" />
+    <result column="orderId" property="orderId" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, remark, weekDay, beginTime, stopTime, appModuleId, detailPosition, canClick, 
+    tagId1, tagId2, tagId3, title1, color1, title2, color2, title3, color3, picUrl, skipType, 
+    skipObjectId, adBoardId, orderId, addTime, updateTime, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from AppItemTag
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from AppItemTag
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.AppItemTag" >
+    insert into AppItemTag (id, name, remark, 
+      weekDay, beginTime, stopTime, 
+      appModuleId, detailPosition, canClick, 
+      tagId1, tagId2, tagId3, 
+      title1, color1, title2, 
+      color2, title3, color3, 
+      picUrl, skipType, skipObjectId, 
+      adBoardId, orderId, addTime, 
+      updateTime, status, isDelete
+      )
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{weekDay,jdbcType=TINYINT}, #{beginTime,jdbcType=TIME}, #{stopTime,jdbcType=TIME}, 
+      #{appModuleId,jdbcType=VARCHAR}, #{detailPosition,jdbcType=VARCHAR}, #{canClick,jdbcType=BIT}, 
+      #{tagId1,jdbcType=VARCHAR}, #{tagId2,jdbcType=VARCHAR}, #{tagId3,jdbcType=VARCHAR}, 
+      #{title1,jdbcType=VARCHAR}, #{color1,jdbcType=VARCHAR}, #{title2,jdbcType=VARCHAR}, 
+      #{color2,jdbcType=VARCHAR}, #{title3,jdbcType=VARCHAR}, #{color3,jdbcType=VARCHAR}, 
+      #{picUrl,jdbcType=VARCHAR}, #{skipType,jdbcType=TINYINT}, #{skipObjectId,jdbcType=VARCHAR}, 
+      #{adBoardId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.AppItemTag" >
+    insert into AppItemTag
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="weekDay != null" >
+        weekDay,
+      </if>
+      <if test="beginTime != null" >
+        beginTime,
+      </if>
+      <if test="stopTime != null" >
+        stopTime,
+      </if>
+      <if test="appModuleId != null" >
+        appModuleId,
+      </if>
+      <if test="detailPosition != null" >
+        detailPosition,
+      </if>
+      <if test="canClick != null" >
+        canClick,
+      </if>
+      <if test="tagId1 != null" >
+        tagId1,
+      </if>
+      <if test="tagId2 != null" >
+        tagId2,
+      </if>
+      <if test="tagId3 != null" >
+        tagId3,
+      </if>
+      <if test="title1 != null" >
+        title1,
+      </if>
+      <if test="color1 != null" >
+        color1,
+      </if>
+      <if test="title2 != null" >
+        title2,
+      </if>
+      <if test="color2 != null" >
+        color2,
+      </if>
+      <if test="title3 != null" >
+        title3,
+      </if>
+      <if test="color3 != null" >
+        color3,
+      </if>
+      <if test="picUrl != null" >
+        picUrl,
+      </if>
+      <if test="skipType != null" >
+        skipType,
+      </if>
+      <if test="skipObjectId != null" >
+        skipObjectId,
+      </if>
+      <if test="adBoardId != null" >
+        adBoardId,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="weekDay != null" >
+        #{weekDay,jdbcType=TINYINT},
+      </if>
+      <if test="beginTime != null" >
+        #{beginTime,jdbcType=TIME},
+      </if>
+      <if test="stopTime != null" >
+        #{stopTime,jdbcType=TIME},
+      </if>
+      <if test="appModuleId != null" >
+        #{appModuleId,jdbcType=VARCHAR},
+      </if>
+      <if test="detailPosition != null" >
+        #{detailPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="canClick != null" >
+        #{canClick,jdbcType=BIT},
+      </if>
+      <if test="tagId1 != null" >
+        #{tagId1,jdbcType=VARCHAR},
+      </if>
+      <if test="tagId2 != null" >
+        #{tagId2,jdbcType=VARCHAR},
+      </if>
+      <if test="tagId3 != null" >
+        #{tagId3,jdbcType=VARCHAR},
+      </if>
+      <if test="title1 != null" >
+        #{title1,jdbcType=VARCHAR},
+      </if>
+      <if test="color1 != null" >
+        #{color1,jdbcType=VARCHAR},
+      </if>
+      <if test="title2 != null" >
+        #{title2,jdbcType=VARCHAR},
+      </if>
+      <if test="color2 != null" >
+        #{color2,jdbcType=VARCHAR},
+      </if>
+      <if test="title3 != null" >
+        #{title3,jdbcType=VARCHAR},
+      </if>
+      <if test="color3 != null" >
+        #{color3,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null" >
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="skipType != null" >
+        #{skipType,jdbcType=TINYINT},
+      </if>
+      <if test="skipObjectId != null" >
+        #{skipObjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="adBoardId != null" >
+        #{adBoardId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.AppItemTag" >
+    update AppItemTag
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="weekDay != null" >
+        weekDay = #{weekDay,jdbcType=TINYINT},
+      </if>
+      <if test="beginTime != null" >
+        beginTime = #{beginTime,jdbcType=TIME},
+      </if>
+      <if test="stopTime != null" >
+        stopTime = #{stopTime,jdbcType=TIME},
+      </if>
+      <if test="appModuleId != null" >
+        appModuleId = #{appModuleId,jdbcType=VARCHAR},
+      </if>
+      <if test="detailPosition != null" >
+        detailPosition = #{detailPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="canClick != null" >
+        canClick = #{canClick,jdbcType=BIT},
+      </if>
+      <if test="tagId1 != null" >
+        tagId1 = #{tagId1,jdbcType=VARCHAR},
+      </if>
+      <if test="tagId2 != null" >
+        tagId2 = #{tagId2,jdbcType=VARCHAR},
+      </if>
+      <if test="tagId3 != null" >
+        tagId3 = #{tagId3,jdbcType=VARCHAR},
+      </if>
+      <if test="title1 != null" >
+        title1 = #{title1,jdbcType=VARCHAR},
+      </if>
+      <if test="color1 != null" >
+        color1 = #{color1,jdbcType=VARCHAR},
+      </if>
+      <if test="title2 != null" >
+        title2 = #{title2,jdbcType=VARCHAR},
+      </if>
+      <if test="color2 != null" >
+        color2 = #{color2,jdbcType=VARCHAR},
+      </if>
+      <if test="title3 != null" >
+        title3 = #{title3,jdbcType=VARCHAR},
+      </if>
+      <if test="color3 != null" >
+        color3 = #{color3,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null" >
+        picUrl = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="skipType != null" >
+        skipType = #{skipType,jdbcType=TINYINT},
+      </if>
+      <if test="skipObjectId != null" >
+        skipObjectId = #{skipObjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="adBoardId != null" >
+        adBoardId = #{adBoardId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.AppItemTag" >
+    update AppItemTag
+    set name = #{name,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      weekDay = #{weekDay,jdbcType=TINYINT},
+      beginTime = #{beginTime,jdbcType=TIME},
+      stopTime = #{stopTime,jdbcType=TIME},
+      appModuleId = #{appModuleId,jdbcType=VARCHAR},
+      detailPosition = #{detailPosition,jdbcType=VARCHAR},
+      canClick = #{canClick,jdbcType=BIT},
+      tagId1 = #{tagId1,jdbcType=VARCHAR},
+      tagId2 = #{tagId2,jdbcType=VARCHAR},
+      tagId3 = #{tagId3,jdbcType=VARCHAR},
+      title1 = #{title1,jdbcType=VARCHAR},
+      color1 = #{color1,jdbcType=VARCHAR},
+      title2 = #{title2,jdbcType=VARCHAR},
+      color2 = #{color2,jdbcType=VARCHAR},
+      title3 = #{title3,jdbcType=VARCHAR},
+      color3 = #{color3,jdbcType=VARCHAR},
+      picUrl = #{picUrl,jdbcType=VARCHAR},
+      skipType = #{skipType,jdbcType=TINYINT},
+      skipObjectId = #{skipObjectId,jdbcType=VARCHAR},
+      adBoardId = #{adBoardId,jdbcType=INTEGER},
+      orderId = #{orderId,jdbcType=INTEGER},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

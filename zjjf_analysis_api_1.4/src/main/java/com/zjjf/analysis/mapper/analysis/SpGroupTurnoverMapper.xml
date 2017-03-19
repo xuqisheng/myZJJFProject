@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.SpGroupTurnoverMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.supplier.SpGroupTurnover" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="todayTurnover" property="todayTurnover" jdbcType="DECIMAL" />
+    <result column="yesTodayTurnover" property="yesTodayTurnover" jdbcType="DECIMAL" />
+    <result column="dailyIncrease" property="dailyIncrease" jdbcType="DECIMAL" />
+    <result column="thisWeekTurnover" property="thisWeekTurnover" jdbcType="DECIMAL" />
+    <result column="lastWeekTurnover" property="lastWeekTurnover" jdbcType="DECIMAL" />
+    <result column="thisMonthTurnover" property="thisMonthTurnover" jdbcType="DECIMAL" />
+    <result column="lastMonthTurnover" property="lastMonthTurnover" jdbcType="DECIMAL" />
+    <result column="monthIncrease" property="monthIncrease" jdbcType="DECIMAL" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, spGroupId, dayTime, cityId, areaId, todayTurnover, yesTodayTurnover, dailyIncrease, 
+    thisWeekTurnover, lastWeekTurnover, thisMonthTurnover, lastMonthTurnover, monthIncrease, 
+    updateTime, createTime
+  </sql>
+  
+  <select id="getDataByParam" resultMap="BaseResultMap" parameterType="java.util.Map" >
+     select 
+      t1.spGroupId,
+	  IFNULL(sum(t1.`todayTurnover`), 0) as "todayTurnover"
+	from
+	  `spgroup_turnover` t1 
+	  left join base_spgroup t2 on t1.`spGroupId` = t2.`id`
+	  left join base_region	t3 on t2.`cityId` = t3.`id`
+	  left join base_region	t4 on t2.`areaId`= t4.`id`
+	  <where>
+		  <if test="dayTime != null and dayTime != ''  " >
+		    and t1.`dayTime` = #{dayTime}
+		  </if>
+		  <if test="dayTimeBegin != null and dayTimeBegin != ''  " >
+		    and t1.`dayTime` &gt;= #{dayTimeBegin}
+		  </if>
+		  <if test="dayTimeEnd != null and dayTimeEnd != ''  " >
+		    and t1.`dayTime` &lt; #{dayTimeEnd}
+		  </if>
+		  <if test="spGroupId != null and spGroupId != '' " >
+	      	and t1.spGroupId = #{spGroupId}
+	      </if>
+	      <if test="supplierCode != null and supplierCode != '' " >
+	      	and t1.supplierCode = #{supplierCode}
+	      </if>
+	      <if test="cityId != null and cityId != '' " >
+	      	and t2.cityId = #{cityId}
+	      </if>
+	      <if test="areaId != null and areaId != '' " >
+	      	and t2.areaId = #{areaId}
+	      </if>
+	      <if test="areaIdList != null and areaIdList != '' " >
+	 		  and t2.`areaId` in 
+	          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+      </where>
+	  limit #{pageNo}, #{offset}
+  </select>
+</mapper>

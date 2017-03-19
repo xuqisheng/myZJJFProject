@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.OrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.OrderDetail" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="itemId" property="itemId" jdbcType="VARCHAR" />
+    <result column="brand" property="brand" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="spec" property="spec" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="quantity" property="quantity" jdbcType="SMALLINT" />
+    <result column="totalPrice" property="totalPrice" jdbcType="DECIMAL" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+    <result column="barCode" property="barCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, orderId, itemId, brand, name, spec, img, price, quantity, totalPrice, storeId, 
+    addTime, isDelete, col1, col2, col3, barCode
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from OrderDetail
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from OrderDetail
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.OrderDetail" >
+    insert into OrderDetail (id, orderId, itemId, 
+      brand, name, spec, 
+      img, price, quantity, 
+      totalPrice, storeId, addTime, 
+      isDelete, col1, col2, col3, 
+      barCode)
+    values (#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{itemId,jdbcType=VARCHAR}, 
+      #{brand,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{spec,jdbcType=VARCHAR}, 
+      #{img,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{quantity,jdbcType=SMALLINT}, 
+      #{totalPrice,jdbcType=DECIMAL}, #{storeId,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{isDelete,jdbcType=BIT}, #{col1,jdbcType=VARCHAR}, #{col2,jdbcType=VARCHAR}, #{col3,jdbcType=VARCHAR}, 
+      #{barCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.OrderDetail" >
+    insert into OrderDetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="itemId != null" >
+        itemId,
+      </if>
+      <if test="brand != null" >
+        brand,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="spec != null" >
+        spec,
+      </if>
+      <if test="img != null" >
+        img,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="quantity != null" >
+        quantity,
+      </if>
+      <if test="totalPrice != null" >
+        totalPrice,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="col1 != null" >
+        col1,
+      </if>
+      <if test="col2 != null" >
+        col2,
+      </if>
+      <if test="col3 != null" >
+        col3,
+      </if>
+      <if test="barCode != null" >
+        barCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemId != null" >
+        #{itemId,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="spec != null" >
+        #{spec,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=SMALLINT},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null" >
+        #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        #{col3,jdbcType=VARCHAR},
+      </if>
+      <if test="barCode != null" >
+        #{barCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.OrderDetail" >
+    update OrderDetail
+    <set >
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemId != null" >
+        itemId = #{itemId,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="spec != null" >
+        spec = #{spec,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=SMALLINT},
+      </if>
+      <if test="totalPrice != null" >
+        totalPrice = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="storeId != null" >
+        storeId = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null" >
+        col1 = #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        col2 = #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        col3 = #{col3,jdbcType=VARCHAR},
+      </if>
+      <if test="barCode != null" >
+        barCode = #{barCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.OrderDetail" >
+    update OrderDetail
+    set orderId = #{orderId,jdbcType=VARCHAR},
+      itemId = #{itemId,jdbcType=VARCHAR},
+      brand = #{brand,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      spec = #{spec,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      quantity = #{quantity,jdbcType=SMALLINT},
+      totalPrice = #{totalPrice,jdbcType=DECIMAL},
+      storeId = #{storeId,jdbcType=INTEGER},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      isDelete = #{isDelete,jdbcType=BIT},
+      col1 = #{col1,jdbcType=VARCHAR},
+      col2 = #{col2,jdbcType=VARCHAR},
+      col3 = #{col3,jdbcType=VARCHAR},
+      barCode = #{barCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

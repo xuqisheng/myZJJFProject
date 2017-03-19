@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.ConfigMgMapper">
+<sql id="pageSql">
+	<if test="pageIndex != null">
+		limit #{pageIndex},#{pageSize}
+	</if>
+</sql>
+
+<sql id="getAllConfigSql">
+	<trim prefix="WHERE" prefixOverrides="AND | OR">
+		status=1
+		and isDelete=0
+		<if test="configName != null and configName != ''">
+			and configName like "%"#{configName}"%"
+		</if>
+		<if test="beginTime != null">
+			and updateTime &gt; #{beginTime}
+		</if>
+		<if test="endTime != null">
+			and updateTime &lt; #{endTime}
+		</if>
+	</trim>
+</sql>
+<!-- 获取所有系统配置信息 -->
+<select id="getAllConfig" parameterType="com.corner.kefu.beans.ro.ConfigRo" resultType="com.corner.kefu.beans.vo.ConfigVo">
+	select * from Config
+	<include refid="getAllConfigSql"/>
+</select>
+<select id="getAllConfigCount" parameterType="com.corner.kefu.beans.ro.ConfigRo" resultType="java.lang.Integer">
+	select count(1) from Config
+	<include refid="getAllConfigSql"/>
+</select>
+	
+	<delete id="deleteFromDeliveryConfig">
+	
+	   delete from DeliveryConfig
+	</delete>
+</mapper>

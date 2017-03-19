@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.origin.SpGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.base.SpGroup" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="updateTimeStamp" property="updateTimeStamp" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, code, provinceId, cityId, areaId, status, isDelete, updateTimeStamp, createTime
+  </sql>
+  
+  <select id="getById" resultType="com.zjjf.analysis.beans.analysis.base.SpGroup" parameterType="java.util.Map" >
+    select id, name from SpGroup where id=#{id}
+  </select>
+  
+  <select id="getSpGroupCodeList" resultType="com.zjjf.analysis.beans.analysis.base.AnaDictionary" parameterType="java.util.Map" >
+    select id as "code", name from SpGroup
+    <where>
+      <if test="areaId != null and areaId != '' " >
+ 		  and areaId = #{areaId}
+      </if>	
+      <if test="cityId != null and cityId != '' " >
+ 		  and cityId = #{cityId}
+      </if>	
+      <if test="areaIdList != null and areaIdList != '' " >
+ 		  areaId in 
+          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+          </foreach> 
+      </if>
+      <if test="cityIdList != null and cityIdList != '' " >
+ 		  cityId in 
+          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+          </foreach> 
+      </if>
+	 </where>
+  </select>
+  
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.corner.salesman.modules.shop.dao.LinePlansDao">
+    
+	<sql id="linePlansColumns">
+		a.lineId AS "lineId",
+		a.lineName AS "lineName",
+		a.deptId AS "deptId",
+		a.userId AS "userId",
+		a.shopTotal AS "shopTotal",
+		a.visitTotal AS "visitTotal",
+		a.week AS "week"
+	</sql>
+	
+	<sql id="linePlansJoins">
+	</sql>
+    
+	<select id="get" resultType="LinePlans">
+		SELECT 
+			<include refid="linePlansColumns"/>
+		FROM tbl_line_plans_t a
+		<include refid="linePlansJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="LinePlans">
+		SELECT 
+			<include refid="linePlansColumns"/>
+		FROM tbl_line_plans_t a
+		<include refid="linePlansJoins"/>
+		<where>
+			
+			<if test="lineName != null and lineName != ''">
+				AND a.lineName = #{lineName}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND a.userId = #{userId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="LinePlans">
+		SELECT 
+			<include refid="linePlansColumns"/>
+		FROM tbl_line_plans_t a
+		<include refid="linePlansJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tbl_line_plans_t(
+			lineId,
+			lineName,
+			deptId,
+			userId,
+			shopTotal,
+			visitTotal,
+			week
+		) VALUES (
+			#{lineId},
+			#{lineName},
+			#{deptId},
+			#{userId},
+			#{shopTotal},
+			#{visitTotal},
+			#{week}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tbl_line_plans_t SET 	
+			lineId = #{lineId},
+			lineName = #{lineName},
+			deptId = #{deptId},
+			userId = #{userId},
+			shopTotal = #{shopTotal},
+			visitTotal = #{visitTotal},
+			week = #{week}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM tbl_line_plans_t
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

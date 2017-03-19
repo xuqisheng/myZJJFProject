@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.RegionMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.Region" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="regionCode" property="regionCode" jdbcType="VARCHAR" />
+    <result column="pId" property="pId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="regionLevel" property="regionLevel" jdbcType="TINYINT" />
+    <result column="hasStore" property="hasStore" jdbcType="BIT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="clik" property="clik" jdbcType="INTEGER" />
+    <result column="storeIds" property="storeIds" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, regionCode, pId, name, regionLevel, hasStore, status, isDelete, clik, storeIds
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from Region
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from Region
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.Region" >
+    insert into Region (id, regionCode, pId, 
+      name, regionLevel, hasStore, 
+      status, isDelete, clik, 
+      storeIds)
+    values (#{id,jdbcType=INTEGER}, #{regionCode,jdbcType=VARCHAR}, #{pId,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{regionLevel,jdbcType=TINYINT}, #{hasStore,jdbcType=BIT}, 
+      #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}, #{clik,jdbcType=INTEGER}, 
+      #{storeIds,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.Region" >
+    insert into Region
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="regionCode != null" >
+        regionCode,
+      </if>
+      <if test="pId != null" >
+        pId,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="regionLevel != null" >
+        regionLevel,
+      </if>
+      <if test="hasStore != null" >
+        hasStore,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="clik != null" >
+        clik,
+      </if>
+      <if test="storeIds != null" >
+        storeIds,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="regionCode != null" >
+        #{regionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pId != null" >
+        #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="regionLevel != null" >
+        #{regionLevel,jdbcType=TINYINT},
+      </if>
+      <if test="hasStore != null" >
+        #{hasStore,jdbcType=BIT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="clik != null" >
+        #{clik,jdbcType=INTEGER},
+      </if>
+      <if test="storeIds != null" >
+        #{storeIds,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.Region" >
+    update Region
+    <set >
+      <if test="regionCode != null" >
+        regionCode = #{regionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pId != null" >
+        pId = #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="regionLevel != null" >
+        regionLevel = #{regionLevel,jdbcType=TINYINT},
+      </if>
+      <if test="hasStore != null" >
+        hasStore = #{hasStore,jdbcType=BIT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="clik != null" >
+        clik = #{clik,jdbcType=INTEGER},
+      </if>
+      <if test="storeIds != null" >
+        storeIds = #{storeIds,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.Region" >
+    update Region
+    set regionCode = #{regionCode,jdbcType=VARCHAR},
+      pId = #{pId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      regionLevel = #{regionLevel,jdbcType=TINYINT},
+      hasStore = #{hasStore,jdbcType=BIT},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      clik = #{clik,jdbcType=INTEGER},
+      storeIds = #{storeIds,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

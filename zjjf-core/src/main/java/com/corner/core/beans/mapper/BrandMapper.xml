@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.BrandMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.Brand" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="brandNo" property="brandNo" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="upId" property="upId" jdbcType="INTEGER" />
+    <result column="xLevel" property="xLevel" jdbcType="TINYINT" />
+    <result column="xType" property="xType" jdbcType="TINYINT" />
+    <result column="logo" property="logo" jdbcType="VARCHAR" />
+    <result column="imgB" property="imgB" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="ordId" property="ordId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, brandNo, name, remark, upId, xLevel, xType, logo, imgB, createTime, updateTime, 
+    status, isDelete, ordId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from Brand
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from Brand
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.Brand" >
+    insert into Brand (id, brandNo, name, 
+      remark, upId, xLevel, 
+      xType, logo, imgB, 
+      createTime, updateTime, status, 
+      isDelete, ordId)
+    values (#{id,jdbcType=INTEGER}, #{brandNo,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{upId,jdbcType=INTEGER}, #{xLevel,jdbcType=TINYINT}, 
+      #{xType,jdbcType=TINYINT}, #{logo,jdbcType=VARCHAR}, #{imgB,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
+      #{isDelete,jdbcType=BIT}, #{ordId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.Brand" >
+    insert into Brand
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="brandNo != null" >
+        brandNo,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="upId != null" >
+        upId,
+      </if>
+      <if test="xLevel != null" >
+        xLevel,
+      </if>
+      <if test="xType != null" >
+        xType,
+      </if>
+      <if test="logo != null" >
+        logo,
+      </if>
+      <if test="imgB != null" >
+        imgB,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="ordId != null" >
+        ordId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="brandNo != null" >
+        #{brandNo,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="upId != null" >
+        #{upId,jdbcType=INTEGER},
+      </if>
+      <if test="xLevel != null" >
+        #{xLevel,jdbcType=TINYINT},
+      </if>
+      <if test="xType != null" >
+        #{xType,jdbcType=TINYINT},
+      </if>
+      <if test="logo != null" >
+        #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="imgB != null" >
+        #{imgB,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="ordId != null" >
+        #{ordId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.Brand" >
+    update Brand
+    <set >
+      <if test="brandNo != null" >
+        brandNo = #{brandNo,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="upId != null" >
+        upId = #{upId,jdbcType=INTEGER},
+      </if>
+      <if test="xLevel != null" >
+        xLevel = #{xLevel,jdbcType=TINYINT},
+      </if>
+      <if test="xType != null" >
+        xType = #{xType,jdbcType=TINYINT},
+      </if>
+      <if test="logo != null" >
+        logo = #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="imgB != null" >
+        imgB = #{imgB,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="ordId != null" >
+        ordId = #{ordId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.Brand" >
+    update Brand
+    set brandNo = #{brandNo,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      upId = #{upId,jdbcType=INTEGER},
+      xLevel = #{xLevel,jdbcType=TINYINT},
+      xType = #{xType,jdbcType=TINYINT},
+      logo = #{logo,jdbcType=VARCHAR},
+      imgB = #{imgB,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      ordId = #{ordId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

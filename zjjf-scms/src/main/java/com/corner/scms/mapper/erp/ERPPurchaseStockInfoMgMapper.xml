@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.erp.ERPPurchaseStockInfoMgMapper">
+	<sql id="getInfoListPageByRo_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			a.supplierId = #{supplierId}
+			AND a.isDelete = 0
+			<if test="managerName != null and managerName != ''">
+				and a.managerName like concat('%' , #{managerName} , '%')
+			</if>
+			<if test="level != null and level != 0">
+				and a.level = #{level}
+			</if>
+			<if test="checkStatus != null and checkStatus != 0">
+				and a.checkStatus = #{checkStatus}
+			</if>
+			<if test="status != null and status != 0">
+				and a.status = #{status}
+			</if>
+			<if test="beginTime != null">
+				and a.addTime &gt; #{beginTime}
+			</if>
+			<if test="endTime != null">
+				and a.addTime &lt; #{endTime}
+			</if>
+		</trim>
+	</sql>
+	<select id="getInfoListPageByRo" parameterType="com.corner.scms.beans.ro.erp.ERPPurchaseStockRo" resultType="com.corner.core.beans.ERPPurchaseStockInfo">
+		SELECT * FROM ERPPurchaseStockInfo a
+		<include refid="getInfoListPageByRo_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+	<select id="getInfoListPageByRoCOUNT" parameterType="com.corner.scms.beans.ro.erp.ERPPurchaseStockRo" resultType="java.lang.Integer">
+		SELECT COUNT(1) FROM ERPPurchaseStockInfo a
+		<include refid="getInfoListPageByRo_condition" />
+	</select>
+</mapper>

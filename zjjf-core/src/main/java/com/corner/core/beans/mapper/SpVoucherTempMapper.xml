@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SpVoucherTempMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpVoucherTemp" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="activeId" property="activeId" jdbcType="INTEGER" />
+    <result column="ruleName" property="ruleName" jdbcType="VARCHAR" />
+    <result column="ruleRemark" property="ruleRemark" jdbcType="VARCHAR" />
+    <result column="ruleMsg" property="ruleMsg" jdbcType="VARCHAR" />
+    <result column="billType" property="billType" jdbcType="TINYINT" />
+    <result column="useMoney" property="useMoney" jdbcType="DECIMAL" />
+    <result column="useDay" property="useDay" jdbcType="TINYINT" />
+    <result column="startPrice" property="startPrice" jdbcType="DECIMAL" />
+    <result column="transportTimeType" property="transportTimeType" jdbcType="TINYINT" />
+    <result column="useItemFlag" property="useItemFlag" jdbcType="TINYINT" />
+    <result column="mgItems" property="mgItems" jdbcType="VARCHAR" />
+    <result column="payType" property="payType" jdbcType="TINYINT" />
+    <result column="payStr" property="payStr" jdbcType="VARCHAR" />
+    <result column="creatStatus" property="creatStatus" jdbcType="TINYINT" />
+    <result column="creatPub" property="creatPub" jdbcType="TINYINT" />
+    <result column="ordId" property="ordId" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.corner.core.beans.SpVoucherTemp" extends="BaseResultMap" >
+    <result column="useItemIds" property="useItemIds" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, activeId, ruleName, ruleRemark, ruleMsg, billType, useMoney, useDay, startPrice, 
+    transportTimeType, useItemFlag, mgItems, payType, payStr, creatStatus, creatPub, 
+    ordId, addTime, updateTime, status, isDelete, remark
+  </sql>
+  <sql id="Blob_Column_List" >
+    useItemIds
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from SpVoucherTemp
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SpVoucherTemp
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SpVoucherTemp" >
+    insert into SpVoucherTemp (id, activeId, ruleName, 
+      ruleRemark, ruleMsg, billType, 
+      useMoney, useDay, startPrice, 
+      transportTimeType, useItemFlag, mgItems, 
+      payType, payStr, creatStatus, 
+      creatPub, ordId, addTime, 
+      updateTime, status, isDelete, 
+      remark, useItemIds)
+    values (#{id,jdbcType=INTEGER}, #{activeId,jdbcType=INTEGER}, #{ruleName,jdbcType=VARCHAR}, 
+      #{ruleRemark,jdbcType=VARCHAR}, #{ruleMsg,jdbcType=VARCHAR}, #{billType,jdbcType=TINYINT}, 
+      #{useMoney,jdbcType=DECIMAL}, #{useDay,jdbcType=TINYINT}, #{startPrice,jdbcType=DECIMAL}, 
+      #{transportTimeType,jdbcType=TINYINT}, #{useItemFlag,jdbcType=TINYINT}, #{mgItems,jdbcType=VARCHAR}, 
+      #{payType,jdbcType=TINYINT}, #{payStr,jdbcType=VARCHAR}, #{creatStatus,jdbcType=TINYINT}, 
+      #{creatPub,jdbcType=TINYINT}, #{ordId,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}, 
+      #{remark,jdbcType=VARCHAR}, #{useItemIds,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SpVoucherTemp" >
+    insert into SpVoucherTemp
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="activeId != null" >
+        activeId,
+      </if>
+      <if test="ruleName != null" >
+        ruleName,
+      </if>
+      <if test="ruleRemark != null" >
+        ruleRemark,
+      </if>
+      <if test="ruleMsg != null" >
+        ruleMsg,
+      </if>
+      <if test="billType != null" >
+        billType,
+      </if>
+      <if test="useMoney != null" >
+        useMoney,
+      </if>
+      <if test="useDay != null" >
+        useDay,
+      </if>
+      <if test="startPrice != null" >
+        startPrice,
+      </if>
+      <if test="transportTimeType != null" >
+        transportTimeType,
+      </if>
+      <if test="useItemFlag != null" >
+        useItemFlag,
+      </if>
+      <if test="mgItems != null" >
+        mgItems,
+      </if>
+      <if test="payType != null" >
+        payType,
+      </if>
+      <if test="payStr != null" >
+        payStr,
+      </if>
+      <if test="creatStatus != null" >
+        creatStatus,
+      </if>
+      <if test="creatPub != null" >
+        creatPub,
+      </if>
+      <if test="ordId != null" >
+        ordId,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="useItemIds != null" >
+        useItemIds,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="activeId != null" >
+        #{activeId,jdbcType=INTEGER},
+      </if>
+      <if test="ruleName != null" >
+        #{ruleName,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleRemark != null" >
+        #{ruleRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleMsg != null" >
+        #{ruleMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="billType != null" >
+        #{billType,jdbcType=TINYINT},
+      </if>
+      <if test="useMoney != null" >
+        #{useMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="useDay != null" >
+        #{useDay,jdbcType=TINYINT},
+      </if>
+      <if test="startPrice != null" >
+        #{startPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="transportTimeType != null" >
+        #{transportTimeType,jdbcType=TINYINT},
+      </if>
+      <if test="useItemFlag != null" >
+        #{useItemFlag,jdbcType=TINYINT},
+      </if>
+      <if test="mgItems != null" >
+        #{mgItems,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=TINYINT},
+      </if>
+      <if test="payStr != null" >
+        #{payStr,jdbcType=VARCHAR},
+      </if>
+      <if test="creatStatus != null" >
+        #{creatStatus,jdbcType=TINYINT},
+      </if>
+      <if test="creatPub != null" >
+        #{creatPub,jdbcType=TINYINT},
+      </if>
+      <if test="ordId != null" >
+        #{ordId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="useItemIds != null" >
+        #{useItemIds,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SpVoucherTemp" >
+    update SpVoucherTemp
+    <set >
+      <if test="activeId != null" >
+        activeId = #{activeId,jdbcType=INTEGER},
+      </if>
+      <if test="ruleName != null" >
+        ruleName = #{ruleName,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleRemark != null" >
+        ruleRemark = #{ruleRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleMsg != null" >
+        ruleMsg = #{ruleMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="billType != null" >
+        billType = #{billType,jdbcType=TINYINT},
+      </if>
+      <if test="useMoney != null" >
+        useMoney = #{useMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="useDay != null" >
+        useDay = #{useDay,jdbcType=TINYINT},
+      </if>
+      <if test="startPrice != null" >
+        startPrice = #{startPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="transportTimeType != null" >
+        transportTimeType = #{transportTimeType,jdbcType=TINYINT},
+      </if>
+      <if test="useItemFlag != null" >
+        useItemFlag = #{useItemFlag,jdbcType=TINYINT},
+      </if>
+      <if test="mgItems != null" >
+        mgItems = #{mgItems,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        payType = #{payType,jdbcType=TINYINT},
+      </if>
+      <if test="payStr != null" >
+        payStr = #{payStr,jdbcType=VARCHAR},
+      </if>
+      <if test="creatStatus != null" >
+        creatStatus = #{creatStatus,jdbcType=TINYINT},
+      </if>
+      <if test="creatPub != null" >
+        creatPub = #{creatPub,jdbcType=TINYINT},
+      </if>
+      <if test="ordId != null" >
+        ordId = #{ordId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="useItemIds != null" >
+        useItemIds = #{useItemIds,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.corner.core.beans.SpVoucherTemp" >
+    update SpVoucherTemp
+    set activeId = #{activeId,jdbcType=INTEGER},
+      ruleName = #{ruleName,jdbcType=VARCHAR},
+      ruleRemark = #{ruleRemark,jdbcType=VARCHAR},
+      ruleMsg = #{ruleMsg,jdbcType=VARCHAR},
+      billType = #{billType,jdbcType=TINYINT},
+      useMoney = #{useMoney,jdbcType=DECIMAL},
+      useDay = #{useDay,jdbcType=TINYINT},
+      startPrice = #{startPrice,jdbcType=DECIMAL},
+      transportTimeType = #{transportTimeType,jdbcType=TINYINT},
+      useItemFlag = #{useItemFlag,jdbcType=TINYINT},
+      mgItems = #{mgItems,jdbcType=VARCHAR},
+      payType = #{payType,jdbcType=TINYINT},
+      payStr = #{payStr,jdbcType=VARCHAR},
+      creatStatus = #{creatStatus,jdbcType=TINYINT},
+      creatPub = #{creatPub,jdbcType=TINYINT},
+      ordId = #{ordId,jdbcType=INTEGER},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      remark = #{remark,jdbcType=VARCHAR},
+      useItemIds = #{useItemIds,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SpVoucherTemp" >
+    update SpVoucherTemp
+    set activeId = #{activeId,jdbcType=INTEGER},
+      ruleName = #{ruleName,jdbcType=VARCHAR},
+      ruleRemark = #{ruleRemark,jdbcType=VARCHAR},
+      ruleMsg = #{ruleMsg,jdbcType=VARCHAR},
+      billType = #{billType,jdbcType=TINYINT},
+      useMoney = #{useMoney,jdbcType=DECIMAL},
+      useDay = #{useDay,jdbcType=TINYINT},
+      startPrice = #{startPrice,jdbcType=DECIMAL},
+      transportTimeType = #{transportTimeType,jdbcType=TINYINT},
+      useItemFlag = #{useItemFlag,jdbcType=TINYINT},
+      mgItems = #{mgItems,jdbcType=VARCHAR},
+      payType = #{payType,jdbcType=TINYINT},
+      payStr = #{payStr,jdbcType=VARCHAR},
+      creatStatus = #{creatStatus,jdbcType=TINYINT},
+      creatPub = #{creatPub,jdbcType=TINYINT},
+      ordId = #{ordId,jdbcType=INTEGER},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

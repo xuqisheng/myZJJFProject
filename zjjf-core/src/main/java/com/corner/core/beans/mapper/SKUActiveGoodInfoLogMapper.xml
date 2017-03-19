@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SKUActiveGoodInfoLogMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SKUActiveGoodInfoLog" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="actype" property="actype" jdbcType="INTEGER" />
+    <result column="actTime" property="actTime" jdbcType="TIMESTAMP" />
+    <result column="opUser" property="opUser" jdbcType="VARCHAR" />
+    <result column="skuActiveId" property="skuActiveId" jdbcType="VARCHAR" />
+    <result column="goodsType" property="goodsType" jdbcType="INTEGER" />
+    <result column="plantItemId" property="plantItemId" jdbcType="VARCHAR" />
+    <result column="spId" property="spId" jdbcType="VARCHAR" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="buyLimitNum4old" property="buyLimitNum4old" jdbcType="INTEGER" />
+    <result column="buyLimitNum4new" property="buyLimitNum4new" jdbcType="INTEGER" />
+    <result column="activePrice4old" property="activePrice4old" jdbcType="DECIMAL" />
+    <result column="activePrice4new" property="activePrice4new" jdbcType="DECIMAL" />
+    <result column="tagId4old" property="tagId4old" jdbcType="VARCHAR" />
+    <result column="tagId4new" property="tagId4new" jdbcType="VARCHAR" />
+    <result column="rsNum" property="rsNum" jdbcType="INTEGER" />
+    <result column="activeGoodInfoId" property="activeGoodInfoId" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.corner.core.beans.SKUActiveGoodInfoLog" >
+    insert into SKUActiveGoodInfoLog (id, actype, actTime, 
+      opUser, skuActiveId, goodsType, 
+      plantItemId, spId, spGroupId, 
+      buyLimitNum4old, buyLimitNum4new, activePrice4old, 
+      activePrice4new, tagId4old, tagId4new, 
+      rsNum, activeGoodInfoId)
+    values (#{id,jdbcType=VARCHAR}, #{actype,jdbcType=INTEGER}, #{actTime,jdbcType=TIMESTAMP}, 
+      #{opUser,jdbcType=VARCHAR}, #{skuActiveId,jdbcType=VARCHAR}, #{goodsType,jdbcType=INTEGER}, 
+      #{plantItemId,jdbcType=VARCHAR}, #{spId,jdbcType=VARCHAR}, #{spGroupId,jdbcType=INTEGER}, 
+      #{buyLimitNum4old,jdbcType=INTEGER}, #{buyLimitNum4new,jdbcType=INTEGER}, #{activePrice4old,jdbcType=DECIMAL}, 
+      #{activePrice4new,jdbcType=DECIMAL}, #{tagId4old,jdbcType=VARCHAR}, #{tagId4new,jdbcType=VARCHAR}, 
+      #{rsNum,jdbcType=INTEGER}, #{activeGoodInfoId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SKUActiveGoodInfoLog" >
+    insert into SKUActiveGoodInfoLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="actype != null" >
+        actype,
+      </if>
+      <if test="actTime != null" >
+        actTime,
+      </if>
+      <if test="opUser != null" >
+        opUser,
+      </if>
+      <if test="skuActiveId != null" >
+        skuActiveId,
+      </if>
+      <if test="goodsType != null" >
+        goodsType,
+      </if>
+      <if test="plantItemId != null" >
+        plantItemId,
+      </if>
+      <if test="spId != null" >
+        spId,
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId,
+      </if>
+      <if test="buyLimitNum4old != null" >
+        buyLimitNum4old,
+      </if>
+      <if test="buyLimitNum4new != null" >
+        buyLimitNum4new,
+      </if>
+      <if test="activePrice4old != null" >
+        activePrice4old,
+      </if>
+      <if test="activePrice4new != null" >
+        activePrice4new,
+      </if>
+      <if test="tagId4old != null" >
+        tagId4old,
+      </if>
+      <if test="tagId4new != null" >
+        tagId4new,
+      </if>
+      <if test="rsNum != null" >
+        rsNum,
+      </if>
+      <if test="activeGoodInfoId != null" >
+        activeGoodInfoId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="actype != null" >
+        #{actype,jdbcType=INTEGER},
+      </if>
+      <if test="actTime != null" >
+        #{actTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opUser != null" >
+        #{opUser,jdbcType=VARCHAR},
+      </if>
+      <if test="skuActiveId != null" >
+        #{skuActiveId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsType != null" >
+        #{goodsType,jdbcType=INTEGER},
+      </if>
+      <if test="plantItemId != null" >
+        #{plantItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="spId != null" >
+        #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="spGroupId != null" >
+        #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="buyLimitNum4old != null" >
+        #{buyLimitNum4old,jdbcType=INTEGER},
+      </if>
+      <if test="buyLimitNum4new != null" >
+        #{buyLimitNum4new,jdbcType=INTEGER},
+      </if>
+      <if test="activePrice4old != null" >
+        #{activePrice4old,jdbcType=DECIMAL},
+      </if>
+      <if test="activePrice4new != null" >
+        #{activePrice4new,jdbcType=DECIMAL},
+      </if>
+      <if test="tagId4old != null" >
+        #{tagId4old,jdbcType=VARCHAR},
+      </if>
+      <if test="tagId4new != null" >
+        #{tagId4new,jdbcType=VARCHAR},
+      </if>
+      <if test="rsNum != null" >
+        #{rsNum,jdbcType=INTEGER},
+      </if>
+      <if test="activeGoodInfoId != null" >
+        #{activeGoodInfoId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

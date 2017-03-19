@@ -1,0 +1,946 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpStoreMgMapper" >
+	<select id="getStoreListBySpGroupId" resultType="com.corner.core.beans.Store" parameterType="java.lang.Integer">
+       select * from Store where spGroupId = #{id}
+     </select>
+	<select id="getApplyStoreById" parameterType="java.lang.Integer"  resultType="com.corner.kefu.beans.vo.sp.ApplyStoreVo">
+		SELECT * FROM Store s JOIN StoreInfo i ON s.id = i.id WHERE  s.id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<sql id="selectApplyStore_condition">
+		FROM
+			Store a
+		LEFT JOIN 
+		SpAdminVerifyRecord b ON a.id = b.VerifyObjIntId 
+		AND b.actionTime IN (
+			SELECT
+				max(actionTime)
+			FROM
+				SpAdminVerifyRecord
+			GROUP BY
+				VerifyObjIntId
+		)
+		where
+			a.isDelete = 0
+		<choose>
+			<when test="status != null">
+				and a.status = #{status}
+			</when>
+			<otherwise>
+				and a.status BETWEEN 1 and 3
+			</otherwise>
+		</choose>
+		<if test="storeid != null">
+			and a.id = #{storeid,jdbcType=INTEGER}
+		</if>
+		<if test="mobile != null and mobile != ''">
+			and a.mobile = #{mobile,jdbcType=INTEGER}
+		</if>
+		<if test="storeName != null and storeName != ''">
+			and a.name like "%"#{storeName,jdbcType=INTEGER}"%"
+		</if>
+		<if test="keywords != null and keywords != ''">
+			and (a.mobile like "%"#{keywords,jdbcType=INTEGER}"%" or a.name like "%"#{keywords,jdbcType=INTEGER}"%")
+		</if>
+		<if test="beginTime != null">
+			and b.ActionTime &gt; #{beginTime}
+		</if>
+		<if test="endTime != null">
+			and b.ActionTime &lt; #{endTime}
+		</if>
+		<if test="verifyadminId != null and verifyadminId != ''">
+			and b.VerifyadminId = #{verifyadminId}
+		</if>
+		GROUP BY a.id
+	</sql>
+	<select id="getApplyStores"  parameterType="com.corner.kefu.beans.ro.sp.StoreRo"  resultType="com.corner.kefu.beans.vo.sp.ApplyStoreVo">
+		SELECT
+			a.id as storeId,
+			a.supplierCode,
+			a.name,
+			a.mobile,
+			a.status,
+			a.addTime,
+			b.VerifyadminId,
+			b.VerifyAdminNm,
+			b.VerifyObjIntId,
+			b.ActionNm,
+			b.actionTime
+		<include refid="selectApplyStore_condition" />
+		<choose>
+			<when test="status == null || status == 2">
+				order by a.addTime desc 
+			</when>
+			<otherwise>
+				order by b.ActionTime desc 
+			</otherwise>
+		</choose>
+		
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+	<select id ="getApplyStoresCount" parameterType="com.corner.kefu.beans.ro.sp.StoreRo" resultType="java.lang.Integer">
+  		SELECT count(1) FROM (
+  			SELECT
+	  			a.id as storeId,
+				a.supplierCode,
+				a.name,
+				a.mobile,
+				a.status,
+				a.addTime,
+				b.VerifyadminId,
+				b.VerifyAdminNm,
+				b.VerifyObjIntId,
+				b.ActionNm,
+				b.actionTime
+				<include refid="selectApplyStore_condition" />
+  		) c
+	</select>
+
+  <select id="getStoresIdByCode" parameterType="java.lang.String" resultType="com.corner.kefu.beans.vo.sp.StoreVo">
+	SELECT s.id ,s.`name`,s.status FROM Store s WHERE s.supplierCode=#{suppliercode,jdbcType=INTEGER} and isDelete=0 and status=1
+	</select>
+	
+	<select id="getSelectedStoreListFromSpPushMsgMap" parameterType="java.lang.String" resultType="com.corner.kefu.beans.vo.sp.StoreVo">
+	     SELECT 
+			  c.id
+			FROM
+			  SpPushMsgMap a 
+			  JOIN Store c 
+			    ON a.storeId = c.id
+			  JOIN SpGroup e
+			    on c.spGroupId = e.id 
+			WHERE a.msgId = #{id} and a.isDelete = '0'
+	</select>
+	
+	<select id="getSelectedStoreList" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.StoreVo">
+		SELECT 
+		  c.id,
+		  c.name,
+		  c.contact,
+		  c.mobile,
+		  e.name AS spGropName,
+		  '1' AS isSelected
+		FROM
+		  SpPushMsgMap a 
+		  JOIN Store c 
+		    ON a.storeId = c.id
+		  JOIN SpGroup e
+		    on c.spGroupId = e.id 
+		WHERE a.msgId = #{id} and a.isDelete = '0'
+		<if test="keyStr!=null">
+		 and (c.id like "%"#{keyStr}"%" or c.name like "%"#{keyStr}"%" or c.contact like "%"#{keyStr}"%" or c.mobile like "%"#{keyStr}"%" or e.name like "%"#{keyStr}"%")
+		</if>
+		UNION
+		SELECT 
+		  b.id,
+		  b.name,
+		  b.contact,
+		  b.mobile,
+		  f.name AS spGropName,
+		  '0' AS isSelected
+		FROM
+		  Store b
+		  JOIN  SpGroup f
+		  on b.spGroupId = f.id
+		WHERE b.`status` = 1 
+		  AND b.isDelete = '0'
+		  <if test="keyStr!=null">
+		     and (b.id like "%"#{keyStr}"%" or b.name like "%"#{keyStr}"%" or b.contact like "%"#{keyStr}"%" or b.mobile like "%"#{keyStr}"%" or f.name like "%"#{keyStr}"%")
+		  </if>
+		  AND b.id NOT IN 
+		  (SELECT 
+		    c.id 
+		  FROM
+		    SpPushMsgMap a 
+		    JOIN Store c 
+		      ON a.storeId = c.id 
+		    JOIN SpGroup e 
+		      ON c.spGroupId = e.id 
+		  WHERE a.msgId = #{id} 
+		    AND a.isDelete = '0')
+       <if test="pageSize!=0">
+        limit #{pageIndex},#{pageSize}
+       </if>		   
+     </select>
+     
+     <select id="getSpPushMsgCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+       SELECT COUNT(1) FROM Store a join SpGroup b on a.spGroupId = b.id WHERE a.`status` = '1' AND a.isDelete = '0'
+       <if test="keyStr!=null">
+        and (a.id like "%"#{keyStr}"%" or a.name like "%"#{keyStr}"%" or a.contact like "%"#{keyStr}"%" or a.mobile like "%"#{keyStr}"%" or b.name like "%"#{keyStr}"%")
+       </if>
+     </select>
+     
+     <select id="getStoreListWithSpGroup" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.StoreVo">
+       SELECT a.*,b.name AS spGropName FROM Store a JOIN SpGroup b ON a.spGroupId = b.id WHERE a.isDelete = 0 AND a.status = 1
+        <if test="keyStr !=null">
+          and (a.id like CONCAT('%','${keyStr}','%') or a.name like CONCAT('%','${keyStr}','%')
+              or a.contact like CONCAT('%','${keyStr}','%') or a.mobile like CONCAT('%','${keyStr}','%') 
+              or b.name like CONCAT('%','${keyStr}','%')
+          )
+        </if>
+       order by a.id 
+       <if test="pageSize != 0">
+        limit #{pageIndex},#{pageSize}
+       </if>
+     </select>
+     
+     <select id="getAllStoreList" resultType="com.corner.kefu.beans.vo.sp.StoreVo"  parameterType="java.util.HashMap">
+	    SELECT a.id ,b.id AS userid,a.mobile FROM Store a JOIN `User` b ON a.id = b.storeId WHERE a.status = '1' AND a.isDelete = '0' and b.isDelete = '0'
+	    <if test="spGroupIdArr != null">
+	      and a.spGroupId IN 
+	      <foreach collection="spGroupIdArr" index="index" item="item" open="(" separator="," close=")">
+	         #{item}
+	      </foreach>
+	    </if>
+	    <if test="storeIdArr != null">
+	      and a.id IN 
+	      <foreach collection="storeIdArr" index="index" item="item" open="(" separator="," close=")">  
+	         #{item}   
+	     </foreach>
+	    </if>
+	  </select>
+	  
+	  <select id="getCountStoreListWithSpGroup" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+       SELECT count(1) FROM Store a JOIN SpGroup b ON a.spGroupId = b.id WHERE a.isDelete = 0 AND a.status = 1
+        <if test="keyStr !=null">
+          and (a.id like CONCAT('%','${keyStr}','%') or a.name like CONCAT('%','${keyStr}','%')
+              or a.contact like CONCAT('%','${keyStr}','%') or a.mobile like CONCAT('%','${keyStr}','%') 
+              or b.name like CONCAT('%','${keyStr}','%')
+          )
+        </if>
+     </select>
+     
+     
+     <sql id="pageSql">
+      limit #{pageIndex},#{pageSize}
+     </sql>
+  
+  <sql id="getNoOrderStoreList_condition">
+    <!-- (SELECT DISTINCT a.id,
+		  a.`name` ,
+		  c.id as userId,
+          a.supplierCode AS suppliercode,
+	      a.contact,
+	      a.mobile,
+ 	      b.`name` AS spGropName
+		  from Store a 
+		  JOIN SpGroup b on a.spGroupId = b.id 
+		   JOIN `User` c ON a.id=c.storeId
+		   WHERE a.isDelete=0 AND a.status=1 AND b.isDelete=0 AND b.status=1 AND c.isDelete=0
+		   <if test="keyStr!=null">
+		      AND (a.supplierCode like "%"#{keyStr}"%" or a.`name` like "%"#{keyStr}"%"
+		        or a.contact like "%"#{keyStr}"%" or a.mobile like "%"#{keyStr}"%"
+		        or b.`name` like "%"#{keyStr}"%"      
+           )
+          </if>
+		    AND c.id NOT in(
+		      SELECT DISTINCT userId from SpOrderInfo
+		       <if test="someMonthDate!=null">
+			        WHERE ADDTIME>=#{someMonthDate} 
+			   </if>
+		   )
+		   <if test="spGroupArr!=null">
+	        and a.spGroupId in 
+	         <foreach collection="spGroupArr" open="(" separator="," close=")" item="item">
+	          #{item}
+	         </foreach>
+	       </if>
+		    ) as d
+		   LEFT JOIN
+		  (
+		    SELECT id,storeId FROM SpVoucher where ruleId=#{id}
+		   
+		  ) as e ON d.id= e.storeId
+     WHERE e.id is null -->
+     FROM
+		Store a
+	JOIN SpGroup b ON a.spGroupId = b.id
+	WHERE
+		a.id NOT IN (
+			SELECT DISTINCT
+				storeId
+			FROM
+				SpOrderInfo
+			<where>
+              <if test="someMonth != null">
+			     and addTime <![CDATA[>=]]> #{someMonth}
+			  </if>			
+			</where>
+		)
+	<if test="spGroupIdArr != null">
+      and a.spGroupId IN 
+      <foreach collection="spGroupIdArr" index="index" item="item" open="(" separator="," close=")">
+         #{item}
+      </foreach>
+    </if>	
+	AND a.`status` = 1
+	AND a.isDelete = 0
+	<if test="keyStr!=null">
+		      AND (a.supplierCode like "%"#{keyStr}"%" or a.`name` like "%"#{keyStr}"%"
+		        or a.contact like "%"#{keyStr}"%" or a.mobile like "%"#{keyStr}"%"
+		        or b.`name` like "%"#{keyStr}"%"      
+           )
+    </if>
+ </sql>
+  <select id="getNoOrderStoreList" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.StoreVo">
+	   <!-- SELECT d.* from
+     <include refid="getNoOrderStoreList_condition"/>		  
+     <if test="pageSize!=0">
+       <include refid="pageSql"/>
+     </if> -->
+     SELECT
+		a.*,
+		b.name as spGropName
+	 <include refid="getNoOrderStoreList_condition"/>
+	 <if test="pageSize!=0">
+       <include refid="pageSql"/>
+     </if>
+  </select>
+  
+  <select id="getCountNoOrderStoreList" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+     SELECT count(1)
+		 <include refid="getNoOrderStoreList_condition"/> 
+  </select>
+  
+  
+  <sql id="isHasSpVoucher_condition">
+	FROM
+		(
+			SELECT
+				*
+			FROM
+				Store
+			WHERE
+				id IN 
+				<foreach collection="searchList" open="(" separator="," close=")" item="item" index="index">
+				   #{item}
+				</foreach>
+		) AS s
+	JOIN SpGroup b ON s.spGroupId = b.id
+	<!-- <if test="keyStr!=null">
+		      AND (a.supplierCode like "%"#{keyStr}"%" or a.`name` like "%"#{keyStr}"%"
+		        or a.contact like "%"#{keyStr}"%" or a.mobile like "%"#{keyStr}"%"
+		        or b.`name` like "%"#{keyStr}"%"      
+           )
+   </if> -->
+     <!-- (
+	SELECT
+    a.id,
+		a.`name`,
+		a.supplierCode AS suppliercode,
+		a.contact,
+		a.mobile,
+		b.`name` AS spGropName
+	FROM
+		Store a
+	JOIN SpGroup b ON a.spGroupId = b.id
+	WHERE
+		a.isDelete = 0
+	AND a. STATUS = 1
+	AND b.isDelete = 0
+	AND b. STATUS = 1
+	<if test="keyStr!=null">
+		      AND (a.supplierCode like "%"#{keyStr}"%" or a.`name` like "%"#{keyStr}"%"
+		        or a.contact like "%"#{keyStr}"%" or a.mobile like "%"#{keyStr}"%"
+		        or b.`name` like "%"#{keyStr}"%"      
+           )
+   </if>
+   <if test="searchList!=null">
+     AND a.id in
+       <foreach collection="searchList" open="(" separator="," close=")" item="item">
+         #{item}
+       </foreach>
+   </if>
+   <if test="temp!=null">
+     AND a.id = #{temp}
+   </if>
+   
+) as d
+LEFT JOIN (
+  SELECT storeId from SpVoucher WHERE ruleId=#{id}
+) AS c
+ON d.id=c.storeId
+WHERE c.storeId IS NULL -->
+  </sql>
+  <select id="isHasSpVoucher" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.StoreVo">
+    SELECT
+	s.*, b.`name` AS spGropName
+    <include refid="isHasSpVoucher_condition"/>
+    <if test="pageSize!=0">
+      <include refid="pageSql"/>
+    </if>
+  </select>
+  
+  <select id="isCountHasSpVoucher" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+    select count(1)
+    <include refid="isHasSpVoucher_condition"/>
+  </select>
+  
+  
+  <!--根据定格id获取旗下的所有店铺id集合begin  -->
+ <select id="getStoreIdListBySpGroupId" parameterType="com.corner.core.beans.SpGroup" resultType="java.lang.String">
+   select id from Store where spGroupId = #{id}
+ </select> 
+ <!--根据定格id获取旗下的所有店铺id集合end  -->
+ 
+ 
+ <update id="updateStroeSpGroupId" parameterType="com.corner.core.beans.Store">
+ UPDATE Store set 
+ <if test="spGroupId!=null">
+ spGroupId=#{spGroupId}
+ </if>
+ <if test="spGroupId ==null">
+ spGroupId=NULL
+ </if>
+  WHERE id=#{id}
+ </update>
+ 
+ 
+ <update id="batchUpdateStoreSpGroup" parameterType="java.util.HashMap">
+ <foreach collection="chkList" separator=";" item="item">
+   update Store set spGroupId = #{spGroup.id} where id = #{item}
+ </foreach>
+ </update>
+ 
+ <sql id="getSpvoucherStoreList_condition">
+  <!-- FROM
+		SpVoucher a
+	JOIN Store b ON a.storeId = b.id
+	JOIN SpGroup c ON b.spGroupId = c.id
+	where a.ruleId=#{ruleId}
+	and a.isDelete = 0
+	<if test="keyStr!=null">
+	   and (b.name like "%"#{keyStr}"%" or b.mobile like "%"#{keyStr}"%" 
+	   or b.contact like "%"#{keyStr}"%"
+	   or b.suppliercode like "%"#{keyStr}"%"
+	   or c.`name` like "%"#{keyStr}"%"
+	   )
+	</if> -->
+	FROM
+		(
+			SELECT
+				*
+			FROM
+				SpVoucher
+			WHERE
+				ruleId = #{ruleId}
+			AND isDelete = 0
+		) a
+	JOIN Store b ON a.storeId = b.id
+	JOIN SpGroup c ON b.spGroupId = c.id
+	LEFT JOIN SpOrderInfo d ON a.preOrderId = d.id
+	<if test="keyStr!=null and keyStr!=''">
+	where (b.name like "%"#{keyStr}"%" or b.mobile like "%"#{keyStr}"%" 
+	   or b.contact like "%"#{keyStr}"%"
+	   or b.suppliercode like "%"#{keyStr}"%"
+	   or c.`name` like "%"#{keyStr}"%"
+	   or d.orderId like "%"#{keyStr}"%"
+	   )
+	</if>
+  </sql>
+  <select id="getSpvoucherStoreList" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.StoreVo">
+     SELECT
+        b.id,
+		b.`name`,
+		b.suppliercode,
+		b.contact,
+		b.mobile,
+		c.`name` AS spGropName,
+		a.id as spVoucherId,
+		d.orderId
+	<include refid="getSpvoucherStoreList_condition"/>	
+    <include refid="pageSql"/>
+  </select>
+  <select id="getCountSpvoucherStoreList" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+     select count(1)
+     <include refid="getSpvoucherStoreList_condition"/>
+  </select>
+  
+  <!-- 根据邀请人的id查出邀请人的店铺信息 -->
+  <select id="getStoreByInviteId" parameterType="java.util.Map" resultType="com.corner.core.beans.Store">
+  		SELECT
+			*
+		FROM
+			Store
+		WHERE
+			isDelete = 0
+		AND id = (
+			SELECT
+				storeId
+			FROM
+				`User`
+			WHERE
+				isDelete = 0
+			<if test="id != null and id != ''">
+				AND id = #{id}
+			</if>
+		)
+  </select>
+  
+  <delete id="batchRemoveStore" parameterType="java.lang.String">
+    delete from StoreGroupMember where storeId in 
+    <foreach collection="array" open="("  separator=","  close=")" item="item">
+      #{item}
+    </foreach>
+  </delete>
+  
+  <select id="getMaxSequenceNum" parameterType="com.corner.core.beans.Store" resultType="java.lang.Integer">
+  	SELECT
+		MAX(sequenceNum)
+	FROM
+		`Store`
+	WHERE
+		`status` = 1
+	AND isDelete = 0
+	<if test="areaId != null">
+		AND areaId = #{areaId};
+	</if>
+  </select>
+  
+  <select id="getAllLegalByIds" parameterType="java.util.ArrayList" resultType="com.corner.core.beans.Store">
+      select * from Store where `status`=1 and isDelete =0 and id in
+      <foreach collection="list" item="item" separator="," open="(" close=")" index="index">
+        #{item}
+      </foreach>
+  </select>
+  
+  <select id="getStoreByRegion" parameterType="java.util.Map" resultType="com.corner.core.beans.Store">
+	  	SELECT
+			*
+		FROM
+			Store
+		WHERE
+			`status` = 1
+		AND isDelete = 0
+		<if test="regionId != null">
+			AND areaId = #{regionId}
+		</if>
+		<if test="cityId != null">
+			AND cityId = #{cityId}
+		</if>
+		<if test="mobile != null and mobile != ''">
+			AND spGroupId IN (
+				SELECT
+					groupId
+				FROM
+					SpGroupMap
+				WHERE
+				spId = (
+					SELECT
+						id
+					FROM
+						Supplier
+					WHERE
+						mobile = #{mobile}
+				)
+			)
+		</if>
+  </select>
+  
+  <sql id="getStoreList_condition">
+    from Store where isDelete = 0
+      and id in
+      (
+       SELECT id FROM StoreInfo where yewuRenTel = #{saleManMobile}
+      )
+      <if test="status==2">
+        and `status`  = 2
+      </if>
+      <if test="status==3">
+        and `status`  = 3
+      </if>
+  </sql>
+  <select id="getStoreList" parameterType="com.corner.kefu.beans.ro.StoreMgRo" resultType="com.corner.kefu.beans.vo.mobile.StoreMoblieVo">
+     select id,name,address,provinceId,cityId,areaId 
+     <include refid="getStoreList_condition"/>
+     order by addTime desc,editTime desc
+     <include refid="pageSql"/>
+  </select>
+  <select id="getCountStoreList" parameterType="com.corner.kefu.beans.ro.StoreMgRo" resultType="java.lang.Integer">
+   select count(1)
+   <include refid="getStoreList_condition"/>
+  </select>
+  
+  <update id="updateApprovalStore" parameterType="com.corner.kefu.beans.ro.StoreMgRo">
+   update Store
+    <set>
+      <if test="ordId != null" >
+        ordId = #{ordId,jdbcType=TINYINT},
+      </if>
+      <if test="supplierCode != null" >
+        supplierCode = #{supplierCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null" >
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        provinceId = #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        cityId = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        areaId = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="lng != null" >
+        lng = #{lng,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null" >
+        lat = #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="contactUser != null" >
+        contactUser = #{contactUser,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPwd != null" >
+        contactPwd = #{contactPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="shoperName != null" >
+        shoperName = #{shoperName,jdbcType=VARCHAR},
+      </if>
+      <if test="shoperTel != null" >
+        shoperTel = #{shoperTel,jdbcType=VARCHAR},
+      </if>
+      <if test="shoperQQ != null" >
+        shoperQQ = #{shoperQQ,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccount != null" >
+        bankAccount = #{bankAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        bankName = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null" >
+        bankCard = #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="sales != null" >
+        sales = #{sales,jdbcType=INTEGER},
+      </if>
+      <if test="lastTime != null" >
+        lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastIP != null" >
+        lastIP = #{lastIP,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editTime != null" >
+        editTime = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendTimeBegin != null" >
+        sendTimeBegin = #{sendTimeBegin,jdbcType=TIME},
+      </if>
+      <if test="sendTimeEnd != null" >
+        sendTimeEnd = #{sendTimeEnd,jdbcType=TIME},
+      </if>
+      <if test="sendess != null" >
+        sendess = #{sendess,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceFee != null" >
+        serviceFee = #{serviceFee,jdbcType=DECIMAL},
+      </if>
+      <if test="rates != null" >
+        rates = #{rates,jdbcType=REAL},
+      </if>
+      <if test="agreementPeriod != null" >
+        agreementPeriod = #{agreementPeriod,jdbcType=TINYINT},
+      </if>
+      <if test="totalPeriod != null" >
+        totalPeriod = #{totalPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="signTime != null" >
+        signTime = #{signTime,jdbcType=DATE},
+      </if>
+      <if test="iosCid != null" >
+        iosCid = #{iosCid,jdbcType=VARCHAR},
+      </if>
+      <if test="androidCid != null" >
+        androidCid = #{androidCid,jdbcType=VARCHAR},
+      </if>
+      <if test="totalComment != null" >
+        totalComment = #{totalComment,jdbcType=SMALLINT},
+      </if>
+      <if test="avgComment != null" >
+        avgComment = #{avgComment,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDrawC != null" >
+        isDrawC = #{isDrawC,jdbcType=BIT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null" >
+        col1 = #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        col2 = #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        col3 = #{col3,jdbcType=VARCHAR},
+      </if>
+      <if test="col4 != null" >
+        col4 = #{col4,jdbcType=VARCHAR},
+      </if>
+      <if test="col5 != null" >
+        col5 = #{col5,jdbcType=VARCHAR},
+      </if>
+      <if test="col6 != null" >
+        col6 = #{col6,jdbcType=VARCHAR},
+      </if>
+      <if test="col7 != null" >
+        col7 = #{col7,jdbcType=VARCHAR},
+      </if>
+      <if test="col8 != null" >
+        col8 = #{col8,jdbcType=VARCHAR},
+      </if>
+      <if test="col9 != null" >
+        col9 = #{col9,jdbcType=VARCHAR},
+      </if>
+      <if test="col10 != null" >
+        col10 = #{col10,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="qrcodeurl != null" >
+        qrcodeurl = #{qrcodeurl,jdbcType=VARCHAR},
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId = #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="acGroupId != null" >
+        acGroupId = #{acGroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="isFirstOrd != null" >
+        isFirstOrd = #{isFirstOrd,jdbcType=BIT},
+      </if>
+      <if test="fromWho != null" >
+        fromWho = #{fromWho,jdbcType=INTEGER},
+      </if>
+      <if test="inviteId != null" >
+        inviteId = #{inviteId,jdbcType=VARCHAR},
+      </if>
+      <if test="sequenceNum != null" >
+        sequenceNum = #{sequenceNum,jdbcType=INTEGER},
+      </if>
+      <if test="explain != null" >
+        `explain` = #{explain,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER} 
+  </update>
+  
+  <select id="getTempMap" resultType="com.corner.core.beans.TempTable">
+  	select * from TempTable
+  </select>  
+  
+  <delete id="delTempTable">
+  	DELETE FROM `TempTable`
+  </delete>
+  
+  
+  <sql id="getAllLegalStoreList_condition">
+   FROM
+		Store a
+	JOIN SpGroup b ON a.spGroupId = b.id
+	WHERE
+		a.`status` = 1
+	AND a.isDelete = 0 
+	<if test="keyStr!=null">
+	AND(
+	  a.name like "%"#{keyStr}"%"
+	  or
+	  a.mobile like "%"#{keyStr}"%"
+	  or
+	  a.contact like "%"#{keyStr}"%"
+	  or
+	  a.supplierCode like "%"#{keyStr}"%"
+	)
+	</if>
+	<if test="spGroupIdArr != null">
+	AND a.spGroupId in
+	<foreach collection="spGroupIdArr" open="(" separator="," close=")" item="item">
+	  #{item}
+	</foreach>
+	</if> 
+  </sql>
+  
+  <select id="getAllLegalStoreList" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.StoreVo">
+     SELECT
+		a.*,
+		b.name as spGropName
+	<include refid="getAllLegalStoreList_condition"/>
+	order by a.id desc
+	<if test="pageSize!=0">
+	<include refid="pageSql"/>
+	</if>
+  </select>
+  
+  <select id="getCountAllLegalStoreList" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+     select count(1)
+	<include refid="getAllLegalStoreList_condition"/>
+  </select>
+
+  <sql id="getstore_condition">
+    FROM Store a JOIN SpGroup b
+		ON a.spGroupId = b.id
+		WHERE a.`status` = 1 and
+		a.isDelete =0
+		AND b.`status` = 1 AND b.isDelete = 0
+        <if test="cityId!=null">
+		AND a.cityId = #{cityId}
+		</if>
+	  <if test="areaId!=null">
+		  AND a.areaId = #{areaId}
+	  </if>
+	  <if test="groupId!=null">
+		  AND a.spGroupId = #{groupId}
+	  </if>
+	  <if test="keyStr!=null">
+		  AND (
+		  a.name like "%"#{keyStr}"%"
+		  OR
+		  a.mobile like "%"#{keyStr}"%"
+		  )
+	  </if>
+  </sql>
+  <select id="getstore" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.StoreMgVo">
+     SELECT a.*,b.`name` AS storeGroupName
+     <include refid="getstore_condition"/>
+	  order BY  a.id ASC
+	  limit #{pageIndex},#{pageSize}
+  </select>
+
+  <select id="getCountstore" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+	  SELECT count(a.id)
+	  <include refid="getstore_condition"/>
+  </select>
+
+  <select id="getAcculateStoreList" parameterType="java.lang.String" resultType="com.corner.kefu.beans.vo.sp.StoreMgVo">
+     SELECT
+		a.*, b.`name` AS storeGroupName
+	FROM
+		(
+			SELECT
+				*
+			FROM
+				Store
+			WHERE
+				id IN 
+				<foreach collection="array" open="(" separator="," close=")" index="index" item="item">
+					#{item}
+				</foreach>
+
+		) a
+	JOIN SpGroup b ON a.spGroupId = b.id
+  </select>
+
+	<select id="getAccAllStore" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.StoreMgVo">
+		SELECT
+			a.*,
+			b.totalOrderPrice
+		FROM
+			(
+				SELECT
+					storeId,
+					SUM(orderPrice) AS totalOrderPrice
+				FROM
+					SpOrderInfo
+				WHERE
+					(
+						addTime BETWEEN #{active.ruleStart}
+						AND #{active.ruleEnd}
+					)
+				AND `status` = 5
+				AND isDelete = 0
+				AND `level` = 1
+		        AND supportmetho IN
+                <foreach collection="rulePayArr" open="(" separator="," close=")" item="item" index="index">
+					#{item}
+				</foreach>
+				GROUP BY
+					storeId
+			) b
+		JOIN Store a ON a.id = b.storeId
+		AND a.`status` = 1
+		AND a.isDelete = 0
+		WHERE b.totalOrderPrice &gt;=#{startPrice}
+		<if test="active.ruleScopFlag==1">
+			and a.spGroupId IN 
+			<foreach collection="spGroupIdArr" open="(" separator="," close=")" index="index" item="item">
+				#{item}
+			</foreach>
+		</if>
+		<if test="active.ruleScopFlag==3">
+			and a.id IN
+			<foreach collection="storeIdArr" open="(" separator="," close=")" index="index" item="item">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+
+	<sql id="getAccStore_conditon">
+		FROM
+			Store a
+		WHERE
+			a.`status` = 1
+		AND a.isDelete = 0
+		<if test="active.ruleScopFlag==1">
+        AND  a.spGroupId IN
+			<foreach collection="ruleScopArr" open="(" separator="," close=")" index="index" item="item">
+				 #{item}
+			</foreach>
+		</if>
+		<if test="active.ruleScopFlag==3">
+			AND  a.id IN
+			<foreach collection="storeIdArr" open="(" separator="," close=")" index="index" item="item">
+				#{item}
+			</foreach>
+		</if>
+		<if test="active.keyStr!=null and active.keyStr!=''">
+			AND (a.`name` like "%"#{active.keyStr}"%"
+			OR
+			a.mobile like "%"#{active.keyStr}"%"
+			OR
+			a.contact like "%"#{active.keyStr}"%"
+			)
+		</if>
+	</sql>
+
+	<select id="getCountAccStore" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+       select count(1)
+       <include refid="getAccStore_conditon"/>
+	</select>
+
+
+	<select id="getAccStore" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.StoreMgVo">
+        SELECT
+			a.*
+        <include refid="getAccStore_conditon"/>
+        order BY  a.id
+		limit #{active.pageIndex},#{active.pageSize}
+	</select>
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpOrderActiveMapMgMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpOrderActiveMap" extends="com.corner.core.dao.SpOrderActiveMapMapper.BaseResultMap">
+  </resultMap>
+  
+  
+  <select id="getSpVoucherActivePlantCost" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<!-- SELECT
+		SUM(rebeatSp2Plat) AS cost,
+		(
+			SELECT
+				COUNT(*)
+			FROM
+				(
+					SELECT
+						*
+					FROM
+						SpOrderActiveMap
+					WHERE
+						spVoucherActiveId = #{spVoucherActiveId}
+					AND `level` = 2
+					AND spId = #{supplierId}
+					GROUP BY
+						storeId
+				) AS a
+		) AS totalConsumer
+	FROM
+		SpOrderActiveMap
+	WHERE
+		spVoucherActiveId = #{spVoucherActiveId}
+	AND `level` = 2
+	AND spId = #{supplierId} -->
+	
+	SELECT
+	SUM(rebeatSp2Plat) AS cost,
+	(
+		SELECT
+			COUNT(*)
+		FROM
+			(
+				SELECT
+					*
+				FROM
+					SpOrderActiveMap
+				WHERE
+					spVoucherActiveId = #{spVoucherActiveId}
+				AND `level` = 2
+				AND spId = #{supplierId}
+				GROUP BY
+					storeId
+			) AS a
+	) AS totalConsumer
+FROM
+	(
+		SELECT
+			*
+		FROM
+			SpOrderActiveMap
+		WHERE
+			spVoucherActiveId = #{spVoucherActiveId}
+		AND `level` = 2
+		AND spId = #{supplierId}
+	) b
+JOIN SpOrderInfo c ON b.sOrderId = c.id
+AND c.`status` != 6
+  </select>
+  
+  <select id="getManjianActiveStore" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.StoreMgVo">
+	SELECT
+		a.storeId AS id,
+		d.`name`,
+		c.`name` AS storeGroupName,
+		(
+			SELECT
+				count(storeId)
+			FROM
+				SpOrderInfo e
+			WHERE
+				e.storeId = a.storeId
+			AND e.`level` = 1
+			AND e.isDelete = 0
+			AND e.`status` != 6
+		) AS totalOrder
+	FROM
+		(
+			SELECT
+				*
+			FROM
+				SpOrderActiveMap
+			WHERE
+				spVoucherActiveId = #{spVoucherActiveId} 
+			AND `level` = 2
+			AND spId = #{supplierId}
+			GROUP BY
+				storeId
+		) AS a
+	LEFT JOIN StoreGroupMember b ON a.spId = b.supplierId
+	AND a.storeId = b.storeId
+	LEFT JOIN StoreGroup c ON b.storeGroupID = c.id
+	LEFT JOIN Store d ON d.id = a.storeId
+</select>
+</mapper>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>增加单品促销</title>
+		<link rel="stylesheet" type="text/css" href="../../../resources/css/base.css" />
+		<link rel="stylesheet" type="text/css" href="../../../resources/css/layout.css" />
+		<script src="../../../resources/vendor/jquery/jquery-1.12.4.min.js"></script>
+		<script src="../../../resources/vendor/My97DatePicker/WdatePicker.js"></script>
+		<script src="../../../resources/js/comm.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<style type="text/css">
+
+	</style>
+	<body>
+		<div class="wrap-bd">
+			<div class="mb-default">
+				<a href="#" class="crumb">促销管理</a>
+				<a href="#" class="crumb">单品促销</a>
+			</div>
+			<div class="bg wrap-bd clearfix">
+				<form action="">
+					<div class="mb-default ">
+						<label for="" class="label">活动名称：</label>
+						<input type="text" name=""value="" class="input input-default mr-default" />
+						<span class="txt-warn hidden" id="active-name-warn">最长20个字，最短4个字。</span>
+					</div>
+					<div class="mb-default ">
+						<span class="label">
+						活动说明：
+					</span>
+						<input type="text" name="" onblur="ad()" id="active-desc" value="" class="input input-default mr-default" />
+						<span class="txt-warn hidden" id="active-desc-warn">最长20个字。</span>
+					</div>
+					<div class="mb-default">
+						<label for="" class="label">活动时间：</label>
+						<input type="text" name="ruleStart" id="" value="" class="input input-date J_timeS" />
+						<!--,dateFmt:'yyyyMMdd HH:mm:ss'控制是时间在分秒-->
+						-
+						<input type="text" name="ruleEnd" onblur="time()" id="" value="" class="input input-date J_timeE mr-default" />
+						<span id="times">
+								
+							</span>
+
+					</div>
+					<div class="mb-default">
+						<label for="" class="label">发布区域：</label>
+						<input type="checkbox" name="" id="" value="" class="checkbox" />热销排行
+						<input type="checkbox" name="" id="" value="" class="checkbox ml-default" />特价专区
+						<input type="checkbox" name="" id="" value="" class="checkbox ml-default" />爆款推荐
+						<input type="checkbox" name="" id="" value="" class="checkbox ml-default" />新品推荐
+						<input type="checkbox" name="" id="" value="" class="checkbox ml-default" />品牌促销
+
+					</div>
+					<div class="mb-default clearfix">
+
+						<div class="label va-t">商品列表：</div>
+						<div style="display:inline-block;width: 80%;">
+							<table class="table-list">
+								<thead>
+									<tr>
+										<th>商品条码</th>
+										<th>商品名称</th>
+										<th>规格</th>
+										<th>原价格</th>
+										<th>折扣</th>
+										<th>活动售价</th>
+										<th>单个ID限购</th>
+										<th>商品标签</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody id="par">
+									<tr id="J_addTr">
+										<td colspan="9">
+											<span class="button button-operate" id="J_dialog-addGoods">
+									新增商品
+								</span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+					</div>
+					<div class="mb-default">
+						<label for="">活动互斥：
+					<input type="checkbox" name="" id="" value="" class="checkbox ml-default J_chkone"/>满赠活动
+					<input type="checkbox" name="" id="" value="" class="checkbox ml-default J_chkone"/>满减活动
+						<span class="ml-default" style="color: red;">
+
+勾选互斥后，此商品活动不可同时与优惠券、满送、满减活动使用。
+</span>
+					</label>
+					</div>
+					<div class="">
+						<a href="suppliers.html" class="button button-ok">下一步</a>
+						<span class="button button-cancel ml-small">取消</span>
+					</div>
+				</form>
+			</div>
+			<div class="cover-all">
+
+			</div>
+			<div class="dialog hidden J_dialog" id="J_dialogArea" style="width: 800px;">
+				<div class="dialog-head">
+					选择商品
+					<div id="" class="dialog-close">
+					</div>
+				</div>
+				<div class="dialog-body clearfix">
+					<div class="mb-default clearfix">
+						<div class="fl" style="width: 50%;">
+							<label for="">商品分类:
+								<select name="" style="width: 100px;" class="select ta-c">
+									<option value="" class="select">一级分类1111111111111</option>
+									<option value="" class="select">一级分类</option>
+									<option value="" class="select">一级分类</option>
+								</select>
+								<select name="" style="width: 100px;" class="select ta-c">
+									<option value="" class="select">二级分类</option>
+									<option value="" class="select">二级分类</option>
+									<option value="" class="select">二级分类</option>
+								</select>
+							</label>
+						</div>
+						<div class="fr ta-r" style="width: 50%;">
+							<label for="">商品品牌:
+								<input type="text" name="" id="" value="" class="input input-default"/>
+							</label>
+						</div>
+					</div>
+					<div class="mb-default clearfix">
+						<div class="fl" style="widows: 50%;">
+							<label for="">商品条码:
+								<input type="text" name="" id="" value="" class="input input-default mr-small"/>
+							
+							</label>
+						</div>
+						<div class="fr ta-r" style="width: 50%;">
+							<label for="">商品名称:
+								<input type="text" name="" id="" value="" class="input input-default"/>
+							</label>
+						</div>
+					</div>
+					<div class="fr mb-default">
+						<span class="dialog-button dialog-ok ml-default" id="query">查询</span>
+						<span class="dialog-button ml-small button-ok border" id="resize">重置</span>
+					</div>
+					<div class="" style="width:100%;height: 250px;overflow: auto;">
+						<table class="table-list" id="goods_chose">
+						<thead>
+							<tr>
+								<th>
+									<input type="checkbox" name="" id="J_selectAll" value="" />
+								</th>
+								<th>商品品牌</th>
+								<th>商品条码</th>
+								<th>商品名称</th>
+								<th>规格</th>
+								<th>价格</th>
+							</tr>
+						</thead>
+						<tbody id="J_dialog_tbody" class="table-tbody">
+						</tbody>
+						
+					</table>
+					</div>
+					
+				</div>
+				<div class="dialog-foot mb-default mt-default">
+					<div class="">
+						<span class="dialog-button dialog-ok ml-default" id="add">增加</span>
+						<span class="dialog-button ml-small  dialog-cancel">关闭</span>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			dateRange('.J_timeS', '.J_timeE', 1);
+			if('' == 1) {
+				$('#isVoluntary').attr('checked', true);
+			} else {
+				$('#isVoluntary').attr('checked', false);
+			}
+			$('#ruleType').val('-1');
+			dialogPosCenter('#J_dialogArea');
+			$('#J_dialog-addGoods').on('click', function() {
+				$('#J_dialogArea, .cover-all').fadeIn();
+			});
+			$('.J_dialog').on('click', '.dialog-cancel', function() {
+
+				$('.J_dialog, .cover-all').fadeOut();
+			})
+			$('.dialog').on('click', '.dialog-close', function() {
+
+				$('.J_dialog, .cover-all').fadeOut();
+			})
+			selectAll('#J_selectAll', '.J_chk');
+			$('.J_chkone').click(function(){
+				$(this).attr("checked",true).siblings().attr("checked",false)
+			})
+
+			var html_new = '';
+			html_new += '<tr>' +
+				'<td>111</td>' +
+				'<td>XXXX</td>' +
+				'<td>24*300ml</td>' +
+				'<td>111.11</td>' +
+				'<td><input type="" name="" id="" value="" class="input input-date"/></td>' +
+				'<td><input type="" name="" id="" value="" class="input input-date"/></td>' +
+				'<td><input type="" name="" id="" value="" class="input input-date"/></td>' +
+				'<td>' +
+				'<select name="" class="select">' +
+				'<option value="">爆款</option>' +
+				'<option value="">热销</option>' +
+				'<option value="">特价</option>' +
+				'<option value="">新品</option>' +
+				'<option value="">自营</option>' +
+				'<option value="">限时</option>' +
+				'<option value="">限量</option>' +
+				'<option value="">套餐</option>' +
+				'</select>' +
+				'</td>' +
+				'<td>' +
+				'<span class="icon-op icon-op-del J_del" title="删除"></span>' +
+				'</td>' +
+				'</tr>';
+
+			$('#add').click(function() {
+				$('#J_addTr').before(html_new);
+			})
+			$('#par').on('click', '.J_del', function() {
+				if(confirm('确认删除？')) {
+					$(this).parent('td').parent('tr').remove();
+				}
+			})
+			var html_chose = '';
+			for(var i=0;i<4;i++){
+				html_chose +=
+				'<tr>' +
+				'<td>' +
+				'<input type="checkbox" name="" id="" value="" class="checkbox J_chk"/>' +
+				'</td>+' +
+				'<td>'+i+'</td>' +
+				'<td>12345</td>' +
+				'<td>我的名称名称踩踩踩</td>' +
+				'<td>24*300ml</td>' +
+				'<td>100</td>' +
+				'</tr>';
+			}
+			
+			$('#query').click(function() {
+				$('#J_dialog_tbody').html('')
+				$('#J_dialog_tbody').append(html_chose)
+			})
+			$('#resize').click(function() {
+				$('#J_dialog_tbody').html('')
+			})
+		})
+
+		function time() {
+			var aDate = $('.J_timeE').val().split("-");
+			var oDate1 = new Date(aDate[1] + '-' + aDate[2] + '-' + aDate[0]); //转换为MM-dd-yyyy格式 
+			var aDate = $('.J_timeS').val().split("-");
+			var oDate2 = new Date(aDate[1] + '-' + aDate[2] + '-' + aDate[0]);
+			var timeSpan = {};
+			var TotalMilliseconds = Math.abs(oDate1 - oDate2); //相差的毫秒数
+			timeSpan.Days = parseInt(TotalMilliseconds / 1000 / 60 / 60 / 24);
+			timeSpan.TotalHours = parseInt(TotalMilliseconds / 1000 / 60 / 60);
+			timeSpan.Hours = timeSpan.TotalHours % 24;
+			timeSpan.TotalMinutes = parseInt(TotalMilliseconds / 1000 / 60);
+			timeSpan.Minutes = timeSpan.TotalMinutes % 60;
+			timeSpan.TotalSeconds = parseInt(TotalMilliseconds / 1000);
+			timeSpan.Seconds = timeSpan.TotalSeconds % 60;
+			timeSpan.Milliseconds = TotalMilliseconds;
+			var milliseconds = TotalMilliseconds % 1000;
+			$('#times').html('活动持续' + timeSpan.Days + '天' + timeSpan.Hours + '小时' + timeSpan.Minutes + '分');
+
+		}
+
+		function an() {
+			var len = $('#active-name').val().length; //取得输入字符的长度
+			if(len > 20) {
+				$('#active-name-warn').show()
+			} else if(len < 4) {
+				$('#active-name-warn').show()
+			} else {
+				$('#active-name-warn').hide()
+			}
+		}
+
+		function ad() {
+			var len = $('#active-desc').val().length; //取得输入字符的长度
+			if(len > 20) {
+				$('#active-desc-warn').show()
+			} else {
+				$('#active-desc-warn').hide()
+			}
+
+		}
+	</script>
+
+</html>

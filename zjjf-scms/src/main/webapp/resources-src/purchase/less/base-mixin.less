@@ -1,0 +1,21 @@
+@import 'base-var';
+
+.clearfix() {
+  display: block;
+  zoom: 1;
+  &:after {
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden
+  }
+}
+.w(@width: @main-width) {
+  margin: 0 auto;
+  width: @width;
+}
+.size(@width, @height: @width) {
+  width: @width;
+  height: @height;
+}

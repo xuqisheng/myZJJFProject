@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpAdvertisementMgMapper" >
+	<!-- 广告列表 -->
+	<sql id="getAdvertisementListSql">
+		FROM
+			Advertisement a
+		<!--LEFT JOIN SpGroupAdvertisment b ON a.id = b.advertismentId
+		LEFT JOIN SpGroupAd2BordMap c ON b.id = c.spGroupAdId
+		LEFT JOIN Adboard d ON c.adBordId = d.id AND d.`status` = 1 AND d.isDelete = 0 -->
+		LEFT JOIN Adboard d ON a.boardId = d.id AND d.`status` = 1 AND d.isDelete = 0
+		<where>
+			<if test="name != null and name != ''">
+				and a.name like "%"#{name}"%"
+			</if>
+			<if test="startTime != null">
+				and a.startTime &gt;=#{startTime}
+			</if>
+			<if test="endTime != null">
+				and a.endTime &lt;=#{endTime}
+			</if>
+			<if test="boardId != null and boardId!=''">
+				and a.boardId =#{boardId}
+			</if>
+		</where>
+	</sql>
+	 <select id="getAdvertisementList" parameterType="com.corner.kefu.beans.ro.AdvertisementRo" resultType="com.corner.kefu.beans.vo.AdvertisementVo" >
+	     SELECT
+	     	a.id,
+			a.`name`,
+			a.ordId,
+			IFNULL(d.`name`,'暂无广告位') as adboardName,
+			a.startTime,
+			a.endTime,
+			/*a.`status`,*/
+			 CASE
+			 WHEN SYSDATE() &lt; a.startTime THEN 1
+			 WHEN SYSDATE() &gt;= a.startTime AND SYSDATE() &lt; a.endTime THEN 2
+			 ELSE 0
+			 END AS status,
+			a.asDefault,
+			CASE
+				WHEN SYSDATE() &lt; a.startTime THEN '新建'
+				WHEN SYSDATE() &gt;= a.startTime AND SYSDATE() &lt; a.endTime THEN '已上架'
+				ELSE '已下架'
+			END AS staName,
+			a.isDelete
+	     <include refid="getAdvertisementListSql" />
+	     ORDER BY a.status,a.ordId,a.addTime desc
+	     <include refid="BasePublicMapper.pageSql" />
+  	</select>
+	 <select id="getAdvertisementListCount" parameterType="com.corner.kefu.beans.ro.AdvertisementRo" resultType="int" >
+	     select count(1) 
+	     <include refid="getAdvertisementListSql"/>
+  	</select>
+  	
+  	<!-- <insert id="batchSave" parameterType="java.util.List">
+	     <foreach collection="list" separator=";" index="index" item="item">
+	         insert into Advertisement
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="item.id != null" >
+	        id,
+	      </if>
+	      <if test="item.boardId != null" >
+	        boardId,
+	      </if>
+	      <if test="item.spGroupId != null" >
+	        spGroupId,
+	      </if>
+	      <if test="item.name != null" >
+	        name,
+	      </if>
+	      <if test="item.url != null" >
+	        url,
+	      </if>
+	      <if test="item.extimg != null" >
+	        extimg,
+	      </if>
+	      <if test="item.desc != null" >
+	        `desc`,
+	      </if>
+	      <if test="item.startTime != null" >
+	        startTime,
+	      </if>
+	      <if test="item.endTime != null" >
+	        endTime,
+	      </if>
+	      <if test="item.isClick != null" >
+	        isClick,
+	      </if>
+	      <if test="item.addTime != null" >
+	        addTime,
+	      </if>
+	      <if test="item.ordId != null" >
+	        ordId,
+	      </if>
+	      <if test="item.status != null" >
+	        status,
+	      </if>
+	      <if test="item.isDelete != null" >
+	        isDelete,
+	      </if>
+	      <if test="item.classId != null" >
+	        classId,
+	      </if>
+	      <if test="item.linkUrl != null" >
+	        linkUrl,
+	      </if>
+	      <if test="item.col3 != null" >
+	        col3,
+	      </if>
+	      <if test="item.content != null" >
+	        content,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="item.id != null" >
+	        #{item.id,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.boardId != null" >
+	        #{item.boardId,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.spGroupId != null" >
+	        #{item.spGroupId,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.name != null" >
+	        #{item.name,jdbcType=VARCHAR},
+	      </if>
+	      <if test="item.url != null" >
+	        #{item.url,jdbcType=VARCHAR},
+	      </if>
+	      <if test="item.extimg != null" >
+	        #{item.extimg,jdbcType=VARCHAR},
+	      </if>
+	      <if test="item.desc != null" >
+	        #{item.desc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="item.startTime != null" >
+	        #{item.startTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="item.endTime != null" >
+	        #{item.endTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="item.isClick != null" >
+	        #{item.isClick,jdbcType=TINYINT},
+	      </if>
+	      <if test="item.addTime != null" >
+	        #{item.addTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="item.ordId != null" >
+	        #{item.ordId,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.status != null" >
+	        #{item.status,jdbcType=TINYINT},
+	      </if>
+	      <if test="item.isDelete != null" >
+	        #{item.isDelete,jdbcType=BIT},
+	      </if>
+	      <if test="item.classId != null" >
+	        #{item.classId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="item.linkUrl != null" >
+	        #{item.linkUrl,jdbcType=VARCHAR},
+	      </if>
+	      <if test="item.col3 != null" >
+	        #{item.col3,jdbcType=VARCHAR},
+	      </if>
+	      <if test="item.content != null" >
+	        #{item.content,jdbcType=LONGVARCHAR},
+	      </if>
+	    </trim>
+	   </foreach>
+  </insert> -->
+   <!-- 批量上下架广告 -->
+  <update id="updateAdstatusByName" parameterType="java.util.Map" >
+  	update Advertisement set status=#{status} where name=#{name}
+  </update>
+  
+  <!-- 批量删除广告 -->
+  <delete id="deleteAdByName" parameterType="java.lang.String" >
+  	delete from Advertisement where name=#{name}
+  </delete>
+  
+  <select id="getSpGroupIdByAdId" parameterType="java.lang.Integer" resultType="com.corner.kefu.beans.vo.sp.SpGroupVo">
+	SELECT
+		a.id,
+		a.`name`,
+		(
+		SELECT
+			`name`
+		FROM
+			Region
+		WHERE
+			`status` = 1
+		AND isDelete = 0
+		AND id = a.areaId
+		) AS areaName
+	FROM
+		SpGroup a
+	WHERE
+		a.`status` = 1
+	AND a.isDelete = 0
+	AND a.id IN (
+		SELECT
+			spGroupId
+		FROM
+			SpGroupAdvertisment
+		where
+			advertismentId = #{id}
+	)
+  </select>
+  
+  <update id="deleteAd" parameterType="java.lang.Integer">
+  	UPDATE Advertisement SET isDelete=1 WHERE id=#{id}
+  </update>
+  
+  <select id="getAllAdboards" resultType="com.corner.core.beans.Adboard">
+    select * from Adboard
+  </select>
+</mapper>

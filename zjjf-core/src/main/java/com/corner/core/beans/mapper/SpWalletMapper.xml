@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SpWalletMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpWallet" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="wallet" property="wallet" jdbcType="DECIMAL" />
+    <result column="walletAddTime" property="walletAddTime" jdbcType="TIMESTAMP" />
+    <result column="walletUpdateTime" property="walletUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, wallet, walletAddTime, walletUpdateTime, remark, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SpWallet
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SpWallet
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SpWallet" >
+    insert into SpWallet (id, wallet, walletAddTime, 
+      walletUpdateTime, remark, status, 
+      isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{wallet,jdbcType=DECIMAL}, #{walletAddTime,jdbcType=TIMESTAMP}, 
+      #{walletUpdateTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SpWallet" >
+    insert into SpWallet
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="wallet != null" >
+        wallet,
+      </if>
+      <if test="walletAddTime != null" >
+        walletAddTime,
+      </if>
+      <if test="walletUpdateTime != null" >
+        walletUpdateTime,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="wallet != null" >
+        #{wallet,jdbcType=DECIMAL},
+      </if>
+      <if test="walletAddTime != null" >
+        #{walletAddTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="walletUpdateTime != null" >
+        #{walletUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SpWallet" >
+    update SpWallet
+    <set >
+      <if test="wallet != null" >
+        wallet = #{wallet,jdbcType=DECIMAL},
+      </if>
+      <if test="walletAddTime != null" >
+        walletAddTime = #{walletAddTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="walletUpdateTime != null" >
+        walletUpdateTime = #{walletUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SpWallet" >
+    update SpWallet
+    set wallet = #{wallet,jdbcType=DECIMAL},
+      walletAddTime = #{walletAddTime,jdbcType=TIMESTAMP},
+      walletUpdateTime = #{walletUpdateTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

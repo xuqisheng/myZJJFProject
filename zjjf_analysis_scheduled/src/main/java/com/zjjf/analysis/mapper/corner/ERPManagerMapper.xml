@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.corner.ERPManagerMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.corner.ERPManager" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="managerName" property="managerName" jdbcType="VARCHAR" />
+    <result column="managerCode" property="managerCode" jdbcType="VARCHAR" />
+    <result column="serialNum" property="serialNum" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="job" property="job" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="whTel" property="whTel" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="fax" property="fax" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="branderName" property="branderName" jdbcType="VARCHAR" />
+    <result column="whAddress" property="whAddress" jdbcType="VARCHAR" />
+    <result column="whMobile" property="whMobile" jdbcType="VARCHAR" />
+    <result column="whBranderName" property="whBranderName" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="cleaningDayStatus" property="cleaningDayStatus" jdbcType="TINYINT" />
+    <result column="cleaningDay" property="cleaningDay" jdbcType="INTEGER" />
+    <result column="bankNum" property="bankNum" jdbcType="VARCHAR" />
+    <result column="bankUserName" property="bankUserName" jdbcType="VARCHAR" />
+    <result column="bankName" property="bankName" jdbcType="VARCHAR" />
+    <result column="taxRate" property="taxRate" jdbcType="DECIMAL" />
+    <result column="taxNumber" property="taxNumber" jdbcType="VARCHAR" />
+    <result column="cooperation" property="cooperation" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, supplierId, managerName, managerCode, serialNum, addTime, updateTime, job, email, 
+    provinceId, cityId, areaId, address, whTel, tel, fax, mobile, branderName, whAddress, 
+    whMobile, whBranderName, remark, cleaningDayStatus, cleaningDay, bankNum, bankUserName, 
+    bankName, taxRate, taxNumber, cooperation, status, isDelete
+  </sql>
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ERPManager
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ERPManager
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.corner.ERPManager" >
+    insert into ERPManager (id, supplierId, managerName, 
+      managerCode, serialNum, addTime, 
+      updateTime, job, email, 
+      provinceId, cityId, areaId, 
+      address, whTel, tel, 
+      fax, mobile, branderName, 
+      whAddress, whMobile, whBranderName, 
+      remark, cleaningDayStatus, cleaningDay, 
+      bankNum, bankUserName, bankName, 
+      taxRate, taxNumber, cooperation, 
+      status, isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, #{managerName,jdbcType=VARCHAR}, 
+      #{managerCode,jdbcType=VARCHAR}, #{serialNum,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{job,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, 
+      #{address,jdbcType=VARCHAR}, #{whTel,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
+      #{fax,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{branderName,jdbcType=VARCHAR}, 
+      #{whAddress,jdbcType=VARCHAR}, #{whMobile,jdbcType=VARCHAR}, #{whBranderName,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{cleaningDayStatus,jdbcType=TINYINT}, #{cleaningDay,jdbcType=INTEGER}, 
+      #{bankNum,jdbcType=VARCHAR}, #{bankUserName,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, 
+      #{taxRate,jdbcType=DECIMAL}, #{taxNumber,jdbcType=VARCHAR}, #{cooperation,jdbcType=TINYINT}, 
+      #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zjjf.analysis.beans.corner.ERPManager" >
+    insert into ERPManager
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="supplierId != null" >
+        supplierId,
+      </if>
+      <if test="managerName != null" >
+        managerName,
+      </if>
+      <if test="managerCode != null" >
+        managerCode,
+      </if>
+      <if test="serialNum != null" >
+        serialNum,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="job != null" >
+        job,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="provinceId != null" >
+        provinceId,
+      </if>
+      <if test="cityId != null" >
+        cityId,
+      </if>
+      <if test="areaId != null" >
+        areaId,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="whTel != null" >
+        whTel,
+      </if>
+      <if test="tel != null" >
+        tel,
+      </if>
+      <if test="fax != null" >
+        fax,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="branderName != null" >
+        branderName,
+      </if>
+      <if test="whAddress != null" >
+        whAddress,
+      </if>
+      <if test="whMobile != null" >
+        whMobile,
+      </if>
+      <if test="whBranderName != null" >
+        whBranderName,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="cleaningDayStatus != null" >
+        cleaningDayStatus,
+      </if>
+      <if test="cleaningDay != null" >
+        cleaningDay,
+      </if>
+      <if test="bankNum != null" >
+        bankNum,
+      </if>
+      <if test="bankUserName != null" >
+        bankUserName,
+      </if>
+      <if test="bankName != null" >
+        bankName,
+      </if>
+      <if test="taxRate != null" >
+        taxRate,
+      </if>
+      <if test="taxNumber != null" >
+        taxNumber,
+      </if>
+      <if test="cooperation != null" >
+        cooperation,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="managerName != null" >
+        #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerCode != null" >
+        #{managerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNum != null" >
+        #{serialNum,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="job != null" >
+        #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="whTel != null" >
+        #{whTel,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null" >
+        #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="branderName != null" >
+        #{branderName,jdbcType=VARCHAR},
+      </if>
+      <if test="whAddress != null" >
+        #{whAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="whMobile != null" >
+        #{whMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="whBranderName != null" >
+        #{whBranderName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="cleaningDayStatus != null" >
+        #{cleaningDayStatus,jdbcType=TINYINT},
+      </if>
+      <if test="cleaningDay != null" >
+        #{cleaningDay,jdbcType=INTEGER},
+      </if>
+      <if test="bankNum != null" >
+        #{bankNum,jdbcType=VARCHAR},
+      </if>
+      <if test="bankUserName != null" >
+        #{bankUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="taxRate != null" >
+        #{taxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="taxNumber != null" >
+        #{taxNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cooperation != null" >
+        #{cooperation,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zjjf.analysis.beans.corner.ERPManager" >
+    update ERPManager
+    <set >
+      <if test="supplierId != null" >
+        supplierId = #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="managerName != null" >
+        managerName = #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerCode != null" >
+        managerCode = #{managerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNum != null" >
+        serialNum = #{serialNum,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="job != null" >
+        job = #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        provinceId = #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        cityId = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        areaId = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="whTel != null" >
+        whTel = #{whTel,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null" >
+        fax = #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="branderName != null" >
+        branderName = #{branderName,jdbcType=VARCHAR},
+      </if>
+      <if test="whAddress != null" >
+        whAddress = #{whAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="whMobile != null" >
+        whMobile = #{whMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="whBranderName != null" >
+        whBranderName = #{whBranderName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="cleaningDayStatus != null" >
+        cleaningDayStatus = #{cleaningDayStatus,jdbcType=TINYINT},
+      </if>
+      <if test="cleaningDay != null" >
+        cleaningDay = #{cleaningDay,jdbcType=INTEGER},
+      </if>
+      <if test="bankNum != null" >
+        bankNum = #{bankNum,jdbcType=VARCHAR},
+      </if>
+      <if test="bankUserName != null" >
+        bankUserName = #{bankUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        bankName = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="taxRate != null" >
+        taxRate = #{taxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="taxNumber != null" >
+        taxNumber = #{taxNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cooperation != null" >
+        cooperation = #{cooperation,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zjjf.analysis.beans.corner.ERPManager" >
+    update ERPManager
+    set supplierId = #{supplierId,jdbcType=VARCHAR},
+      managerName = #{managerName,jdbcType=VARCHAR},
+      managerCode = #{managerCode,jdbcType=VARCHAR},
+      serialNum = #{serialNum,jdbcType=INTEGER},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      job = #{job,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      provinceId = #{provinceId,jdbcType=INTEGER},
+      cityId = #{cityId,jdbcType=INTEGER},
+      areaId = #{areaId,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      whTel = #{whTel,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      fax = #{fax,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      branderName = #{branderName,jdbcType=VARCHAR},
+      whAddress = #{whAddress,jdbcType=VARCHAR},
+      whMobile = #{whMobile,jdbcType=VARCHAR},
+      whBranderName = #{whBranderName,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      cleaningDayStatus = #{cleaningDayStatus,jdbcType=TINYINT},
+      cleaningDay = #{cleaningDay,jdbcType=INTEGER},
+      bankNum = #{bankNum,jdbcType=VARCHAR},
+      bankUserName = #{bankUserName,jdbcType=VARCHAR},
+      bankName = #{bankName,jdbcType=VARCHAR},
+      taxRate = #{taxRate,jdbcType=DECIMAL},
+      taxNumber = #{taxNumber,jdbcType=VARCHAR},
+      cooperation = #{cooperation,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

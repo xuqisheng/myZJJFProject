@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.FinWalletRechargeInfoMgMapper">
+	<sql id="getAllWalletRechargeInfoParam">
+		FROM
+			(
+				SELECT
+					*
+				FROM
+					FinWalletLog
+				WHERE
+					businessType = 1002
+				AND purpose = 11
+				AND subjectType = 3001
+				AND isDelete = 0
+			) AS walletLog
+		JOIN FinWalletRechargeInfo rechargeInfo ON walletLog.voucherMain = rechargeInfo.id
+		AND rechargeInfo.`status` = 1
+		LEFT JOIN SpVoucherTemp temp ON rechargeInfo.couponId = temp.id
+		JOIN User u ON rechargeInfo.walletId = u.walletId
+		<where>
+		  <if test="mobile!=null and mobile!=''">
+		     and u.mobile like "%"#{mobile}"%"
+		  </if>
+		  <if test="beginTime!=null">
+		    and rechargeInfo.addTime <![CDATA[>=]]> #{beginTime}
+		  </if>
+		  <if test="endTime!=null">
+		    and rechargeInfo.addTime <![CDATA[<]]> #{endTime}
+		  </if>
+		</where>
+		<!-- FROM
+			FinWalletRechargeInfo a
+		JOIN `User` b ON a.walletId = b.walletId
+		AND a.`status` = 1
+		LEFT JOIN SpVoucherTemp c ON a.couponId = c.id
+		where 1=1
+		<if test="mobile!=null and mobile!=''">
+		 and b.mobile like "%"#{mobile}"%"
+		</if>
+		<if test="beginTime!=null">
+		 and a.addTime <![CDATA[>=]]> #{beginTime}
+		</if>
+		<if test="endTime!=null">
+		 and a.addTime <![CDATA[<]]> #{endTime}
+		</if> -->
+		<!-- GROUP BY
+			a.walletId -->
+	</sql>
+	<select id="getAllWalletRechargeInfo" parameterType="com.corner.kefu.beans.ro.sp.FinWalletRechargeInfoRo" resultType="com.corner.kefu.beans.vo.sp.FinWalletRechargeInfoVo">
+		<!-- SELECT
+			b.mobile,
+			a.money,
+		    c.ruleName,
+			a.paySuccessTime,
+			b.supplierId,
+			b.storeId -->
+			SELECT
+				u.mobile,
+				rechargeInfo.money,
+				temp.ruleName,
+				rechargeInfo.paySuccessTime,
+				u.supplierId,
+				u.storeId
+		<include refid="getAllWalletRechargeInfoParam"/>
+		order by rechargeInfo.paySuccessTime DESC
+		limit #{pageIndex},#{pageSize}	
+	</select>
+	<select id="getAllWalletRechargeInfoCount" parameterType="com.corner.kefu.beans.ro.sp.FinWalletRechargeInfoRo" resultType="java.lang.Integer">
+		SELECT count(1)
+		<include refid="getAllWalletRechargeInfoParam"/>
+	</select>
+</mapper>

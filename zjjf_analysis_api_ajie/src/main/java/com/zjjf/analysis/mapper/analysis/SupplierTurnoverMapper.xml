@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.SupplierTurnoverMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.supplier.SupplierDaily" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="turnover" property="turnover" jdbcType="DECIMAL" />
+    <result column="totalRebate" property="totalRebate" jdbcType="DECIMAL" />
+    <result column="totalCoupon" property="totalCoupon" jdbcType="DECIMAL" />
+    <result column="totalFreight" property="totalFreight" jdbcType="DECIMAL" />
+    <result column="orderCount" property="orderCount" jdbcType="INTEGER" />
+    <result column="sku" property="sku" jdbcType="INTEGER" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="newRegistered" property="newRegistered" jdbcType="INTEGER" />
+    <result column="deliveryTimes" property="deliveryTimes" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, supplierId, spGroupId, dayTime, turnover, totalRebate, totalCoupon, totalFreight, 
+    orderCount, sku, quantity, newRegistered, deliveryTimes, updateTime, createTime
+  </sql>
+  
+  <select id="getDataByParam" resultType="com.zjjf.analysis.beans.vo.supplier.SupplierFreeVo" parameterType="java.util.Map" >
+    select 
+      t1.supplierId,
+      t2.supplierCode,
+	  t3.`name` as "cityName",
+	  t4.`name` as "areaName",
+	  t2.`supplierName`,
+	  IFNULL(sum(t1.`turnover`), 0) as "todayTurnover",
+      IFNULL(sum(t1.`totalCoupon`), 0) as "totalCoupon",
+      IFNULL(sum(t1.`totalFreight`), 0) as "totalFreight",
+      IFNULL(sum(t1.`totalRebate`), 0) as "totalRebate",
+      IFNULL(sum((t1.`totalRebate` + t1.`totalCoupon`)), 0) as "totalFree"
+	from
+	  `supplier_daily` t1 
+	  left join base_supplier t2 on t1.`supplierId` = t2.org_pk_id 
+	  left join base_region	t3 on t2.`city` = t3.`id`
+	  left join base_region	t4 on t2.`areaId`= t4.`id`
+	  <where>
+		  <if test="dayTime != null and dayTime != ''  " >
+	        and t1.`dayTime` = #{dayTime}
+	      </if>
+	      <if test="dayTimeBegin != null and dayTimeBegin != ''  " >
+		    and t1.`dayTime` &gt;= #{dayTimeBegin}
+		  </if>
+		  <if test="dayTimeEnd != null and dayTimeEnd != ''  " >
+		    and t1.`dayTime` &lt; #{dayTimeEnd}
+		  </if>
+		  <if test="cityId != null and cityId != ''  " >
+	        and t3.id = #{cityId}
+	      </if>
+	      <if test="areaId != null and areaId != ''  " >
+	        and t4.id = #{areaId}
+	      </if>
+	      <if test="spGroupId != null and spGroupId != ''  " >
+	        and t1.spGroupId = #{spGroupId}
+	      </if>
+	      <if test="supplierName != null and supplierName != ''  " >
+	        and t2.`supplierName` like "%"#{supplierName}"%"
+	      </if>
+	      <if test="areaIdList != null and areaIdList != '' " >
+	 		  and t2.`areaId` in 
+	          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	  </where>
+	  limit #{pageNo}, #{offset}
+  </select>
+  
+</mapper>

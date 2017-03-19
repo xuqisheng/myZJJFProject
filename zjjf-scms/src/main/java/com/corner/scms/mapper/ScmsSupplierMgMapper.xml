@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.ScmsSupplierMgMapper">
+   
+   <select id="getSupplierAndSpGroup" parameterType="java.lang.String" resultMap="com.corner.core.dao.SpGroupMapper.BaseResultMap">
+      SELECT a.* FROM SpGroup a JOIN SpGroupMap b ON a.id = b.groupId WHERE b.spId = #{spId}
+   </select>
+	<select id="getSupplierVo" resultType="com.corner.scms.beans.vo.SupplierVo" parameterType="com.corner.core.beans.Supplier">
+	   SELECT
+		a.*, b.warehouseId,
+		c.`name` AS warehouseName
+	FROM
+		Supplier a
+	JOIN ScmsGroup b ON a.bsCircleId = b.id
+	JOIN ScmsWarehouse c ON b.warehouseId = c.id
+	WHERE
+		a.id = #{id}
+	</select>
+	
+	<update id="updateSupplierWallet" parameterType="java.util.HashMap">
+	  <!-- update Supplier set wallet = wallet+#{wallet} where id = #{id} -->
+	  update Supplier set wallet = wallet
+	  <if test="operate=='+'.toString()">
+	   +
+	  </if>
+	  <if test="operate=='-'.toString()">
+	   -
+	  </if>
+	  #{operateMoney}
+	  where id = #{supplier.id}
+	</update>
+	
+	<update id="updateSupplierPayPassword" parameterType="com.corner.core.beans.Supplier">
+	   update Supplier set payPassword = #{payPassword},col1 = #{col1} where id = #{id}
+	</update>
+</mapper>

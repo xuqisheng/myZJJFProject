@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ReminderMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.Reminder" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="userId" property="userId" jdbcType="VARCHAR" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="spId" property="spId" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="storeName" property="storeName" jdbcType="VARCHAR" />
+    <result column="spName" property="spName" jdbcType="VARCHAR" />
+    <result column="userTel" property="userTel" jdbcType="VARCHAR" />
+    <result column="spTel" property="spTel" jdbcType="VARCHAR" />
+    <result column="payTime" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="processStatus" property="processStatus" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userId, storeId, spId, orderId, userName, storeName, spName, userTel, spTel, 
+    payTime, addTime, processStatus, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from Reminder
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from Reminder
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.Reminder" >
+    insert into Reminder (id, userId, storeId, 
+      spId, orderId, userName, 
+      storeName, spName, userTel, 
+      spTel, payTime, addTime, 
+      processStatus, status, isDelete
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{storeId,jdbcType=INTEGER}, 
+      #{spId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{storeName,jdbcType=VARCHAR}, #{spName,jdbcType=VARCHAR}, #{userTel,jdbcType=VARCHAR}, 
+      #{spTel,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{processStatus,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.Reminder" >
+    insert into Reminder
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="spId != null" >
+        spId,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="userName != null" >
+        userName,
+      </if>
+      <if test="storeName != null" >
+        storeName,
+      </if>
+      <if test="spName != null" >
+        spName,
+      </if>
+      <if test="userTel != null" >
+        userTel,
+      </if>
+      <if test="spTel != null" >
+        spTel,
+      </if>
+      <if test="payTime != null" >
+        payTime,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="processStatus != null" >
+        processStatus,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="spId != null" >
+        #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="storeName != null" >
+        #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="spName != null" >
+        #{spName,jdbcType=VARCHAR},
+      </if>
+      <if test="userTel != null" >
+        #{userTel,jdbcType=VARCHAR},
+      </if>
+      <if test="spTel != null" >
+        #{spTel,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null" >
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="processStatus != null" >
+        #{processStatus,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.Reminder" >
+    update Reminder
+    <set >
+      <if test="userId != null" >
+        userId = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null" >
+        storeId = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="spId != null" >
+        spId = #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        userName = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="storeName != null" >
+        storeName = #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="spName != null" >
+        spName = #{spName,jdbcType=VARCHAR},
+      </if>
+      <if test="userTel != null" >
+        userTel = #{userTel,jdbcType=VARCHAR},
+      </if>
+      <if test="spTel != null" >
+        spTel = #{spTel,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null" >
+        payTime = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="processStatus != null" >
+        processStatus = #{processStatus,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.Reminder" >
+    update Reminder
+    set userId = #{userId,jdbcType=VARCHAR},
+      storeId = #{storeId,jdbcType=INTEGER},
+      spId = #{spId,jdbcType=VARCHAR},
+      orderId = #{orderId,jdbcType=VARCHAR},
+      userName = #{userName,jdbcType=VARCHAR},
+      storeName = #{storeName,jdbcType=VARCHAR},
+      spName = #{spName,jdbcType=VARCHAR},
+      userTel = #{userTel,jdbcType=VARCHAR},
+      spTel = #{spTel,jdbcType=VARCHAR},
+      payTime = #{payTime,jdbcType=TIMESTAMP},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      processStatus = #{processStatus,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

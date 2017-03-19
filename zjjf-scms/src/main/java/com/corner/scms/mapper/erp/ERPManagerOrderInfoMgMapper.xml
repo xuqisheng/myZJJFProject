@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.erp.ERPManagerOrderInfoMgMapper">
+    <resultMap id="BaseResultMap" type="com.corner.scms.beans.vo.erp.ERPOrderInfoVo" extends="com.corner.core.dao.ERPManagerOrderInfoMapper.BaseResultMap">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+        <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+        <result column="endTime" property="endTime" jdbcType="TIMESTAMP" />
+        <result column="whId" property="whId" jdbcType="VARCHAR" />
+        <result column="whName" property="whName" jdbcType="VARCHAR" />
+        <result column="whAddress" property="whAddress" jdbcType="VARCHAR" />
+        <result column="whMobile" property="whMobile" jdbcType="VARCHAR" />
+        <result column="managerId" property="managerId" jdbcType="VARCHAR" />
+        <result column="managerName" property="managerName" jdbcType="VARCHAR" />
+        <result column="managerCode" property="managerCode" jdbcType="VARCHAR" />
+        <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+        <result column="supplierName" property="supplierName" jdbcType="VARCHAR" />
+        <result column="actionUserName" property="actionUserName" jdbcType="VARCHAR" />
+        <result column="totalPrice" property="totalPrice" jdbcType="DECIMAL" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="total1" property="total1" jdbcType="INTEGER" />
+        <result column="total2" property="total2" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="TINYINT" />
+        <result column="cooperation" property="cooperation" jdbcType="TINYINT" />
+        <result column="status" property="status" jdbcType="TINYINT" />
+        <result column="isDelete" property="isDelete" jdbcType="BIT" />
+        <collection property="details" ofType="com.corner.scms.beans.vo.erp.ERPOrderDetailVo" >
+            <id column="id2" property="id" jdbcType="VARCHAR" />
+            <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+            <result column="itemId" property="itemId" jdbcType="VARCHAR" />
+            <result column="managerId" property="managerId" jdbcType="VARCHAR" />
+            <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+            <result column="areaPrice" property="areaPrice" jdbcType="DECIMAL" />
+            <result column="quantity" property="quantity" jdbcType="SMALLINT" />
+            <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+            <result column="operateQuantity" property="operateQuantity" jdbcType="SMALLINT" />
+            <result column="mdseId" property="mdseId" jdbcType="VARCHAR" />
+            <result column="wuliu" property="wuliu" jdbcType="VARCHAR" />
+            <result column="spec" property="spec" jdbcType="VARCHAR" />
+            <result column="imgB" property="imgB" jdbcType="VARCHAR" />
+            <result column="pkg" property="pkg" jdbcType="VARCHAR" />
+            <result column="imgS" property="imgS" jdbcType="VARCHAR" />
+            <result column="name" property="name" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+    <resultMap id="BaseResultDetailMap" type="com.corner.scms.beans.vo.erp.ERPOrderDetailVo">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="managerId" property="managerId" jdbcType="VARCHAR" />
+        <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+        <result column="mdseId" property="mdseId" jdbcType="VARCHAR" />
+        <result column="wuliu" property="wuliu" jdbcType="VARCHAR" />
+        <result column="spec" property="spec" jdbcType="VARCHAR" />
+        <result column="imgB" property="imgB" jdbcType="VARCHAR" />
+        <result column="quantity" property="quantity" jdbcType="SMALLINT" />
+        <result column="pkg" property="pkg" jdbcType="VARCHAR" />
+        <result column="areaPrice2" property="areaPrice" jdbcType="DECIMAL" />
+        <result column="imgS" property="imgS" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <collection property="erpPlantItemLog" ofType="com.corner.core.beans.ERPPlantItemLog" >
+            <id column="id" property="id" jdbcType="VARCHAR" />
+            <result column="infoOrderId" property="infoOrderId" jdbcType="VARCHAR" />
+            <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+            <result column="orderDetailId" property="orderDetailId" jdbcType="VARCHAR" />
+            <result column="goodsStock" property="goodsStock" jdbcType="INTEGER" />
+            <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+            <result column="operateQuantity" property="operateQuantity" jdbcType="SMALLINT" />
+            <result column="areaPrice" property="areaPrice" jdbcType="DECIMAL" />
+            <result column="operateStock" property="operateStock" jdbcType="SMALLINT" />
+            <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+            <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+            <result column="itemId" property="itemId" jdbcType="VARCHAR" />
+            <result column="actionUserId" property="actionUserId" jdbcType="VARCHAR" />
+            <result column="actionUserName" property="actionUserName" jdbcType="VARCHAR" />
+            <result column="productionDate" property="productionDate" jdbcType="DATE" />
+            <result column="producingArea" property="producingArea" jdbcType="VARCHAR" />
+            <result column="remark" property="remark" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+    <sql id="getERPOrderInfoPageList_condition">
+        FROM
+        ERPManagerOrderInfo a
+        JOIN ERPManagerOrderDetail d ON a.orderId = d.orderId
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            a.supplierId = #{supplierId}
+            and a.checkStatus = 2
+            and a.status = #{status}
+            <if test="whId != null and whId != ''">
+                and a.whId = #{whId}
+            </if>
+            <if test="managerId != null and managerId != ''">
+                and a.managerId = #{managerId}
+            </if>
+            <if test="orderId != null and orderId != ''">
+                and (a.orderId LIKE CONCAT('%' , #{orderId} , '%') or a.managerName LIKE CONCAT('%' , #{orderId} , '%'))
+            </if>
+        </trim>
+        GROUP BY a.id
+    </sql>
+    <!--查询经销商交易记录  -->
+    <select id="getERPOrderInfoPageList" parameterType="com.corner.scms.beans.ro.erp.ERPOrderDetailRo" resultMap="BaseResultMap">
+        SELECT
+        a.orderId ,
+        a.id ,
+        a.managerName,
+        a.type,
+        a.whName,
+        a.itemPrice as totalPrice,
+        a.addTime ,
+        a.endTime,
+        a.checkUserName,
+        a.checkStatus,
+        a.checkTime
+        <include refid="getERPOrderInfoPageList_condition" />
+        <include refid="BasePublicMapper.orderSql" />
+        <include refid="BasePublicMapper.pageSql" />
+    </select>
+    <!-- 查询经销商交易记录数 -->
+    <select id="getERPOrderInfoPageListCount" parameterType="com.corner.scms.beans.ro.erp.ERPOrderDetailRo"  resultType="java.lang.Integer">
+        select count(1) FROM ( SELECT count(1)
+        <include refid="getERPOrderInfoPageList_condition" />
+        ) a
+    </select>
+    <!-- 查询经销商交易记录数 -->
+    <select id="getERPOrderInfoByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        a.orderId , a.id ,a.gaveTime, a.remark, b.managerName ,b.cooperation , b.managerCode,c.name as whName , c.id as whId,c.mobile as whMobile , c.address as whAddress,
+        a.type ,d.quantity, d.operateQuantity,
+        a.addTime,a.`status`,e.mdseId as wuliu, f.mdseId,
+        e.`name` , e.spec , e.pkg , e.imgB , e.imgS ,
+        e.id as itemBaseId,d.itemId as itemId,
+        d.id as id2,d.areaPrice
+        FROM
+        ERPManagerOrderInfo a
+        JOIN ERPManager b ON a.managerId = b.id
+        JOIN ERPWarehouse c ON a.whId = c.id
+        JOIN ERPManagerOrderDetail d ON a.orderId = d.orderId
+        JOIN ItemBase e on e.id = d.itemBaseId
+        JOIN ItemBase f on e.tgId = f.tgId
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+          a.orderId = #{orderId} and f.upId = 0
+        </trim>
+    </select>
+
+    <update id="updateByOrderIdSelective" parameterType="com.corner.core.beans.ERPManagerOrderInfo" >
+        update ERPManagerOrderInfo
+        <set >
+            <if test="endTime != null" >
+                endTime = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="whId != null" >
+                whId = #{whId,jdbcType=VARCHAR},
+            </if>
+            <if test="managerId != null" >
+                managerId = #{managerId,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierId != null" >
+                supplierId = #{supplierId,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null" >
+                type = #{type,jdbcType=TINYINT},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="isDelete != null" >
+                isDelete = #{isDelete,jdbcType=BIT},
+            </if>
+        </set>
+        where orderId = #{orderId,jdbcType=VARCHAR}
+    </update>
+    <select id="selectPlantItemLogListByOrderId" parameterType="java.lang.String" resultMap="BaseResultDetailMap">
+        SELECT a.*,e.mdseId as wuliu, f.mdseId,
+            e.`name` , e.spec , e.pkg , e.imgB , e.imgS , e.measure , d.quantity , d.areaPrice as areaPrice2 from ERPPlantItemLog a
+            JOIN ItemBase e on a.itemBaseId = e.id
+            JOIN ItemBase f ON f.tgId = e.tgId AND f.upId = 0
+            JOIN ERPManagerOrderDetail d ON a.orderDetailId = d.id
+         WHERE a.infoOrderId = #{orderId}
+         ORDER BY a.orderId desc
+    </select>
+    <select id="checkUserName"  parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(1) from (
+            SELECT userName as userName from ERPWarehouseUser
+            UNION
+            SELECT mobile as userName from Supplier) a WHERE a.userName = #{userName}
+    </select>
+
+
+    <select id="getERPWarehouseUserListPage" parameterType="com.corner.scms.beans.ro.erp.ERPOrderDetailRo" resultType="com.corner.scms.beans.vo.erp.ERPWarehouseUserVo">
+        SELECT a.*,c.id as whId,c.name as whName FROM  ERPWarehouseUser a
+          JOIN ERPWarehouseUserMap b on a.id = b.userId
+          JOIN ERPWarehouse c on c.id = b.whId
+        <include refid="getERPWarehouseUserListPage_condition" />
+        <include refid="BasePublicMapper.orderSql" />
+        <include refid="BasePublicMapper.pageSql" />
+    </select>
+    <select id="getERPWarehouseUserListPageCount" parameterType="com.corner.scms.beans.ro.erp.ERPOrderDetailRo" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM  ERPWarehouseUser a
+            JOIN ERPWarehouseUserMap b on a.id = b.userId
+            JOIN ERPWarehouse c on c.id = b.whId
+        <include refid="getERPWarehouseUserListPage_condition" />
+    </select>
+    <sql id="getERPWarehouseUserListPage_condition">
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            c.supplierId = #{supplierId}
+        </trim>
+    </sql>
+
+    <select id="getERPWarehouseUserById" parameterType="java.lang.String" resultType="com.corner.scms.beans.vo.erp.ERPWarehouseUserVo">
+        SELECT a.*,c.id as whId,c.name as whName FROM  ERPWarehouseUser a
+          JOIN ERPWarehouseUserMap b on a.id = b.userId
+          JOIN ERPWarehouse c on c.id = b.whId WHERE a.id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.OrderInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.OrderInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="tradeNo" property="tradeNo" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="goodsPrice" property="goodsPrice" jdbcType="DECIMAL" />
+    <result column="orderPrice" property="orderPrice" jdbcType="DECIMAL" />
+    <result column="userId" property="userId" jdbcType="VARCHAR" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="consignee" property="consignee" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="supportmetho" property="supportmetho" jdbcType="TINYINT" />
+    <result column="closemsg" property="closemsg" jdbcType="VARCHAR" />
+    <result column="supportTime" property="supportTime" jdbcType="TIMESTAMP" />
+    <result column="deliveryTime" property="deliveryTime" jdbcType="TIMESTAMP" />
+    <result column="ackTime" property="ackTime" jdbcType="TIMESTAMP" />
+    <result column="ackCode" property="ackCode" jdbcType="SMALLINT" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="storeName" property="storeName" jdbcType="VARCHAR" />
+    <result column="isStar" property="isStar" jdbcType="TINYINT" />
+    <result column="isFirst" property="isFirst" jdbcType="TINYINT" />
+    <result column="fistTime" property="fistTime" jdbcType="TIMESTAMP" />
+    <result column="endTime" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+    <result column="col4" property="col4" jdbcType="VARCHAR" />
+    <result column="col5" property="col5" jdbcType="VARCHAR" />
+    <result column="clo6" property="clo6" jdbcType="VARCHAR" />
+    <result column="clo7" property="clo7" jdbcType="VARCHAR" />
+    <result column="clo8" property="clo8" jdbcType="VARCHAR" />
+    <result column="clo9" property="clo9" jdbcType="VARCHAR" />
+    <result column="clo10" property="clo10" jdbcType="VARCHAR" />
+    <result column="isRemind" property="isRemind" jdbcType="TINYINT" />
+    <result column="qrcodeurl" property="qrcodeurl" jdbcType="VARCHAR" />
+    <result column="ordertype" property="ordertype" jdbcType="TINYINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.corner.core.beans.OrderInfoWithBLOBs" extends="BaseResultMap" >
+    <result column="note" property="note" jdbcType="LONGVARCHAR" />
+    <result column="userRemark" property="userRemark" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, orderId, tradeNo, addTime, goodsPrice, orderPrice, userId, userName, consignee, 
+    mobile, address, status, supportmetho, closemsg, supportTime, deliveryTime, ackTime, 
+    ackCode, storeId, storeName, isStar, isFirst, fistTime, endTime, isDelete, col1, 
+    col2, col3, col4, col5, clo6, clo7, clo8, clo9, clo10, isRemind, qrcodeurl, ordertype
+  </sql>
+  <sql id="Blob_Column_List" >
+    note, userRemark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from OrderInfo
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from OrderInfo
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.OrderInfoWithBLOBs" >
+    insert into OrderInfo (id, orderId, tradeNo, 
+      addTime, goodsPrice, orderPrice, 
+      userId, userName, consignee, 
+      mobile, address, status, 
+      supportmetho, closemsg, supportTime, 
+      deliveryTime, ackTime, ackCode, 
+      storeId, storeName, isStar, 
+      isFirst, fistTime, endTime, 
+      isDelete, col1, col2, col3, 
+      col4, col5, clo6, clo7, 
+      clo8, clo9, clo10, 
+      isRemind, qrcodeurl, ordertype, 
+      note, userRemark)
+    values (#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{tradeNo,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{goodsPrice,jdbcType=DECIMAL}, #{orderPrice,jdbcType=DECIMAL}, 
+      #{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{consignee,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{supportmetho,jdbcType=TINYINT}, #{closemsg,jdbcType=VARCHAR}, #{supportTime,jdbcType=TIMESTAMP}, 
+      #{deliveryTime,jdbcType=TIMESTAMP}, #{ackTime,jdbcType=TIMESTAMP}, #{ackCode,jdbcType=SMALLINT}, 
+      #{storeId,jdbcType=INTEGER}, #{storeName,jdbcType=VARCHAR}, #{isStar,jdbcType=TINYINT}, 
+      #{isFirst,jdbcType=TINYINT}, #{fistTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{isDelete,jdbcType=BIT}, #{col1,jdbcType=VARCHAR}, #{col2,jdbcType=VARCHAR}, #{col3,jdbcType=VARCHAR}, 
+      #{col4,jdbcType=VARCHAR}, #{col5,jdbcType=VARCHAR}, #{clo6,jdbcType=VARCHAR}, #{clo7,jdbcType=VARCHAR}, 
+      #{clo8,jdbcType=VARCHAR}, #{clo9,jdbcType=VARCHAR}, #{clo10,jdbcType=VARCHAR}, 
+      #{isRemind,jdbcType=TINYINT}, #{qrcodeurl,jdbcType=VARCHAR}, #{ordertype,jdbcType=TINYINT}, 
+      #{note,jdbcType=LONGVARCHAR}, #{userRemark,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.OrderInfoWithBLOBs" >
+    insert into OrderInfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="tradeNo != null" >
+        tradeNo,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="goodsPrice != null" >
+        goodsPrice,
+      </if>
+      <if test="orderPrice != null" >
+        orderPrice,
+      </if>
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="userName != null" >
+        userName,
+      </if>
+      <if test="consignee != null" >
+        consignee,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="supportmetho != null" >
+        supportmetho,
+      </if>
+      <if test="closemsg != null" >
+        closemsg,
+      </if>
+      <if test="supportTime != null" >
+        supportTime,
+      </if>
+      <if test="deliveryTime != null" >
+        deliveryTime,
+      </if>
+      <if test="ackTime != null" >
+        ackTime,
+      </if>
+      <if test="ackCode != null" >
+        ackCode,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="storeName != null" >
+        storeName,
+      </if>
+      <if test="isStar != null" >
+        isStar,
+      </if>
+      <if test="isFirst != null" >
+        isFirst,
+      </if>
+      <if test="fistTime != null" >
+        fistTime,
+      </if>
+      <if test="endTime != null" >
+        endTime,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="col1 != null" >
+        col1,
+      </if>
+      <if test="col2 != null" >
+        col2,
+      </if>
+      <if test="col3 != null" >
+        col3,
+      </if>
+      <if test="col4 != null" >
+        col4,
+      </if>
+      <if test="col5 != null" >
+        col5,
+      </if>
+      <if test="clo6 != null" >
+        clo6,
+      </if>
+      <if test="clo7 != null" >
+        clo7,
+      </if>
+      <if test="clo8 != null" >
+        clo8,
+      </if>
+      <if test="clo9 != null" >
+        clo9,
+      </if>
+      <if test="clo10 != null" >
+        clo10,
+      </if>
+      <if test="isRemind != null" >
+        isRemind,
+      </if>
+      <if test="qrcodeurl != null" >
+        qrcodeurl,
+      </if>
+      <if test="ordertype != null" >
+        ordertype,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="userRemark != null" >
+        userRemark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null" >
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsPrice != null" >
+        #{goodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderPrice != null" >
+        #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="consignee != null" >
+        #{consignee,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="supportmetho != null" >
+        #{supportmetho,jdbcType=TINYINT},
+      </if>
+      <if test="closemsg != null" >
+        #{closemsg,jdbcType=VARCHAR},
+      </if>
+      <if test="supportTime != null" >
+        #{supportTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deliveryTime != null" >
+        #{deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ackTime != null" >
+        #{ackTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ackCode != null" >
+        #{ackCode,jdbcType=SMALLINT},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="storeName != null" >
+        #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="isStar != null" >
+        #{isStar,jdbcType=TINYINT},
+      </if>
+      <if test="isFirst != null" >
+        #{isFirst,jdbcType=TINYINT},
+      </if>
+      <if test="fistTime != null" >
+        #{fistTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null" >
+        #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        #{col3,jdbcType=VARCHAR},
+      </if>
+      <if test="col4 != null" >
+        #{col4,jdbcType=VARCHAR},
+      </if>
+      <if test="col5 != null" >
+        #{col5,jdbcType=VARCHAR},
+      </if>
+      <if test="clo6 != null" >
+        #{clo6,jdbcType=VARCHAR},
+      </if>
+      <if test="clo7 != null" >
+        #{clo7,jdbcType=VARCHAR},
+      </if>
+      <if test="clo8 != null" >
+        #{clo8,jdbcType=VARCHAR},
+      </if>
+      <if test="clo9 != null" >
+        #{clo9,jdbcType=VARCHAR},
+      </if>
+      <if test="clo10 != null" >
+        #{clo10,jdbcType=VARCHAR},
+      </if>
+      <if test="isRemind != null" >
+        #{isRemind,jdbcType=TINYINT},
+      </if>
+      <if test="qrcodeurl != null" >
+        #{qrcodeurl,jdbcType=VARCHAR},
+      </if>
+      <if test="ordertype != null" >
+        #{ordertype,jdbcType=TINYINT},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="userRemark != null" >
+        #{userRemark,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.OrderInfoWithBLOBs" >
+    update OrderInfo
+    <set >
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null" >
+        tradeNo = #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsPrice != null" >
+        goodsPrice = #{goodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderPrice != null" >
+        orderPrice = #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="userId != null" >
+        userId = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        userName = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="consignee != null" >
+        consignee = #{consignee,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="supportmetho != null" >
+        supportmetho = #{supportmetho,jdbcType=TINYINT},
+      </if>
+      <if test="closemsg != null" >
+        closemsg = #{closemsg,jdbcType=VARCHAR},
+      </if>
+      <if test="supportTime != null" >
+        supportTime = #{supportTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deliveryTime != null" >
+        deliveryTime = #{deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ackTime != null" >
+        ackTime = #{ackTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ackCode != null" >
+        ackCode = #{ackCode,jdbcType=SMALLINT},
+      </if>
+      <if test="storeId != null" >
+        storeId = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="storeName != null" >
+        storeName = #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="isStar != null" >
+        isStar = #{isStar,jdbcType=TINYINT},
+      </if>
+      <if test="isFirst != null" >
+        isFirst = #{isFirst,jdbcType=TINYINT},
+      </if>
+      <if test="fistTime != null" >
+        fistTime = #{fistTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        endTime = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null" >
+        col1 = #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        col2 = #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        col3 = #{col3,jdbcType=VARCHAR},
+      </if>
+      <if test="col4 != null" >
+        col4 = #{col4,jdbcType=VARCHAR},
+      </if>
+      <if test="col5 != null" >
+        col5 = #{col5,jdbcType=VARCHAR},
+      </if>
+      <if test="clo6 != null" >
+        clo6 = #{clo6,jdbcType=VARCHAR},
+      </if>
+      <if test="clo7 != null" >
+        clo7 = #{clo7,jdbcType=VARCHAR},
+      </if>
+      <if test="clo8 != null" >
+        clo8 = #{clo8,jdbcType=VARCHAR},
+      </if>
+      <if test="clo9 != null" >
+        clo9 = #{clo9,jdbcType=VARCHAR},
+      </if>
+      <if test="clo10 != null" >
+        clo10 = #{clo10,jdbcType=VARCHAR},
+      </if>
+      <if test="isRemind != null" >
+        isRemind = #{isRemind,jdbcType=TINYINT},
+      </if>
+      <if test="qrcodeurl != null" >
+        qrcodeurl = #{qrcodeurl,jdbcType=VARCHAR},
+      </if>
+      <if test="ordertype != null" >
+        ordertype = #{ordertype,jdbcType=TINYINT},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="userRemark != null" >
+        userRemark = #{userRemark,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.corner.core.beans.OrderInfoWithBLOBs" >
+    update OrderInfo
+    set orderId = #{orderId,jdbcType=VARCHAR},
+      tradeNo = #{tradeNo,jdbcType=VARCHAR},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      goodsPrice = #{goodsPrice,jdbcType=DECIMAL},
+      orderPrice = #{orderPrice,jdbcType=DECIMAL},
+      userId = #{userId,jdbcType=VARCHAR},
+      userName = #{userName,jdbcType=VARCHAR},
+      consignee = #{consignee,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      supportmetho = #{supportmetho,jdbcType=TINYINT},
+      closemsg = #{closemsg,jdbcType=VARCHAR},
+      supportTime = #{supportTime,jdbcType=TIMESTAMP},
+      deliveryTime = #{deliveryTime,jdbcType=TIMESTAMP},
+      ackTime = #{ackTime,jdbcType=TIMESTAMP},
+      ackCode = #{ackCode,jdbcType=SMALLINT},
+      storeId = #{storeId,jdbcType=INTEGER},
+      storeName = #{storeName,jdbcType=VARCHAR},
+      isStar = #{isStar,jdbcType=TINYINT},
+      isFirst = #{isFirst,jdbcType=TINYINT},
+      fistTime = #{fistTime,jdbcType=TIMESTAMP},
+      endTime = #{endTime,jdbcType=TIMESTAMP},
+      isDelete = #{isDelete,jdbcType=BIT},
+      col1 = #{col1,jdbcType=VARCHAR},
+      col2 = #{col2,jdbcType=VARCHAR},
+      col3 = #{col3,jdbcType=VARCHAR},
+      col4 = #{col4,jdbcType=VARCHAR},
+      col5 = #{col5,jdbcType=VARCHAR},
+      clo6 = #{clo6,jdbcType=VARCHAR},
+      clo7 = #{clo7,jdbcType=VARCHAR},
+      clo8 = #{clo8,jdbcType=VARCHAR},
+      clo9 = #{clo9,jdbcType=VARCHAR},
+      clo10 = #{clo10,jdbcType=VARCHAR},
+      isRemind = #{isRemind,jdbcType=TINYINT},
+      qrcodeurl = #{qrcodeurl,jdbcType=VARCHAR},
+      ordertype = #{ordertype,jdbcType=TINYINT},
+      note = #{note,jdbcType=LONGVARCHAR},
+      userRemark = #{userRemark,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.OrderInfo" >
+    update OrderInfo
+    set orderId = #{orderId,jdbcType=VARCHAR},
+      tradeNo = #{tradeNo,jdbcType=VARCHAR},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      goodsPrice = #{goodsPrice,jdbcType=DECIMAL},
+      orderPrice = #{orderPrice,jdbcType=DECIMAL},
+      userId = #{userId,jdbcType=VARCHAR},
+      userName = #{userName,jdbcType=VARCHAR},
+      consignee = #{consignee,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      supportmetho = #{supportmetho,jdbcType=TINYINT},
+      closemsg = #{closemsg,jdbcType=VARCHAR},
+      supportTime = #{supportTime,jdbcType=TIMESTAMP},
+      deliveryTime = #{deliveryTime,jdbcType=TIMESTAMP},
+      ackTime = #{ackTime,jdbcType=TIMESTAMP},
+      ackCode = #{ackCode,jdbcType=SMALLINT},
+      storeId = #{storeId,jdbcType=INTEGER},
+      storeName = #{storeName,jdbcType=VARCHAR},
+      isStar = #{isStar,jdbcType=TINYINT},
+      isFirst = #{isFirst,jdbcType=TINYINT},
+      fistTime = #{fistTime,jdbcType=TIMESTAMP},
+      endTime = #{endTime,jdbcType=TIMESTAMP},
+      isDelete = #{isDelete,jdbcType=BIT},
+      col1 = #{col1,jdbcType=VARCHAR},
+      col2 = #{col2,jdbcType=VARCHAR},
+      col3 = #{col3,jdbcType=VARCHAR},
+      col4 = #{col4,jdbcType=VARCHAR},
+      col5 = #{col5,jdbcType=VARCHAR},
+      clo6 = #{clo6,jdbcType=VARCHAR},
+      clo7 = #{clo7,jdbcType=VARCHAR},
+      clo8 = #{clo8,jdbcType=VARCHAR},
+      clo9 = #{clo9,jdbcType=VARCHAR},
+      clo10 = #{clo10,jdbcType=VARCHAR},
+      isRemind = #{isRemind,jdbcType=TINYINT},
+      qrcodeurl = #{qrcodeurl,jdbcType=VARCHAR},
+      ordertype = #{ordertype,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

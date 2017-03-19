@@ -1,0 +1,14 @@
+package com.zjjf.analysis.mapper.analysis;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.zjjf.analysis.beans.analysis.supplier.SpgroupDailyReport;
+
+public interface SpgroupDailyReportMapper {
+
+	int insert(SpgroupDailyReport record);
+	
+	void update(SpgroupDailyReport record);
+
+	SpgroupDailyReport getExitRecord(@Param("spGroupId") Integer spGroupId, @Param("dayTime") String dayTime);
+}

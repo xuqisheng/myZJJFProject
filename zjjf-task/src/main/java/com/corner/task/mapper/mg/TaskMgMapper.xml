@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.task.dao.mg.TaskMgMapper" >
+	<!-- 获取会计列表条件 -->
+	<sql id="getTaskListPage_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			isDelete = 0
+			<if test="type == 1"> and status = 1</if>
+			<if test="taskName != null and taskName!= ''">
+			 and taskName like CONCAT('%',#{taskName},'%') 
+			</if>
+		</trim>
+	</sql>
+	<!-- 获取列表 -->
+	<select id="getTaskListPage" parameterType="com.corner.task.beans.ro.TaskRo" resultType="com.corner.task.beans.Task">
+		SELECT * from Task
+		<include refid="getTaskListPage_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取列表 总记录数 -->
+	<select id="getTaskListPageCount" parameterType="com.corner.task.beans.ro.TaskRo" resultType="int">
+		SELECT count(1) from Task
+		<include refid="getTaskListPage_condition" />
+	</select>
+	
+	
+	<!-- 获取会计列表条件 -->
+	<sql id="getTaskLogPage_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			isDelete = 0
+			<if test="taskId != null and taskId != ''"> and taskId = #{taskId} </if>
+		</trim>
+	</sql>
+	<!-- 获取列表 -->
+	<select id="getTaskLogPage" parameterType="com.corner.task.beans.ro.TaskRo" resultType="java.util.Map">
+		SELECT * from TaskLog
+		<include refid="getTaskLogPage_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取列表 总记录数 -->
+	<select id="getTaskLogPageCount" parameterType="com.corner.task.beans.ro.TaskRo" resultType="int">
+		SELECT count(1) from TaskLog
+		<include refid="getTaskLogPage_condition" />
+	</select>
+</mapper>

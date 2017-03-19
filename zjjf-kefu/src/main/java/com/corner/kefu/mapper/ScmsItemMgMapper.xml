@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.ScmsItemMgMapper" >
+	<!-- 获取会计列表条件 -->
+	<sql id="getPageList_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			s.isDelete = '0'
+<!-- 		基础商品库	启用状态	AND i.status = '1' -->
+			AND i.isDelete = '0'
+			AND ib.upId = 0
+			<if test="status != null and status !=''">
+				AND s.status = #{status}
+			</if>
+			<if test="name != null and name !=''">
+				AND (s.goodName like CONCAT('%',#{name},'%') or i.mdseId like CONCAT('%',#{name},'%')) 
+			</if>
+			<if test="itemBaseId != null">
+				AND s.itemBaseId = #{itemBaseId}
+			</if>
+			<if test="month != null">
+				AND s.month = #{month}
+			</if>
+			<if test="year != null">
+				AND s.year = #{year}
+			</if>
+			<if test="groupId != null" >
+		        AND groupId = #{groupId}
+		    </if>
+			<if test="managerId != null" >
+		        AND managerId = #{managerId}
+		    </if>
+			<if test="goodName != null and goodName !=''" >
+		        AND (goodName like CONCAT('%',#{goodName},'%')  or i.mdseId like CONCAT('%',#{goodName},'%'))
+		    </if>
+		</trim>
+		GROUP BY s.itemBaseId,s.month,s.year
+	</sql>
+	
+	<!-- 获取会计列表 -->
+	<select id="getPageList" parameterType="com.corner.kefu.beans.ro.scms.ScmsItemMgRo"  resultType="com.corner.kefu.beans.ro.scms.ScmsItemMgRo">
+		SELECT a.* FROM (
+		SELECT s.id as id,s.zjjfPrice,s.month ,s.itemBaseId,s.goodName,i.pkgNum,i.pkg, s.year,i.mdseId as wuliu, ib.mdseId as mdseId, i.name as name, i.spec as spec, i.measure as measure, s.`status` as status FROM ScmsItem AS s INNER JOIN ItemBase AS i ON s.itemBaseId = i.id INNER JOIN ItemBase AS ib on ib.tgId = i.tgId 
+		<include refid="getPageList_condition" />
+		<if test="sortName != null and sortName != ''">
+			<if test="sortOrder != null and sortOrder != ''">
+				<include refid="BasePublicMapper.orderSql" />
+			</if>
+		</if>
+		) as a
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取会计列表 总记录数-->
+	<select id="getPageListSize" parameterType="com.corner.kefu.beans.ro.scms.ScmsItemMgRo"  resultType="int">
+ 		SELECT count(1) FROM (
+		SELECT count(1) FROM ScmsItem AS s INNER JOIN ItemBase AS i ON s.itemBaseId = i.id INNER JOIN ItemBase AS ib on ib.tgId = i.tgId
+		<include refid="getPageList_condition" />
+		) as a
+	</select>
+	<!-- 获取会计列表 总记录数-->
+ 	<select id="findByItemId" parameterType="com.corner.kefu.beans.ro.scms.ScmsItemMgRo"  resultType="com.corner.kefu.beans.ro.scms.ScmsItemMgRo">
+		SELECT s.*, i.mdseId as mdseId, i.`name` as name, i.spec as spec, i.measure as measure FROM ScmsItem AS s INNER JOIN ItemBase AS i ON s.itemBaseId = i.id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			s.isDelete = '0'
+			AND i.status = '1'
+			AND i.isDelete = '0'
+			<if test="status != null and status !=''">
+				AND s.status = #{status}
+			</if>
+			<if test="itemBaseId != null and itemBaseId !=''">
+				AND s.itemBaseId = #{itemBaseId}
+			</if>
+		</trim>
+	</select>
+	<!-- 获取商品信息列表通过商品ID月份年份-->
+ 	<select id="findByItemIdAndMonthAndYear" parameterType="com.corner.kefu.beans.ro.scms.ScmsItemMgRo"  resultType="com.corner.kefu.beans.ro.scms.ScmsItemMgRo">
+		SELECT
+			s.*,
+			i.mdseId AS mdseId,
+			i.`name` AS NAME,
+			i.spec AS spec,
+			i.measure AS measure
+		FROM
+			ScmsItem AS s
+		INNER JOIN ItemBase AS i ON s.itemBaseId = i.id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			s.isDelete = '0'
+			AND i.status = '1'
+			AND i.isDelete = '0'
+			<if test="itemBaseId != null">
+				AND s.itemBaseId = #{itemBaseId}
+			</if>
+			<if test="year != null">
+				AND s.year = #{year}
+			</if>
+			<if test="month != null">
+				AND s.month = #{month}
+			</if>
+		</trim>
+	</select>
+ 	<select id="findById" parameterType="java.lang.String"  resultType="com.corner.kefu.beans.ro.scms.ScmsItemMgRo">
+		SELECT s.id,s.groupId,s.mark,s.itemBaseId,s.goodName,s.managerId,s.month,s.year,s.marketPrice,s.zjjfPrice,s.areaPrice,sm.managerName ,i.mdseId as mdseId, i.`name` as name, i.spec as spec, i.pkg,i.pkgNum,i.measure as measure FROM ScmsItem AS s 
+		JOIN ItemBase AS i ON s.itemBaseId = i.id
+		JOIN ScmsManager AS sm ON sm.id = s.managerId
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+				s.id = #{id}
+		</trim>
+	</select>
+	<update id="updateStatsByItemId" parameterType="com.corner.core.beans.ScmsItem" >
+    update ScmsItem
+    <set >
+      <if test="itemBaseId != null" >
+        itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null" >
+        groupId = #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        areaId = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="areaPrice != null" >
+        areaPrice = #{areaPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="areaName != null" >
+        areaName = #{areaName,jdbcType=VARCHAR},
+      </if>
+      <if test="zjjfPrice != null" >
+        zjjfPrice = #{zjjfPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="marketPrice != null" >
+        marketPrice = #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="ordId != null" >
+        ordId = #{ordId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodName != null" >
+        goodName = #{goodName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where itemBaseId = #{itemBaseId}
+    and month = #{month}
+    and year = #{year}
+    and isDelete = 0;
+    <if test="isDelete != null || status == 0" >
+   		UPDATE ScmsShoppingCart a JOIN ScmsItem b ON a.scmsItemId = b.id SET a.isDelete = 1, a.`status` = 0 WHERE b.itemBaseId = #{itemBaseId} and b.month = #{month} and b.year = #{year};
+    </if>
+    update ScmsMinimum set isDelete = 1 where id in (SELECT miniumId from ScmsItem where isDelete = 1 and miniumId not in(SELECT miniumId from ScmsItem where  isDelete = 0) GROUP BY miniumId)
+    
+  </update>
+  <delete id="deleteByItemId" parameterType="com.corner.kefu.beans.ro.scms.ScmsItemMgRo" >
+    delete from ScmsItem
+    where itemBaseId = #{itemBaseId}
+    and month = #{month}
+  </delete>
+  <select id="findByMdseIdOrName" parameterType="com.corner.kefu.beans.ro.scms.ScmsItemMgRo"  resultType="com.corner.kefu.beans.ro.scms.ScmsItemMgRo">
+		select mdseId,name,group_concat(id,'|',spec) as spec,id as itemBaseId from ItemBase
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+				isDelete = 0 and `status` = 1
+				<if test="mdseId != null" >
+        		 and mdseId = #{mdseId}
+      			</if>
+      			<if test="name != null" >
+        		 and name = #{name}
+      			</if>
+		</trim>
+	</select>
+	<!-- 获取商品可添加信息 -->
+  <select id="findItemByName" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT si.id,
+			si.itemBaseId,
+			si.managerId,
+			si.groupId,
+			si.`year`,
+			si.`month`,
+			si.zjjfPrice,
+			si.areaPrice,
+			si.marketPrice,
+			si.goodName,
+			ib.name,
+			ib.spec,
+			ib.pkg,
+			ib.pkgNum,
+			sm.managerName from (
+		SELECT
+			a.*
+		FROM
+			(
+				SELECT
+					id,
+					groupId,
+					`year`,
+					`month`,
+					goodName,
+					itemBaseId,
+					managerId,
+					zjjfPrice,
+					areaPrice,
+					marketPrice
+				FROM
+					ScmsItem
+				WHERE
+					isDelete = 0
+				AND status = 1
+				GROUP BY
+					itemBaseId,
+					`year`,
+					`month`,
+					managerId
+			) a
+		WHERE
+			NOT EXISTS (
+				SELECT
+					`year`,
+					`month`,
+					itemBaseId,
+					managerId
+				FROM
+					ScmsItem
+				WHERE
+					groupId =  #{groupId}
+				AND isDelete = 0
+				AND status = 1
+				AND year = a.year
+				AND a.managerId = managerId
+				AND month = a.month
+				AND itemBaseId = a.itemBaseId
+			)
+		) si
+		JOIN ItemBase ib ON si.itemBaseId = ib.id
+		JOIN ScmsManager sm ON sm.id = si.managerId
+		WHERE si.goodName like CONCAT('%',#{name},'%')
+	</select>
+	<update id="deleteScmsShoppingCareBySpId" parameterType="java.util.Map">
+		UPDATE ScmsShoppingCart set isDelete = 1
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			isDelete = 0
+			<if test="spId != null" >
+		 	and supplierId = #{spId}
+		 	</if>
+			<if test="scmsItemId != null" >
+		 	and scmsItemId = #{scmsItemId}
+		 	</if>
+			<if test="id != null" >
+		 	and id = #{id}
+		 	</if>
+		</trim>
+	</update>
+</mapper>

@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.SpOrderInfoMgMapper" >
+
+ 	<select id="getSpOrderInfoByOrderId" parameterType="com.corner.kefu.beans.ro.SpOrderMgCondition"  resultType="SpOrderInfo">
+		SELECT * FROM SpOrderInfo 
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id != null and id !=''">
+				id = #{id}
+			</if>
+			<if test="isDelete != null">
+				AND isDelete = #{isDelete}
+			</if>
+			<if test="status != null">
+				AND status = #{status}
+			</if>
+			<if test="orderId != null and orderId !=''">
+				AND orderId = #{orderId}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="selectSpOrderInfoCountpc" parameterType="com.corner.kefu.beans.ro.SpOrderInfoRo" resultType="java.lang.Integer">
+		select
+		count(*)
+		from SpOrderInfo s join Store r on s.storeId=r.id where s.isDelete=0 and s.isDelete=0
+		<if test="status != null">
+			<if test="status != 0">
+				and s.status = #{status,jdbcType=TINYINT}
+			</if>
+		</if>
+		<if test="storename != null">
+			and (r.name like "%"#{storename,jdbcType=VARCHAR}"%" or  s.orderId like "%"#{orderid,jdbcType=VARCHAR}"%")
+		</if>
+		<if test="supplierTel != null">
+			and s.supplierTel=#{supplierTel,jdbcType=VARCHAR}
+		</if>
+		<if test="sortName != null">
+			order by ${sortName}
+		</if>
+		<if test="sortOrder != null">
+			${sortOrder}
+		</if>
+	</select>
+
+	<select id="getSpOrderDetailByOrderId" parameterType="com.corner.kefu.beans.ro.SpOrderMgCondition"  resultType="SpOrderDetail">
+		SELECT * FROM SpOrderDetail 
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id != null and id !=''">
+				id = #{id}
+			</if>
+			<if test="isDelete != null">
+				AND isDelete = #{isDelete}
+			</if>
+			<if test="orderId != null and orderId !=''">
+				AND orderId = #{orderId}
+			</if>
+		</trim>
+	</select>
+	
+	<sql id="Base_Column_List">
+		id, orderId, tradeNo, addTime, goodsPrice, orderPrice,rebate, kfId, kfName, kfnote,kfStatus,kfCheckTime,userId,
+		userName, userRemark, storeId, storeName, consignee, mobile,userTel, address, status, supportmetho,supportStatus,
+		ordertype, closemsg,gaveTime, supportTime, supplierId, supplierTel, supplierNam,spStatus,spCheckTime,spRemark, printTime,
+		deliveryTime, ackTime, ackCode, isStar, sendDate, fistTime, endTime, isDelete, qrcodeurl,
+		isRemind, col1, col2, col3,getOrderTime,acStatus,acRemark,zmaoli,zfee,level,pId,freight,coupon,couponId,evaluation
+	</sql>
+	
+	
+	<update id="updateSpOrderInfoBatch" parameterType="com.corner.kefu.beans.ro.SpOrderMgCondition">
+		update SpOrderInfo
+		 <set >
+	      <if test="acStatus != null" >
+	        acStatus = #{acStatus,jdbcType=INTEGER},
+	      </if>
+	      <if test="userRemark != null and userRemark !=''" >
+	        acRemark = #{userRemark,jdbcType=VARCHAR},
+	      </if>
+	      <if test="acCheckTime != null " >
+	        acCheckTime = #{acCheckTime,jdbcType=VARCHAR},
+	      </if>
+	      <if test="acSettleTime != null " >
+	        acSettleTime = #{acSettleTime,jdbcType=VARCHAR},
+	      </if>
+	      <if test="spCheckTime != null " >
+	        spCheckTime = #{spCheckTime,jdbcType=VARCHAR},
+	      </if>
+	      <if test="kfCheckTime != null " >
+	        kfCheckTime = #{kfCheckTime,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where orderId IN
+	    <foreach collection="spOrderIdArray" index="index" item="item" open="(" separator="," close=")">
+			#{item,jdbcType=VARCHAR}
+		</foreach>
+	</update>
+	
+	<select id="getSpOrderInfospc" parameterType="com.corner.kefu.beans.ro.SpOrderInfoRo" resultType="SpOrderInfo">
+		select
+		s.*
+		from SpOrderInfo s join Store r on s.storeId=r.id where  r.isDelete=0 
+		<if test="status != null">
+			<if test="status != 0">
+				<choose>
+					<when test="status == 40">
+						AND s.logisticsStatus = 4 AND s.status = 4
+					</when>
+					<when test="status == 50">
+						AND s.logisticsStatus = 5 AND s.status = 4
+					</when>
+					<when test="status == 4">
+						AND s.logisticsStatus = 1 AND s.status = 4
+					</when>
+					<when test="status == 5">
+						AND s.status = 5
+					</when>
+					<otherwise>
+						AND s.status = #{status}
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+		<if test="storename != null">
+			and (s.storeName like "%"#{storename,jdbcType=VARCHAR}"%" or  s.orderId like "%"#{orderid,jdbcType=VARCHAR}"%")
+		</if>
+		<if test="supplierTel != null">
+			and s.supplierTel=#{supplierTel,jdbcType=VARCHAR}
+		</if>
+		<if test="orderId != null">
+			 and s.storeId=${orderId,jdbcType=TINYINT}
+		</if>
+		
+		<if test="sortName != null">
+			order by ${sortName}
+		</if>
+		<if test="sortOrder != null">
+			${sortOrder}
+		</if>
+		<if test="pageSize!=0">
+			limit
+			${pageIndex},${pageSize}
+		</if>
+
+	</select>
+	
+	<select id="selectSpOrderInfoSelectivepcCount" parameterType="com.corner.kefu.beans.ro.SpOrderInfoRo" resultType="java.lang.Integer">
+		select count(1) from SpOrderInfo s join Store r on s.storeId=r.id where  r.isDelete=0
+		<if test="status != null">
+			<if test="status != 0">
+				and s.status = #{status,jdbcType=TINYINT}
+			</if>
+		</if>
+		<if test="storename != null">
+			and (r.name like "%"#{storename,jdbcType=VARCHAR}"%" or  s.orderId like "%"#{orderid,jdbcType=VARCHAR}"%")
+		</if>
+		<if test="supplierTel != null">
+			and s.supplierTel=#{supplierTel,jdbcType=VARCHAR}
+		</if>
+		<if test="orderId != null">
+			 and s.storeId=${orderId,jdbcType=TINYINT}
+		</if>
+	</select>
+	
+	<select id="selectSpOrderInfoSelective" parameterType="com.corner.kefu.beans.ro.SpOrderInfoRo" resultType="SpOrderInfo">
+		select * from SpOrderInfo where isDelete=0
+		<if test="status != null">
+			<if test="status != 0">
+				and status = #{status,jdbcType=TINYINT}
+			</if>
+		</if>
+		
+		<if test="orderid != null">
+			and orderId = #{orderid,jdbcType=TINYINT}
+		</if>
+		<if test="supplierTel != null">
+			and supplierTel=#{supplierTel,jdbcType=VARCHAR}
+		</if>
+		<if test="sortName != null and sortName != ''">
+			<if test="sortOrder != null and sortOrder != ''">
+				<include refid="BasePublicMapper.orderSql" />
+			</if>
+		</if>
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+	
+	<select id="selectSpOrderInfoFinace" parameterType="com.corner.kefu.beans.ro.SpOrderInfoRo" resultType="com.corner.kefu.beans.vo.sp.SpOrderInfoVo">
+	 	SELECT
+		a.id as supplierId,
+		a.areaId,
+		a.supplierCode,
+		a.supplierName,
+		sum(b.orderPrice) AS spOrderPrice,
+		sum(b.zfee) AS spZfee,
+		sum(b.zmaoli) AS spZmaoli,
+		sum(b.status=5 and b.kfStatus=1) as noStatus,
+		sum(b.status=5 and b.kfStatus=2) as yStatus 
+		FROM `Supplier` a
+		JOIN SpOrderInfo b ON b.supplierId = a.id AND b.isDelete = 0 AND b.`status` = 5
+		<include refid="getPageList_condition" />
+		order by a.areaId
+		limit ${pageIndex},${pageSize}
+	</select>
+	
+	
+	<select id="selectFinaceSpOrderInfo" parameterType="com.corner.kefu.beans.ro.SpOrderInfoRo"  resultType="com.corner.kefu.beans.vo.sp.SpOrderInfoVo">
+		SELECT
+		a.areaId,
+		a.id as supplierId,
+		a.supplierCode,
+		a.supplierName,
+		b.id AS spOrderInfoId,
+		b.ackTime AS ackTime,
+		b.storeId AS storeId,
+		b.storeName AS storeName,
+		b.orderId AS spOrderId,
+		b.goodsPrice AS spGoodsPrice,
+		b.orderPrice AS spOrderPrice,
+		b.kfStatus AS kfStatus,
+		b.spStatus AS spStatus,
+		b.acStatus AS acStatus,
+		b.zfee AS spZfee,
+		b.zmaoli AS spZmaoli
+		FROM `Supplier` a
+		LEFT JOIN SpOrderInfo b ON b.supplierId = a.id AND b.isDelete = 0 AND b.`status` = 5
+		<include refid="getDetailPageList_condition" />
+		order by b.ackTime desc
+		limit ${pageIndex},${pageSize}
+	</select>
+	<!-- 客服获取会计列表条件 -->
+	<sql id="getDetailPageList_condition">
+		<if test="beginTime !=null and endTime !=null">
+			AND b.ackTime BETWEEN #{beginTime} AND #{endTime}
+		</if>
+		<if test="kfStatus !=null">
+			AND b.kfStatus = ${kfStatus}
+		</if>
+		<if test="spStatus !=null">
+			AND b.spStatus = ${spStatus}
+		</if>
+		<if test="spKeyword !=null and spKeyword !=''">
+			AND ( b.orderId like CONCAT('%','${spKeyword}','%')
+				OR b.storeName like CONCAT('%','${spKeyword}','%')
+			)
+		</if>
+		WHERE a.isDelete = 0 AND a.`status` = 2	
+		<if test="supplierId !=null and supplierId !=''">
+			AND a.id=#{supplierId}
+		</if>
+	</sql>
+	
+	<!-- 客服获取列表条件语句集合 -->
+	<sql id="getPageList_condition">
+		<if test="beginTime !=null and endTime !=null">
+			AND b.ackTime BETWEEN #{beginTime} AND #{endTime}
+		</if>
+		WHERE a.isDelete = 0 AND a.`status` = 2
+		<if test="areaId !=null and areaId != -1">
+			AND a.areaId=#{areaId}
+		</if>
+		<if test="province != null and province != -1">
+			AND a.province=#{province}
+		</if>
+		<if test="city != null and city != -1">
+			AND a.city=#{city}
+		</if>		
+		<if test="spKeyword !=null and spKeyword !=''">
+			AND ( a.supplierCode like CONCAT('%','${spKeyword}','%')
+				OR a.supplierName like CONCAT('%','${spKeyword}','%')
+			)
+		</if>		
+		GROUP BY a.id
+	</sql>
+	
+	<select id="selectSpOrderCountOfFinace" parameterType="com.corner.kefu.beans.ro.SpOrderInfoRo"  resultType="int">
+		SELECT count(1) FROM (
+		SELECT a.id FROM `Supplier` a
+		LEFT JOIN SpOrderInfo b ON b.supplierId = a.id AND b.isDelete = 0 AND b.`status` = 5
+		<include refid="getPageList_condition" />
+		) as countTb
+	</select>
+	
+	<select id="selectCountFinaceSpOrderInfo" parameterType="com.corner.kefu.beans.ro.SpOrderInfoRo"  resultType="int">
+		SELECT count(1) FROM `Supplier` a
+		LEFT JOIN SpOrderInfo b ON b.supplierId = a.id AND b.isDelete = 0 AND b.`status` = 5
+		<include refid="getDetailPageList_condition" />
+	</select>
+	<!-- 查出商店所有的订单 -->
+	<select id="getStoreAllOrder" parameterType="java.util.Map" resultType="SpOrderInfo">
+		SELECT * FROM SpOrderInfo WHERE isDelete=0 AND status not in (5,6) AND level=1 AND storeId = #{storeId} 
+	</select>
+	
+	<select id="getCountUnfinishOrders" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+	  SELECT
+		count(storeId)
+	FROM
+		SpOrderInfo
+	WHERE
+		storeId = #{storeId}
+	AND supportStatus = 1
+	AND `status` NOT IN (5, 6)
+	AND `level` = 1  
+	</select>
+	
+	<select id="getUnPayOrders" parameterType="java.util.HashMap" resultType="com.corner.core.beans.SpOrderInfo">
+	 SELECT * FROM SpOrderInfo where storeId=#{storeId} AND supportStatus=0 AND `status` = 1 AND `level` = 1;
+	</select>
+	
+	
+	<sql id="pageSql">
+	 limit #{pageIndex},#{pageSize}
+	</sql>
+	<sql id="getOrdersFromSpOrderActiveMap_condition">
+	  FROM
+		SpOrderInfo
+	WHERE
+		id IN (
+			SELECT
+				fOrderId
+			FROM
+				SpOrderActiveMap
+			WHERE
+				spVoucherActiveId = #{activeId}
+			AND `level` = 2
+			AND spId = #{spId}
+	)
+	and storeId = #{storeId}
+	and status != 6
+	<if test="orderId!=null and orderId!=''">
+	  and orderId like "%"#{orderId}"%"
+	</if>
+	</sql>
+	<select id="getOrdersFromSpOrderActiveMap" parameterType="java.util.HashMap" resultType="com.corner.core.beans.SpOrderInfo">
+	  SELECT
+		*
+	  <include refid="getOrdersFromSpOrderActiveMap_condition"/>
+	  <include refid="pageSql"/>
+	</select>
+	
+	<select id="getCountOrdersFromSpOrderActiveMap" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+	  select count(1)
+	  <include refid="getOrdersFromSpOrderActiveMap_condition"/>
+	</select>
+
+	<select id="getAccTotalOrderPrice" parameterType="java.util.HashMap" resultType="java.math.BigDecimal">
+      SELECT
+			SUM(orderPrice) AS  totalOrderPrice
+		FROM
+			SpOrderInfo a
+		WHERE
+			a.storeId = #{storeMgVo.id}
+		AND a.`level` = 1
+		AND a.`status` = 5
+		AND (a.addTime BETWEEN #{active.ruleStart} AND #{active.ruleEnd})
+		AND  a.supportmetho IN
+		<foreach collection="rulePayStrArr" open="(" separator="," close=")" item="item" index="index">
+			#{item}
+		</foreach>
+		GROUP  BY  a.storeId
+	</select>
+
+	<select id="getAccTotalReturnOrderPrice" parameterType="java.util.HashMap" resultType="java.math.BigDecimal">
+       SELECT
+			SUM(a.itemPrice)
+		FROM
+			(
+				SELECT
+					*
+				FROM
+					ERPMarketStockInfo
+				WHERE
+					`level` = 2
+				AND storeId = #{storeMgVo.id}
+				AND isDelete = 0
+				AND checkStatus = 2
+				AND (
+					addTime BETWEEN #{active.ruleStart}
+					AND #{active.ruleEnd}
+				)
+			) a
+		JOIN ERPMarketStockInfo b ON a.pId = b.id
+		JOIN SpOrderInfo c ON b.pId = c.id
+		where c.supportmetho IN
+		<foreach collection="rulePayStrArr" open="(" separator="," close=")" item="item" index="index">
+			#{item}
+		</foreach>
+	</select>
+</mapper>

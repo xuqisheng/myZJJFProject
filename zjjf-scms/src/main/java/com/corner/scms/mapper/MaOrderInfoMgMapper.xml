@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.MaOrderInfoMgMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.MaOrderInfo" extends="com.corner.core.dao.MaOrderInfoMapper.BaseResultMap">
+  </resultMap>
+  
+  
+  <select id="selectMaOrderInfo" resultType="com.corner.core.beans.MaOrderInfo" parameterType="com.corner.core.beans.ScOrderInfo">
+    select * from MaOrderInfo where managerId=#{managerId} and groupId=#{groupId}
+    and kfStatus=1
+  </select>
+  
+</mapper>

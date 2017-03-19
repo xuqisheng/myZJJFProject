@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.RoleAuthMapMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.RoleAuthMapKey" >
+    <id column="authId" property="authId" jdbcType="VARCHAR" />
+    <id column="roleId" property="roleId" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.corner.core.beans.RoleAuthMapKey" >
+    delete from RoleAuthMap
+    where authId = #{authId,jdbcType=VARCHAR}
+      and roleId = #{roleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.RoleAuthMapKey" >
+    insert into RoleAuthMap (authId, roleId)
+    values (#{authId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.RoleAuthMapKey" >
+    insert into RoleAuthMap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="authId != null" >
+        authId,
+      </if>
+      <if test="roleId != null" >
+        roleId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="authId != null" >
+        #{authId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.erp.ERPManagerItemMgMapper">
+	<sql id="getAllManagerItemParam">
+		FROM
+		ERPManagerItem a
+		JOIN ItemBase b ON a.itemBaseId = b.id
+		JOIN ItemBase d ON d.tgId = b.tgId
+		JOIN ERPManager c on c.id = a.managerId
+		AND b.isDelete = 0
+		AND b.`status` = 1
+		WHERE
+			a.isDelete = 0
+		AND a.`status` = 1
+		AND d.upId = 0
+		<if test="managerId != null and managerId != ''">
+			AND a.managerId = #{managerId}
+		</if>
+		<!-- AND a.supplierId = #{supplierId} -->
+		<if test="numOrName != null and numOrName !=''">
+			AND (a.itemCode like "%"#{numOrName}"%" or b.mdseId like "%"#{numOrName}"%" or b.name like "%"#{numOrName}"%")
+		</if>
+		<if test="managerCode != null and managerCode != ''">
+			AND (c.managerName like CONCAT('%',#{managerCode},'%') or c.managerCode like CONCAT('%',#{managerCode},'%'))
+		</if>
+	</sql>
+	<!-- 获取批发商下某个供应商的所有商品 -->
+	<select id="getAllManagerItem" parameterType="com.corner.kefu.beans.ro.erp.ManagerItemRo" resultType="com.corner.kefu.beans.vo.erp.ERPManagerItemVo">
+		SELECT
+			a.id,
+			a.itemCode,
+			a.areaPrice,
+			a.taxRate,
+			a.itemBaseId,
+			b.mdseId,
+			d.mdseId as mdseIdX,
+			b.`name`,
+			b.spec,
+			b.pkg,
+			c.id as managerId,
+			c.managerName as managerName
+		<include refid="getAllManagerItemParam"/>
+		order by a.addTime desc
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+	<select id="getAllManagerItemCount" parameterType="com.corner.kefu.beans.ro.erp.ManagerItemRo" resultType="java.lang.Integer">
+		SELECT
+			count(1)
+		<include refid="getAllManagerItemParam"/>
+	</select>
+	
+	<!-- 根据id查询商品 -->
+	<select id="getManagerItemById" parameterType="java.util.Map" resultType="com.corner.kefu.beans.vo.erp.ERPManagerItemVo">
+		SELECT
+			a.id,
+			a.itemCode,
+			a.areaPrice,
+			a.taxRate,
+			a.itemBaseId,
+			b.mdseId,
+			e.mdseId as mdseIdX,
+			a.managerId,
+			a.areaPrice,
+			b.`name`,
+			b.spec,
+			b.pkg,
+			b.imgS AS picUrl,
+			c.`name` AS erJiName,
+			d.`name` AS yiJiName
+		FROM
+			ERPManagerItem a
+		JOIN ItemBase b ON a.itemBaseId = b.id
+		AND b.isDelete = 0
+		AND b.`status` = 1
+		JOIN ItemCatelog c ON b.cateId = c.id 
+		AND c.isDelete=0
+		AND c.`status`=1
+		JOIN ItemCatelog d ON c.pId = d.id
+		AND d.isDelete=0
+		AND d.`status`=1
+		JOIN ItemBase e on b.tgId = e.tgId and e.upId = 0
+		WHERE
+			a.isDelete = 0
+		AND a.`status` = 1
+		<if test="id != null and id != ''">
+			AND a.id=#{id}
+		</if>
+		<if test="itemCode != null and itemCode != ''">
+			AND a.itemCode=#{itemCode}
+		</if>
+
+	</select>
+	
+	<select id="getMaxNum" resultType="java.lang.Integer">
+		SELECT
+			MAX(serialNum)
+		FROM
+			ERPManagerItem
+	</select>
+	
+	<!-- 查询看又没有重复的商品 -->
+	<select id="getRepeatItem" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT
+			count(1)
+		FROM
+			ERPManagerItem
+		where isDelete = 0	
+		and status=1
+		and managerId = #{managerId}
+		<!-- and supplierId = #{supplierId} -->
+		and itemBaseId = #{itemBaseId}
+	</select>
+	<!-- 根据单品码查询 -->
+	<select id="getitemByMdseId" parameterType="java.util.Map" resultType="com.corner.core.beans.ItemBase">
+		SELECT
+			id,
+			mdseId,
+			`name`,
+			spec,
+			pkg
+		FROM
+			ItemBase
+		WHERE
+			isDelete = 0
+		AND `status` = 1
+		<if test="mdseId != null and mdseId != ''">
+			AND mdseId = #{mdseId}
+		</if>
+		UNION
+		SELECT
+			id,
+			mdseId,
+			`name`,
+			spec,
+			pkg
+		FROM
+			ItemBase
+		WHERE
+			isDelete = 0
+		AND `status` = 1
+		AND upId = (
+			SELECT
+				id
+			FROM
+				ItemBase
+			WHERE
+				isDelete = 0
+			AND `status` = 1
+			<if test="mdseId != null and mdseId != ''">
+				AND mdseId = #{mdseId}
+			</if>
+			);
+	</select>
+	<!-- 根据箱码查询 -->
+	<select id="getitemByMdseIdx" parameterType="java.util.Map" resultType="com.corner.kefu.beans.vo.erp.ScmsItemBaseVo">
+		SELECT
+			a.id,
+			a.mdseId,
+			a.`name`,
+			a.spec,
+			a.pkg,
+			b.mdseId AS upMdseId
+		FROM
+			ItemBase a
+		LEFT JOIN ItemBase b ON a.upId = b.id
+		AND b.isDelete = 0
+		AND b.`status` = 1
+		WHERE
+			a.isDelete = 0
+		AND a.`status` = 1
+		<if test="mdseId != null and mdseId != ''">
+			AND a.mdseId = #{mdseId}
+		</if>
+	</select>
+	
+</mapper>

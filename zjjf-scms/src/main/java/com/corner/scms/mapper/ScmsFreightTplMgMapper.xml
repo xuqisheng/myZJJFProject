@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.ScmsFreightTplMgMapper" >
+ 
+ 
+    <resultMap type="com.corner.scms.beans.vo.ScmsFreightTplVo" id="scmsFreightTplBaseResultMap" extends="com.corner.core.dao.ScmsFreightTplMapper.BaseResultMap">
+       <collection property="list" ofType="com.corner.core.beans.ScmsFreightTplMap" >
+        <id column="map_id" property="id" jdbcType="VARCHAR" />
+	    <result column="tplId" property="tplId" jdbcType="VARCHAR" />
+	    <result column="orderNum" property="orderNum" jdbcType="SMALLINT" />
+	    <result column="orderPrice" property="orderPrice" jdbcType="DECIMAL" />
+	    <result column="freightPrice" property="freightPrice" jdbcType="DECIMAL" />
+	    <result column="freight" property="freight" jdbcType="REAL" />
+       </collection>
+    </resultMap>
+ 
+    <select id="getFreightTpl" parameterType="com.corner.core.beans.Supplier" resultMap="scmsFreightTplBaseResultMap">
+        SELECT
+			d.*,
+			e.id as map_id,
+			e.tplId,
+			e.orderNum,
+			e.orderPrice,
+			e.freightPrice,
+			e.freight
+		FROM
+			(
+				SELECT
+					bsCircleId
+				FROM
+					Supplier
+				WHERE
+					id = #{id}
+			) a
+		JOIN ScmsGroup b ON a.bsCircleId = b.id
+		JOIN ScmsWarehouse c ON b.warehouseId = c.id
+		JOIN ScmsFreightTpl d ON c.tplId = d.id
+		LEFT JOIN ScmsFreightTplMap e ON e.tplId = d.id
+    </select>
+    
+</mapper>

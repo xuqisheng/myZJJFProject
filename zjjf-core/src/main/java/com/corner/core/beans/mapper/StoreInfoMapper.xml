@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.StoreInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.StoreInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="tuijianRenTel" property="tuijianRenTel" jdbcType="VARCHAR" />
+    <result column="yewuRenTel" property="yewuRenTel" jdbcType="VARCHAR" />
+    <result column="idCardUpPic" property="idCardUpPic" jdbcType="VARCHAR" />
+    <result column="idCardDownPic" property="idCardDownPic" jdbcType="VARCHAR" />
+    <result column="licensePic" property="licensePic" jdbcType="VARCHAR" />
+    <result column="licenseNum" property="licenseNum" jdbcType="VARCHAR" />
+    <result column="tobaccoPic" property="tobaccoPic" jdbcType="VARCHAR" />
+    <result column="backCardPic" property="backCardPic" jdbcType="VARCHAR" />
+    <result column="sendRegion" property="sendRegion" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, tuijianRenTel, yewuRenTel, idCardUpPic, idCardDownPic, licensePic, licenseNum, 
+    tobaccoPic, backCardPic, sendRegion
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from StoreInfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from StoreInfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.StoreInfo" >
+    insert into StoreInfo (id, tuijianRenTel, yewuRenTel, 
+      idCardUpPic, idCardDownPic, licensePic, 
+      licenseNum, tobaccoPic, backCardPic, 
+      sendRegion)
+    values (#{id,jdbcType=INTEGER}, #{tuijianRenTel,jdbcType=VARCHAR}, #{yewuRenTel,jdbcType=VARCHAR}, 
+      #{idCardUpPic,jdbcType=VARCHAR}, #{idCardDownPic,jdbcType=VARCHAR}, #{licensePic,jdbcType=VARCHAR}, 
+      #{licenseNum,jdbcType=VARCHAR}, #{tobaccoPic,jdbcType=VARCHAR}, #{backCardPic,jdbcType=VARCHAR}, 
+      #{sendRegion,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.StoreInfo" >
+    insert into StoreInfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tuijianRenTel != null" >
+        tuijianRenTel,
+      </if>
+      <if test="yewuRenTel != null" >
+        yewuRenTel,
+      </if>
+      <if test="idCardUpPic != null" >
+        idCardUpPic,
+      </if>
+      <if test="idCardDownPic != null" >
+        idCardDownPic,
+      </if>
+      <if test="licensePic != null" >
+        licensePic,
+      </if>
+      <if test="licenseNum != null" >
+        licenseNum,
+      </if>
+      <if test="tobaccoPic != null" >
+        tobaccoPic,
+      </if>
+      <if test="backCardPic != null" >
+        backCardPic,
+      </if>
+      <if test="sendRegion != null" >
+        sendRegion,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tuijianRenTel != null" >
+        #{tuijianRenTel,jdbcType=VARCHAR},
+      </if>
+      <if test="yewuRenTel != null" >
+        #{yewuRenTel,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardUpPic != null" >
+        #{idCardUpPic,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardDownPic != null" >
+        #{idCardDownPic,jdbcType=VARCHAR},
+      </if>
+      <if test="licensePic != null" >
+        #{licensePic,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseNum != null" >
+        #{licenseNum,jdbcType=VARCHAR},
+      </if>
+      <if test="tobaccoPic != null" >
+        #{tobaccoPic,jdbcType=VARCHAR},
+      </if>
+      <if test="backCardPic != null" >
+        #{backCardPic,jdbcType=VARCHAR},
+      </if>
+      <if test="sendRegion != null" >
+        #{sendRegion,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.StoreInfo" >
+    update StoreInfo
+    <set >
+      <if test="tuijianRenTel != null" >
+        tuijianRenTel = #{tuijianRenTel,jdbcType=VARCHAR},
+      </if>
+      <if test="yewuRenTel != null" >
+        yewuRenTel = #{yewuRenTel,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardUpPic != null" >
+        idCardUpPic = #{idCardUpPic,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardDownPic != null" >
+        idCardDownPic = #{idCardDownPic,jdbcType=VARCHAR},
+      </if>
+      <if test="licensePic != null" >
+        licensePic = #{licensePic,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseNum != null" >
+        licenseNum = #{licenseNum,jdbcType=VARCHAR},
+      </if>
+      <if test="tobaccoPic != null" >
+        tobaccoPic = #{tobaccoPic,jdbcType=VARCHAR},
+      </if>
+      <if test="backCardPic != null" >
+        backCardPic = #{backCardPic,jdbcType=VARCHAR},
+      </if>
+      <if test="sendRegion != null" >
+        sendRegion = #{sendRegion,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.StoreInfo" >
+    update StoreInfo
+    set tuijianRenTel = #{tuijianRenTel,jdbcType=VARCHAR},
+      yewuRenTel = #{yewuRenTel,jdbcType=VARCHAR},
+      idCardUpPic = #{idCardUpPic,jdbcType=VARCHAR},
+      idCardDownPic = #{idCardDownPic,jdbcType=VARCHAR},
+      licensePic = #{licensePic,jdbcType=VARCHAR},
+      licenseNum = #{licenseNum,jdbcType=VARCHAR},
+      tobaccoPic = #{tobaccoPic,jdbcType=VARCHAR},
+      backCardPic = #{backCardPic,jdbcType=VARCHAR},
+      sendRegion = #{sendRegion,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

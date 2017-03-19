@@ -1,0 +1,62 @@
+.div-item {
+    float: left;
+    box-sizing: border-box;
+    padding: 0 10px;
+    width: 50%;
+}
+.SummaryDataShow-BlueTitle,.SummaryDataShow-RedTitle,.SummaryDataShow-GreenTitle{
+    width: 124px;
+    height: 22px;
+    line-height: 22px;
+    margin-top: 9px;
+    color: #fff;
+    text-indent: 14px;
+    font-weight: bolder;
+}
+.SummaryDataShow-BlueTitle{
+    background: url(../../resources/images/SumDataShow-titleBlueBg.png) left top no-repeat;
+}
+.SummaryDataShow-RedTitle{
+    background: url(../../resources/images/SumDataShow-titleRedBg.png) left top no-repeat;
+}
+.SummaryDataShow-GreenTitle{
+    background: url(../../resources/images/SumDataShow-titleGreenBg.png) left top no-repeat;
+}
+@border-color: #dad9d9;
+
+.total-c {
+    margin-top: 2px;
+    background: #fff;
+    .total {
+        float: left;
+        box-sizing: border-box;
+        width: 33.33%;
+        height: 169px;
+        text-align: center;
+        &:first-child,&:nth-child(2){
+            border-right: 1px solid @border-color;
+        }
+        .total-top{
+            height: 99px;
+            .h2{
+                font-size: 32px;
+                color: #000;
+            }
+            .dailyTitleF{
+                width: 155px;
+                background-size: 100% 100%;
+            }
+        }
+        .dailyTitleT{
+            width: 92px;
+            background-size: 100% 100%;
+        }
+        .div{
+            .h2{
+                font-size: 32px;
+                color: #000;
+            }
+        }
+    }
+}
+

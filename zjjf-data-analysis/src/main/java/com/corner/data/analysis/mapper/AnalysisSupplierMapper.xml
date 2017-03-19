@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.data.analysis.dao.AnalysisSupplierMapper" >
+	
+	<select id="findSupplierList" parameterType ="com.corner.data.analysis.beans.vo.AnalysisSupplierVo" resultType="com.corner.data.analysis.beans.vo.AnalysisSupplierVo">
+		SELECT
+			A.id,
+			D. NAME areaName,
+			A.supplierCode,
+			A.supplierName,
+			COUNT(DISTINCT B.storeId) pssps,
+			count(B.orderId) ddsl,
+			sum(B.orderPrice + B.rebate) xsje,
+			sum(B.zfee) fyje,
+			sum(C.quantity) xssl,
+			sum(C.ylsplr) ylsplr,
+			sum(C.totalPrice) ylspxse
+		FROM
+			(
+				SELECT id, supplierCode, areaId, supplierName FROM Supplier where 1=1 
+				<if test="areaId !=null and areaId!=''">
+					and areaId= ${areaId} 
+				</if>
+				<if test="supplierCode !=null and supplierCode !=''">
+					and supplierCode like CONCAT('%',#{supplierCode},'%') or supplierName  like CONCAT('%',#{supplierCode},'%')
+				</if>
+			) AS A
+		LEFT JOIN (
+			SELECT
+				storeId,orderId,supplierId,orderPrice,zfee,rebate,STATUS,addTime
+			FROM SpOrderInfo
+			WHERE  addTime >= DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND addTime <![CDATA[<=]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d')
+			AND STATUS != 6
+		) AS B ON A.id = B.supplierId
+		LEFT JOIN (
+			SELECT
+				orderId,
+				sum(quantity) quantity,
+				sum(IF(fee <![CDATA[<]]> 0, fee, 0)) ylsplr,
+				sum(IF(fee <![CDATA[<]]> 0, totalPrice, 0)) totalPrice,
+				sum(IF(fee > 0,(fee * quantity), 0)) fy
+			FROM
+				SpOrderDetail
+			GROUP BY
+				orderId
+		) AS C ON B.orderId = C.orderId
+		LEFT JOIN (SELECT id, NAME FROM Region) AS D ON A.areaId = D.id 
+		GROUP BY A.id
+	</select> 
+	
+	<select id="findSupplierBaseList" parameterType ="com.corner.data.analysis.beans.vo.AnalysisSupplierVo" resultType="com.corner.data.analysis.beans.vo.AnalysisSupplierVo">
+		<![CDATA[
+		SELECT A.id,D.name as areaName,A.supplierCode,A.supplierName,count(B.orderId) ddsl,sum(B.orderPrice+B.rebate) xsje,sum(B.zfee) fyje,sum(C.quantity) xssl,sum(C.ylspfy) ylspfy,sum(C.fyspfy) fyspfy,sum(C.ylxsje) ylspxse,sum(C.pjxsje) pjspxse,sum(C.fyxsje) fyspxse FROM 
+			(SELECT id,supplierCode,areaId,supplierName FROM Supplier ) AS A CROSS JOIN 
+			(SELECT orderId,supplierId,orderPrice,zfee,rebate,status,addTime FROM SpOrderInfo 
+			WHERE addTime >= DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND addTime <=DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') AND status != 6 ) AS B ON A.id = B.supplierId CROSS JOIN 
+			(SELECT orderId,sum(quantity) quantity,sum(if (fee<0,fee,0)) ylspfy,sum(if (fee>0,fee,0)) fyspfy,sum(if (fee<0,totalPrice,0)) ylxsje,sum(if (fee=0,totalPrice,0)) pjxsje,sum(if (fee>0,totalPrice,0)) fyxsje,sum(if (fee>0,(fee*quantity),0)) fy FROM SpOrderDetail GROUP BY orderId ) AS C ON B.orderId = C.orderId CROSS JOIN 
+			(SELECT id,name FROM Region) AS D ON A.areaId = D.id WHERE A.id = #{id}
+		]]>
+	</select> 
+	
+	<select id="findSupplierDetailList" parameterType ="com.corner.data.analysis.beans.vo.AnalysisSupplierVo" resultType="com.corner.data.analysis.beans.vo.AnalysisSupplierVo">
+		<![CDATA[
+			SELECT A.id,D.name areaName,A.areaId,A.supplierCode,A.name supplierName,count(DISTINCT B.orderId) xdcs,count(B.orderId) xdsku,SUM(C.quantity) xssl,SUM(C.totalPrice) xsje,SUM(IF(fee<0,C.totalPrice,0)) ylspxse,SUM(IF(fee<0,C.fee*C.quantity,0)) ylsplr,SUM(B.zfee) fyje  FROM 
+				(SELECT id,supplierCode,name,areaId FROM Store) A LEFT JOIN 
+				(SELECT orderId,storeId,addTime,zfee,supplierId FROM SpOrderInfo where status <> 6 AND addTime >='2016-01-01' AND addTime <='2016-01-07') B ON A.id = B.storeId LEFT JOIN 
+				(SELECT orderId,quantity,totalPrice,fee FROM SpOrderDetail) C ON B.orderId = C.orderId LEFT JOIN
+				(SELECT id,name FROM Region) D ON D.id = A.areaId  
+				WHERE B.supplierId = #{id} GROUP BY A.id
+		]]>
+	</select> 
+	
+</mapper>

@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.PlantItemProductMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.PlantItemProduct" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="pkgName" property="pkgName" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="pkgType" property="pkgType" jdbcType="TINYINT" />
+    <result column="asDefault" property="asDefault" jdbcType="BIT" />
+    <result column="productPrice" property="productPrice" jdbcType="DECIMAL" />
+    <result column="proMarketPrice" property="proMarketPrice" jdbcType="DECIMAL" />
+    <result column="upTime" property="upTime" jdbcType="TIMESTAMP" />
+    <result column="downTime" property="downTime" jdbcType="TIMESTAMP" />
+    <result column="buyStartTime" property="buyStartTime" jdbcType="TIMESTAMP" />
+    <result column="buyEndTime" property="buyEndTime" jdbcType="TIMESTAMP" />
+    <result column="buyLimitNum" property="buyLimitNum" jdbcType="INTEGER" />
+    <result column="totalLimitNum" property="totalLimitNum" jdbcType="INTEGER" />
+    <result column="totalBuyNum" property="totalBuyNum" jdbcType="INTEGER" />
+    <result column="labelId" property="labelId" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="youHui" property="youHui" jdbcType="VARCHAR" />
+    <result column="SKUActiveId" property="SKUActiveId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pkgName, addtime, pkgType, asDefault, productPrice, proMarketPrice, upTime, downTime, 
+    buyStartTime, buyEndTime, buyLimitNum, totalLimitNum, totalBuyNum, labelId, remark, 
+    youHui, SKUActiveId, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from PlantItemProduct
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from PlantItemProduct
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.PlantItemProduct" >
+    insert into PlantItemProduct (id, pkgName, addtime, 
+      pkgType, asDefault, productPrice, 
+      proMarketPrice, upTime, downTime, 
+      buyStartTime, buyEndTime, buyLimitNum, 
+      totalLimitNum, totalBuyNum, labelId, 
+      remark, youHui, SKUActiveId, 
+      status, isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{pkgName,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP}, 
+      #{pkgType,jdbcType=TINYINT}, #{asDefault,jdbcType=BIT}, #{productPrice,jdbcType=DECIMAL}, 
+      #{proMarketPrice,jdbcType=DECIMAL}, #{upTime,jdbcType=TIMESTAMP}, #{downTime,jdbcType=TIMESTAMP}, 
+      #{buyStartTime,jdbcType=TIMESTAMP}, #{buyEndTime,jdbcType=TIMESTAMP}, #{buyLimitNum,jdbcType=INTEGER}, 
+      #{totalLimitNum,jdbcType=INTEGER}, #{totalBuyNum,jdbcType=INTEGER}, #{labelId,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{youHui,jdbcType=VARCHAR}, #{SKUActiveId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.PlantItemProduct" >
+    insert into PlantItemProduct
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pkgName != null" >
+        pkgName,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="pkgType != null" >
+        pkgType,
+      </if>
+      <if test="asDefault != null" >
+        asDefault,
+      </if>
+      <if test="productPrice != null" >
+        productPrice,
+      </if>
+      <if test="proMarketPrice != null" >
+        proMarketPrice,
+      </if>
+      <if test="upTime != null" >
+        upTime,
+      </if>
+      <if test="downTime != null" >
+        downTime,
+      </if>
+      <if test="buyStartTime != null" >
+        buyStartTime,
+      </if>
+      <if test="buyEndTime != null" >
+        buyEndTime,
+      </if>
+      <if test="buyLimitNum != null" >
+        buyLimitNum,
+      </if>
+      <if test="totalLimitNum != null" >
+        totalLimitNum,
+      </if>
+      <if test="totalBuyNum != null" >
+        totalBuyNum,
+      </if>
+      <if test="labelId != null" >
+        labelId,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="youHui != null" >
+        youHui,
+      </if>
+      <if test="SKUActiveId != null" >
+        SKUActiveId,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="pkgName != null" >
+        #{pkgName,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pkgType != null" >
+        #{pkgType,jdbcType=TINYINT},
+      </if>
+      <if test="asDefault != null" >
+        #{asDefault,jdbcType=BIT},
+      </if>
+      <if test="productPrice != null" >
+        #{productPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="proMarketPrice != null" >
+        #{proMarketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="upTime != null" >
+        #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="downTime != null" >
+        #{downTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyStartTime != null" >
+        #{buyStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyEndTime != null" >
+        #{buyEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyLimitNum != null" >
+        #{buyLimitNum,jdbcType=INTEGER},
+      </if>
+      <if test="totalLimitNum != null" >
+        #{totalLimitNum,jdbcType=INTEGER},
+      </if>
+      <if test="totalBuyNum != null" >
+        #{totalBuyNum,jdbcType=INTEGER},
+      </if>
+      <if test="labelId != null" >
+        #{labelId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="youHui != null" >
+        #{youHui,jdbcType=VARCHAR},
+      </if>
+      <if test="SKUActiveId != null" >
+        #{SKUActiveId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.PlantItemProduct" >
+    update PlantItemProduct
+    <set >
+      <if test="pkgName != null" >
+        pkgName = #{pkgName,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pkgType != null" >
+        pkgType = #{pkgType,jdbcType=TINYINT},
+      </if>
+      <if test="asDefault != null" >
+        asDefault = #{asDefault,jdbcType=BIT},
+      </if>
+      <if test="productPrice != null" >
+        productPrice = #{productPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="proMarketPrice != null" >
+        proMarketPrice = #{proMarketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="upTime != null" >
+        upTime = #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="downTime != null" >
+        downTime = #{downTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyStartTime != null" >
+        buyStartTime = #{buyStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyEndTime != null" >
+        buyEndTime = #{buyEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyLimitNum != null" >
+        buyLimitNum = #{buyLimitNum,jdbcType=INTEGER},
+      </if>
+      <if test="totalLimitNum != null" >
+        totalLimitNum = #{totalLimitNum,jdbcType=INTEGER},
+      </if>
+      <if test="totalBuyNum != null" >
+        totalBuyNum = #{totalBuyNum,jdbcType=INTEGER},
+      </if>
+      <if test="labelId != null" >
+        labelId = #{labelId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="youHui != null" >
+        youHui = #{youHui,jdbcType=VARCHAR},
+      </if>
+      <if test="SKUActiveId != null" >
+        SKUActiveId = #{SKUActiveId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.PlantItemProduct" >
+    update PlantItemProduct
+    set pkgName = #{pkgName,jdbcType=VARCHAR},
+      addtime = #{addtime,jdbcType=TIMESTAMP},
+      pkgType = #{pkgType,jdbcType=TINYINT},
+      asDefault = #{asDefault,jdbcType=BIT},
+      productPrice = #{productPrice,jdbcType=DECIMAL},
+      proMarketPrice = #{proMarketPrice,jdbcType=DECIMAL},
+      upTime = #{upTime,jdbcType=TIMESTAMP},
+      downTime = #{downTime,jdbcType=TIMESTAMP},
+      buyStartTime = #{buyStartTime,jdbcType=TIMESTAMP},
+      buyEndTime = #{buyEndTime,jdbcType=TIMESTAMP},
+      buyLimitNum = #{buyLimitNum,jdbcType=INTEGER},
+      totalLimitNum = #{totalLimitNum,jdbcType=INTEGER},
+      totalBuyNum = #{totalBuyNum,jdbcType=INTEGER},
+      labelId = #{labelId,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      youHui = #{youHui,jdbcType=VARCHAR},
+      SKUActiveId = #{SKUActiveId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

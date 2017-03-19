@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.account.dao.AuthorityMapper" >
+
+ 	<select id="getUserByUserCredential" parameterType="java.lang.String"  resultType="Accounter">
+		select u.id,u.userName,u.mobile,u.`password`,u.email,u.token,u.lastIP,u.`status`,u.isDelete
+		from Accounter u where
+		( u.mobile =  #{credential} or u.userName = #{credential} or u.email = #{credential} )
+		and u.`status` =1 and u.isDelete=0;
+	</select>
+ 	<select id="getRolesByUserId" parameterType="java.lang.String"  resultType="java.lang.String">
+		SELECT 
+		r.roleName
+		from Role r,`Accounter` u,UserRoleMap urm
+		WHERE u.id=#{userId} and urm.userId=u.id AND urm.roleId=r.id
+		and u.`status` =1 and u.isDelete=0
+		and  r.`status` =1 and r.isDelete=0
+	</select>
+ 	<select id="getAuthsByUserId" parameterType="java.lang.String"  resultType="java.lang.String">
+		SELECT 
+		a.authString
+		from `Accounter` u,UserRoleMap urm,Role r,RoleAuthMap ram, Auth a
+		WHERE u.id=#{userId} AND urm.userId=u.id 
+		AND urm.roleId=r.id AND ram.roleId = urm.roleId 
+		AND ram.authId = a.id
+		and u.`status` =1 and u.isDelete=0
+		and  r.`status` =1 and r.isDelete=0
+		and  a.`status` =1 and a.isDelete=0
+	</select>
+	
+ 	<select id="getSubjectRoleses" parameterType="java.lang.String"  resultType="com.corner.core.beans.Role">
+		SELECT 
+		r.*
+		from Role r,`Accounter` u,UserRoleMap urm
+		WHERE u.id=#{userId} and urm.userId=u.id AND urm.roleId=r.id
+		and u.`status` =1 and u.isDelete=0
+		and  r.`status` =1 and r.isDelete=0
+	</select>
+	
+	<select id="getSubjectAuths" parameterType="java.lang.String"  resultType="com.corner.core.beans.Auth">
+		SELECT 
+		a.*
+		from `Accounter` u,UserRoleMap urm,Role r,RoleAuthMap ram, Auth a
+		WHERE u.id=#{userId} AND urm.userId=u.id 
+		AND urm.roleId=r.id AND ram.roleId = urm.roleId 
+		AND ram.authId = a.id
+		and u.`status` =1 and u.isDelete=0
+		and  r.`status` =1 and r.isDelete=0
+		and  a.`status` =1 and a.isDelete=0
+	</select>
+	
+	
+</mapper>

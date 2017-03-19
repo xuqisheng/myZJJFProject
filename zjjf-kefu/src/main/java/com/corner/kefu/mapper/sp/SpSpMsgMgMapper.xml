@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpSpMsgMgMapper">
+	 <!--店宝后台消息中心begin  -->
+    <select id="getSpPushMsgList" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.SpPushMsgVo">
+        select
+        	id, ticker, msgTitle, msgType, umPushType, publishId, publishName, publishTime, status, isDelete,content
+        from SpPushMsg
+        <where>
+          <if test="keyStr != null">
+            and  (msgTitle like "%"#{keyStr}"%" or content like "%"#{keyStr}"%")
+          </if>
+        </where>
+        order by publishTime desc
+        <if test="pageSize != 0">
+         limit #{pageIndex},#{pageSize}
+        </if>
+   </select>
+    
+   <select id="getSpPushMSGList" resultType="com.corner.core.beans.SpPushMsgType">
+    select
+    	id,name,xtype,iconPic,largeIcon
+    from SpPushMsgType
+   </select>
+   
+   <insert id="saveSpPushMsgMap" parameterType="java.util.HashMap">
+     <foreach collection="msgMapList" index="index" item="spPushMsgMap" separator=";">
+        insert into SpPushMsgMap
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="spPushMsgMap.id != null">
+        id,
+      </if>
+      <if test="spPushMsg.id != null">
+        msgId,
+      </if>
+      <if test="spPushMsgMap.storeId != null">
+        storeId,
+      </if>
+      <if test="spPushMsgMap.userId != null">
+        userId,
+      </if>
+      <if test="readTime != null">
+        readTime,
+      </if>
+      <if test="readFlag != null">
+        readFlag,
+      </if>
+      <if test="isDelete != null">
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="spPushMsgMap.id != null">
+        #{spPushMsgMap.id,jdbcType=VARCHAR},
+      </if>
+      <if test="spPushMsg.id != null">
+        #{spPushMsg.id},
+      </if>
+      <if test="spPushMsgMap.storeId != null">
+        #{spPushMsgMap.storeId},
+      </if>
+      <if test="spPushMsgMap.userId != null">
+        #{spPushMsgMap.userId},
+      </if>
+      <if test="readTime != null">
+        #{readTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="readFlag != null">
+        #{readFlag,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+     </foreach>
+  </insert>
+   
+  	<update id="removeMsgBySpPushMsgId" parameterType="java.lang.String">
+   		UPDATE SpPushMsgMap SET isDelete = '1' WHERE msgId = #{id}
+ 	</update>
+   
+</mapper>
+

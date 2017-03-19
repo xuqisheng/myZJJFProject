@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.StoreSpgroupSaleGoalMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.store.StoreSpgroupSaleGoal" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="newRisteredGole" property="newRisteredGole" jdbcType="INTEGER" />
+    <result column="activeStoreGole" property="activeStoreGole" jdbcType="INTEGER" />
+    <result column="newRisteredGoleDaily" property="newRisteredGoleDaily" jdbcType="INTEGER" />
+    <result column="activeStoreGoleDaily" property="activeStoreGoleDaily" jdbcType="INTEGER" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, cityId, areaId, spGroupId, newRisteredGole, activeStoreGole, newRisteredGoleDaily, activeStoreGoleDaily, dayTime, createTime, 
+    updateTime
+  </sql>
+  
+  <select id="getGoal" resultType="com.zjjf.analysis.beans.analysis.store.StoreSpgroupSaleGoal" parameterType="java.util.Map" >
+    select  <include refid="Base_Column_List" />from store_spgroup_sale_goal where spGroupId=#{spGroupId} and dayTime=#{dayTime}
+  </select>
+  
+  <select id="query" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	SELECT 
+  	<include refid="Base_Column_List" />
+  	FROM `store_spgroup_sale_goal`
+  	<where>
+		<if test="cityId != null">and cityId = #{cityId}</if>
+		<if test="areaId != null">and areaId = #{areaId}</if>
+		<if test="spGroupId != null">and spGroupId = #{spGroupId}</if>
+		<if test="dayTime != null">and dayTime = #{dayTime}</if>
+		<if test="spIds != null">
+			and supplierId in
+			<foreach collection="spIds" item="item" index="index" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+	</where>
+	order by cityId,areaId,spGroupId
+  </select>
+  
+ <update id="batchUpdate" parameterType="java.util.Map">
+		UPDATE `store_spgroup_sale_goal` t 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="array != null">
+				<trim prefix="t.newRisteredGole=case" suffix="end,">
+					<foreach collection="array" index="index" item="item" separator=" ">
+						<if test="item.id != null and item.regGoal != null">
+							WHEN(t.id = #{item.id})
+							THEN #{item.regGoal}
+						</if>
+					</foreach>
+				</trim>
+				<trim prefix="t.activeStoreGole=case" suffix="end,">
+					<foreach collection="array" index="index" item="item" separator=" ">
+						<if test="item.id != null and item.actGoal != null">
+							WHEN(t.id = #{item.id})
+							THEN #{item.actGoal}
+						</if>
+					</foreach>
+				</trim>
+				<trim prefix="t.newRisteredGoleDaily=case" suffix="end,">
+					<foreach collection="array" index="index" item="item" separator=" ">
+						<if test="item.id != null and item.newRisteredGoleDaily != null">
+							WHEN(t.id = #{item.id})
+							THEN #{item.newRisteredGoleDaily}
+						</if>
+					</foreach>
+				</trim>
+				<trim prefix="t.activeStoreGoleDaily=case" suffix="end,">
+					<foreach collection="array" index="index" item="item" separator=" ">
+						<if test="item.id != null and item.activeStoreGoleDaily != null">
+							WHEN(t.id = #{item.id})
+							THEN #{item.activeStoreGoleDaily}
+						</if>
+					</foreach>
+				</trim>
+			</if>
+		</trim>
+		WHERE t.id in 
+		<foreach close=")" collection="array" item="it" open="(" separator=",">
+			#{it.id}
+		</foreach>
+</update>
+  
+</mapper>

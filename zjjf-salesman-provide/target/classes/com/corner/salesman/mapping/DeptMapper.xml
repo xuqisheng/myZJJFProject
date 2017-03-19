@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.DeptMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.salesman.model.Department" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="deptId" property="deptId" jdbcType="VARCHAR" />
+    <result column="deptName" property="deptName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="isDelete" property="isDelete" jdbcType="INTEGER" />
+    <result column="pid" property="deptPid" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, deptId, deptName, status, isDelete, pid, remarks, createTime, createBy, updateTime, updateBy
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_department_t
+    where deptId = #{deptId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findDeptById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select deptId, deptName, pid from tbl_department_t where deptId = #{deptId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findDeptByPid" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select deptId, deptName, pid from tbl_department_t where pid = #{deptPid,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="queryDeptIsExist" resultType="int" parameterType="java.lang.String">
+	select  count(1) 
+		  from (select t.deptId,t.deptName,t.pid,
+		  			IFNULL(t.provinceId,0) AS provinceId,
+		  			IFNULL(t.cityId,0) AS cityId,
+		  			IFNULL(t.areaId,0) AS areaId,
+		  			'' as 'spGroupId',
+		  			'1' as 'level'
+		          from tbl_department_t  t
+		         where t.isDelete = 0 AND t.deptId = 'XSB001'
+		         
+		        UNION  
+		        
+		        select n2.deptId,n2.deptName,n2.pid,
+		        		IFNULL(n2.provinceId,0) AS provinceId,
+		                IFNULL(n2.cityId,0) AS cityId,
+		                IFNULL(n2.areaId,0) AS areaId,
+		                '' as 'spGroupId',
+		                '2' as 'level'
+		          from tbl_department_t n1, tbl_department_t n2  
+		         where n2.isDelete = 0 AND n1.deptId = 'XSB001'
+		           and n2.pid = n1.deptId  
+		      ) a where a.deptId = #{deptId} 
+  </select>
+  
+  <select id="findDeptBindAreaList" resultType="java.lang.String" parameterType="java.lang.String" >
+	select * from(
+	  select distinct a.areaId
+  		from (select *,'1' as 'LEVEL'
+          from tbl_department_t  
+         where deptId = #{deptId}
+        union  
+        select n2.*  ,'2' as 'LEVEL'
+          from tbl_department_t n1, tbl_department_t n2  
+         where n1.deptId = #{deptId}   
+           and n2.pid = n1.deptId  
+        union  
+        select n3.*  ,'3' as 'LEVEL'
+          from tbl_department_t n3,  
+               (select n2.*  
+                  from tbl_department_t n1, tbl_department_t n2  
+                 where n1.deptId = #{deptId}   
+                   and n2.pid = n1.deptId) t2  
+         where t2.deptId = n3.pid  
+        union  
+        select n4.*  ,'4' as 'LEVEL'
+          from tbl_department_t n4,  
+               (select n3.*  
+                  from tbl_department_t n3,  
+                       (select n2.*  
+                          from tbl_department_t n1, tbl_department_t n2  
+                         where n1.deptId = #{deptId}   
+                           and n2.pid = n1.deptId) t2  
+                 where t2.deptId = n3.pid) t3  
+         where t3.deptId = n4.pid  
+        union  
+        select n5.*  ,'5' as 'LEVEL'
+          from tbl_department_t n5,  
+               (select n4.*  
+                  from tbl_department_t n4,  
+                       (select n3.*  
+                          from tbl_department_t n3,  
+                               (select n2.*  
+                                  from tbl_department_t n1, tbl_department_t n2  
+                                 where n1.deptId = #{deptId}   
+                                   and n2.pid = n1.deptId) t2  
+                         where t2.deptId = n3.pid) t3  
+                 where t3.deptId = n4.pid) t4  
+         where t4.deptId = n5.pid  
+
+		 union  
+		 select n6.*  ,'6' as 'LEVEL' from tbl_department_t n6,(
+				select n5.* 
+					from tbl_department_t n5,  
+							 (select n4.*  
+									from tbl_department_t n4,  
+											 (select n3.*  
+													from tbl_department_t n3,  
+															 (select n2.*  
+																	from tbl_department_t n1, tbl_department_t n2  
+																 where n1.deptId = #{deptId}   
+																	 and n2.pid = n1.deptId) t2  
+												 where t2.deptId = n3.pid) t3  
+								 where t3.deptId = n4.pid) t4  
+				 where t4.deptId = n5.pid  )t5
+			where t5.deptId = n6.pid  
+
+        ) a )b where b.areaId is not null
+  </select>
+  
+  <select id="findAllChildDeptIdList" resultType="java.lang.String" parameterType="java.lang.String" >
+	select * from(
+	  select distinct a.deptId
+  		from (select *,'1' as 'LEVEL'
+          from tbl_department_t  
+         where deptId = #{deptId}
+        union  
+        select n2.*  ,'2' as 'LEVEL'
+          from tbl_department_t n1, tbl_department_t n2  
+         where n1.deptId = #{deptId}   
+           and n2.pid = n1.deptId  
+        union  
+        select n3.*  ,'3' as 'LEVEL'
+          from tbl_department_t n3,  
+               (select n2.*  
+                  from tbl_department_t n1, tbl_department_t n2  
+                 where n1.deptId = #{deptId}   
+                   and n2.pid = n1.deptId) t2  
+         where t2.deptId = n3.pid  
+        union  
+        select n4.*  ,'4' as 'LEVEL'
+          from tbl_department_t n4,  
+               (select n3.*  
+                  from tbl_department_t n3,  
+                       (select n2.*  
+                          from tbl_department_t n1, tbl_department_t n2  
+                         where n1.deptId = #{deptId}   
+                           and n2.pid = n1.deptId) t2  
+                 where t2.deptId = n3.pid) t3  
+         where t3.deptId = n4.pid  
+        union  
+        select n5.*  ,'5' as 'LEVEL'
+          from tbl_department_t n5,  
+               (select n4.*  
+                  from tbl_department_t n4,  
+                       (select n3.*  
+                          from tbl_department_t n3,  
+                               (select n2.*  
+                                  from tbl_department_t n1, tbl_department_t n2  
+                                 where n1.deptId = #{deptId}   
+                                   and n2.pid = n1.deptId) t2  
+                         where t2.deptId = n3.pid) t3  
+                 where t3.deptId = n4.pid) t4  
+         where t4.deptId = n5.pid  
+
+		 union  
+		 select n6.*  ,'6' as 'LEVEL' from tbl_department_t n6,(
+				select n5.* 
+					from tbl_department_t n5,  
+							 (select n4.*  
+									from tbl_department_t n4,  
+											 (select n3.*  
+													from tbl_department_t n3,  
+															 (select n2.*  
+																	from tbl_department_t n1, tbl_department_t n2  
+																 where n1.deptId = #{deptId}   
+																	 and n2.pid = n1.deptId) t2  
+												 where t2.deptId = n3.pid) t3  
+								 where t3.deptId = n4.pid) t4  
+				 where t4.deptId = n5.pid  )t5
+			where t5.deptId = n6.pid  
+
+		 union  
+     select n7.*  ,'7' as 'LEVEL' from tbl_department_t n7,(
+			 select n6.*  from tbl_department_t n6,(
+					select n5.* 
+						from tbl_department_t n5,  
+								 (select n4.*  
+										from tbl_department_t n4,  
+												 (select n3.*  
+														from tbl_department_t n3,  
+																 (select n2.*  
+																		from tbl_department_t n1, tbl_department_t n2  
+																	 where n1.deptId = #{deptId}   
+																		 and n2.pid = n1.deptId) t2  
+													 where t2.deptId = n3.pid) t3  
+									 where t3.deptId = n4.pid) t4  
+					 where t4.deptId = n5.pid  )t5
+				where t5.deptId = n6.pid  )t6
+			where t6.deptId = n7.pid  
+
+		 union  
+			select n8.*  ,'8' as 'LEVEL' from tbl_department_t n8,(
+			 select n7.* from tbl_department_t n7,(
+				 select n6.*  from tbl_department_t n6,(
+						select n5.* 
+							from tbl_department_t n5,  
+									 (select n4.*  
+											from tbl_department_t n4,  
+													 (select n3.*  
+															from tbl_department_t n3,  
+																	 (select n2.*  
+																			from tbl_department_t n1, tbl_department_t n2  
+																		 where n1.deptId = #{deptId}   
+																			 and n2.pid = n1.deptId) t2  
+														 where t2.deptId = n3.pid) t3  
+										 where t3.deptId = n4.pid) t4  
+						 where t4.deptId = n5.pid  )t5
+					where t5.deptId = n6.pid  )t6
+				where t6.deptId = n7.pid  )t7
+			where t7.deptId = n8.pid 
+
+		 union  
+		select n9.*  ,'9' as 'LEVEL' from tbl_department_t n9,(
+			select n8.* from tbl_department_t n8,(
+			 select n7.* from tbl_department_t n7,(
+				 select n6.*  from tbl_department_t n6,(
+						select n5.* 
+							from tbl_department_t n5,  
+									 (select n4.*  
+											from tbl_department_t n4,  
+													 (select n3.*  
+															from tbl_department_t n3,  
+																	 (select n2.*  
+																			from tbl_department_t n1, tbl_department_t n2  
+																		 where n1.deptId = #{deptId}   
+																			 and n2.pid = n1.deptId) t2  
+														 where t2.deptId = n3.pid) t3  
+										 where t3.deptId = n4.pid) t4  
+						 where t4.deptId = n5.pid  )t5
+					where t5.deptId = n6.pid  )t6
+				where t6.deptId = n7.pid  )t7
+			where t7.deptId = n8.pid )t8
+			where t8.deptId = n9.pid 
+
+		 union  
+		select n10.*  ,'10' as 'LEVEL' from tbl_department_t n10,(
+		 select n9.*  ,'9' as 'LEVEL' from tbl_department_t n9,(
+			select n8.* from tbl_department_t n8,(
+			 select n7.* from tbl_department_t n7,(
+				 select n6.*  from tbl_department_t n6,(
+						select n5.* 
+							from tbl_department_t n5,  
+									 (select n4.*  
+											from tbl_department_t n4,  
+													 (select n3.*  
+															from tbl_department_t n3,  
+																	 (select n2.*  
+																			from tbl_department_t n1, tbl_department_t n2  
+																		 where n1.deptId = #{deptId}   
+																			 and n2.pid = n1.deptId) t2  
+														 where t2.deptId = n3.pid) t3  
+										 where t3.deptId = n4.pid) t4  
+						 where t4.deptId = n5.pid  )t5
+					where t5.deptId = n6.pid  )t6
+				where t6.deptId = n7.pid  )t7
+			where t7.deptId = n8.pid )t8
+			where t8.deptId = n9.pid )t9
+			where t9.deptId = n10.pid 
+
+        ) a )b 
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tbl_department_t
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.salesman.model.Department" >
+    insert into tbl_department_t (id, deptId, deptName, 
+      status, isDelete, pid, 
+      remarks, createTime, createBy, 
+      updateTime, updateBy)
+    values (#{id,jdbcType=INTEGER}, #{deptId,jdbcType=VARCHAR}, #{deptName,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, #{deptPid,jdbcType=VARCHAR}, 
+      #{remarks,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.salesman.model.Department" >
+    insert into tbl_department_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="deptId != null" >
+        deptId,
+      </if>
+      <if test="deptName != null" >
+        deptName,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="deptPid != null" >
+        pid,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="createBy != null" >
+        createBy,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="updateBy != null" >
+        updateBy,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="deptId != null" >
+        #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null" >
+        #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="deptPid != null" >
+        #{deptPid,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.salesman.model.Department" >
+    update tbl_department_t
+    <set >
+      <if test="deptId != null" >
+        deptId = #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null" >
+        deptName = #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="deptPid != null" >
+        pid = #{deptPid,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        createBy = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        updateBy = #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.salesman.model.Department" >
+    update tbl_department_t
+    set deptId = #{deptId,jdbcType=VARCHAR},
+      deptName = #{deptName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      isDelete = #{isDelete,jdbcType=INTEGER},
+      pid = #{deptPid,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      createBy = #{createBy,jdbcType=VARCHAR},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      updateBy = #{updateBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

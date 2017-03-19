@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.ERPPurchaseDailyMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.orders.ERPPurchaseDaily" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="purchaseId" property="purchaseId" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="managerId" property="managerId" jdbcType="VARCHAR" />
+    <result column="managerName" property="managerName" jdbcType="VARCHAR" />
+    <result column="barCode" property="barCode" jdbcType="VARCHAR" />
+    <result column="boxCode" property="boxCode" jdbcType="VARCHAR" />
+    <result column="itemName" property="itemName" jdbcType="VARCHAR" />
+    <result column="itemSpec" property="itemSpec" jdbcType="VARCHAR" />
+    <result column="operateQuantity" property="operateQuantity" jdbcType="INTEGER" />
+    <result column="needQuantity" property="needQuantity" jdbcType="INTEGER" />
+    <result column="inStorageNo" property="inStorageNo" jdbcType="VARCHAR" />
+    <result column="inStorageUser" property="inStorageUser" jdbcType="VARCHAR" />
+    <result column="inStorageTime" property="inStorageTime" jdbcType="TIMESTAMP" />
+    <result column="warehouseId" property="warehouseId" jdbcType="VARCHAR" />
+    <result column="warehouseName" property="warehouseName" jdbcType="VARCHAR" />
+    <result column="wh3Name" property="wh3Name" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="addUser" property="addUser" jdbcType="VARCHAR" />
+    <result column="giveTime" property="giveTime" jdbcType="TIMESTAMP" />
+    <result column="productTime" property="productTime" jdbcType="TIMESTAMP" />
+    <result column="productArea" property="productArea" jdbcType="VARCHAR" />
+    <result column="itemPrice" property="itemPrice" jdbcType="DECIMAL" />
+    <result column="realItemPrice" property="realItemPrice" jdbcType="DECIMAL" />
+    <result column="discountItemPrice" property="discountItemPrice" jdbcType="DECIMAL" />
+    <result column="minItemPrice" property="minItemPrice" jdbcType="DECIMAL" />
+    <result column="totalInStoragePrice" property="totalInStoragePrice" jdbcType="DECIMAL" />
+    <result column="avgSlaePrice" property="avgSlaePrice" jdbcType="DECIMAL" />
+    <result column="profit" property="profit" jdbcType="DECIMAL" />
+    <result column="profitRate" property="profitRate" jdbcType="DECIMAL" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="itemId" property="itemId" jdbcType="VARCHAR" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="VARCHAR" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, purchaseId, type, managerId, managerName, barCode, boxCode, itemName, itemSpec, 
+    operateQuantity, needQuantity, inStorageNo, inStorageUser, inStorageTime, warehouseId, 
+    warehouseName, wh3Name, addTime, addUser, gaveTime, productTime, productArea, itemPrice, 
+    realItemPrice, discountItemPrice, minItemPrice, totalInStoragePrice, avgSlaePrice, 
+    profit, profitRate, dayTime, createTime, updateTime, itemId, itemBaseId, supplierId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from erppurchase
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.analysis.orders.ERPPurchaseDaily" >
+    insert into erppurchase (id, purchaseId, type, 
+      managerId, managerName, barCode, 
+      boxCode, itemName, itemSpec, 
+      operateQuantity, needQuantity, inStorageNo, 
+      inStorageUser, inStorageTime, warehouseId, 
+      warehouseName, wh3Name, addTime, 
+      addUser, gaveTime, productTime, 
+      productArea, itemPrice, realItemPrice, 
+      discountItemPrice, minItemPrice, totalInStoragePrice, 
+      avgSlaePrice, profit, profitRate, 
+      dayTime, createTime, updateTime, 
+      itemId, itemBaseId, supplierId
+      )
+    values (#{id,jdbcType=INTEGER}, #{purchaseId,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, 
+      #{managerId,jdbcType=VARCHAR}, #{managerName,jdbcType=VARCHAR}, #{barCode,jdbcType=VARCHAR}, 
+      #{boxCode,jdbcType=VARCHAR}, #{itemName,jdbcType=VARCHAR}, #{itemSpec,jdbcType=VARCHAR}, 
+      #{operateQuantity,jdbcType=INTEGER}, #{needQuantity,jdbcType=INTEGER}, #{inStorageNo,jdbcType=VARCHAR}, 
+      #{inStorageUser,jdbcType=VARCHAR}, #{inStorageTime,jdbcType=TIMESTAMP}, #{warehouseId,jdbcType=VARCHAR}, 
+      #{warehouseName,jdbcType=VARCHAR}, #{wh3Name,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{addUser,jdbcType=VARCHAR}, #{gaveTime,jdbcType=TIMESTAMP}, #{productTime,jdbcType=TIMESTAMP}, 
+      #{productArea,jdbcType=VARCHAR}, #{itemPrice,jdbcType=DECIMAL}, #{realItemPrice,jdbcType=DECIMAL}, 
+      #{discountItemPrice,jdbcType=DECIMAL}, #{minItemPrice,jdbcType=DECIMAL}, #{totalInStoragePrice,jdbcType=DECIMAL}, 
+      #{avgSlaePrice,jdbcType=DECIMAL}, #{profit,jdbcType=DECIMAL}, #{profitRate,jdbcType=DECIMAL}, 
+      #{dayTime,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{itemId,jdbcType=VARCHAR}, #{itemBaseId,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+</mapper>

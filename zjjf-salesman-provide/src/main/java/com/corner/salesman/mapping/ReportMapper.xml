@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.ReportMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.salesman.model.Report" >
+    <id column="reportId" property="reportId" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="picUrl" property="picUrl" jdbcType="VARCHAR" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="deptId" property="deptId" jdbcType="VARCHAR" />
+    <result column="week" property="week" jdbcType="VARCHAR" />
+    <result column="timePoint" property="timePoint" jdbcType="VARCHAR" />
+    <result column="postName" property="postName" jdbcType="VARCHAR" />
+    <result column="tmplName" property="tmplName" jdbcType="VARCHAR" />
+    <result column="tmplId" property="tmplId" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.corner.salesman.model.Report" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    reportId, remark, picUrl, createBy, createTime, updateBy, updateTime, deptId, week
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tbl_report_info_t
+    where reportId = #{reportId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tbl_report_info_t
+    where reportId = #{reportId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.salesman.model.Report" >
+    insert into tbl_report_info_t (reportId, remark, picUrl, 
+      createBy, createTime, updateBy, 
+      updateTime, deptId, week, tmplId,content
+      )
+    values (#{reportId,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{deptId,jdbcType=VARCHAR}, #{week,jdbcType=VARCHAR}, 
+      #{tmplId,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.salesman.model.Report" >
+    insert into tbl_report_info_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="reportId != null" >
+        reportId,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="picUrl != null" >
+        picUrl,
+      </if>
+      <if test="createBy != null" >
+        createBy,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="updateBy != null" >
+        updateBy,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="deptId != null" >
+        deptId,
+      </if>
+      <if test="week != null" >
+        week,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="tmplId != null" >
+        tmplId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null" >
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deptId != null" >
+        #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="week != null" >
+        #{week,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="tmplId != null" >
+        #{tmplId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.salesman.model.Report" >
+    update tbl_report_info_t
+    <set >
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null" >
+        picUrl = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        createBy = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        updateBy = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deptId != null" >
+        deptId = #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="week != null" >
+        week = #{week,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where reportId = #{reportId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.corner.salesman.model.Report" >
+    update tbl_report_info_t
+    set remark = #{remark,jdbcType=VARCHAR},
+      picUrl = #{picUrl,jdbcType=VARCHAR},
+      createBy = #{createBy,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      updateBy = #{updateBy,jdbcType=VARCHAR},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      deptId = #{deptId,jdbcType=VARCHAR},
+      week = #{week,jdbcType=VARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where reportId = #{reportId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.salesman.model.Report" >
+    update tbl_report_info_t
+    set remark = #{remark,jdbcType=VARCHAR},
+      picUrl = #{picUrl,jdbcType=VARCHAR},
+      createBy = #{createBy,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      updateBy = #{updateBy,jdbcType=VARCHAR},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      deptId = #{deptId,jdbcType=VARCHAR},
+      week = #{week,jdbcType=VARCHAR}
+    where reportId = #{reportId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="findReportById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	SELECT
+		t.reportId,
+		t.remark,
+		t.picUrl,
+		t.createBy,
+		DATE_FORMAT(t.createTime, '%m月%d日 %H:%i') createTime,
+		t. WEEK,
+		t.content,
+		u.userName,
+	    tmpl.`name` as tmplName,
+	    dic.label AS postName,
+	    d.deptName
+	FROM
+		tbl_report_info_t t
+	LEFT JOIN salesman u ON u.id = t.createBy
+	LEFT JOIN tbl_template_info_t tmpl ON tmpl.id = t.tmplId
+	LEFT JOIN tbl_user_dept_t ud ON ud.userId = t.createBy
+ 	LEFT JOIN tbl_department_t d ON d.deptId = ud.deptId
+    LEFT JOIN tbl_dict_t dic ON u.postType = dic.`value`
+	AND dic.type = 'post_type' AND dic.isDelete=0
+	WHERE
+		t.reportId = #{reportId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getReportUserById" resultType="java.lang.String" parameterType="java.lang.String" >
+	SELECT
+		u.userName
+	FROM
+		tbl_report_info_t t
+	LEFT JOIN salesman u ON u.id = t.createBy
+	WHERE
+		t.reportId = #{reportId,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <select id="findReportList22" resultMap="BaseResultMap" parameterType="com.corner.salesman.model.Report" >
+		SELECT
+			t.reportId,
+			t.WEEK,
+			t.content,
+			DATE_FORMAT(t.createTime, '%m月%d日') createTime,
+			DATE_FORMAT(t.createTime, '%H:%i') timePoint,
+			t.createBy AS userId,
+			u.userName,
+			t.deptId,
+			d.deptName,
+			dic.label AS postName,
+	        tmpl.`name` as tmplName
+		FROM
+			tbl_report_info_t t
+		LEFT JOIN salesman u ON u.id = t.createBy
+		LEFT JOIN tbl_template_info_t tmpl ON tmpl.id = t.tmplId
+		LEFT JOIN tbl_user_dept_t ud ON ud.userId = t.createBy
+		LEFT JOIN tbl_department_t d ON d.deptId = ud.deptId
+		LEFT JOIN tbl_dict_t dic ON u.postType = dic.`value`
+		AND dic.type = 'post_type' AND dic.isDelete=0
+		WHERE t.deptId = #{deptId}
+		<if test="createTime != null and createTime!=''">
+			and DATE_FORMAT(t.createTime, '%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+		</if>
+		<if test="userId != null and userId!=''">
+			and t.createBy = #{userId}
+		</if>
+		ORDER BY t.updateTime desc
+  </select>
+  
+  <select id="findReportList" resultMap="BaseResultMap" parameterType="com.corner.salesman.model.Daily" >
+     SELECT AA.* FROM(
+		SELECT
+			t.reportId,
+			t.WEEK,
+			t.content,
+			DATE_FORMAT(t.createTime, '%m月%d日') createTime,
+			DATE_FORMAT(t.createTime, '%H:%i') timePoint,
+			t.createBy AS userId,
+			t.updateTime,
+			u.userName,
+			t.deptId,
+			d.deptName,
+			dic.label AS postName,
+	        tmpl.`name` as tmplName
+		FROM
+			tbl_report_info_t t
+		LEFT JOIN salesman u ON u.id = t.createBy
+		LEFT JOIN tbl_template_info_t tmpl ON tmpl.id = t.tmplId
+		LEFT JOIN tbl_user_dept_t ud ON ud.userId = t.createBy
+		LEFT JOIN tbl_department_t d ON d.deptId = ud.deptId
+		LEFT JOIN tbl_dict_t dic ON u.postType = dic.`value`
+		AND dic.type = 'post_type' AND dic.isDelete=0
+		WHERE t.deptId = #{deptId}
+		<if test="createTime != null and createTime!=''">
+			and DATE_FORMAT(t.createTime, '%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+		</if>
+		<choose>
+			<when test="userId != null and userId!=''">
+				and t.createBy = #{userId}
+			</when>
+			<otherwise>
+			<if test="reportId != null and reportId!=''">
+			 UNION SELECT
+					t.reportId,
+					t.WEEK,
+					t.content,
+					DATE_FORMAT(t.createTime, '%m月%d日') createTime,
+					DATE_FORMAT(t.createTime, '%H:%i') timePoint,
+					t.createBy AS userId,
+					t.updateTime,
+					u.userName,
+					t.deptId,
+					d.deptName,
+					dic.label AS postName,
+			        tmpl.`name` as tmplName
+				FROM
+					tbl_report_info_t t
+				LEFT JOIN salesman u ON u.id = t.createBy
+				LEFT JOIN tbl_template_info_t tmpl ON tmpl.id = t.tmplId
+				LEFT JOIN tbl_user_dept_t ud ON ud.userId = t.createBy
+				LEFT JOIN tbl_department_t d ON d.deptId = ud.deptId
+				LEFT JOIN tbl_dict_t dic ON u.postType = dic.`value`
+				AND dic.type = 'post_type' AND dic.isDelete=0
+			  WHERE t.deptId != #{deptId} 
+			    AND t.reportId in(${reportId}) 
+			  </if> 
+			</otherwise>
+		</choose>
+		) AA ORDER BY AA.updateTime desc
+  </select>
+  
+  <select id="findMyReportList" resultMap="BaseResultMap" parameterType="com.corner.salesman.model.Report" >
+		SELECT
+			t.reportId,
+			t.WEEK,
+			t.content,
+			DATE_FORMAT(t.createTime, '%m月%d日') createTime,
+			DATE_FORMAT(t.createTime, '%H:%i') timePoint,
+			t.createBy AS userId,
+			u.userName,
+			t.deptId,
+			d.deptName,
+			dic.label AS postName,
+	        tmpl.`name` as tmplName,
+	        t.picUrl
+		FROM
+			tbl_report_info_t t
+		LEFT JOIN salesman u ON u.id = t.createBy
+		LEFT JOIN tbl_template_info_t tmpl ON tmpl.id = t.tmplId
+		LEFT JOIN tbl_user_dept_t ud ON ud.userId = t.createBy
+		LEFT JOIN tbl_department_t d ON d.deptId = ud.deptId
+		LEFT JOIN tbl_dict_t dic ON u.postType = dic.`value`
+		AND dic.type = 'post_type' AND dic.isDelete=0
+		WHERE 1 = 1
+		<if test="createTime != null and createTime!=''">
+			and DATE_FORMAT(t.createTime, '%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+		</if>
+		<if test="userId != null and userId!='' and deptId != null and deptId!=''">
+			and t.deptId = #{deptId}
+		</if>
+		<if test="(deptId == null or deptId=='') and userId != null and userId!=''">
+			and t.createBy = #{userId}
+		</if>
+		
+		ORDER BY t.updateTime desc,t.createTime desc
+  </select>
+  
+  <select id="getReportIdByUserId" resultType="java.lang.String" parameterType="java.lang.String" >
+	SELECT
+		t.reportId
+	FROM
+		tbl_report_info_t t
+	WHERE t.createBy = #{userId,jdbcType=VARCHAR}
+	  AND t.createTime >=DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+	  
+	UNION
+	
+	SELECT
+		t1.reportId
+	FROM
+		tbl_daily_commnent_t t1
+	WHERE t1.createBy = #{userId,jdbcType=VARCHAR}
+	  AND t1.createTime >=DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+  </select>
+  
+  <select id="getLeaderReportIdList" resultType="java.lang.String" parameterType="com.corner.salesman.model.Report" >
+	SELECT
+		t.reportId
+	FROM
+		tbl_report_info_t t
+	WHERE t.deptId = #{deptId,jdbcType=VARCHAR}
+	  AND t.createTime >=DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+	UNION
+	
+	SELECT
+		t1.reportId
+	FROM
+		tbl_daily_commnent_t t1
+	WHERE t1.createBy = #{userId,jdbcType=VARCHAR}
+	  AND t1.createTime >=DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+  </select>
+  
+  <select id="getNewReport2One" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+	   SELECT
+ 		  <!-- CONCAT(u.userName, tmpl.`name`) AS `subject`, -->
+ 		  <!-- CONCAT(u.userName,'提交了日志') AS `subject`, -->
+			CASE
+				WHEN t.createBy = #{createBy} THEN '您提交的日志'
+				WHEN t.createBy != #{createBy} THEN CONCAT(u.userName,'提交了日志')
+			END AS `subject`,
+		    DATE_FORMAT(t.createTime, '%m月%d日 %H:%i') createTime,
+		    '2' AS type,'工作日志' AS typeName
+	   FROM tbl_report_info_t t
+	   LEFT JOIN salesman u ON u.id = t.createBy
+	   <!-- LEFT JOIN tbl_template_info_t tmpl ON tmpl.id = t.tmplId -->
+	  WHERE t.deptId = #{deptId}
+	    AND t.createTime = (
+			SELECT
+				max(tt.createTime)
+			FROM
+				tbl_report_info_t tt
+			WHERE
+				tt.deptId = #{deptId}
+			<if test="userId != null and userId!=''">
+				and tt.createBy = #{userId}
+			</if>
+		)
+		<if test="userId != null and userId!=''">
+			and t.createBy = #{userId} 
+		</if>
+		LIMIT 1
+  </select>
+  
+</mapper>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SpVoucherActiveGiftMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpVoucherActiveGift" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="spVoucherActiveId" property="spVoucherActiveId" jdbcType="INTEGER" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="plantItemId" property="plantItemId" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="buyCount" property="buyCount" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="itemBaseName" property="itemBaseName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, spVoucherActiveId, supplierId, plantItemId, number, count, itemBaseId, buyCount, 
+    type, itemBaseName
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SpVoucherActiveGift
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SpVoucherActiveGift
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SpVoucherActiveGift" >
+    insert into SpVoucherActiveGift (id, spVoucherActiveId, supplierId, 
+      plantItemId, number, count, 
+      itemBaseId, buyCount, type, 
+      itemBaseName)
+    values (#{id,jdbcType=VARCHAR}, #{spVoucherActiveId,jdbcType=INTEGER}, #{supplierId,jdbcType=VARCHAR}, 
+      #{plantItemId,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, #{count,jdbcType=INTEGER}, 
+      #{itemBaseId,jdbcType=INTEGER}, #{buyCount,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{itemBaseName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SpVoucherActiveGift" >
+    insert into SpVoucherActiveGift
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="spVoucherActiveId != null" >
+        spVoucherActiveId,
+      </if>
+      <if test="supplierId != null" >
+        supplierId,
+      </if>
+      <if test="plantItemId != null" >
+        plantItemId,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="count != null" >
+        count,
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId,
+      </if>
+      <if test="buyCount != null" >
+        buyCount,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="itemBaseName != null" >
+        itemBaseName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="spVoucherActiveId != null" >
+        #{spVoucherActiveId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="plantItemId != null" >
+        #{plantItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="itemBaseId != null" >
+        #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="buyCount != null" >
+        #{buyCount,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="itemBaseName != null" >
+        #{itemBaseName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SpVoucherActiveGift" >
+    update SpVoucherActiveGift
+    <set >
+      <if test="spVoucherActiveId != null" >
+        spVoucherActiveId = #{spVoucherActiveId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierId != null" >
+        supplierId = #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="plantItemId != null" >
+        plantItemId = #{plantItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="count != null" >
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="buyCount != null" >
+        buyCount = #{buyCount,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="itemBaseName != null" >
+        itemBaseName = #{itemBaseName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SpVoucherActiveGift" >
+    update SpVoucherActiveGift
+    set spVoucherActiveId = #{spVoucherActiveId,jdbcType=INTEGER},
+      supplierId = #{supplierId,jdbcType=VARCHAR},
+      plantItemId = #{plantItemId,jdbcType=VARCHAR},
+      number = #{number,jdbcType=INTEGER},
+      count = #{count,jdbcType=INTEGER},
+      itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      buyCount = #{buyCount,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      itemBaseName = #{itemBaseName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

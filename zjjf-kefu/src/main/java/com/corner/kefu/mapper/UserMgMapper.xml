@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.UserMgMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.User"  extends="com.corner.core.dao.UserMapper.BaseResultMap">
+  </resultMap>
+  
+  <!--根据店铺id数组查询 对应的User对象id集合begin  -->
+  <select id="getUserIdByStoreIdArr" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT id FROM `User` where storeId in
+    <foreach collection="array" open="(" separator="," close=")" item="item">
+      #{item}
+    </foreach> 
+  </select>
+  <!--根据店铺id数组查询 对应的User对象id集合end  -->
+  <!-- <select id="getUserByWalletId"></select> -->
+</mapper>

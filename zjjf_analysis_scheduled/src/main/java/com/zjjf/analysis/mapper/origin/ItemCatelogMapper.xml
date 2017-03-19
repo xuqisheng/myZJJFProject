@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.origin.ItemCatelogMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.origin.items.ItemCatelog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="spid" property="spid" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="ordId" property="ordId" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="BIT" />
+    <result column="catelogType" property="catelogType" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, pid, spid, img, ordId, status, catelogType, isDelete, col1, col2, col3
+  </sql>
+  
+  <select id="selectByIndex" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select <include refid="Base_Column_List" /> from `ItemCatelog` where id &gt; #{id} order by id limit 1000
+  </select>
+  
+  <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select <include refid="Base_Column_List" /> from `ItemCatelog` where id = #{id}
+  </select>
+  
+</mapper>

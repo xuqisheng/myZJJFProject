@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.AppModuleMgMapper">
+	<!-- <resultMap type="com.corner.kefu.beans.vo.AppModuleVo" id="moduleMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="viewImg" property="viewImg" jdbcType="VARCHAR" />
+		<result column="moduleType" property="moduleType" jdbcType="TINYINT" />
+		<collection property="moduleDetails" ofType="com.corner.core.beans.AppItemTag">
+			<id column="id1" property="id" jdbcType="INTEGER" />
+			<result column="name1" property="name" jdbcType="VARCHAR" />
+			<result column="remark1" property="remark" jdbcType="VARCHAR" />
+			<result column="appModuleId" property="appModuleId" jdbcType="VARCHAR" />
+			<result column="picUrl" property="picUrl" jdbcType="VARCHAR" />
+			<result column="status1" property="status" jdbcType="TINYINT" />
+			<result column="isDelete1" property="isDelete" jdbcType="BIT" />
+		</collection>
+	</resultMap>
+	<select id="getAllAppModule" resultMap="moduleMap">
+		SELECT
+			a.id,
+			a.name,
+			a.remark,
+			a.viewImg,
+			a.moduleType,
+			c.id as id1,
+			c.name as name1,
+			c.remark as remark1,
+			c.picUrl,
+			c.status as status1,
+			c.isDelete as isDelete1
+		FROM
+			AppModule a
+		LEFT JOIN AppModuleTagMap b ON a.id = b.moduleId
+		LEFT JOIN AppItemTag c ON b.itemTagId = c.id
+		WHERE
+			a.`status` = 1
+		AND a.isDelete = 0
+	</select> -->
+	
+	<select id="getAllAppTag" resultType="com.corner.kefu.beans.vo.AppItemTagVo">
+		SELECT
+			a.*
+		FROM
+			AppItemTag a
+		order by orderId,`name`, addTime desc
+	</select>
+	<select id="getAppModuleByAppItemTagId" parameterType="java.lang.String" resultType="com.corner.core.beans.AppModule">
+		SELECT
+			a.id,a.`name`
+		FROM
+			AppModule a
+		JOIN AppModuleTagMap b ON a.id=b.moduleId
+		WHERE b.itemTagId=#{id}
+	</select>
+	
+	<select id="getAppModuleDetailById" parameterType="java.lang.String" resultType="com.corner.core.beans.AppItemTag">
+		SELECT * FROM AppItemTag WHERE `status` = 1 AND isDelete = 0 AND id=#{id}
+	</select>
+	
+	<select id="checkSkipObjectId" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(1) from AppItemTag where `status`= 1 and isDelete = 0 and appModuleId=#{appModuleId} and skipObjectId=#{skipObjectId}
+	</select>
+	
+	<select id="getImage" resultType="com.corner.core.beans.AppItemTag">
+		SELECT
+			id,
+			`name`,
+			picUrl
+		FROM
+			AppItemTag
+		WHERE
+			`status` = 1
+		AND isDelete = 0
+		AND appModuleId = (
+			SELECT
+				id
+			FROM
+				AppModule
+			WHERE
+				`status` = 1
+			AND isDelete = 0
+			AND moduleType = 2
+		)
+	</select>
+	
+	<select id="getAdAllAppModule" resultType="com.corner.kefu.beans.vo.AppModuleVo">
+		SELECT * FROM AppModule WHERE `status`=1 AND isDelete=0
+	</select>
+	
+	<select id="getAllItemTag" resultType="com.corner.core.beans.AppItemTag">
+		SELECT id,`name` FROM AppItemTag WHERE `status`=1 AND isDelete=0
+	</select>
+	
+	<select id="getAppModuleList" resultType="com.corner.kefu.beans.vo.AppModuleVo">
+		SELECT
+			a.*,
+			CASE
+				WHEN a.`code`=01 THEN '分类滚动列表'
+				WHEN a.`code`=10 THEN '首页快捷按钮'
+				WHEN a.`code`=11 THEN '首页导航'
+				WHEN a.`code`=12 THEN '首页搜索'
+				WHEN a.`code`=20 THEN '爆款推荐'
+				WHEN a.`code`=21 THEN '促销专区'
+				WHEN a.`code`=22 THEN '品牌促销'
+				WHEN a.`code`=23 THEN '品牌专区'
+				WHEN a.`code`=24 THEN '抢购专区'
+				WHEN a.`code`=30 THEN '滚动广告'
+				WHEN a.`code`=40 THEN '转角公告'
+				ELSE '无'
+			END AS codeName,
+			CASE
+				WHEN a.moduleType=1 THEN '商品标签'
+				WHEN a.moduleType=2 THEN '商品列表'
+				WHEN a.moduleType=3 THEN '广告模板'
+				ELSE '无'
+			END AS typeName,
+			CASE
+				WHEN a.seeAble=0 THEN '不可见'
+				ELSE '可见'
+			END AS seeName,
+			(SELECT `name` FROM Adboard WHERE `status`=1 AND isDelete=0 AND a.cfgAdBoardId=id) AS boardName,
+			CASE
+				WHEN SYSDATE() &lt; a.beginTime THEN '新建'
+				WHEN SYSDATE() &gt;= a.beginTime AND SYSDATE() &lt; a.stopTime THEN '已上架'
+				ELSE '已下架'
+			END AS staName
+		FROM
+			AppModule a
+		order by a.orderId
+	</select>
+	
+	<update id="updateDelOrRecoModule" parameterType="java.util.Map">
+		UPDATE AppModule SET isDelete=#{isDelete} WHERE id=#{id}
+	</update>
+	<update id="updateDelOrRecoTag" parameterType="java.util.Map">
+		UPDATE AppItemTag SET isDelete=#{isDelete} WHERE id=#{id}
+	</update>
+	
+	<insert id="insertSelectiveReturnId" parameterType="com.corner.core.beans.AppModule" useGeneratedKeys="true" keyProperty="id">
+		insert into AppModule
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="code != null" >
+	        code,
+	      </if>
+	      <if test="name != null" >
+	        name,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="beginTime != null" >
+	        beginTime,
+	      </if>
+	      <if test="stopTime != null" >
+	        stopTime,
+	      </if>
+	      <if test="viewImg != null" >
+	        viewImg,
+	      </if>
+	      <if test="moduleType != null" >
+	        moduleType,
+	      </if>
+	      <if test="mdWidth != null" >
+	        mdWidth,
+	      </if>
+	      <if test="mdHight != null" >
+	        mdHight,
+	      </if>
+	      <if test="cfgUrl != null" >
+	        cfgUrl,
+	      </if>
+	      <if test="cfgPageIndex != null" >
+	        cfgPageIndex,
+	      </if>
+	      <if test="cfgPageSize != null" >
+	        cfgPageSize,
+	      </if>
+	      <if test="cfgAdBoardId != null" >
+	        cfgAdBoardId,
+	      </if>
+	      <if test="cfgTagId != null" >
+	        cfgTagId,
+	      </if>
+	      <if test="seeAble != null" >
+	        seeAble,
+	      </if>
+	      <if test="orderId != null" >
+	        orderId,
+	      </if>
+	      <if test="addTime != null" >
+	        addTime,
+	      </if>
+	      <if test="updateTime != null" >
+	        updateTime,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="isDelete != null" >
+	        isDelete,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id,jdbcType=VARCHAR},
+	      </if>
+	      <if test="code != null" >
+	        #{code,jdbcType=VARCHAR},
+	      </if>
+	      <if test="name != null" >
+	        #{name,jdbcType=VARCHAR},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark,jdbcType=VARCHAR},
+	      </if>
+	      <if test="beginTime != null" >
+	        #{beginTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="stopTime != null" >
+	        #{stopTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="viewImg != null" >
+	        #{viewImg,jdbcType=VARCHAR},
+	      </if>
+	      <if test="moduleType != null" >
+	        #{moduleType,jdbcType=TINYINT},
+	      </if>
+	      <if test="mdWidth != null" >
+	        #{mdWidth,jdbcType=INTEGER},
+	      </if>
+	      <if test="mdHight != null" >
+	        #{mdHight,jdbcType=INTEGER},
+	      </if>
+	      <if test="cfgUrl != null" >
+	        #{cfgUrl,jdbcType=VARCHAR},
+	      </if>
+	      <if test="cfgPageIndex != null" >
+	        #{cfgPageIndex,jdbcType=INTEGER},
+	      </if>
+	      <if test="cfgPageSize != null" >
+	        #{cfgPageSize,jdbcType=INTEGER},
+	      </if>
+	      <if test="cfgAdBoardId != null" >
+	        #{cfgAdBoardId,jdbcType=INTEGER},
+	      </if>
+	      <if test="cfgTagId != null" >
+	        #{cfgTagId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="seeAble != null" >
+	        #{seeAble,jdbcType=BIT},
+	      </if>
+	      <if test="orderId != null" >
+	        #{orderId,jdbcType=INTEGER},
+	      </if>
+	      <if test="addTime != null" >
+	        #{addTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="updateTime != null" >
+	        #{updateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=TINYINT},
+	      </if>
+	      <if test="isDelete != null" >
+	        #{isDelete,jdbcType=BIT},
+	      </if>
+	    </trim>
+	</insert>
+	
+	
+	<insert id="saveMoudelAndTag" parameterType="java.util.HashMap">
+	 insert into AppModuleTagMap (moduleId, itemTagId)
+    values (#{moduleId,jdbcType=VARCHAR}, #{tagId,jdbcType=INTEGER})
+	</insert>
+	
+	
+	<select id="getAppModuleTagMapList" parameterType="com.corner.core.beans.AppModule" resultType="java.util.HashMap">
+	  SELECT * FROM AppModuleTagMap where moduleId = #{id}
+	</select>
+	
+	<delete id="deleteFromTagMap" parameterType="com.corner.core.beans.AppModule">
+	  DELETE from AppModuleTagMap where moduleId = #{id}
+	</delete>
+</mapper>

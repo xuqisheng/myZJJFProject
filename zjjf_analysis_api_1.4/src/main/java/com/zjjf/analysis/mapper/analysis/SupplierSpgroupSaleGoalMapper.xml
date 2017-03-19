@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.zjjf.analysis.mapper.analysis.SupplierSpgroupSaleGoalMapper">
+	<resultMap id="BaseResultMap"
+		type="com.zjjf.analysis.beans.analysis.supplier.SupplierSpgroupSaleGoal">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+		<result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+		<result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+		<result column="monthGoal" property="monthGoal" jdbcType="INTEGER" />
+		<result column="dailyGoal" property="dailyGoal" jdbcType="INTEGER" />
+		<result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="INTEGER" />
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, cityId, areaId, spGroupId, supplierId, monthGoal, dailyGoal, dayTime,
+		createTime,
+		updateTime
+	</sql>
+
+	<select id="getGoal" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from supplier_spgroup_sale_goal where spGroupId = #{spGroupId} and supplierId =#{supplierId} and dayTime=#{dayTime} limit 1
+	</select>
+
+	<select id="querySaleGoalSet" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from supplier_spgroup_sale_goal
+		<where>
+			<if test="cityId != null">and cityId = #{cityId}</if>
+			<if test="areaId != null">and areaId = #{areaId}</if>
+			<if test="spGroupId != null">and spGroupId = #{spGroupId}</if>
+			<if test="dayTime != null">and dayTime = #{dayTime}</if>
+			<if test="spIds != null">
+				and supplierId in
+				<foreach collection="spIds" item="item" index="index" open="("
+					close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+		order by cityId,areaId,supplierId
+	</select>
+
+	<update id="batchUpdate" parameterType="java.util.Map">
+		UPDATE `supplier_spgroup_sale_goal` t
+		<trim prefix="SET" suffixOverrides=",">
+			<trim prefix="t.monthGoal=case" suffix="end,">
+				<if test="array != null">
+					<foreach collection="array" item="item" index="index"
+						separator=" ">
+						<if test="item.id != null and item.goal != null">
+							WHEN(t.id = #{item.id})
+							THEN #{item.goal}
+						</if>
+					</foreach>
+				</if>
+			</trim>
+			<trim prefix="t.dailyGoal=case" suffix="end,">
+				<if test="array != null">
+					<foreach collection="array" item="item" index="index"
+						separator=" ">
+						<if test="item.id != null and item.dailyGoal != null">
+							WHEN(t.id = #{item.id})
+							THEN #{item.dailyGoal}
+						</if>
+					</foreach>
+				</if>
+			</trim>
+		</trim>
+		WHERE t.id in
+		<foreach collection="array" item="it" open="(" close=")"
+			separator=",">
+			#{it.id}
+		</foreach>
+	</update>
+</mapper>

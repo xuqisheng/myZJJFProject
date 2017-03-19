@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.SpGroupDailyMapper" >
+
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.analysis.supplier.SpGroupDaily" >
+    insert into spgroup_daily (spGroupId, dayTime, 
+      turnover, totalRebate, totalCoupon, 
+      totalFreight, orderCount, sku, 
+      quantity, storeOrderCount, 
+      newRegStoreOrdercount, cityId, areaId, monthActive, monthAddActive,
+      createTime, updateTime)
+    values (#{spGroupId,jdbcType=INTEGER}, #{dayTime,jdbcType=INTEGER}, 
+      #{turnover,jdbcType=DECIMAL}, #{totalRebate,jdbcType=DECIMAL}, #{totalCoupon,jdbcType=DECIMAL}, 
+      #{totalFreight,jdbcType=DECIMAL}, #{orderCount,jdbcType=INTEGER}, #{sku,jdbcType=INTEGER}, 
+      #{quantity,jdbcType=INTEGER}, #{storeOrderCount,jdbcType=INTEGER},
+      #{newRegStoreOrdercount,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, #{monthActive,jdbcType=INTEGER}, #{monthAddActive,jdbcType=INTEGER},
+      #{createTime,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <select id="getExitRecord" resultType="com.zjjf.analysis.beans.analysis.supplier.SpGroupDaily" parameterType="java.util.Map" >
+    select  
+	    t1.id, 
+	    t1.spGroupId, 
+	    t1.dayTime, 
+	    IFNULL(t1.turnover, 0)  as turnover,
+		IFNULL(t1.totalRebate, 0)  as totalRebate,
+		IFNULL(t1.totalCoupon, 0)  as totalCoupon,
+		IFNULL(t1.totalFreight, 0)  as totalFreight,
+	    t1.orderCount, 
+	    t1.sku, 
+	    t1.quantity
+    from `spgroup_daily` t1 where t1.`dayTime`= #{dayTime} and t1.spGroupId = #{spGroupId}  limit 1
+  </select>
+  
+  <select id="getBySpGroupIdAndTime" resultType="java.lang.Integer" parameterType="java.util.Map" >
+    select sum(newRegStoreOrdercount) as "monthAddActive" from spgroup_daily where spGroupId =#{spGroupId} and dayTime &gt;= #{dayTimeBegin} and dayTime &lt;= #{dayTimeEnd}
+  </select>
+  
+  <select id="getBySpGroupIdAndDayTime" resultType="com.zjjf.analysis.beans.analysis.supplier.SpGroupDaily">
+    select * from spgroup_daily where spGroupId =#{spGroupId} and dayTime = #{dayTime} limit 1
+  </select>
+  
+  <update id="update_daily" parameterType="com.zjjf.analysis.beans.analysis.supplier.SpGroupDaily" >
+    update spgroup_daily
+    <set >
+      <if test="turnover != null" >
+        turnover = #{turnover},
+      </if>
+      <if test="totalRebate != null" >
+        totalRebate = #{totalRebate},
+      </if>
+      <if test="totalCoupon != null" >
+        totalCoupon = #{totalCoupon},
+      </if>
+      <if test="totalFreight != null" >
+        totalFreight = #{totalFreight},
+      </if>
+      <if test="orderCount != null" >
+        orderCount = #{orderCount},
+      </if>
+      <if test="sku != null" >
+        sku = #{sku},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity},
+      </if>
+      <if test="monthActive != null" >
+        monthActive = #{monthActive},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  
+  <select id="getDataSum" resultType="com.zjjf.analysis.beans.analysis.supplier.SpGroupDaily" parameterType="java.util.Map" >
+	 select 
+	 	    sum(storeOrderCount) as "storeOrderCount",  
+	 	    sum(orderCount) as "orderCount", 
+	        sum(storeOrderCount - newRegStoreOrdercount) as "todayMaintain", 
+	        sum(newRegStoreOrdercount) as "todayAddActive"
+	     from spgroup_daily 
+		   <where>
+		      <if test="spGroupId != null and spGroupId != '' " >
+		      	and spGroupId = #{spGroupId}
+		      </if>
+		      <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+		      	and dayTime &gt;= #{dayTimeBegin}
+		      </if>
+		      <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+		      	and dayTime &lt;= #{dayTimeEnd}
+		      </if>
+		      <if test="dayTime != null and dayTime != '' " >
+		      	and dayTime = #{dayTime}
+		      </if>
+		  </where>
+  </select>
+  
+  <select id="getYesTodayData" resultType="com.zjjf.analysis.beans.analysis.supplier.SpGroupDaily">
+	 select 
+	 		storeOrderCount,  
+			newRegStoreOrdercount
+	   from spgroup_daily  where spGroupId =#{spGroupId} and dayTime=#{dayTime} 
+  </select>
+  
+</mapper>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.task.dao.PlantItemProductMapMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.task.beans.PlantItemProductMap" >
+    <id column="productId" property="productId" jdbcType="VARCHAR" />
+    <id column="plantItemId" property="plantItemId" jdbcType="VARCHAR" />
+    <result column="pkgPrice" property="pkgPrice" jdbcType="DECIMAL" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    productId, plantItemId, pkgPrice, num
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.corner.task.beans.PlantItemProductMapExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from PlantItemProductMap
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.corner.task.beans.PlantItemProductMapKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from PlantItemProductMap
+    where productId = #{productId,jdbcType=VARCHAR}
+      and plantItemId = #{plantItemId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.corner.task.beans.PlantItemProductMapKey" >
+    delete from PlantItemProductMap
+    where productId = #{productId,jdbcType=VARCHAR}
+      and plantItemId = #{plantItemId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.corner.task.beans.PlantItemProductMapExample" >
+    delete from PlantItemProductMap
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.corner.task.beans.PlantItemProductMap" >
+    insert into PlantItemProductMap (productId, plantItemId, pkgPrice, 
+      num)
+    values (#{productId,jdbcType=VARCHAR}, #{plantItemId,jdbcType=VARCHAR}, #{pkgPrice,jdbcType=DECIMAL}, 
+      #{num,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.task.beans.PlantItemProductMap" >
+    insert into PlantItemProductMap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="productId != null" >
+        productId,
+      </if>
+      <if test="plantItemId != null" >
+        plantItemId,
+      </if>
+      <if test="pkgPrice != null" >
+        pkgPrice,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="productId != null" >
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="plantItemId != null" >
+        #{plantItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="pkgPrice != null" >
+        #{pkgPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.corner.task.beans.PlantItemProductMapExample" resultType="java.lang.Integer" >
+    select count(*) from PlantItemProductMap
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PlantItemProductMap
+    <set >
+      <if test="record.productId != null" >
+        productId = #{record.productId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.plantItemId != null" >
+        plantItemId = #{record.plantItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pkgPrice != null" >
+        pkgPrice = #{record.pkgPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.num != null" >
+        num = #{record.num,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PlantItemProductMap
+    set productId = #{record.productId,jdbcType=VARCHAR},
+      plantItemId = #{record.plantItemId,jdbcType=VARCHAR},
+      pkgPrice = #{record.pkgPrice,jdbcType=DECIMAL},
+      num = #{record.num,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.task.beans.PlantItemProductMap" >
+    update PlantItemProductMap
+    <set >
+      <if test="pkgPrice != null" >
+        pkgPrice = #{pkgPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+    </set>
+    where productId = #{productId,jdbcType=VARCHAR}
+      and plantItemId = #{plantItemId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.task.beans.PlantItemProductMap" >
+    update PlantItemProductMap
+    set pkgPrice = #{pkgPrice,jdbcType=DECIMAL},
+      num = #{num,jdbcType=INTEGER}
+    where productId = #{productId,jdbcType=VARCHAR}
+      and plantItemId = #{plantItemId,jdbcType=VARCHAR}
+  </update>
+</mapper>

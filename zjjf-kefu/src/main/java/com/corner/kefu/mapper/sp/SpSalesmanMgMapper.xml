@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpSalesmanMgMapper" >
+	<!--  根据业务员手机号查询地区 -->
+	<select id="selectWithMobile" parameterType="java.lang.String" resultType="com.corner.core.beans.Salesman">
+		select * FROM Salesman WHERE isDelete=0 and mobile=#{mobile,jdbcType=VARCHAR}
+	</select>
+	
+	 <!-- 业务员列表 -->
+	  <select id="getSalesmanList" parameterType="com.corner.kefu.beans.ro.sp.SalesmanRo" resultType="com.corner.kefu.beans.vo.sp.SalesmanVo">
+	  	SELECT s.*,r.name as areaname FROM Salesman s join Region r ON s.area = r.id WHERE s.isDelete=0 AND r.isDelete=0 
+	  <if test="areaId != null">
+		 and r.area = #{areaId,jdbcType=INTEGER}
+	  </if>
+	   <if test="keywords != null">
+			and (s.mobile like CONCAT('%',#{keywords,jdbcType=INTEGER},'%' ) or s.userName like "%"#{keywords,jdbcType=INTEGER}"%")
+		</if>
+	  <if test="sortName != null">
+		 order by ${sortName}
+	  </if>
+	  <if test="sortOrder != null">
+		 ${sortOrder}
+	  </if>
+	  <if test="pageSize!=0">
+		limit ${pageIndex},${pageSize}
+	  </if>
+	  </select>
+	 <!--  统计满足某个条件下的总数量 -->
+	  <select id="getSalesmanListCount" parameterType="com.corner.kefu.beans.ro.sp.SalesmanRo" resultType="java.lang.Integer">
+	  select count(*) FROM Salesman s join Region r ON s.area = r.id WHERE s.isDelete=0 AND r.isDelete=0
+	  <if test="areaId != null">
+		 and r.area = #{areaId,jdbcType=INTEGER}
+	  </if>
+	   <if test="keywords != null">
+			and (s.mobile like CONCAT('%',#{keywords,jdbcType=INTEGER},'%' ) or s.userName like "%"#{keywords,jdbcType=INTEGER}"%")
+		</if>
+	  </select>
+	  
+	  <!-- 根据业务员手机号统计数量 -->
+	  <select id="getCountWithMObile" parameterType="java.lang.String" resultType="java.lang.Integer">
+	   	SELECT COUNT(*) FROM Salesman WHERE mobile=#{mobile,jdbcType=VARCHAR} and isDelete=0
+	  </select>
+	  
+	  <!-- 逻辑删除 -->
+	  <update id="deleteSalesman" parameterType="java.lang.String">
+	  	UPDATE Salesman SET isDelete=1 WHERE id=#{id,jdbcType=VARCHAR}
+	  </update>
+</mapper>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.corner.salesman.modules.apprunlog.dao.AppRunLogDao">
+
+	<sql id="appRunLogColumns">
+		a.id AS "id",
+		a.keepAlive AS "keepAlive",
+		a.uploadState AS
+		"uploadState",
+		a.network AS "network",
+		a.gps AS "gps",
+		a.dataInfo AS
+		"dataInfo",
+		a.appTime AS "appTime",
+		a.remark AS "remark",
+		a.createBy AS
+		"createBy",
+		a.createTime AS "createTime",
+		a.deviceType AS "deviceType"
+	</sql>
+
+	<sql id="appRunLogJoins">
+	</sql>
+
+	<select id="get" resultType="AppRunLog">
+		SELECT
+		<include refid="appRunLogColumns" />
+		FROM tbl_app_monitor_logs_t a
+		<include refid="appRunLogJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="AppRunLog">
+		SELECT
+		CASE
+		WHEN t.keepAlive = 1 THEN '活着'
+		WHEN t.keepAlive = 2 THEN '杀死'
+		ELSE '其它'
+		END keepAlive,
+		CASE
+		WHEN t.uploadState = 1 THEN '上传成功'
+		WHEN t.uploadState = 2 THEN '上传失败'
+		WHEN t.uploadState = 3 THEN '批量上传成功'
+		WHEN t.uploadState = 4 THEN '批量上传失败'
+		ELSE '其它'
+		END uploadState,
+		CASE
+		WHEN t.network = 1 THEN '无网络'
+		WHEN t.network = 2 THEN '手机网络'
+		WHEN t.network = 3 THEN '无线网络'
+		ELSE '其它'
+		END network,
+		CASE
+		WHEN t.gps = 1 THEN '打开'
+		WHEN t.gps = 2 THEN '手机网络'
+		ELSE '其它'
+		END gps,
+		CASE
+		WHEN t.deviceType = 1 THEN 'Android'
+		WHEN t.deviceType = 2 THEN 'IOS'
+		ELSE '其它'
+		END deviceType,
+		t.dataInfo,t.createTime,t.appTime,
+		u.userName,u.deviceName
+		FROM
+		tbl_app_monitor_logs_t t
+		LEFT JOIN salesman u on t.createBy=u.id
+		WHERE 1 = 1
+		<if test="userName !=null and userName!=''">
+			AND u.userName like CONCAT('%',#{userName},'%')
+		</if>
+		<if test="createTime != null and createTime!=''">
+			AND DATE_FORMAT(t.createTime,
+			'%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+		</if>
+		<if test="deviceType != null and deviceType!=''">
+			AND deviceType = #{deviceType}
+		</if>
+		order by t.createTime desc
+	</select>
+
+	<select id="findAllList" resultType="AppRunLog">
+		SELECT
+		<include refid="appRunLogColumns" />
+		FROM tbl_app_monitor_logs_t a
+		<include refid="appRunLogJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	<!-- app运行日志导出方法 -->
+	<select id="findAppRunLogList" resultType="AppRunLog">
+		SELECT
+		CASE
+		WHEN t.keepAlive = 1 THEN '活着'
+		WHEN t.keepAlive = 2 THEN '杀死'
+		ELSE '其它'
+		END keepAlive,
+		CASE
+		WHEN t.uploadState = 1 THEN '上传成功'
+		WHEN t.uploadState = 2 THEN '上传失败'
+		WHEN t.uploadState = 3 THEN '批量上传成功'
+		WHEN t.uploadState = 4 THEN '批量上传失败'
+		ELSE '其它'
+		END uploadState,
+		CASE
+		WHEN t.network = 1 THEN '无网络'
+		WHEN t.network = 2 THEN '手机网络'
+		WHEN t.network = 3 THEN '无线网络'
+		ELSE '其它'
+		END network,
+		CASE
+		WHEN t.gps = 1 THEN '打开'
+		WHEN t.gps = 2 THEN '手机网络'
+		ELSE '其它'
+		END gps,
+		CASE
+		WHEN t.deviceType = 1 THEN 'Android'
+		WHEN t.deviceType = 2 THEN 'IOS'
+		ELSE '其它'
+		END deviceType,
+		t.dataInfo,t.createTime,t.appTime,
+		u.userName,u.deviceName
+		FROM
+		tbl_app_monitor_logs_t t
+		LEFT JOIN salesman u on t.createBy=u.id
+		WHERE 1 = 1
+		<if test="userName !=null and userName!=''">
+			AND u.userName like CONCAT('%',#{userName},'%')
+		</if>
+		<if test="createTime != null and createTime!=''">
+			AND DATE_FORMAT(t.createTime,
+			'%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+		</if>
+		<if test="deviceType != null and deviceType!=''">
+			AND deviceType = #{deviceType}
+		</if>
+		order by t.createTime desc
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tbl_app_monitor_logs_t(
+		id,
+		keepAlive,
+		uploadState,
+		network,
+		gps,
+		dataInfo,
+		appTime,
+		remark,
+		createBy,
+		createTime,
+		deviceType
+		) VALUES (
+		#{id},
+		#{keepAlive},
+		#{uploadState},
+		#{network},
+		#{gps},
+		#{dataInfo},
+		#{appTime},
+		#{remark},
+		#{createBy},
+		#{createTime},
+		#{deviceType}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE tbl_app_monitor_logs_t SET
+		keepAlive = #{keepAlive},
+		uploadState = #{uploadState},
+		network = #{network},
+		gps = #{gps},
+		dataInfo = #{dataInfo},
+		appTime = #{appTime},
+		remark = #{remark},
+		createBy = #{createBy},
+		createTime = #{createTime},
+		deviceType = #{deviceType}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		DELETE FROM tbl_app_monitor_logs_t
+		WHERE id = #{id}
+	</update>
+
+</mapper>

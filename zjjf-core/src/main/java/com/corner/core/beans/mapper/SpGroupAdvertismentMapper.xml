@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SpGroupAdvertismentMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpGroupAdvertisment" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="advertismentId" property="advertismentId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, spGroupId, advertismentId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SpGroupAdvertisment
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SpGroupAdvertisment
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SpGroupAdvertisment" >
+    insert into SpGroupAdvertisment (id, spGroupId, advertismentId
+      )
+    values (#{id,jdbcType=VARCHAR}, #{spGroupId,jdbcType=INTEGER}, #{advertismentId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SpGroupAdvertisment" >
+    insert into SpGroupAdvertisment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId,
+      </if>
+      <if test="advertismentId != null" >
+        advertismentId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="spGroupId != null" >
+        #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="advertismentId != null" >
+        #{advertismentId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SpGroupAdvertisment" >
+    update SpGroupAdvertisment
+    <set >
+      <if test="spGroupId != null" >
+        spGroupId = #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="advertismentId != null" >
+        advertismentId = #{advertismentId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SpGroupAdvertisment" >
+    update SpGroupAdvertisment
+    set spGroupId = #{spGroupId,jdbcType=INTEGER},
+      advertismentId = #{advertismentId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

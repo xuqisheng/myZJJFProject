@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.origin.SpGroupMapMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.origin.supplier.SpGroupMap" >
+    <id column="spId" property="spId" jdbcType="VARCHAR" />
+    <id column="groupId" property="groupId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    spId, groupId
+  </sql>
+  
+  <select id="selectByIndex" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select <include refid="Base_Column_List" /> from `SpGroupMap` where groupId &gt; #{id} order by groupId limit 1000
+  </select>
+  
+  <select id="getByGroupId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select <include refid="Base_Column_List" /> from `SpGroupMap` where groupId = #{id}
+  </select>
+  
+  <select id="getBySupplierId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select <include refid="Base_Column_List" /> from `SpGroupMap` where spId = #{supplierId}
+  </select>
+  
+  <select id="getBySpIdAndGroupId" resultMap="BaseResultMap" >
+    select <include refid="Base_Column_List" /> from `SpGroupMap` where spId = #{supplierId} and groupId = #{groupId}
+  </select>
+  
+  <select id="getAll" resultMap="BaseResultMap" >
+    select <include refid="Base_Column_List" /> from `SpGroupMap` limit #{offset}, 1000
+  </select>
+</mapper>

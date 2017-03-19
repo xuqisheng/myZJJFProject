@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.PromotionMgMapper">
+
+	<select id="findPingTaiActive" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="com.corner.scms.beans.vo.SpVoucherActiveVo">
+		select * from (SELECT SpVoucherActive.*,SpVoucherTemp.id as
+		QId,SpVoucherTemp.ruleName as QName from SpVoucherActive LEFT JOIN
+		SpVoucherActiveMap on
+		(SpVoucherActive.id=SpVoucherActiveMap.activeId)
+		left join SpVoucherTemp on(SpVoucherActive.sendId=SpVoucherTemp.id)
+		where
+		SpVoucherActive.ruleScopFlag=1 and SpVoucherActive.isDelete=0 and SpVoucherActiveMap.spGroupId
+		in (SELECT SpGroupMap.groupId from
+		SpGroupMap WHERE
+		SpGroupMap.spId=#{supplierId})) as b where 1=1 and b.ruleStart and b.status!=3 
+		<if test="ruleName!=null and ruleName!=''">
+			and b.ruleName like CONCAT('%','${ruleName}','%')
+		</if>
+		<if test="ruleType!=null">
+			and b.ruleType=#{ruleType}
+		</if>
+		<if test="ruleStart!=null and ruleStart!=''">
+			AND b.ruleStart &gt;= #{ruleStart}
+		</if>
+
+		<!-- 查询条件：创建结束时间 -->
+		<if test="ruleEnd!=null and ruleEnd!=''">
+			AND b.ruleEnd &lt;= #{ruleEnd}
+		</if>
+		<!-- 查询条件：创建结束时间 -->
+		<if test="status!=null ">
+			AND b.status =#{status}
+		</if>
+		order by addTime desc
+	</select>
+	
+	<select id="findGift" parameterType="com.corner.scms.beans.ro.PromotionRo" resultType="com.corner.core.beans.SpVoucherActiveGift">
+			select * from 	SpVoucherActiveGift where spVoucherActiveId =#{spVoucherActiveId}  and itemBaseId=#{scmsItemId} and supplierId is null
+	</select>
+
+	<select id="findActiveByGroup" parameterType="com.corner.core.beans.StoreGroup"
+		resultType="com.corner.core.beans.SpVoucherActive">
+		select * from SpVoucherActive inner join SpVoucherActiveMiddle on
+		(SpVoucherActive.id=SpVoucherActiveMiddle.spVoucherActiveId)
+		where SpVoucherActiveMiddle.storeGroupID=#{id} and
+		SpVoucherActiveMiddle.isDelete=0 and SpVoucherActive.isDelete=0
+	</select>
+
+	<select id="findmorelist" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="com.corner.scms.beans.vo.SpVoucherActiveVo">
+		select  * from 
+		
+	      <include refid="condition_query"></include>
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+	
+	<sql id="condition_query">
+		(SELECT DISTINCT
+			SpVoucherActive.*, SpVoucherTemp.id AS QId,
+			SpVoucherTemp.ruleName AS QName
+		FROM
+			SpVoucherActive
+		LEFT JOIN SpVoucherActiveMap ON (
+			SpVoucherActive.id = SpVoucherActiveMap.activeId
+		)
+		LEFT JOIN SpVoucherTemp ON (
+			SpVoucherActive.sendId = SpVoucherTemp.id
+		)
+		
+		WHERE SpVoucherActive.isDelete=0 and
+		
+		SpVoucherActive.ruleScopFlag = 2
+		AND SpVoucherActiveMap.spGroupId IN (
+			SELECT
+				SpGroupMap.groupId
+			FROM
+				SpGroupMap
+			WHERE
+				SpGroupMap.spId =#{supplierId}
+		)) as b where 1=1 and
+		b.id not in (select spVoucherActiveId from SpVoucherActiveMiddle where
+		SpVoucherActiveMiddle.supplierId=#{supplierId}
+		and SpVoucherActiveMiddle.isDelete=0) and b.status!=3 and b.status!=0
+
+		<if test="ruleName!=null and ruleName!=''">
+			and b.ruleName like CONCAT('%','${ruleName}','%')
+		</if>
+		<if test="ruleType!=null">
+			and b.ruleType=#{ruleType}
+		</if>
+		<if test="ruleStart!=null and ruleStart!=''">
+			AND b.ruleStart &gt;= #{ruleStart}
+		</if>
+
+		<!-- 查询条件：创建结束时间 -->
+		<if test="ruleEnd!=null and ruleEnd!=''">
+			AND b.ruleEnd &lt;= #{ruleEnd}
+		</if>
+		
+		order by addTime desc
+	
+	</sql>
+	
+	
+	<select id="findmorelistSize" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="int">
+		select COUNT(1) from 
+		   <include refid="condition_query"></include>
+    </select>
+
+	<select id="findCountPeople" resultType="int"
+		parameterType="com.corner.scms.beans.ro.PromotionRo">
+		SELECT count(distinct(SpVoucher.storeId)) from SpVoucher
+		INNER JOIN SpVoucherTemp
+		on (SpVoucherTemp.id=SpVoucher.ruleId) WHERE
+		SpVoucher.spVoucherActiveId=#{id} and SpVoucher.spId=#{supplierId}
+		and
+		SpVoucher.status=3
+	</select>
+
+
+	<select id="findCountJPeople" resultType="int"
+		parameterType="com.corner.scms.beans.ro.PromotionRo">
+		select count(distinct(SpOrderActiveMap.storeId)) from SpOrderActiveMap inner join SpOrderInfo on (SpOrderActiveMap.sOrderId=SpOrderInfo.id)
+		where
+		spId=#{supplierId} and spVoucherActiveId=#{id} and SpOrderActiveMap.level=2 and SpOrderInfo.status!=6
+	</select>
+
+	<select id="findMoneyByCondition" resultType="double"
+		parameterType="com.corner.scms.beans.ro.PromotionRo">
+		SELECT sum(SpVoucher.money*((100-SpVoucher.plantHalve)/100)) from SpVoucher
+		WHERE SpVoucher.spVoucherActiveId=#{id} and
+		SpVoucher.spId=#{supplierId}
+		and SpVoucher.status=3
+
+	</select>
+
+
+	<select id="findMoneyJByCondition" resultType="double"
+		parameterType="com.corner.scms.beans.ro.PromotionRo">
+		select sum(rebeatSp2Sp) from SpOrderActiveMap inner join SpOrderInfo on (SpOrderActiveMap.sOrderId=SpOrderInfo.id) where
+		spId=#{supplierId} and spVoucherActiveId=#{id} and SpOrderActiveMap.level=2 and SpOrderInfo.status!=6
+	</select>
+
+	<select id="findZiYuanActive" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="com.corner.scms.beans.vo.SpVoucherActiveVo">
+		select * from (SELECT
+		SpVoucherActive.*,SpVoucherTemp.id
+		as
+		QId,SpVoucherTemp.ruleName as QName from SpVoucherActive LEFT JOIN
+		SpVoucherActiveMap on
+		(SpVoucherActive.id=SpVoucherActiveMap.activeId)
+		left join SpVoucherTemp on(SpVoucherActive.sendId=SpVoucherTemp.id)
+		inner join SpVoucherActiveMiddle on
+		(SpVoucherActive.id=SpVoucherActiveMiddle.spVoucherActiveId) where
+		SpVoucherActive.isDelete=0 and 
+		SpVoucherActiveMiddle.isDelete=0 and
+		SpVoucherActive.ruleScopFlag=2 and
+		SpVoucherActiveMap.spGroupId in (SELECT SpGroupMap.groupId from
+		SpGroupMap WHERE SpGroupMap.spId=#{supplierId}) and
+		SpVoucherActiveMiddle.supplierId=#{supplierId} and
+		SpVoucherActiveMiddle.isDelete=0) as b where 1=1
+		and b.ruleStart and b.status!=3
+		<if test="ruleName!=null and ruleName!=''">
+			and b.ruleName like CONCAT('%','${ruleName}','%')
+		</if>
+		<if test="ruleType!=null">
+			and b.ruleType=#{ruleType}
+		</if>
+		<if test="ruleStart!=null and ruleStart!=''">
+			AND b.ruleStart &gt;= #{ruleStart}
+		</if>
+		<if test="ruleEnd!=null and ruleEnd!=''">
+			AND b.ruleEnd &lt;= #{ruleEnd}
+		</if>
+		<!-- 查询条件：创建结束时间 -->
+		<if test="status!=null">
+			AND b.status =#{status}
+		</if>
+	
+		order by addTime desc
+	</select>
+
+
+
+	<select id="findAllGroupId" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="com.corner.scms.beans.vo.SpVoucherActiveVo">
+		select SpVoucherActive.*,SpVoucherTemp.id as
+		QId,SpVoucherTemp.ruleName as QName from SpVoucherActive left join
+		SpVoucherTemp on(SpVoucherActive.sendId=SpVoucherTemp.id) where
+		SpVoucherActive.ruleScopFlag=0 and SpVoucherActive.ruleStart and SpVoucherActive.status!=3 and SpVoucherActive.isDelete=0
+		<if test="ruleName!=null and ruleName!=''">
+			and SpVoucherActive.ruleName like
+			CONCAT('%','${ruleName}','%')
+		</if>
+		<if test="ruleType!=null">
+			and SpVoucherActive.ruleType=#{ruleType}
+		</if>
+		<if test="ruleStart!=null and ruleStart!=''">
+			AND SpVoucherActive.ruleStart &gt;= #{ruleStart}
+		</if>
+		<!-- 查询条件：创建结束时间 -->
+		<if test="ruleEnd!=null and ruleEnd!=''">
+			AND SpVoucherActive.ruleEnd &lt;= #{ruleEnd}
+		</if>
+		<if test="status!=null ">
+			AND SpVoucherActive.status = #{status}
+		</if>
+		
+		order by addTime desc
+	</select>
+
+
+	<select id="findproduct" resultType="com.corner.scms.beans.vo.ScmsItemBaseVo"
+		parameterType="com.corner.scms.beans.ro.PromotionRo">
+		select ItemBase.*,PlantItem.id as scmsid from ItemBase inner join
+		PlantItem on
+		(ItemBase.id=PlantItem.itemBaseId) where PlantItem.spId=#{supplierId} and PlantItem.isDelete=0 and PlantItem.status=1
+		<if test="ruleName!=null and ruleName!=''">
+			and ItemBase.name like CONCAT('%','${ruleName}','%')
+		</if>
+	</select>
+
+	<select id="findCountProduct" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="int">
+		select goodsStock from PlantItem where id=#{scmsItemId} and
+		spId=#{supplierId}
+	</select>
+
+	<select id="findCustomerNumber" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="int">
+		select
+		case
+		when sum is null then 0
+		else sum
+		end
+		from (SELECT SUM(StoreGroup.number) as sum from StoreGroup INNER JOIN
+		SpVoucherActiveMiddle
+		on (SpVoucherActiveMiddle.storeGroupID=StoreGroup.id) WHERE
+		SpVoucherActiveMiddle.spVoucherActiveId=#{id} and
+		SpVoucherActiveMiddle.supplierId=#{supplierId} and
+		SpVoucherActiveMiddle.isDelete=0) as a
+
+	</select>
+
+	<select id="findAlreadyExists" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="int">
+		select count(1) from SpVoucherActiveGift where supplierId=#{supplierId} and
+		plantItemId=#{scmsItemId} and spVoucherActiveId=#{spVoucherActiveId}
+	</select>
+
+	<update id="updateGoodsStock" parameterType="com.corner.scms.beans.ro.PromotionRo">
+		update PlantItem set goodsStock=goodsStock-#{countInt} where
+		id=#{scmsItemId}
+	</update>
+
+	<select id="findCount" resultType="int" parameterType="int">
+		select
+		sum(number) from SpVoucherActiveMiddle where spVoucherActiveId=#{id}
+		and SpVoucherActiveMiddle.isDelete=0
+	</select>
+
+	<delete id="updateActive_supplier">
+		delete from SpVoucherActiveMiddle where
+		spVoucherActiveId=#{spVoucherActiveId} and supplierId=#{supplierId}
+		and SpVoucherActiveMiddle.isDelete=0
+	</delete>
+
+
+	<select id="getPageList" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="com.corner.scms.beans.vo.SpvoucherVo">
+		SELECT SpOrderInfo.addTime as time,SpVoucher.storeNm as
+		name,SpVoucher.* from
+		SpVoucher INNER JOIN SpOrderInfo on (SpVoucher.orderId=SpOrderInfo.id)
+		INNER JOIN SpVoucherTemp on (SpVoucherTemp.id=SpVoucher.ruleId)
+		and SpVoucher.spId=#{supplierId} and SpVoucher.spVoucherActiveId=#{id}
+		and SpVoucher.status=3
+		order by time desc
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<select id="findOrderId" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="string">
+		select orderId from SpOrderInfo where pId=#{id} and supplierId=#{supplierId}
+	</select>
+
+
+	<select id="getPageListSize" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="int">
+		SELECT count(1) from
+		SpVoucher INNER JOIN SpOrderInfo on (SpVoucher.orderId=SpOrderInfo.id)
+		INNER JOIN SpVoucherTemp on (SpVoucherTemp.id=SpVoucher.ruleId)
+		and SpVoucher.spId=#{supplierId} and SpVoucher.spVoucherActiveId=#{id} and SpVoucher.status=3
+	</select>
+
+
+	<select id="getPageList2" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="com.corner.scms.beans.vo.SpvoucherVo">
+		SELECT Store.`name`,SpOrderInfo.orderId ,SpOrderActiveMap.rebeatSp as
+		money ,
+		SpOrderActiveMap.plantHalve,SpOrderActiveMap.time 
+		<include refid="query_condition"></include>
+		order by time desc
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<sql id="query_condition">
+		from SpOrderActiveMap INNER JOIN SpVoucherActive on
+		(SpVoucherActive.id=SpOrderActiveMap.spVoucherActiveId) INNER JOIN
+		Store on (Store.id=SpOrderActiveMap.storeId)
+		inner join SpOrderInfo on (SpOrderInfo.id=SpOrderActiveMap.sOrderId)
+		where SpOrderActiveMap.`level`=2 and SpOrderActiveMap.spId=#{supplierId}
+		and SpOrderActiveMap.spVoucherActiveId=#{id} and SpOrderInfo.status!=6
+	</sql>
+
+	<select id="getPageListSize2" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="int">
+		SELECT count(1) 
+		<include refid="query_condition"></include>
+	</select>
+
+
+
+	<select id="findPlantItem" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="com.corner.core.beans.PlantItem">
+		select * from PlantItem where spId=#{supplierId} and
+		itemBaseId=#{numberInt}
+	</select>
+
+	<!-- 通过条件查询 -->
+	<select id="getSpVoucherTemp" parameterType="com.corner.core.beans.SpVoucherTemp"
+		resultType="com.corner.scms.beans.vo.SpVoucherTempVo">
+		SELECT * FROM `SpVoucherTemp`
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id != null">
+				id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="status != null">
+				AND status = #{status,jdbcType=TINYINT}
+			</if>
+			<if test="isDelete != null">
+				AND isDelete = #{isDelete,jdbcType=BIT}
+			</if>
+		</trim>
+	</select>
+
+	<select id="findVoById" parameterType="string"
+		resultType="com.corner.scms.beans.vo.ScmsItemBaseVo">
+		select ItemBase.id as scmsid,ItemBase.* from ItemBase where id=#{id}
+	</select>
+	
+	<select id="findApVoucherActiveGift" parameterType="com.corner.scms.beans.ro.PromotionRo" resultType="com.corner.core.beans.SpVoucherActiveGift">
+			select * from SpVoucherActiveGift where spVoucherActiveId=#{spVoucherActiveId} and supplierId=#{supplierId}
+	</select>
+
+</mapper>

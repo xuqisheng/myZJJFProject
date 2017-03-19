@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.corner.ErpManagerOrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.erp.order.ErpManagerOrderDetail" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="pkg" property="pkg" jdbcType="VARCHAR" />
+    <result column="barCode" property="barCode" jdbcType="VARCHAR" />
+    <result column="mdseId" property="mdseId" jdbcType="VARCHAR" />
+    <result column="itemCode" property="itemCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="spec" property="spec" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="itemId" property="itemId" jdbcType="VARCHAR" />
+    <result column="managerId" property="managerId" jdbcType="VARCHAR" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="areaPrice" property="areaPrice" jdbcType="DECIMAL" />
+    <result column="quantity" property="quantity" jdbcType="SMALLINT" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="operateQuantity" property="operateQuantity" jdbcType="SMALLINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, orderId, pkg, barCode, mdseId, itemCode, name, spec, img, itemId, managerId, 
+    itemBaseId, areaPrice, quantity, addTime, operateQuantity, isDelete
+  </sql>
+  
+  <select id="getData" resultType="com.zjjf.analysis.beans.erp.order.ErpManagerOrderDetailVo" parameterType="java.util.Map" >
+        select 
+	         t1.barCode,
+			 t1.itemCode,
+			 t1.mdseId,
+			 t1.itemBaseId,
+			 t1.itemId,
+			 t1.spec,
+			 t1.pkg,
+			 t1.name as "itemName",
+			 t1.orderId,
+			 t2.supplierId,
+			 t1.managerId,
+			 t4.taxRate,
+			 t3.managerName,
+			 t3.managerCode,
+			 t4.areaPrice,
+			 t2.whName,
+			 t2.whId,
+			 t2.whName as "cooperWarehouse",
+			 case
+			    when t3.cooperation = 0
+			    then '购销'
+			    when t3.cooperation = 1
+			    then '平台入驻'
+			    else '' 
+			  end as "cooperation",
+			 case
+			    when t3.`status` = 0
+			    then '引进中'
+			    when t3.`status` = 1
+			    then '合作中'
+			    when t3.`status` = 2
+			    then '停止合作'
+			    else '' 
+			  end as "statusName"
+	    from ERPManagerOrderDetail t1
+	        left join ERPManagerOrderInfo t2 on t2.orderId = t1.orderId
+	        left join ERPManager t3 on t3.id = t1.managerId
+	        left join ERPManagerItem t4 on t4.id = t1.itemId
+	        left join ERPPurchaseStockInfo t5 on t5.pOrderId = t2.orderId
+        where t5.checkStatus = 2
+          <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+	      	  and date_format(t2.`addTime`, '%Y-%m-%d') &gt;= #{dayTimeBegin}
+	      </if>
+	      <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+	      	  and date_format(t2.`addTime`, '%Y-%m-%d')  &lt;= #{dayTimeEnd}
+	      </if>
+	      <if test="whId != null and whId != '' " >
+	 		  and t2.`whId` =#{whId}
+	      </if>
+	       <if test="managerStatusSelect != null and managerStatusSelect != '' " >
+	 		  and t3.`status` =#{managerStatusSelect}
+	      </if>
+	      <if test="coopWaySelect != null and coopWaySelect != '' " >
+	 		  and t3.`cooperation` =#{coopWaySelect}
+	      </if>
+	      <if test="managerCodeOrmanageName != null and managerCodeOrmanageName != '' " >
+	      	and (t3.managerName like "%"#{managerCodeOrmanageName}"%" or t3.managerCode like "%"#{managerCodeOrmanageName}"%")
+	      </if>
+	       <if test="itemNameOrItemCode != null and itemNameOrItemCode != '' " >
+	      	and (t1.barCode like "%"#{itemNameOrItemCode}"%" or t1.name like "%"#{itemNameOrItemCode}"%")
+	      </if>
+	  	group by t1.managerId, t1.itemBaseId, t2.whId order by t2.addTime desc, t2.orderId limit #{pageNo}, #{offset}
+  </select>
+  
+  <select id="getDataCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+       select count(u.a) from (select 
+	         count(*) as a
+	    from ERPManagerOrderDetail t1
+	        left join ERPManagerOrderInfo t2 on t2.orderId = t1.orderId
+	        left join ERPManager t3 on t3.id = t1.managerId
+	        left join ERPManagerItem t4 on t4.id = t1.itemId
+	        left join ERPPurchaseStockInfo t5 on t5.pOrderId = t2.orderId
+        where t5.checkStatus = 2
+          <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+	      	  and date_format(t2.`addTime`, '%Y-%m-%d') &gt;= #{dayTimeBegin}
+	      </if>
+	      <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+	      	  and date_format(t2.`addTime`, '%Y-%m-%d')  &lt;= #{dayTimeEnd}
+	      </if>
+	      <if test="whId != null and whId != '' " >
+	 		  and t2.`whId` =#{whId}
+	      </if>
+	      <if test="managerStatusSelect != null and managerStatusSelect != '' " >
+	 		  and t3.`status` =#{managerStatusSelect}
+	      </if>
+	      <if test="coopWaySelect != null and coopWaySelect != '' " >
+	 		  and t3.`cooperation` =#{coopWaySelect}
+	      </if>
+	      <if test="managerCodeOrmanageName != null and managerCodeOrmanageName != '' " >
+	      	and (t3.managerName like "%"#{managerCodeOrmanageName}"%" or t3.managerCode like "%"#{managerCodeOrmanageName}"%")
+	      </if>
+	       <if test="itemNameOrItemCode != null and itemNameOrItemCode != '' " >
+	      	and (t1.barCode like "%"#{itemNameOrItemCode}"%" or t1.name like "%"#{itemNameOrItemCode}"%")
+	      </if>
+	  group by t1.managerId, t1.itemBaseId, t2.whId) u
+  </select>
+  
+  <select id="getDataExcel" resultType="com.zjjf.analysis.beans.erp.order.ErpManagerOrderDetailVo" parameterType="java.util.Map" >
+         select 
+	         t1.barCode,
+			 t1.itemCode,
+			 t1.mdseId,
+			 t1.itemBaseId,
+			 t1.itemId,
+			 t1.spec,
+			 t1.pkg,
+			 t1.name as "itemName",
+			 t1.orderId,
+			 t2.supplierId,
+			 t1.managerId,
+			 t4.taxRate,
+			 t3.managerName,
+			 t3.managerCode,
+			 t4.areaPrice,
+			 t2.whName,
+			 t2.whId,
+			 t2.whName as "cooperWarehouse",
+			 case
+			    when t3.cooperation = 0
+			    then '购销'
+			    when t3.cooperation = 1
+			    then '平台入驻'
+			    else '' 
+			  end as "cooperation",
+			 case
+			    when t3.`status` = 0
+			    then '引进中'
+			    when t3.`status` = 1
+			    then '合作中'
+			    when t3.`status` = 2
+			    then '停止合作'
+			    else '' 
+			  end as "statusName"
+	    from ERPManagerOrderDetail t1
+	        left join ERPManagerOrderInfo t2 on t2.orderId = t1.orderId
+	        left join ERPManager t3 on t3.id = t1.managerId
+	        left join ERPManagerItem t4 on t4.id = t1.itemId
+	        left join ERPPurchaseStockInfo t5 on t5.pOrderId = t2.orderId
+        where t5.checkStatus = 2
+          <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+	      	  and date_format(t2.`addTime`, '%Y-%m-%d') &gt;= #{dayTimeBegin}
+	      </if>
+	      <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+	      	  and date_format(t2.`addTime`, '%Y-%m-%d')  &lt;= #{dayTimeEnd}
+	      </if>
+	      <if test="whId != null and whId != '' " >
+	 		  and t2.`whId` =#{whId}
+	      </if>
+	       <if test="managerStatusSelect != null and managerStatusSelect != '' " >
+	 		  and t3.`status` =#{managerStatusSelect}
+	      </if>
+	      <if test="coopWaySelect != null and coopWaySelect != '' " >
+	 		  and t3.`cooperation` =#{coopWaySelect}
+	      </if>
+	      <if test="managerCodeOrmanageName != null and managerCodeOrmanageName != '' " >
+	      	and (t3.managerName like "%"#{managerCodeOrmanageName}"%" or t3.managerCode like "%"#{managerCodeOrmanageName}"%")
+	      </if>
+	       <if test="itemNameOrItemCode != null and itemNameOrItemCode != '' " >
+	      	and (t1.barCode like "%"#{itemNameOrItemCode}"%" or t1.name like "%"#{itemNameOrItemCode}"%")
+	      </if>
+	  group by t1.managerId, t1.itemBaseId, t2.whId order by t2.addTime desc, t2.orderId limit 10000
+  </select>
+  
+</mapper>

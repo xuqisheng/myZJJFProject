@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.auth.dao.mg.CustomerServiceMgMapper" >
+	<!-- 获取会计列表条件 -->
+	<sql id="getUserListPage_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			1=1
+			<if test="userName != null and userName != ''">
+				and (cs.userName like CONCAT('%' , #{userName} , '%') or cs.nickName like CONCAT('%' , #{userName} , '%') or r.roleName like CONCAT('%' , #{userName} , '%'))	
+			</if>
+			<if test="status != null">
+				and cs.status=#{status}	
+			</if>
+			<if test="isDelete != null and isDelete != ''">
+				and cs.isDelete=#{isDelete}
+			</if>
+			group by cs.id
+		</trim>
+	</sql>
+	<!-- 获取列表 -->
+	<select id="getUserListPage" parameterType="com.corner.auth.beans.ro.UserRo" resultType="com.corner.auth.beans.vo.UserVo">
+		SELECT 
+  		cs.* ,
+  		(SELECT userName FROM CustomerService WHERE id=cs.createrId) as createName,
+  		d.name as deptName,
+  		p.name as postName,
+  		REPLACE(group_concat(r.roleName),',','&lt;br&gt;') as roleName 
+		FROM CustomerService cs 
+			left join Department d on cs.deptId = d.id 
+			left join Position p on cs.postId = p.id
+			left join UserRoleMap urm on cs.id = urm.userId
+			join Role r on urm.roleId = r.id
+		<include refid="getUserListPage_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取列表 总记录数 -->
+	<select id="getUserListPageCount" parameterType="com.corner.auth.beans.ro.UserRo" resultType="int">
+		SELECT 
+	  		count(1) FROM (
+		SELECT 
+  		count(1) FROM CustomerService cs 
+			left join UserRoleMap urm on cs.id = urm.userId
+			join Role r on urm.roleId = r.id
+		<include refid="getUserListPage_condition" />) a
+	</select>
+	
+	<insert id="insertUserRoleMap" parameterType="com.corner.auth.beans.ro.UserRo">
+		DELETE FROM UserRoleMap where userId = #{id,jdbcType=VARCHAR};
+		<foreach collection="roleIds" separator=";" item="roleId">
+			replace into UserRoleMap (userId, roleId) values (#{id,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+</mapper>

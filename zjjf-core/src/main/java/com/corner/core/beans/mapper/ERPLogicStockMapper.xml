@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ERPLogicStockMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ERPLogicStock" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="warehouseId" property="warehouseId" jdbcType="VARCHAR" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="skuId" property="skuId" jdbcType="VARCHAR" />
+    <result column="typeMg" property="typeMg" jdbcType="TINYINT" />
+    <result column="typeSale" property="typeSale" jdbcType="TINYINT" />
+    <result column="stockNum" property="stockNum" jdbcType="INTEGER" />
+    <result column="lockStock" property="lockStock" jdbcType="INTEGER" />
+    <result column="examineStock" property="examineStock" jdbcType="INTEGER" />
+    <result column="transportStock" property="transportStock" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, supplierId, warehouseId, itemBaseId, skuId, typeMg, typeSale, stockNum, lockStock, 
+    examineStock, transportStock, addTime, updateTime, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ERPLogicStock
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ERPLogicStock
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ERPLogicStock" >
+    insert into ERPLogicStock (id, supplierId, warehouseId, 
+      itemBaseId, skuId, typeMg, 
+      typeSale, stockNum, lockStock, 
+      examineStock, transportStock, addTime, 
+      updateTime, status, isDelete
+      )
+    values (#{id,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, #{warehouseId,jdbcType=VARCHAR}, 
+      #{itemBaseId,jdbcType=INTEGER}, #{skuId,jdbcType=VARCHAR}, #{typeMg,jdbcType=TINYINT}, 
+      #{typeSale,jdbcType=TINYINT}, #{stockNum,jdbcType=INTEGER}, #{lockStock,jdbcType=INTEGER}, 
+      #{examineStock,jdbcType=INTEGER}, #{transportStock,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ERPLogicStock" >
+    insert into ERPLogicStock
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="supplierId != null" >
+        supplierId,
+      </if>
+      <if test="warehouseId != null" >
+        warehouseId,
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId,
+      </if>
+      <if test="skuId != null" >
+        skuId,
+      </if>
+      <if test="typeMg != null" >
+        typeMg,
+      </if>
+      <if test="typeSale != null" >
+        typeSale,
+      </if>
+      <if test="stockNum != null" >
+        stockNum,
+      </if>
+      <if test="lockStock != null" >
+        lockStock,
+      </if>
+      <if test="examineStock != null" >
+        examineStock,
+      </if>
+      <if test="transportStock != null" >
+        transportStock,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseId != null" >
+        #{warehouseId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemBaseId != null" >
+        #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="skuId != null" >
+        #{skuId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeMg != null" >
+        #{typeMg,jdbcType=TINYINT},
+      </if>
+      <if test="typeSale != null" >
+        #{typeSale,jdbcType=TINYINT},
+      </if>
+      <if test="stockNum != null" >
+        #{stockNum,jdbcType=INTEGER},
+      </if>
+      <if test="lockStock != null" >
+        #{lockStock,jdbcType=INTEGER},
+      </if>
+      <if test="examineStock != null" >
+        #{examineStock,jdbcType=INTEGER},
+      </if>
+      <if test="transportStock != null" >
+        #{transportStock,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ERPLogicStock" >
+    update ERPLogicStock
+    <set >
+      <if test="supplierId != null" >
+        supplierId = #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseId != null" >
+        warehouseId = #{warehouseId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="skuId != null" >
+        skuId = #{skuId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeMg != null" >
+        typeMg = #{typeMg,jdbcType=TINYINT},
+      </if>
+      <if test="typeSale != null" >
+        typeSale = #{typeSale,jdbcType=TINYINT},
+      </if>
+      <if test="stockNum != null" >
+        stockNum = #{stockNum,jdbcType=INTEGER},
+      </if>
+      <if test="lockStock != null" >
+        lockStock = #{lockStock,jdbcType=INTEGER},
+      </if>
+      <if test="examineStock != null" >
+        examineStock = #{examineStock,jdbcType=INTEGER},
+      </if>
+      <if test="transportStock != null" >
+        transportStock = #{transportStock,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ERPLogicStock" >
+    update ERPLogicStock
+    set supplierId = #{supplierId,jdbcType=VARCHAR},
+      warehouseId = #{warehouseId,jdbcType=VARCHAR},
+      itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      skuId = #{skuId,jdbcType=VARCHAR},
+      typeMg = #{typeMg,jdbcType=TINYINT},
+      typeSale = #{typeSale,jdbcType=TINYINT},
+      stockNum = #{stockNum,jdbcType=INTEGER},
+      lockStock = #{lockStock,jdbcType=INTEGER},
+      examineStock = #{examineStock,jdbcType=INTEGER},
+      transportStock = #{transportStock,jdbcType=INTEGER},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.PlantItemDailyMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.items.PlantItemDaily" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="itemId" property="itemId" jdbcType="VARCHAR" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="turnover" property="turnover" jdbcType="DECIMAL" />
+    <result column="maoli" property="maoli" jdbcType="DECIMAL" />
+    <result column="fee" property="fee" jdbcType="DECIMAL" />
+    <result column="orderCount" property="orderCount" jdbcType="INTEGER" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+    <result column="maxPrice" property="maxPrice" jdbcType="DECIMAL" />
+    <result column="minPrice" property="minPrice" jdbcType="DECIMAL" />
+    <result column="averagePrice" property="averagePrice" jdbcType="DECIMAL" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="classOneId" property="classOneId" jdbcType="INTEGER" />
+    <result column="classTwoId" property="classTwoId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, itemBaseId, itemId, spGroupId, dayTime, turnover, maoli, fee, orderCount, quantity,
+    updateTime, createTime, maxPrice, minPrice, averagePrice, cityId, areaId, supplierId, classOneId, classTwoId
+  </sql>
+  
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.analysis.items.PlantItemDaily" >
+    insert into plantitem_daily (itemBaseId, itemId, 
+      spGroupId, dayTime, turnover, 
+      maoli, fee, orderCount, 
+      quantity, updateTime, createTime, 
+      cityId, areaId, supplierId, classOneId, classTwoId,
+      maxPrice, minPrice, averagePrice
+      )
+    values (#{itemBaseId,jdbcType=INTEGER}, #{itemId,jdbcType=VARCHAR},
+      #{spGroupId,jdbcType=INTEGER}, #{dayTime,jdbcType=INTEGER}, #{turnover,jdbcType=DECIMAL}, 
+      #{maoli,jdbcType=DECIMAL}, #{fee,jdbcType=DECIMAL}, #{orderCount,jdbcType=INTEGER}, 
+      #{quantity,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=INTEGER}, 
+      #{cityId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, #{supplierId,jdbcType=VARCHAR}, #{classOneId,jdbcType=VARCHAR}, #{classTwoId,jdbcType=VARCHAR},
+      #{maxPrice,jdbcType=DECIMAL}, #{minPrice,jdbcType=DECIMAL}, #{averagePrice,jdbcType=DECIMAL}
+      )
+  </insert>
+  
+  <update id="update_daily" parameterType="com.zjjf.analysis.beans.analysis.items.PlantItemDaily" >
+    update plantitem_daily
+    <set >
+      <if test="turnover != null" >
+        turnover = #{turnover},
+      </if>
+      <if test="maoli != null" >
+        maoli = #{maoli},
+      </if>
+      <if test="fee != null" >
+        fee = #{fee},
+      </if>
+      <if test="orderCount != null" >
+        orderCount = #{orderCount},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  
+  <select id="getExitRecord" resultType="com.zjjf.analysis.beans.analysis.items.PlantItemDaily" parameterType="java.util.Map" >
+    select  
+	    t1.id, 
+	    t1.itemBaseId, 
+	    t1.itemId, 
+	    IFNULL(t1.turnover, 0)  as turnover,
+		IFNULL(t1.maoli, 0)  as maoli,
+		IFNULL(t1.fee, 0)  as fee,
+	    t1.orderCount, 
+	    t1.quantity
+    from `plantitem_daily` t1 where t1.`dayTime`= #{dayTime} and t1.itemBaseId = #{itemBaseId} and t1.spGroupId = #{spGroupId} and t1.itemId = #{itemId} limit 1
+  </select>
+  
+</mapper>

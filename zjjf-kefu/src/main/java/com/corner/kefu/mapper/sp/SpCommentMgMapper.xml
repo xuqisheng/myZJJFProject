@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpCommentMgMapper" >
+	<sql id="getAllCommentByParameter_condition">
+    where isDelete=0
+  	<if test="spNm !=null and spNm !='' ">
+  		and spNm like "%"#{spNm}"%"
+  	</if>
+  	<if test="beginTime !=null">
+  		and addTime &gt;= #{beginTime}
+  	</if>
+  	<if test="endTime != null">
+  		and addTime &lt;= #{endTime}
+  	</if>
+  	<if test="info !=null and info !=''">
+  		and info like "%"#{info}"%"
+  	</if>
+  	<if test="unionFen != null">
+  		and unionFen in (${unionFen})
+  	</if>
+  	<if test="csDealstat != null">
+  		and csDealstat =#{csDealstat}
+  	</if>
+  </sql>
+	<!-- 按条件查询评论 -->
+  <select id="getAllCommentByParameter" parameterType="com.corner.kefu.beans.ro.sp.SpCommentParamterRo" resultType="com.corner.kefu.beans.vo.sp.SpCommentVo">
+  	select
+  		id, 
+  		unionFen, 
+  		orderNo2, 
+  		userNm, 
+  		spNm, 
+  		info, 
+  		addTime, 
+  		csDealstat,
+  		csDealInfo,
+  		storeNm
+  	from SpComment	
+  	<include refid="getAllCommentByParameter_condition"/>
+  	order by addTime desc
+  	<include refid="BasePublicMapper.pageSql" />
+  </select>
+  <select id="getAllCommentByParameterCount" parameterType="com.corner.kefu.beans.ro.sp.SpCommentParamterRo" resultType="java.lang.Integer">
+  	select count(1) 
+  	from SpComment 
+  	<include refid="getAllCommentByParameter_condition"/>
+  </select>
+</mapper>

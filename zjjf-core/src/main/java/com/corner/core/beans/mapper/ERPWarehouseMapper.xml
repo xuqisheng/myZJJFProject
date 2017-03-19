@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ERPWarehouseMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ERPWarehouse" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="abbreviation" property="abbreviation" jdbcType="VARCHAR" />
+    <result column="whLevel" property="whLevel" jdbcType="TINYINT" />
+    <result column="upId" property="upId" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="contacts" property="contacts" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="whType" property="whType" jdbcType="TINYINT" />
+    <result column="userId" property="userId" jdbcType="VARCHAR" />
+    <result column="acreage" property="acreage" jdbcType="DOUBLE" />
+    <result column="createName" property="createName" jdbcType="VARCHAR" />
+    <result column="maxMum" property="maxMum" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, code, name, abbreviation, whLevel, upId, remark, provinceId, cityId, areaId, 
+    contacts, mobile, address, whType, userId, acreage, createName, maxMum, addTime, 
+    updateTime, supplierId, status, isDelete
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.corner.core.beans.ERPWarehouseExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ERPWarehouse
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ERPWarehouse
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ERPWarehouse
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.corner.core.beans.ERPWarehouseExample" >
+    delete from ERPWarehouse
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ERPWarehouse" >
+    insert into ERPWarehouse (id, code, name, 
+      abbreviation, whLevel, upId, 
+      remark, provinceId, cityId, 
+      areaId, contacts, mobile, 
+      address, whType, userId, 
+      acreage, createName, maxMum, 
+      addTime, updateTime, supplierId, 
+      status, isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{abbreviation,jdbcType=VARCHAR}, #{whLevel,jdbcType=TINYINT}, #{upId,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, 
+      #{areaId,jdbcType=INTEGER}, #{contacts,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{whType,jdbcType=TINYINT}, #{userId,jdbcType=VARCHAR}, 
+      #{acreage,jdbcType=DOUBLE}, #{createName,jdbcType=VARCHAR}, #{maxMum,jdbcType=INTEGER}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{supplierId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ERPWarehouse" >
+    insert into ERPWarehouse
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="abbreviation != null" >
+        abbreviation,
+      </if>
+      <if test="whLevel != null" >
+        whLevel,
+      </if>
+      <if test="upId != null" >
+        upId,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="provinceId != null" >
+        provinceId,
+      </if>
+      <if test="cityId != null" >
+        cityId,
+      </if>
+      <if test="areaId != null" >
+        areaId,
+      </if>
+      <if test="contacts != null" >
+        contacts,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="whType != null" >
+        whType,
+      </if>
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="acreage != null" >
+        acreage,
+      </if>
+      <if test="createName != null" >
+        createName,
+      </if>
+      <if test="maxMum != null" >
+        maxMum,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="supplierId != null" >
+        supplierId,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="abbreviation != null" >
+        #{abbreviation,jdbcType=VARCHAR},
+      </if>
+      <if test="whLevel != null" >
+        #{whLevel,jdbcType=TINYINT},
+      </if>
+      <if test="upId != null" >
+        #{upId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="contacts != null" >
+        #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="whType != null" >
+        #{whType,jdbcType=TINYINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="acreage != null" >
+        #{acreage,jdbcType=DOUBLE},
+      </if>
+      <if test="createName != null" >
+        #{createName,jdbcType=VARCHAR},
+      </if>
+      <if test="maxMum != null" >
+        #{maxMum,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.corner.core.beans.ERPWarehouseExample" resultType="java.lang.Integer" >
+    select count(*) from ERPWarehouse
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ERPWarehouse
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null" >
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.abbreviation != null" >
+        abbreviation = #{record.abbreviation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.whLevel != null" >
+        whLevel = #{record.whLevel,jdbcType=TINYINT},
+      </if>
+      <if test="record.upId != null" >
+        upId = #{record.upId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.provinceId != null" >
+        provinceId = #{record.provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cityId != null" >
+        cityId = #{record.cityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.areaId != null" >
+        areaId = #{record.areaId,jdbcType=INTEGER},
+      </if>
+      <if test="record.contacts != null" >
+        contacts = #{record.contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null" >
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.whType != null" >
+        whType = #{record.whType,jdbcType=TINYINT},
+      </if>
+      <if test="record.userId != null" >
+        userId = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acreage != null" >
+        acreage = #{record.acreage,jdbcType=DOUBLE},
+      </if>
+      <if test="record.createName != null" >
+        createName = #{record.createName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.maxMum != null" >
+        maxMum = #{record.maxMum,jdbcType=INTEGER},
+      </if>
+      <if test="record.addTime != null" >
+        addTime = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.supplierId != null" >
+        supplierId = #{record.supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.isDelete != null" >
+        isDelete = #{record.isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ERPWarehouse
+    set id = #{record.id,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      abbreviation = #{record.abbreviation,jdbcType=VARCHAR},
+      whLevel = #{record.whLevel,jdbcType=TINYINT},
+      upId = #{record.upId,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      provinceId = #{record.provinceId,jdbcType=INTEGER},
+      cityId = #{record.cityId,jdbcType=INTEGER},
+      areaId = #{record.areaId,jdbcType=INTEGER},
+      contacts = #{record.contacts,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      whType = #{record.whType,jdbcType=TINYINT},
+      userId = #{record.userId,jdbcType=VARCHAR},
+      acreage = #{record.acreage,jdbcType=DOUBLE},
+      createName = #{record.createName,jdbcType=VARCHAR},
+      maxMum = #{record.maxMum,jdbcType=INTEGER},
+      addTime = #{record.addTime,jdbcType=TIMESTAMP},
+      updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
+      supplierId = #{record.supplierId,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      isDelete = #{record.isDelete,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ERPWarehouse" >
+    update ERPWarehouse
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="abbreviation != null" >
+        abbreviation = #{abbreviation,jdbcType=VARCHAR},
+      </if>
+      <if test="whLevel != null" >
+        whLevel = #{whLevel,jdbcType=TINYINT},
+      </if>
+      <if test="upId != null" >
+        upId = #{upId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        provinceId = #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        cityId = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        areaId = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="contacts != null" >
+        contacts = #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="whType != null" >
+        whType = #{whType,jdbcType=TINYINT},
+      </if>
+      <if test="userId != null" >
+        userId = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="acreage != null" >
+        acreage = #{acreage,jdbcType=DOUBLE},
+      </if>
+      <if test="createName != null" >
+        createName = #{createName,jdbcType=VARCHAR},
+      </if>
+      <if test="maxMum != null" >
+        maxMum = #{maxMum,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="supplierId != null" >
+        supplierId = #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ERPWarehouse" >
+    update ERPWarehouse
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      abbreviation = #{abbreviation,jdbcType=VARCHAR},
+      whLevel = #{whLevel,jdbcType=TINYINT},
+      upId = #{upId,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      provinceId = #{provinceId,jdbcType=INTEGER},
+      cityId = #{cityId,jdbcType=INTEGER},
+      areaId = #{areaId,jdbcType=INTEGER},
+      contacts = #{contacts,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      whType = #{whType,jdbcType=TINYINT},
+      userId = #{userId,jdbcType=VARCHAR},
+      acreage = #{acreage,jdbcType=DOUBLE},
+      createName = #{createName,jdbcType=VARCHAR},
+      maxMum = #{maxMum,jdbcType=INTEGER},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      supplierId = #{supplierId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.corner.ErpManagerItemMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.corner.ErpManagerItem" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="itemCode" property="itemCode" jdbcType="VARCHAR" />
+    <result column="serialNum" property="serialNum" jdbcType="INTEGER" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="managerId" property="managerId" jdbcType="VARCHAR" />
+    <result column="areaPrice" property="areaPrice" jdbcType="DECIMAL" />
+    <result column="taxRate" property="taxRate" jdbcType="DECIMAL" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, itemCode, serialNum, itemBaseId, supplierId, managerId, areaPrice, taxRate, addTime, 
+    updateTime, status, isDelete
+  </sql>
+
+  <select id="getByMap" parameterType="java.util.Map" >
+  
+  </select>
+  
+  <select id="getData" resultType="com.zjjf.analysis.beans.analysis.corner.ErpManagerItemVo" parameterType="java.lang.String" >
+     select 
+	    itemBaseId,
+	    supplierId,
+	    managerId,
+	    itemCode,
+	    taxRate
+    from ERPManagerItem where isDelete = 0 and status = 1
+       <where>
+	      <if test="supplierIdList != null and supplierIdList.size() > 0 " >
+	 		  and `supplierId` in 
+	          <foreach collection="supplierIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="itemBaseIdList != null and itemBaseIdList > 0 " >
+	 		  and `itemBaseId` in 
+	          <foreach collection="itemBaseIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="managerIdList != null and managerIdList.size() > 0 " >
+	 		  and `managerId` in 
+	          <foreach collection="managerIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+      </where>
+	  limit #{pageNo}, #{offset}
+  </select>
+  
+  <select id="getDataCount" resultType="java.lang.Integer">
+     select 
+	    count(*)
+    from ERPManagerItem where isDelete = 0 and status = 1
+       <where>
+	      <if test="supplierIdList != null and supplierIdList.size() > 0 " >
+	 		  and `supplierId` in 
+	          <foreach collection="supplierIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="itemBaseIdList != null and itemBaseIdList > 0 " >
+	 		  and `itemBaseId` in 
+	          <foreach collection="itemBaseIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="managerIdList != null and managerIdList.size() > 0 " >
+	 		  and `managerId` in 
+	          <foreach collection="managerIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+      </where>
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ERPManagerItem
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ERPManagerItem
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.analysis.corner.ErpManagerItem" >
+    insert into ERPManagerItem (id, itemCode, serialNum, 
+      itemBaseId, supplierId, managerId, 
+      areaPrice, taxRate, addTime, 
+      updateTime, status, isDelete
+      )
+    values (#{id,jdbcType=VARCHAR}, #{itemCode,jdbcType=VARCHAR}, #{serialNum,jdbcType=INTEGER}, 
+      #{itemBaseId,jdbcType=INTEGER}, #{supplierId,jdbcType=VARCHAR}, #{managerId,jdbcType=VARCHAR}, 
+      #{areaPrice,jdbcType=DECIMAL}, #{taxRate,jdbcType=DECIMAL}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zjjf.analysis.beans.analysis.corner.ErpManagerItem" >
+    insert into ERPManagerItem
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="itemCode != null" >
+        itemCode,
+      </if>
+      <if test="serialNum != null" >
+        serialNum,
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId,
+      </if>
+      <if test="supplierId != null" >
+        supplierId,
+      </if>
+      <if test="managerId != null" >
+        managerId,
+      </if>
+      <if test="areaPrice != null" >
+        areaPrice,
+      </if>
+      <if test="taxRate != null" >
+        taxRate,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCode != null" >
+        #{itemCode,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNum != null" >
+        #{serialNum,jdbcType=INTEGER},
+      </if>
+      <if test="itemBaseId != null" >
+        #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="managerId != null" >
+        #{managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="areaPrice != null" >
+        #{areaPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="taxRate != null" >
+        #{taxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zjjf.analysis.beans.analysis.corner.ErpManagerItem" >
+    update ERPManagerItem
+    <set >
+      <if test="itemCode != null" >
+        itemCode = #{itemCode,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNum != null" >
+        serialNum = #{serialNum,jdbcType=INTEGER},
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierId != null" >
+        supplierId = #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="managerId != null" >
+        managerId = #{managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="areaPrice != null" >
+        areaPrice = #{areaPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="taxRate != null" >
+        taxRate = #{taxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zjjf.analysis.beans.analysis.corner.ErpManagerItem" >
+    update ERPManagerItem
+    set itemCode = #{itemCode,jdbcType=VARCHAR},
+      serialNum = #{serialNum,jdbcType=INTEGER},
+      itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      supplierId = #{supplierId,jdbcType=VARCHAR},
+      managerId = #{managerId,jdbcType=VARCHAR},
+      areaPrice = #{areaPrice,jdbcType=DECIMAL},
+      taxRate = #{taxRate,jdbcType=DECIMAL},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

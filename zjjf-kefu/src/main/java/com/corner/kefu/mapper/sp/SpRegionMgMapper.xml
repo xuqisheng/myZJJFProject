@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.corner.kefu.dao.sp.SpRegionMgMapper">
+	<select id="selectPIDWithID" parameterType="java.lang.Integer" resultType="com.corner.kefu.beans.vo.sp.RegionVo">
+		SELECT r1.pId as provinceId,r2.pId as cityId,r2.regionCode  FROM Region r1 join Region r2 ON r1.id = r2.pId WHERE r2.id=#{id,jdbcType=INTEGER}
+	</select>
+	<select id="getPidByid" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT
+			pId
+		FROM
+			`Region`
+		WHERE
+			status = 1
+		and	id=#{id,jdbcType=INTEGER}
+	</select>
+	<!-- 区域管理  ****************************************************************************************** -->
+	<!-- 根据当前区域id获取上一级的区域 -->
+	<select id="getUpperByLowerId" parameterType="java.util.Map" resultType="com.corner.core.beans.Region">
+		SELECT
+			*
+		FROM
+			`Region`
+		WHERE
+			id = (
+				SELECT
+					pId
+				FROM
+					`Region`
+				WHERE
+					id=#{id,jdbcType=INTEGER}
+			)
+		
+	</select>
+	<!-- 根据上级的id或level查出区域 -->
+	<select id="getRegionByPidOrRegionLevel" parameterType="java.util.Map" resultType="com.corner.core.beans.Region">
+		SELECT
+			*
+		FROM
+			`Region`
+		<where>
+			<if test="pId != null">
+				AND pId = #{pId};
+			</if>
+			<if test="regionLevel != null">
+				AND regionLevel = #{regionLevel}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 根据上级的id或level查出区域 -->
+	<select id="getRegionSpGroupVoById" parameterType="java.util.Map" resultType="com.corner.kefu.beans.vo.sp.RegionSpGroupVo">
+		SELECT
+			r.* 
+			, g.`id`  as spGroupId 
+			, g.`name` as spGroupName
+			, rgm.id as regionSpGroupMapId
+			, a1.`name` as provinceName
+			, a2.`name` as cityName
+			, a3.`name` as areaName
+		FROM
+			`Region` r
+		LEFT JOIN RegionSpGroupMap rgm on r.`id` = rgm.`regionId` and rgm.`isDelete` = 0 
+		LEFT JOIN SpGroup g on rgm.`spGroupId` = g.id and g.`status` = 1 and g.`isDelete` = 0  
+		LEFT JOIN Region a1 ON a1.id = g.provinceId AND a1.`status` = 1 AND a1.isDelete = 0
+		LEFT JOIN Region a2 ON a2.id = g.cityId AND a2.`status` = 1 AND a2.isDelete = 0
+		LEFT JOIN Region a3 ON a3.id = g.areaId AND a3.`status` = 1 AND a3.isDelete = 0
+		WHERE r.`id` = #{id,jdbcType=INTEGER}
+	</select>
+  
+	<!-- 获取所有的省市区 -->
+	<select id="getAllRegion" resultType="com.corner.kefu.beans.vo.sp.RegionVo">
+		select * from Region
+	</select>
+	<!-- 区域管理  ****************************************************************************************** -->
+	
+	<resultMap type="com.corner.kefu.beans.vo.sp.RegionVo" id="regionTreeMap">
+	   <id column="shenId" property="id" jdbcType="INTEGER" />
+	   <result column="shenPId" property="pId" jdbcType="INTEGER" />
+	   <result column="shenName" property="name" jdbcType="VARCHAR" />
+	   <result column="shenRegionLevel" property="regionLevel" jdbcType="TINYINT" />
+	   <collection property="regionList" ofType="com.corner.kefu.beans.vo.sp.RegionVo">
+	      <id column="shiId" property="id" jdbcType="INTEGER" />
+	      <result column="shiPId" property="pId" jdbcType="INTEGER" />
+	      <result column="shiName" property="name" jdbcType="VARCHAR" />
+	      <result column="shiRegionLevel" property="regionLevel" jdbcType="TINYINT" />
+	      <collection property="regionList" ofType="com.corner.kefu.beans.vo.sp.RegionVo">
+	        <id column="quyuId" property="id" jdbcType="INTEGER" />
+	        <result column="quyuPId" property="pId" jdbcType="INTEGER" />
+	        <result column="quyuName" property="name" jdbcType="VARCHAR" />
+	        <result column="quyuRegionLevel" property="regionLevel" jdbcType="TINYINT" />
+	        <!-- <collection property="regionList" ofType="com.corner.kefu.beans.vo.sp.RegionVo">
+	          <id column="dinggeId" property="id" jdbcType="INTEGER" />
+	          <result column="dinggePId" property="pId" jdbcType="INTEGER" />
+	          <result column="dinggeName" property="name" jdbcType="VARCHAR" />
+	      </collection> -->
+	      </collection>  
+	   </collection>
+	</resultMap>
+	
+	
+	<!-- 查询所有启用的区域 -->
+	<select id="getAllEnabledRegion" resultMap="regionTreeMap">
+	  SELECT
+		<!-- dingge.id AS dinggeId,
+		dingge.`name` AS dinggeName,
+		dingge.areaId AS dinggePId, -->
+		quyu.id AS quyuId,
+		quyu.`name` AS quyuName,
+		quyu.pId AS quyuPId,
+		quyu.regionLevel AS quyuRegionLevel,
+		shi.id AS shiId,
+		shi.`name` AS shiName,
+		shi.pId AS shiPId,
+		shi.regionLevel AS shiRegionLevel,
+		shen.id AS shenId,
+		shen.`name` AS shenName,
+		shen.pId AS shenPId,
+		shen.regionLevel AS shenRegionLevel
+	FROM
+		(
+			SELECT
+				*
+			FROM
+				Region
+			WHERE
+				`status` = 1
+			AND isDelete = 0
+			AND regionLevel = 2
+		) AS shen
+	LEFT JOIN (
+		SELECT
+			*
+		FROM
+			Region
+		WHERE
+			`status` = 1
+		AND isDelete = 0
+		AND regionLevel = 3
+	) AS shi ON shi.pId = shen.id
+	LEFT JOIN (
+		SELECT
+			*
+		FROM
+			Region
+		WHERE
+			`status` = 1
+		AND isDelete = 0
+		AND regionLevel = 4
+	) AS quyu ON quyu.pId = shi.id
+	<!-- LEFT JOIN (
+		SELECT
+			*
+		FROM
+			SpGroup
+		WHERE
+			isDelete = 0
+	) AS dingge ON dingge.areaId = quyu.id -->
+	ORDER BY
+	  shen.id,
+	  shi.id,
+	  quyu.id
+	  <!-- dingge.id -->
+	</select>
+	
+	
+	<select id="getChildrenRegionList" parameterType="java.util.HashMap" resultType="com.corner.core.beans.Region">
+	SELECT
+	   <if test="regionLevel==2">
+		c.*
+	   </if>
+	   <if test="regionLevel==3">
+		b.*
+	   </if>
+	FROM
+		Region a
+	JOIN Region b ON a.id = b.pId
+	AND b.`status` = 1
+	AND b.isDelete = 0
+	<if test="regionLevel==2">
+	JOIN Region c ON b.id = c.pId
+	AND c.`status` = 1
+	AND c.isDelete = 0
+	</if>
+	WHERE
+		a.id = #{regionId}
+	AND a.regionLevel = #{regionLevel}
+	</select>
+	<!-- 组装区域和定格******************************************************************************************************** -->
+	<resultMap id="resultMap" type="com.corner.kefu.beans.vo.sp.RegionVo" >
+	    <id column="id1" property="id" jdbcType="INTEGER" />
+	    <result column="pId1" property="pId" jdbcType="INTEGER" />
+	    <result column="name1" property="name" jdbcType="VARCHAR" />
+	    <collection property="regionList" ofType="com.corner.kefu.beans.vo.sp.RegionVo">
+	    	<id column="id2" property="id" jdbcType="INTEGER" />
+		    <result column="pId2" property="pId" jdbcType="INTEGER" />
+		    <result column="name2" property="name" jdbcType="VARCHAR" />
+    		<collection property="regionList" ofType="com.corner.kefu.beans.vo.sp.RegionVo">
+		    	<id column="id3" property="id" jdbcType="INTEGER" />
+			    <result column="pId3" property="pId" jdbcType="INTEGER" />
+			    <result column="name3" property="name" jdbcType="VARCHAR" />
+			    <collection property="regionList" ofType="com.corner.kefu.beans.vo.sp.RegionVo">
+		    		<id column="id4" property="id" jdbcType="INTEGER" />
+				    <result column="pId4" property="pId" jdbcType="INTEGER" />
+				    <result column="name4" property="name" jdbcType="VARCHAR" />
+				    <collection property="regionList" ofType="com.corner.kefu.beans.vo.sp.RegionVo">
+			    		<id column="id5" property="id" jdbcType="INTEGER" />
+					    <result column="pId5" property="pId" jdbcType="INTEGER" />
+					    <result column="name5" property="name" jdbcType="VARCHAR" />
+					    <collection property="regionList" ofType="com.corner.kefu.beans.vo.sp.RegionVo">
+				    	</collection>
+			    	</collection>
+		    	</collection>
+    		</collection>
+	    </collection>
+  	</resultMap>
+	<select id="getAllAreaAndSpGroup" resultMap="resultMap">
+		SELECT
+			*
+		FROM
+			(
+			SELECT
+				id as id1,
+				`name` as name1,
+				pId as pId1
+			FROM
+				Region
+			WHERE
+			regionLevel = 1
+			) a
+		JOIN (
+			SELECT
+				id as id2,
+				`name` as name2,
+				pId as pId2
+			FROM
+				Region
+			WHERE
+				`status` = 1
+			AND isDelete = 0
+			AND regionLevel = 2
+		) b ON a.id1 = b.pId2
+		JOIN (
+			SELECT
+				id as id3,
+				`name` as name3,
+				pId as pId3
+			FROM
+				Region
+			WHERE
+				`status` = 1
+			AND isDelete = 0
+			AND regionLevel = 3
+		) c ON b.id2 = c.pId3
+		JOIN (
+			SELECT
+				id as id4,
+				`name` as name4,
+				pId as pId4
+			FROM
+				Region
+			WHERE
+				`status` = 1
+			AND isDelete = 0
+			AND regionLevel = 4
+		) d ON c.id3 = d.pId4
+		JOIN (
+			SELECT
+				id as id5,
+				`name` as name5,
+				areaid as pId5
+			FROM
+				SpGroup
+			WHERE
+				`status` = 1
+			AND isDelete = 0
+		) e ON d.id4 = e.pId5
+			
+	</select>
+	<!-- 组装区域和定格******************************************************************************************************** -->
+
+
+
+	<resultMap id="shiQuDingGeMap" type="com.corner.kefu.beans.vo.sp.RegionVo">
+		<id column="shiId" property="id" jdbcType="INTEGER" />
+		<result column="shiName" property="name" jdbcType="VARCHAR" />
+        <collection property="regionList" ofType="com.corner.kefu.beans.vo.sp.RegionVo">
+			<id column="quId" property="id" jdbcType="INTEGER" />
+			<result column="quPid" property="pId" jdbcType="INTEGER" />
+			<result column="quName" property="name" jdbcType="VARCHAR" />
+			<collection property="regionList" ofType="com.corner.kefu.beans.vo.sp.RegionVo">
+				<id column="groupId" property="id" jdbcType="INTEGER" />
+				<result column="groupPid" property="pId" jdbcType="INTEGER" />
+				<result column="groupName" property="name" jdbcType="VARCHAR" />
+			</collection>
+		</collection>
+	</resultMap>
+
+	<select id="getShiQuDingGeData" resultMap="shiQuDingGeMap">
+          SELECT
+		  shi.id AS shiId,
+		  shi.`name` AS shiName,
+		  qu.id AS quId,
+		  qu.`name` AS quName,
+		  qu.pId AS quPid,
+		  gp.id AS groupId,
+		  gp.`name` AS groupName,
+		  gp.areaId AS groupPid
+		FROM
+			Region shi
+		JOIN Region qu ON shi.id = qu.pId
+		AND shi.`status` = 1
+		AND shi.isDelete = 0
+		AND qu.`status` = 1
+		AND qu.isDelete = 0
+		JOIN SpGroup gp ON qu.id = gp.areaId
+		AND gp.`status` = 1
+		AND gp.isDelete = 0
+		order by shi.id,qu.id,gp.id
+	</select>
+</mapper>

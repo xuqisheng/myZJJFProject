@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.WithDrawMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.WithDraw" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="bankDealNo" property="bankDealNo" jdbcType="VARCHAR" />
+    <result column="tradeno" property="tradeno" jdbcType="VARCHAR" />
+    <result column="payState" property="payState" jdbcType="TINYINT" />
+    <result column="payTime" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="accountName" property="accountName" jdbcType="VARCHAR" />
+    <result column="cardNo" property="cardNo" jdbcType="VARCHAR" />
+    <result column="bankCode" property="bankCode" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="applyTime" property="applyTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, bankDealNo, tradeno, payState, payTime, storeId, accountName, cardNo, bankCode, 
+    amount, applyTime, status, isDelete, col1, col2, col3
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from WithDraw
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from WithDraw
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.WithDraw" >
+    insert into WithDraw (id, bankDealNo, tradeno, 
+      payState, payTime, storeId, 
+      accountName, cardNo, bankCode, 
+      amount, applyTime, status, 
+      isDelete, col1, col2, col3
+      )
+    values (#{id,jdbcType=BIGINT}, #{bankDealNo,jdbcType=VARCHAR}, #{tradeno,jdbcType=VARCHAR}, 
+      #{payState,jdbcType=TINYINT}, #{payTime,jdbcType=TIMESTAMP}, #{storeId,jdbcType=INTEGER}, 
+      #{accountName,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, #{bankCode,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=DECIMAL}, #{applyTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
+      #{isDelete,jdbcType=BIT}, #{col1,jdbcType=VARCHAR}, #{col2,jdbcType=VARCHAR}, #{col3,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.WithDraw" >
+    insert into WithDraw
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="bankDealNo != null" >
+        bankDealNo,
+      </if>
+      <if test="tradeno != null" >
+        tradeno,
+      </if>
+      <if test="payState != null" >
+        payState,
+      </if>
+      <if test="payTime != null" >
+        payTime,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="accountName != null" >
+        accountName,
+      </if>
+      <if test="cardNo != null" >
+        cardNo,
+      </if>
+      <if test="bankCode != null" >
+        bankCode,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="applyTime != null" >
+        applyTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="col1 != null" >
+        col1,
+      </if>
+      <if test="col2 != null" >
+        col2,
+      </if>
+      <if test="col3 != null" >
+        col3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="bankDealNo != null" >
+        #{bankDealNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeno != null" >
+        #{tradeno,jdbcType=VARCHAR},
+      </if>
+      <if test="payState != null" >
+        #{payState,jdbcType=TINYINT},
+      </if>
+      <if test="payTime != null" >
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="accountName != null" >
+        #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null" >
+        #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="applyTime != null" >
+        #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null" >
+        #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        #{col3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.WithDraw" >
+    update WithDraw
+    <set >
+      <if test="bankDealNo != null" >
+        bankDealNo = #{bankDealNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeno != null" >
+        tradeno = #{tradeno,jdbcType=VARCHAR},
+      </if>
+      <if test="payState != null" >
+        payState = #{payState,jdbcType=TINYINT},
+      </if>
+      <if test="payTime != null" >
+        payTime = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="storeId != null" >
+        storeId = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="accountName != null" >
+        accountName = #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        cardNo = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null" >
+        bankCode = #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="applyTime != null" >
+        applyTime = #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null" >
+        col1 = #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        col2 = #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        col3 = #{col3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.WithDraw" >
+    update WithDraw
+    set bankDealNo = #{bankDealNo,jdbcType=VARCHAR},
+      tradeno = #{tradeno,jdbcType=VARCHAR},
+      payState = #{payState,jdbcType=TINYINT},
+      payTime = #{payTime,jdbcType=TIMESTAMP},
+      storeId = #{storeId,jdbcType=INTEGER},
+      accountName = #{accountName,jdbcType=VARCHAR},
+      cardNo = #{cardNo,jdbcType=VARCHAR},
+      bankCode = #{bankCode,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      applyTime = #{applyTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      col1 = #{col1,jdbcType=VARCHAR},
+      col2 = #{col2,jdbcType=VARCHAR},
+      col3 = #{col3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

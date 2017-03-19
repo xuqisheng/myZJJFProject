@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.StoreTurnoverMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.store.StoreTurnover" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="storeCode" property="storeCode" jdbcType="VARCHAR" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="todayTurnover" property="todayTurnover" jdbcType="DECIMAL" />
+    <result column="yesTodayTurnover" property="yesTodayTurnover" jdbcType="DECIMAL" />
+    <result column="dailyIncrease" property="dailyIncrease" jdbcType="DECIMAL" />
+    <result column="thisWeekTurnover" property="thisWeekTurnover" jdbcType="DECIMAL" />
+    <result column="lastWeekTurnover" property="lastWeekTurnover" jdbcType="DECIMAL" />
+    <result column="thisMonthTurnover" property="thisMonthTurnover" jdbcType="DECIMAL" />
+    <result column="lastMonthTurnover" property="lastMonthTurnover" jdbcType="DECIMAL" />
+    <result column="monthIncrease" property="monthIncrease" jdbcType="DECIMAL" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+    <result column="isZj" property="isZj" jdbcType="INTEGER" />
+    <result column="isVisit" property="isVisit" jdbcType="INTEGER" />
+    <result column="supplierId" property="supplierId" jdbcType="INTEGER" />
+    <result column="supplierName" property="supplierName" jdbcType="VARCHAR" />
+    <result column="spGroupName" property="spGroupName" jdbcType="VARCHAR" />
+    <result column="storeName" property="storeName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, storeId, storeCode, dayTime, cityId, areaId, spGroupId, todayTurnover, yesTodayTurnover, 
+    dailyIncrease, thisWeekTurnover, lastWeekTurnover, thisMonthTurnover, lastMonthTurnover, 
+    monthIncrease, updateTime, createTime, isZj, isVisit, supplierId, supplierName, spGroupName, storeName
+  </sql>
+  
+  <select id="getDataByParam" resultMap="BaseResultMap" parameterType="java.util.Map" >
+     select 
+      t1.storeId,
+      t1.storeCode,
+	  IFNULL(sum(t1.`turnover`), 0) as "todayTurnover"
+	from
+	  `store_daily` t1 
+	  <where>
+	  	  <if test="dayTime != null and dayTime != ''  " >
+	        and t1.`dayTime` = #{dayTime}
+	      </if>
+	      <if test="dayTimeBegin != null and dayTimeBegin != ''  " >
+		    and t1.`dayTime` &gt;= #{dayTimeBegin}
+		  </if>
+		  <if test="dayTimeEnd != null and dayTimeEnd != ''  " >
+		    and t1.`dayTime` &lt; #{dayTimeEnd}
+		  </if>
+		  <if test="spGroupId != null and spGroupId != '' " >
+	      	and t1.spGroupId = #{spGroupId}
+	      </if>
+		  <if test="storeId != null and storeId != '' " >
+	      	and t1.storeId = #{storeId}
+	      </if>
+	      <if test="isVisit != null and isVisit != '' " >
+	      	and t1.isVisit = #{isVisit}
+	      </if>
+	      <if test="storeCode != null and storeCode != '' " >
+	      	and t1.storeCode = #{storeCode}
+	      </if>
+	      <if test="cityId != null and cityId != '' " >
+	      	and t1.cityId = #{cityId}
+	      </if>
+	      <if test="areaId != null and areaId != '' " >
+	      	and t1.areaId = #{areaId}
+	      </if>
+	      <if test="isZj != null and isZj != '' " >
+	      	and t1.isZj = #{isZj}
+	      </if>
+	      <if test="areaIdList != null and areaIdList.size() > 0 " >
+	 		  and t1.`areaId` in 
+	          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="storeIdList != null and storeIdList.size() > 0 " >
+	 		  and t1.`storeId` in 
+	          <foreach collection="storeIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="spGroupIdList != null and spGroupIdList.size() > 0 " >
+	 		  and t1.`spGroupId` in 
+	          <foreach collection="spGroupIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+      </where>
+  </select>
+  
+  <select id="getTurnoverBySpGoupAndStore" resultType="com.zjjf.analysis.beans.analysis.store.StoreTurnoverVo" parameterType="java.util.Map" >
+     select 
+      t1.storeId,
+      t1.isZj,
+      t1.dayTime as "addTime",
+      t1.itemPrice as "orderPrice",
+      t1.storeName,
+      t1.chirdOrderNo as "orderNo",
+      case
+	    when t1.`status` = 1
+	    then '已下单'
+	    when t1.`status` = 2
+	    then '已派单'
+	    when t1.`status` = 3
+	    then '已提单'
+	    when t1.`status` = 4
+	    then '已打印'
+	    when t1.`status` = 5
+	    then '已送达'
+	    when t1.`status` = 6
+	    then '已取消' 
+	    else '' 
+	  end as "status"
+	from
+	  `analysis_sporderinfo` t1
+	  <where>
+	      <if test="storeId != null and storeId != '' " >
+	      	and t1.storeId = #{storeId}
+	      </if>
+	  	  <if test="dayTime != null and dayTime != ''  " >
+	        and date_format(t1.`addTime`, '%Y%m%d') = #{dayTime}
+	      </if>
+		  <if test="spGroupId != null and spGroupId != ''  " >
+		    and t1.`spGroupId`= #{spGroupId}
+		  </if>
+		  <if test="isZj!= null and isZj!= '' " >
+	      	and t1.isZj = #{isZj}
+	      </if>
+	      <if test="cityId != null and cityId != '' " >
+	      	and t1.cityId = #{cityId}
+	      </if>
+	      <if test="areaId != null and areaId != '' " >
+	      	and t1.areaId = #{areaId}
+	      </if>
+	      <if test="storeIdList != null and storeIdList.size() > 0 " >
+	 		  and t1.`storeId` in 
+	          <foreach collection="storeIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="spGroupIdList != null and spGroupIdList.size() > 0 " >
+	 		  and t1.`spGroupId` in 
+	          <foreach collection="spGroupIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+      </where>
+      order by t1.addTime desc limit #{pageNo}, #{offset} 
+  </select>
+  
+  <update id="updateIsVisitByStoreCode" parameterType="com.zjjf.analysis.beans.analysis.store.StoreTurnover" >
+    update store_daily set isVisit = #{isVisit} where storeCode = #{storeCode} and dayTime = #{dayTime}
+  </update>
+  
+  
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.auth.dao.mg.RoleMgMapper" >
+	<!-- 获取会计列表条件 -->
+	<sql id="getRoleListPage_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			1=1
+			<if test="roleName != null and roleName != ''">
+				and roleName = #{roleName}
+			</if>
+			<if test="roleNo != null and roleNo != ''">
+				and roleNo = #{roleNo}
+			</if>
+		</trim>
+	</sql>
+	<!-- 获取列表 -->
+	<select id="getRoleListPage" parameterType="com.corner.auth.beans.ro.RoleRo" resultType="com.corner.auth.beans.vo.RoleVo">
+		SELECT Role.*,(SELECT COUNT(1) from UserRoleMap urm JOIN CustomerService cs on urm.userId = cs.id where cs.isDelete=0 and Role.id = urm.roleId) as userNum from Role as Role
+		<include refid="getRoleListPage_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取列表 总记录数 -->
+	<select id="getRoleListPageCount" parameterType="com.corner.auth.beans.ro.RoleRo" resultType="int">
+		SELECT count(1) from Role
+		<include refid="getRoleListPage_condition" />
+	</select>
+	
+	<insert id="insertRoleAuthMap" parameterType="com.corner.auth.beans.ro.RoleRo">
+		DELETE FROM RoleAuthMap where roleId = #{id,jdbcType=VARCHAR};
+		<foreach collection="authIds" separator=";" item="authId">
+			replace into RoleAuthMap (authId, roleId) values (#{authId,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	<!-- 获取列表 -->
+	<select id="getRoleByAppIdOrUserId" parameterType="java.util.Map" resultType="com.corner.auth.beans.vo.RoleVo">
+		SELECT Role.* from Role Role
+		<if test="userId != null and userId != ''">
+			JOIN UserRoleMap on Role.id = UserRoleMap.roleId
+		</if>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			1=1
+			<if test="appId != null and appId != ''">
+				and Role.appId = #{appId}
+			</if>
+			<if test="userId != null and userId != ''">
+				and UserRoleMap.userId = #{userId}
+				group by Role.id
+			</if>
+		</trim>
+	</select>
+</mapper>

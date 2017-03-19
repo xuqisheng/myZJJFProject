@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SystemVersionMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SystemVersion" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="versionNo" property="versionNo" jdbcType="VARCHAR" />
+    <result column="versionCode" property="versionCode" jdbcType="VARCHAR" />
+    <result column="iosLowest" property="iosLowest" jdbcType="VARCHAR" />
+    <result column="androidLowest" property="androidLowest" jdbcType="VARCHAR" />
+    <result column="fileName" property="fileName" jdbcType="VARCHAR" />
+    <result column="fileLocation" property="fileLocation" jdbcType="VARCHAR" />
+    <result column="versionExplain" property="versionExplain" jdbcType="VARCHAR" />
+    <result column="publishTime" property="publishTime" jdbcType="TIMESTAMP" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="creatorId" property="creatorId" jdbcType="VARCHAR" />
+    <result column="creatorName" property="creatorName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, versionNo, versionCode, iosLowest, androidLowest, fileName, fileLocation, versionExplain, 
+    publishTime, addTime, updateTime, creatorId, creatorName, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from SystemVersion
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SystemVersion
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SystemVersion" >
+    insert into SystemVersion (id, versionNo, versionCode, 
+      iosLowest, androidLowest, fileName, 
+      fileLocation, versionExplain, publishTime, 
+      addTime, updateTime, creatorId, 
+      creatorName, status, isDelete
+      )
+    values (#{id,jdbcType=INTEGER}, #{versionNo,jdbcType=VARCHAR}, #{versionCode,jdbcType=VARCHAR}, 
+      #{iosLowest,jdbcType=VARCHAR}, #{androidLowest,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, 
+      #{fileLocation,jdbcType=VARCHAR}, #{versionExplain,jdbcType=VARCHAR}, #{publishTime,jdbcType=TIMESTAMP}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}, 
+      #{creatorName,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SystemVersion" >
+    insert into SystemVersion
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="versionNo != null" >
+        versionNo,
+      </if>
+      <if test="versionCode != null" >
+        versionCode,
+      </if>
+      <if test="iosLowest != null" >
+        iosLowest,
+      </if>
+      <if test="androidLowest != null" >
+        androidLowest,
+      </if>
+      <if test="fileName != null" >
+        fileName,
+      </if>
+      <if test="fileLocation != null" >
+        fileLocation,
+      </if>
+      <if test="versionExplain != null" >
+        versionExplain,
+      </if>
+      <if test="publishTime != null" >
+        publishTime,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="creatorId != null" >
+        creatorId,
+      </if>
+      <if test="creatorName != null" >
+        creatorName,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="versionNo != null" >
+        #{versionNo,jdbcType=VARCHAR},
+      </if>
+      <if test="versionCode != null" >
+        #{versionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="iosLowest != null" >
+        #{iosLowest,jdbcType=VARCHAR},
+      </if>
+      <if test="androidLowest != null" >
+        #{androidLowest,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileLocation != null" >
+        #{fileLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="versionExplain != null" >
+        #{versionExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null" >
+        #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatorId != null" >
+        #{creatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorName != null" >
+        #{creatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SystemVersion" >
+    update SystemVersion
+    <set >
+      <if test="versionNo != null" >
+        versionNo = #{versionNo,jdbcType=VARCHAR},
+      </if>
+      <if test="versionCode != null" >
+        versionCode = #{versionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="iosLowest != null" >
+        iosLowest = #{iosLowest,jdbcType=VARCHAR},
+      </if>
+      <if test="androidLowest != null" >
+        androidLowest = #{androidLowest,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        fileName = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileLocation != null" >
+        fileLocation = #{fileLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="versionExplain != null" >
+        versionExplain = #{versionExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null" >
+        publishTime = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatorId != null" >
+        creatorId = #{creatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorName != null" >
+        creatorName = #{creatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SystemVersion" >
+    update SystemVersion
+    set versionNo = #{versionNo,jdbcType=VARCHAR},
+      versionCode = #{versionCode,jdbcType=VARCHAR},
+      iosLowest = #{iosLowest,jdbcType=VARCHAR},
+      androidLowest = #{androidLowest,jdbcType=VARCHAR},
+      fileName = #{fileName,jdbcType=VARCHAR},
+      fileLocation = #{fileLocation,jdbcType=VARCHAR},
+      versionExplain = #{versionExplain,jdbcType=VARCHAR},
+      publishTime = #{publishTime,jdbcType=TIMESTAMP},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      creatorId = #{creatorId,jdbcType=VARCHAR},
+      creatorName = #{creatorName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.ReminderMgMapper">
+	<sql id="pageSql">
+		<if test="pageIndex != null">
+			limit #{pageIndex},#{pageSize}
+		</if>
+	</sql>
+
+	<sql id="getAllReminderByParamSql">
+		WHERE
+			`status` = 1
+		AND isDelete = 0
+		AND processStatus = 0
+		<if test="spId != null and spId != ''">
+			and spId = #{spId}
+		</if>
+	</sql>
+	<!-- 库存预警 -->
+	<select id="getAllReminderByParam" parameterType="com.corner.scms.beans.ro.ReminderRo" resultType="com.corner.scms.beans.vo.ReminderVo">
+		SELECT
+			*
+		FROM
+			Reminder
+		<include refid="getAllReminderByParamSql"/>	
+		order by addTime desc
+		<include refid="pageSql"/>
+	</select>
+	<select id="getAllReminderByParamCount" parameterType="com.corner.scms.beans.ro.ReminderRo" resultType="java.lang.Integer">
+		select count(1) from Reminder 
+		<include refid="getAllReminderByParamSql"/>
+	</select>
+	
+	
+	<!-- public int getReminderByOrderIdAndSpId(Map<String, Object> map);
+	public void updateReminderStatusByOrderIdAndSpId(Map<String, Object> map); -->
+	
+	<!-- 根据订单号和批发商id查出对应的预警数量 -->
+	<!-- <select id="getReminderByOrderIdAndSpId" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(1) from Reminder where status=1 and isDelete=0 and spId=#{spId} and orderId=#{orderId}
+	</select> -->
+	<!-- 根据订单号和批发商id修改批发上预警状态 -->
+	<!-- <select id="updateReminderStatusByOrderIdAndSpId" parameterType="java.util.Map">
+		update Reminder set processStatus=#{processStatus} where status=1 and isDelete=0 and spId=#{spId} and orderId=#{orderId}
+	</select> -->
+</mapper>
+

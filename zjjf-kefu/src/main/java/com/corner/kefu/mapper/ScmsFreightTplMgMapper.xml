@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.ScmsFreightTplMgMapper">
+	<!-- 获取会计列表条件 -->
+
+	<select id="getPageList" parameterType="com.corner.core.beans.ScmsFreightTpl" resultType="com.corner.core.beans.ScmsFreightTpl">
+			select * 
+          		
+			<include refid="condition" />
+			<include refid="BasePublicMapper.pageSql" />
+	</select>
+	
+	<select id="getPageListSize" parameterType="com.corner.core.beans.ScmsFreightTpl" resultType="java.lang.Integer">
+			SELECT count(1) 
+			<include refid="condition" />
+	</select>
+	
+	<select id="findAllTplMapByUid" resultType="com.corner.core.beans.ScmsFreightTplMap" parameterType="java.lang.String">
+				select * from ScmsFreightTplMap where tplId=#{id}
+	</select>
+	
+	<select id="findTpl" resultType="com.corner.core.beans.ScmsFreightTpl">
+		select * from ScmsFreightTpl where isDelete=0
+	</select>
+	
+	<sql id="condition">
+			from  ScmsFreightTpl where 1=1 and isDelete=0 
+			<if test="name!=null">
+				and name like CONCAT('%',#{name},'%' )
+			</if>
+			order by addTime desc
+	</sql>
+	
+	<update id="updateObject">
+		update ScmsFreightTpl set isDelete=1 where id=#{id}
+	</update>
+	
+	<delete id="deleteobject" parameterType="java.lang.String">
+		delete from ScmsFreightTplMap where tplId=#{id}
+	</delete>
+	
+</mapper>

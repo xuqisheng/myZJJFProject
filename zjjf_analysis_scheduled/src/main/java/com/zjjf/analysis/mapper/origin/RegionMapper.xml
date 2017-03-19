@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.origin.RegionMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.origin.base.Region" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pId" property="pId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="regionLevel" property="regionLevel" jdbcType="TINYINT" />
+    <result column="hasStore" property="hasStore" jdbcType="BIT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="clik" property="clik" jdbcType="INTEGER" />
+    <result column="storeIds" property="storeIds" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pId, name, regionLevel, hasStore, isDelete, clik, storeIds
+  </sql>
+  
+  <select id="selectByIndex" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select <include refid="Base_Column_List" /> from `Region` where id &gt; #{id} order by id limit 1000
+  </select>
+  
+  <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select <include refid="Base_Column_List" /> from `Region` where id = #{id}
+  </select>
+  
+</mapper>

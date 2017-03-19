@@ -1,0 +1,940 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.DailyMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.salesman.model.Daily" >
+    <id column="reportId" property="reportId" jdbcType="VARCHAR" />
+    <result column="visitLine" property="visitLine" jdbcType="VARCHAR" />
+    <result column="distributionCenter" property="distributionCenter" jdbcType="VARCHAR" />
+    <result column="lineStoreNum" property="lineStoreNum" jdbcType="VARCHAR" />
+    <result column="visitStoreNum" property="visitStoreNum" jdbcType="VARCHAR" />
+    <result column="visitStoreReapNum" property="visitStoreReapNum" jdbcType="VARCHAR" />
+    <result column="planRegisterNum" property="planRegisterNum" jdbcType="VARCHAR" />
+    <result column="actualRegisterlNum" property="actualRegisterlNum" jdbcType="VARCHAR" />
+    <result column="yetDevelopStoreNum" property="yetDevelopStoreNum" jdbcType="VARCHAR" />
+    <result column="registerlStoreRatio" property="registerlStoreRatio" jdbcType="VARCHAR" />
+    <result column="planActiveStoreNum" property="planActiveStoreNum" jdbcType="VARCHAR" />
+    <result column="actualActiveStoreNum" property="actualActiveStoreNum" jdbcType="VARCHAR" />
+    <result column="ownActiveStoreNum" property="ownActiveStoreNum" jdbcType="VARCHAR" />
+    <result column="lineActiveStoreRatio" property="lineActiveStoreRatio" jdbcType="VARCHAR" />
+    <result column="planDevelopHF" property="planDevelopHF" jdbcType="VARCHAR" />
+    <result column="actualDevelopHF" property="actualDevelopHF" jdbcType="VARCHAR" />
+    <result column="lineYetStoreHFNum" property="lineYetStoreHFNum" jdbcType="VARCHAR" />
+    <result column="lineStoreHFRatio" property="lineStoreHFRatio" jdbcType="VARCHAR" />
+    <result column="extraStoreRegisterNum" property="extraStoreRegisterNum" jdbcType="VARCHAR" />
+    <result column="extraStoreActiveNum" property="extraStoreActiveNum" jdbcType="VARCHAR" />
+    <result column="extraStoreHFNum" property="extraStoreHFNum" jdbcType="VARCHAR" />
+    <result column="planOrderNum" property="planOrderNum" jdbcType="VARCHAR" />
+    <result column="actualOrderNum" property="actualOrderNum" jdbcType="VARCHAR" />
+    <result column="turnover" property="turnover" jdbcType="VARCHAR" />
+    <result column="buyTurnover" property="buyTurnover" jdbcType="VARCHAR" />
+    <result column="salesTurnover" property="salesTurnover" jdbcType="VARCHAR" />
+    <result column="dgWeekRegisterStoreNum" property="dgWeekRegisterStoreNum" jdbcType="VARCHAR" />
+    <result column="dgUpWeekRegisterStoreNum" property="dgUpWeekRegisterStoreNum" jdbcType="VARCHAR" />
+    <result column="dgWeekDevelopActiveNum" property="dgWeekDevelopActiveNum" jdbcType="VARCHAR" />
+    <result column="dgUpWeekDevelopActiveNum" property="dgUpWeekDevelopActiveNum" jdbcType="VARCHAR" />
+    <result column="dgWeekDevelopStoreHFNum" property="dgWeekDevelopStoreHFNum" jdbcType="VARCHAR" />
+    <result column="dgUpWeekOwnStoreHFNum" property="dgUpWeekOwnStoreHFNum" jdbcType="VARCHAR" />
+    <result column="dgWeekPlanBuyNum" property="dgWeekPlanBuyNum" jdbcType="VARCHAR" />
+    <result column="dgWeekActualBuyNum" property="dgWeekActualBuyNum" jdbcType="VARCHAR" />
+    <result column="dgWeekPlanTurnover" property="dgWeekPlanTurnover" jdbcType="VARCHAR" />
+    <result column="dgWeekActualTurnover" property="dgWeekActualTurnover" jdbcType="VARCHAR" />
+    <result column="nextDayPlanRegisterNum" property="nextDayPlanRegisterNum" jdbcType="VARCHAR" />
+    <result column="nextDayPlanAddActiveNum" property="nextDayPlanAddActiveNum" jdbcType="VARCHAR" />
+    <result column="nextDayPlanWhActiveNum" property="nextDayPlanWhActiveNum" jdbcType="VARCHAR" />
+    <result column="nextDayPlanAddHFNum" property="nextDayPlanAddHFNum" jdbcType="VARCHAR" />
+    <result column="nextDayPlanWhHFNum" property="nextDayPlanWhHFNum" jdbcType="VARCHAR" />
+    <result column="nextDayOrderStoreNum" property="nextDayOrderStoreNum" jdbcType="VARCHAR" />
+    <result column="nextDayPlanTurnover" property="nextDayPlanTurnover" jdbcType="VARCHAR" />
+    <result column="nextDaySalesTurnover" property="nextDaySalesTurnover" jdbcType="VARCHAR" />
+    <result column="nextDayBuyTurnover" property="nextDayBuyTurnover" jdbcType="VARCHAR" />
+    <result column="feedback" property="feedback" jdbcType="VARCHAR" />
+    <result column="strategyPlan" property="strategyPlan" jdbcType="VARCHAR" />
+    <result column="support" property="support" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="picUrl" property="picUrl" jdbcType="VARCHAR" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="deptId" property="deptId" jdbcType="VARCHAR" />
+    <result column="week" property="week" jdbcType="VARCHAR" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="timePoint" property="timePoint" jdbcType="VARCHAR" />
+    <result column="postName" property="postName" jdbcType="VARCHAR" />
+    
+	<result column="todayPlanWhActiveNum" property="todayPlanWhActiveNum" jdbcType="VARCHAR" />
+	<result column="todayActualWhActiveNum" property="todayActualWhActiveNum" jdbcType="VARCHAR" />
+	<result column="todayLineTurnover" property="todayLineTurnover" jdbcType="VARCHAR" />
+	<result column="todayPlanLineTurnover" property="todayPlanLineTurnover" jdbcType="VARCHAR" />
+	<result column="todayPlanTurnover" property="todayPlanTurnover" jdbcType="VARCHAR" />
+			
+	<result column="relativeYesterOrderNum" property="relativeYesterOrderNum" jdbcType="VARCHAR" />
+	<result column="todayVisitPartners" property="todayVisitPartners" jdbcType="VARCHAR" />
+	<result column="relativeYesterTurnover" property="relativeYesterTurnover" jdbcType="VARCHAR" />
+	<result column="relativeYesterBuyTurnover" property="relativeYesterBuyTurnover" jdbcType="VARCHAR" />
+	<result column="nextDayPlanVisitPartners" property="nextDayPlanVisitPartners" jdbcType="VARCHAR" />
+	<result column="nextDayVisitLine" property="nextDayVisitLine" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    t.reportId, t.visitLine, t.distributionCenter, t.lineStoreNum, t.visitStoreNum, t.visitStoreReapNum, 
+    t.planRegisterNum, t.actualRegisterlNum, t.yetDevelopStoreNum, t.registerlStoreRatio, t.planActiveStoreNum, 
+    t.actualActiveStoreNum, t.ownActiveStoreNum, t.lineActiveStoreRatio, t.planDevelopHF, t.actualDevelopHF, 
+    t.lineYetStoreHFNum, t.lineStoreHFRatio, t.extraStoreRegisterNum, t.extraStoreActiveNum, 
+    t.extraStoreHFNum, t.planOrderNum, t.actualOrderNum, t.turnover, t.buyTurnover, t.salesTurnover, 
+    t.dgWeekRegisterStoreNum, t.dgUpWeekRegisterStoreNum, t.dgWeekDevelopActiveNum, t.dgUpWeekDevelopActiveNum, 
+    t.dgWeekDevelopStoreHFNum, t.dgUpWeekOwnStoreHFNum, t.dgWeekPlanBuyNum, t.dgWeekActualBuyNum, 
+    t.dgWeekPlanTurnover, t.dgWeekActualTurnover, t.nextDayPlanRegisterNum, t.nextDayPlanAddActiveNum, 
+    t.nextDayPlanWhActiveNum, t.nextDayPlanAddHFNum, t.nextDayPlanWhHFNum, t.nextDayOrderStoreNum, 
+    t.nextDayPlanTurnover, t.nextDaySalesTurnover, t.nextDayBuyTurnover, t.feedback, t.strategyPlan, 
+    t.support, t.remark, t.picUrl, t.createBy, DATE_FORMAT(t.createTime, '%Y-%m-%d') createTime,
+    DATE_FORMAT(t.createTime, '%T') timePoint, t.updateBy, t.updateTime, t.deptId, t.week,t.todayPlanWhActiveNum,
+    t.todayActualWhActiveNum,t.todayLineTurnover,t.relativeYesterOrderNum,t.todayVisitPartners,t.relativeYesterTurnover,
+    t.relativeYesterBuyTurnover,t.nextDayPlanVisitPartners,t.nextDayVisitLine,t.todayPlanLineTurnover,t.todayPlanTurnover
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />,u.userName
+    from tbl_user_daily_t t
+    left join salesman u on u.id= t.createBy
+    where t.reportId = #{reportId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findDailyList" resultMap="BaseResultMap" parameterType="com.corner.salesman.model.Daily" >
+     SELECT AA.* FROM(
+		SELECT
+			t.reportId,
+			t. WEEK,
+			DATE_FORMAT(t.createTime, '%m月%d日') createTime,
+			DATE_FORMAT(t.createTime, '%H:%i') timePoint,
+			t.createBy AS userId,
+			u.userName,
+			t.deptId,
+			d.deptName,
+			dic.label AS postName,
+			t.visitLine,
+			t.lineStoreNum,
+			t.visitStoreNum,t.updateTime
+		FROM
+			tbl_user_daily_t t
+		LEFT JOIN salesman u ON u.id = t.createBy
+		LEFT JOIN tbl_user_dept_t ud ON ud.userId = t.createBy
+		LEFT JOIN tbl_department_t d ON d.deptId = ud.deptId
+		LEFT JOIN tbl_dict_t dic ON u.postType = dic.`value`
+		AND dic.type = 'post_type' AND dic.isDelete=0
+		WHERE t.deptId = #{deptId}
+		<if test="createTime != null and createTime!=''">
+			and DATE_FORMAT(t.createTime, '%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+		</if>
+		<choose>
+			<when test="userId != null and userId!=''">
+				and t.createBy = #{userId}
+			</when>
+			<otherwise>
+			<if test="reportId != null and reportId!=''">
+			 UNION SELECT
+					t.reportId,
+					t. WEEK,
+					DATE_FORMAT(t.createTime, '%m月%d日') createTime,
+					DATE_FORMAT(t.createTime, '%H:%i') timePoint,
+					t.createBy AS userId,
+					u.userName,
+					t.deptId,
+					d.deptName,
+					dic.label AS postName,
+					t.visitLine,
+					t.lineStoreNum,
+					t.visitStoreNum,t.updateTime
+				FROM
+					tbl_user_daily_t t
+				LEFT JOIN salesman u ON u.id = t.createBy
+				LEFT JOIN tbl_user_dept_t ud ON ud.userId = t.createBy
+				LEFT JOIN tbl_department_t d ON d.deptId = ud.deptId
+				LEFT JOIN tbl_dict_t dic ON u.postType = dic.`value`
+				AND dic.type = 'post_type' AND dic.isDelete=0
+			  where t.deptId != #{deptId} 
+			    AND t.reportId in(${reportId}) 
+			  </if> 
+			</otherwise>
+		</choose>
+		) AA ORDER BY AA.updateTime desc
+  </select>
+  
+  <select id="findDailyList2222" resultMap="BaseResultMap" parameterType="com.corner.salesman.model.Daily" >
+		SELECT
+			t.reportId,
+			t. WEEK,
+			DATE_FORMAT(t.createTime, '%m月%d日') createTime,
+			DATE_FORMAT(t.createTime, '%H:%i') timePoint,
+			t.createBy AS userId,
+			u.userName,
+			t.deptId,
+			d.deptName,
+			dic.label AS postName,
+			t.visitLine,
+			t.lineStoreNum,
+			t.visitStoreNum
+		FROM
+			tbl_user_daily_t t
+		LEFT JOIN salesman u ON u.id = t.createBy
+		LEFT JOIN tbl_user_dept_t ud ON ud.userId = t.createBy
+		LEFT JOIN tbl_department_t d ON d.deptId = ud.deptId
+		LEFT JOIN tbl_dict_t dic ON u.postType = dic.`value`
+		AND dic.type = 'post_type' AND dic.isDelete=0
+		WHERE t.deptId = #{deptId}
+		<if test="createTime != null and createTime!=''">
+			and DATE_FORMAT(t.createTime, '%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+		</if>
+		<if test="userId != null and userId!=''">
+			and t.createBy = #{userId}
+		</if>
+		ORDER BY t.updateTime desc
+  </select>
+  
+  <select id="findMyDailyList" resultMap="BaseResultMap" parameterType="com.corner.salesman.model.Daily" >
+		SELECT
+			t.reportId,
+			t. WEEK,
+			DATE_FORMAT(t.createTime, '%m月%d日') createTime,
+			DATE_FORMAT(t.createTime, '%H:%i') timePoint,
+			t.createBy AS userId,
+			u.userName,
+			t.deptId,
+			d.deptName,
+			dic.label AS postName,
+			t.visitLine,
+			t.lineStoreNum,
+			t.visitStoreNum
+		FROM
+			tbl_user_daily_t t
+		LEFT JOIN salesman u ON u.id = t.createBy
+		LEFT JOIN tbl_user_dept_t ud ON ud.userId = t.createBy
+		LEFT JOIN tbl_department_t d ON d.deptId = ud.deptId
+		LEFT JOIN tbl_dict_t dic ON u.postType = dic.`value`
+		AND dic.type = 'post_type' AND dic.isDelete=0
+		WHERE 1 = 1
+		<if test="createTime != null and createTime!=''">
+			and DATE_FORMAT(t.createTime, '%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+		</if>
+		<if test="userId != null and userId!='' and deptId != null and deptId!=''">
+			and t.deptId = #{deptId}
+		</if>
+		<if test="(deptId == null or deptId=='') and userId != null and userId!=''">
+			and t.createBy = #{userId}
+		</if>
+		
+		ORDER BY t.updateTime desc,t.createTime desc
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tbl_user_daily_t
+    where reportId = #{reportId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.salesman.model.Daily" >
+    insert into tbl_user_daily_t (reportId, visitLine, distributionCenter, 
+      lineStoreNum, visitStoreNum, visitStoreReapNum, 
+      planRegisterNum, actualRegisterlNum, yetDevelopStoreNum, 
+      registerlStoreRatio, planActiveStoreNum, 
+      actualActiveStoreNum, ownActiveStoreNum, 
+      lineActiveStoreRatio, planDevelopHF, actualDevelopHF, 
+      lineYetStoreHFNum, lineStoreHFRatio, extraStoreRegisterNum, 
+      extraStoreActiveNum, extraStoreHFNum, planOrderNum, 
+      actualOrderNum, turnover, buyTurnover, 
+      salesTurnover, dgWeekRegisterStoreNum, 
+      dgUpWeekRegisterStoreNum, dgWeekDevelopActiveNum, 
+      dgUpWeekDevelopActiveNum, dgWeekDevelopStoreHFNum, 
+      dgUpWeekOwnStoreHFNum, dgWeekPlanBuyNum, 
+      dgWeekActualBuyNum, dgWeekPlanTurnover, 
+      dgWeekActualTurnover, nextDayPlanRegisterNum, 
+      nextDayPlanAddActiveNum, nextDayPlanWhActiveNum, 
+      nextDayPlanAddHFNum, nextDayPlanWhHFNum, 
+      nextDayOrderStoreNum, nextDayPlanTurnover, 
+      nextDaySalesTurnover, nextDayBuyTurnover, 
+      feedback, strategyPlan, support, 
+      remark, picUrl, createBy, 
+      createTime, updateBy, updateTime, 
+      deptId, week,
+      todayPlanWhActiveNum,todayActualWhActiveNum,todayLineTurnover,
+      relativeYesterOrderNum,todayVisitPartners,relativeYesterTurnover,
+      relativeYesterBuyTurnover,nextDayPlanVisitPartners,nextDayVisitLine,todayPlanLineTurnover,todayPlanTurnover
+    )
+    values (#{reportId,jdbcType=VARCHAR}, #{visitLine,jdbcType=VARCHAR}, #{distributionCenter,jdbcType=VARCHAR}, 
+      #{lineStoreNum,jdbcType=VARCHAR}, #{visitStoreNum,jdbcType=VARCHAR}, #{visitStoreReapNum,jdbcType=VARCHAR}, 
+      #{planRegisterNum,jdbcType=VARCHAR}, #{actualRegisterlNum,jdbcType=VARCHAR}, #{yetDevelopStoreNum,jdbcType=VARCHAR}, 
+      #{registerlStoreRatio,jdbcType=VARCHAR}, #{planActiveStoreNum,jdbcType=VARCHAR}, 
+      #{actualActiveStoreNum,jdbcType=VARCHAR}, #{ownActiveStoreNum,jdbcType=VARCHAR}, 
+      #{lineActiveStoreRatio,jdbcType=VARCHAR}, #{planDevelopHF,jdbcType=VARCHAR}, #{actualDevelopHF,jdbcType=VARCHAR}, 
+      #{lineYetStoreHFNum,jdbcType=VARCHAR}, #{lineStoreHFRatio,jdbcType=VARCHAR}, #{extraStoreRegisterNum,jdbcType=VARCHAR}, 
+      #{extraStoreActiveNum,jdbcType=VARCHAR}, #{extraStoreHFNum,jdbcType=VARCHAR}, #{planOrderNum,jdbcType=VARCHAR}, 
+      #{actualOrderNum,jdbcType=VARCHAR}, #{turnover,jdbcType=VARCHAR}, #{buyTurnover,jdbcType=VARCHAR}, 
+      #{salesTurnover,jdbcType=VARCHAR}, #{dgWeekRegisterStoreNum,jdbcType=VARCHAR}, 
+      #{dgUpWeekRegisterStoreNum,jdbcType=VARCHAR}, #{dgWeekDevelopActiveNum,jdbcType=VARCHAR}, 
+      #{dgUpWeekDevelopActiveNum,jdbcType=VARCHAR}, #{dgWeekDevelopStoreHFNum,jdbcType=VARCHAR}, 
+      #{dgUpWeekOwnStoreHFNum,jdbcType=VARCHAR}, #{dgWeekPlanBuyNum,jdbcType=VARCHAR}, 
+      #{dgWeekActualBuyNum,jdbcType=VARCHAR}, #{dgWeekPlanTurnover,jdbcType=VARCHAR}, 
+      #{dgWeekActualTurnover,jdbcType=VARCHAR}, #{nextDayPlanRegisterNum,jdbcType=VARCHAR}, 
+      #{nextDayPlanAddActiveNum,jdbcType=VARCHAR}, #{nextDayPlanWhActiveNum,jdbcType=VARCHAR}, 
+      #{nextDayPlanAddHFNum,jdbcType=VARCHAR}, #{nextDayPlanWhHFNum,jdbcType=VARCHAR}, 
+      #{nextDayOrderStoreNum,jdbcType=VARCHAR}, #{nextDayPlanTurnover,jdbcType=VARCHAR}, 
+      #{nextDaySalesTurnover,jdbcType=VARCHAR}, #{nextDayBuyTurnover,jdbcType=VARCHAR}, 
+      #{feedback,jdbcType=VARCHAR}, #{strategyPlan,jdbcType=VARCHAR}, #{support,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{deptId,jdbcType=VARCHAR}, #{week,jdbcType=VARCHAR},
+      #{todayPlanWhActiveNum,jdbcType=VARCHAR}, #{todayActualWhActiveNum,jdbcType=VARCHAR},#{todayLineTurnover,jdbcType=VARCHAR}, 
+      #{relativeYesterOrderNum,jdbcType=VARCHAR}, #{todayVisitPartners,jdbcType=VARCHAR},#{relativeYesterTurnover,jdbcType=VARCHAR}, 
+      #{relativeYesterBuyTurnover,jdbcType=VARCHAR}, #{nextDayPlanVisitPartners,jdbcType=VARCHAR},#{nextDayVisitLine,jdbcType=VARCHAR},
+      #{todayPlanLineTurnover,jdbcType=VARCHAR},#{todayPlanTurnover,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.salesman.model.Daily" >
+    insert into tbl_user_daily_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="reportId != null" >
+        reportId,
+      </if>
+      <if test="visitLine != null" >
+        visitLine,
+      </if>
+      <if test="distributionCenter != null" >
+        distributionCenter,
+      </if>
+      <if test="lineStoreNum != null" >
+        lineStoreNum,
+      </if>
+      <if test="visitStoreNum != null" >
+        visitStoreNum,
+      </if>
+      <if test="visitStoreReapNum != null" >
+        visitStoreReapNum,
+      </if>
+      <if test="planRegisterNum != null" >
+        planRegisterNum,
+      </if>
+      <if test="actualRegisterlNum != null" >
+        actualRegisterlNum,
+      </if>
+      <if test="yetDevelopStoreNum != null" >
+        yetDevelopStoreNum,
+      </if>
+      <if test="registerlStoreRatio != null" >
+        registerlStoreRatio,
+      </if>
+      <if test="planActiveStoreNum != null" >
+        planActiveStoreNum,
+      </if>
+      <if test="actualActiveStoreNum != null" >
+        actualActiveStoreNum,
+      </if>
+      <if test="ownActiveStoreNum != null" >
+        ownActiveStoreNum,
+      </if>
+      <if test="lineActiveStoreRatio != null" >
+        lineActiveStoreRatio,
+      </if>
+      <if test="planDevelopHF != null" >
+        planDevelopHF,
+      </if>
+      <if test="actualDevelopHF != null" >
+        actualDevelopHF,
+      </if>
+      <if test="lineYetStoreHFNum != null" >
+        lineYetStoreHFNum,
+      </if>
+      <if test="lineStoreHFRatio != null" >
+        lineStoreHFRatio,
+      </if>
+      <if test="extraStoreRegisterNum != null" >
+        extraStoreRegisterNum,
+      </if>
+      <if test="extraStoreActiveNum != null" >
+        extraStoreActiveNum,
+      </if>
+      <if test="extraStoreHFNum != null" >
+        extraStoreHFNum,
+      </if>
+      <if test="planOrderNum != null" >
+        planOrderNum,
+      </if>
+      <if test="actualOrderNum != null" >
+        actualOrderNum,
+      </if>
+      <if test="turnover != null" >
+        turnover,
+      </if>
+      <if test="buyTurnover != null" >
+        buyTurnover,
+      </if>
+      <if test="salesTurnover != null" >
+        salesTurnover,
+      </if>
+      <if test="dgWeekRegisterStoreNum != null" >
+        dgWeekRegisterStoreNum,
+      </if>
+      <if test="dgUpWeekRegisterStoreNum != null" >
+        dgUpWeekRegisterStoreNum,
+      </if>
+      <if test="dgWeekDevelopActiveNum != null" >
+        dgWeekDevelopActiveNum,
+      </if>
+      <if test="dgUpWeekDevelopActiveNum != null" >
+        dgUpWeekDevelopActiveNum,
+      </if>
+      <if test="dgWeekDevelopStoreHFNum != null" >
+        dgWeekDevelopStoreHFNum,
+      </if>
+      <if test="dgUpWeekOwnStoreHFNum != null" >
+        dgUpWeekOwnStoreHFNum,
+      </if>
+      <if test="dgWeekPlanBuyNum != null" >
+        dgWeekPlanBuyNum,
+      </if>
+      <if test="dgWeekActualBuyNum != null" >
+        dgWeekActualBuyNum,
+      </if>
+      <if test="dgWeekPlanTurnover != null" >
+        dgWeekPlanTurnover,
+      </if>
+      <if test="dgWeekActualTurnover != null" >
+        dgWeekActualTurnover,
+      </if>
+      <if test="nextDayPlanRegisterNum != null" >
+        nextDayPlanRegisterNum,
+      </if>
+      <if test="nextDayPlanAddActiveNum != null" >
+        nextDayPlanAddActiveNum,
+      </if>
+      <if test="nextDayPlanWhActiveNum != null" >
+        nextDayPlanWhActiveNum,
+      </if>
+      <if test="nextDayPlanAddHFNum != null" >
+        nextDayPlanAddHFNum,
+      </if>
+      <if test="nextDayPlanWhHFNum != null" >
+        nextDayPlanWhHFNum,
+      </if>
+      <if test="nextDayOrderStoreNum != null" >
+        nextDayOrderStoreNum,
+      </if>
+      <if test="nextDayPlanTurnover != null" >
+        nextDayPlanTurnover,
+      </if>
+      <if test="nextDaySalesTurnover != null" >
+        nextDaySalesTurnover,
+      </if>
+      <if test="nextDayBuyTurnover != null" >
+        nextDayBuyTurnover,
+      </if>
+      <if test="feedback != null" >
+        feedback,
+      </if>
+      <if test="strategyPlan != null" >
+        strategyPlan,
+      </if>
+      <if test="support != null" >
+        support,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="picUrl != null" >
+        picUrl,
+      </if>
+      <if test="createBy != null" >
+        createBy,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="updateBy != null" >
+        updateBy,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="deptId != null" >
+        deptId,
+      </if>
+      <if test="week != null" >
+        week,
+      </if>
+      <if test="todayPlanWhActiveNum != null" >
+        todayPlanWhActiveNum,
+      </if>
+      <if test="todayActualWhActiveNum != null" >
+        todayActualWhActiveNum,
+      </if>
+      <if test="todayLineTurnover != null" >
+        todayLineTurnover,
+      </if>
+      <if test="relativeYesterOrderNum != null" >
+        relativeYesterOrderNum,
+      </if>
+      <if test="todayVisitPartners != null" >
+        todayVisitPartners,
+      </if>
+      <if test="relativeYesterTurnover != null" >
+        relativeYesterTurnover,
+      </if>
+      <if test="relativeYesterBuyTurnover != null" >
+        relativeYesterBuyTurnover,
+      </if>
+      <if test="nextDayPlanVisitPartners != null" >
+        nextDayPlanVisitPartners,
+      </if>
+      <if test="nextDayVisitLine != null" >
+        nextDayVisitLine,
+      </if>
+      
+      <if test="todayPlanLineTurnover != null" >
+        todayPlanLineTurnover,
+      </if>
+      <if test="todayPlanTurnover != null" >
+        todayPlanTurnover,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="visitLine != null" >
+        #{visitLine,jdbcType=VARCHAR},
+      </if>
+      <if test="distributionCenter != null" >
+        #{distributionCenter,jdbcType=VARCHAR},
+      </if>
+      <if test="lineStoreNum != null" >
+        #{lineStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="visitStoreNum != null" >
+        #{visitStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="visitStoreReapNum != null" >
+        #{visitStoreReapNum,jdbcType=VARCHAR},
+      </if>
+      <if test="planRegisterNum != null" >
+        #{planRegisterNum,jdbcType=VARCHAR},
+      </if>
+      <if test="actualRegisterlNum != null" >
+        #{actualRegisterlNum,jdbcType=VARCHAR},
+      </if>
+      <if test="yetDevelopStoreNum != null" >
+        #{yetDevelopStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="registerlStoreRatio != null" >
+        #{registerlStoreRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="planActiveStoreNum != null" >
+        #{planActiveStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="actualActiveStoreNum != null" >
+        #{actualActiveStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="ownActiveStoreNum != null" >
+        #{ownActiveStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="lineActiveStoreRatio != null" >
+        #{lineActiveStoreRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="planDevelopHF != null" >
+        #{planDevelopHF,jdbcType=VARCHAR},
+      </if>
+      <if test="actualDevelopHF != null" >
+        #{actualDevelopHF,jdbcType=VARCHAR},
+      </if>
+      <if test="lineYetStoreHFNum != null" >
+        #{lineYetStoreHFNum,jdbcType=VARCHAR},
+      </if>
+      <if test="lineStoreHFRatio != null" >
+        #{lineStoreHFRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="extraStoreRegisterNum != null" >
+        #{extraStoreRegisterNum,jdbcType=VARCHAR},
+      </if>
+      <if test="extraStoreActiveNum != null" >
+        #{extraStoreActiveNum,jdbcType=VARCHAR},
+      </if>
+      <if test="extraStoreHFNum != null" >
+        #{extraStoreHFNum,jdbcType=VARCHAR},
+      </if>
+      <if test="planOrderNum != null" >
+        #{planOrderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="actualOrderNum != null" >
+        #{actualOrderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="turnover != null" >
+        #{turnover,jdbcType=VARCHAR},
+      </if>
+      <if test="buyTurnover != null" >
+        #{buyTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="salesTurnover != null" >
+        #{salesTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="dgWeekRegisterStoreNum != null" >
+        #{dgWeekRegisterStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="dgUpWeekRegisterStoreNum != null" >
+        #{dgUpWeekRegisterStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="dgWeekDevelopActiveNum != null" >
+        #{dgWeekDevelopActiveNum,jdbcType=VARCHAR},
+      </if>
+      <if test="dgUpWeekDevelopActiveNum != null" >
+        #{dgUpWeekDevelopActiveNum,jdbcType=VARCHAR},
+      </if>
+      <if test="dgWeekDevelopStoreHFNum != null" >
+        #{dgWeekDevelopStoreHFNum,jdbcType=VARCHAR},
+      </if>
+      <if test="dgUpWeekOwnStoreHFNum != null" >
+        #{dgUpWeekOwnStoreHFNum,jdbcType=VARCHAR},
+      </if>
+      <if test="dgWeekPlanBuyNum != null" >
+        #{dgWeekPlanBuyNum,jdbcType=VARCHAR},
+      </if>
+      <if test="dgWeekActualBuyNum != null" >
+        #{dgWeekActualBuyNum,jdbcType=VARCHAR},
+      </if>
+      <if test="dgWeekPlanTurnover != null" >
+        #{dgWeekPlanTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="dgWeekActualTurnover != null" >
+        #{dgWeekActualTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayPlanRegisterNum != null" >
+        #{nextDayPlanRegisterNum,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayPlanAddActiveNum != null" >
+        #{nextDayPlanAddActiveNum,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayPlanWhActiveNum != null" >
+        #{nextDayPlanWhActiveNum,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayPlanAddHFNum != null" >
+        #{nextDayPlanAddHFNum,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayPlanWhHFNum != null" >
+        #{nextDayPlanWhHFNum,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayOrderStoreNum != null" >
+        #{nextDayOrderStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayPlanTurnover != null" >
+        #{nextDayPlanTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDaySalesTurnover != null" >
+        #{nextDaySalesTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayBuyTurnover != null" >
+        #{nextDayBuyTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="feedback != null" >
+        #{feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="strategyPlan != null" >
+        #{strategyPlan,jdbcType=VARCHAR},
+      </if>
+      <if test="support != null" >
+        #{support,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null" >
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deptId != null" >
+        #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="week != null" >
+        #{week,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="todayPlanWhActiveNum != null" >
+        #{todayPlanWhActiveNum,jdbcType=VARCHAR},
+      </if>
+      <if test="todayActualWhActiveNum != null" >
+        #{todayActualWhActiveNum,jdbcType=VARCHAR},
+      </if>
+      <if test="todayLineTurnover != null" >
+        #{todayLineTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="relativeYesterOrderNum != null" >
+        #{relativeYesterOrderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="todayVisitPartners != null" >
+        #{todayVisitPartners,jdbcType=VARCHAR},
+      </if>
+      <if test="relativeYesterTurnover != null" >
+        #{relativeYesterTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="relativeYesterBuyTurnover != null" >
+        #{relativeYesterBuyTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayPlanVisitPartners != null" >
+        #{nextDayPlanVisitPartners,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayVisitLine != null" >
+        #{nextDayVisitLine,jdbcType=VARCHAR},
+      </if>
+      <if test="todayPlanLineTurnover != null" >
+        #{todayPlanLineTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="todayPlanTurnover != null" >
+        #{todayPlanTurnover,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.salesman.model.Daily" >
+    update tbl_user_daily_t
+    <set >
+      <if test="visitLine != null" >
+        visitLine = #{visitLine,jdbcType=VARCHAR},
+      </if>
+      <if test="distributionCenter != null" >
+        distributionCenter = #{distributionCenter,jdbcType=VARCHAR},
+      </if>
+      <if test="lineStoreNum != null" >
+        lineStoreNum = #{lineStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="visitStoreNum != null" >
+        visitStoreNum = #{visitStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="visitStoreReapNum != null" >
+        visitStoreReapNum = #{visitStoreReapNum,jdbcType=VARCHAR},
+      </if>
+      <if test="planRegisterNum != null" >
+        planRegisterNum = #{planRegisterNum,jdbcType=VARCHAR},
+      </if>
+      <if test="actualRegisterlNum != null" >
+        actualRegisterlNum = #{actualRegisterlNum,jdbcType=VARCHAR},
+      </if>
+      <if test="yetDevelopStoreNum != null" >
+        yetDevelopStoreNum = #{yetDevelopStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="registerlStoreRatio != null" >
+        registerlStoreRatio = #{registerlStoreRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="planActiveStoreNum != null" >
+        planActiveStoreNum = #{planActiveStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="actualActiveStoreNum != null" >
+        actualActiveStoreNum = #{actualActiveStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="ownActiveStoreNum != null" >
+        ownActiveStoreNum = #{ownActiveStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="lineActiveStoreRatio != null" >
+        lineActiveStoreRatio = #{lineActiveStoreRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="planDevelopHF != null" >
+        planDevelopHF = #{planDevelopHF,jdbcType=VARCHAR},
+      </if>
+      <if test="actualDevelopHF != null" >
+        actualDevelopHF = #{actualDevelopHF,jdbcType=VARCHAR},
+      </if>
+      <if test="lineYetStoreHFNum != null" >
+        lineYetStoreHFNum = #{lineYetStoreHFNum,jdbcType=VARCHAR},
+      </if>
+      <if test="lineStoreHFRatio != null" >
+        lineStoreHFRatio = #{lineStoreHFRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="extraStoreRegisterNum != null" >
+        extraStoreRegisterNum = #{extraStoreRegisterNum,jdbcType=VARCHAR},
+      </if>
+      <if test="extraStoreActiveNum != null" >
+        extraStoreActiveNum = #{extraStoreActiveNum,jdbcType=VARCHAR},
+      </if>
+      <if test="extraStoreHFNum != null" >
+        extraStoreHFNum = #{extraStoreHFNum,jdbcType=VARCHAR},
+      </if>
+      <if test="planOrderNum != null" >
+        planOrderNum = #{planOrderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="actualOrderNum != null" >
+        actualOrderNum = #{actualOrderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="turnover != null" >
+        turnover = #{turnover,jdbcType=VARCHAR},
+      </if>
+      <if test="buyTurnover != null" >
+        buyTurnover = #{buyTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="salesTurnover != null" >
+        salesTurnover = #{salesTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="dgWeekRegisterStoreNum != null" >
+        dgWeekRegisterStoreNum = #{dgWeekRegisterStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="dgUpWeekRegisterStoreNum != null" >
+        dgUpWeekRegisterStoreNum = #{dgUpWeekRegisterStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="dgWeekDevelopActiveNum != null" >
+        dgWeekDevelopActiveNum = #{dgWeekDevelopActiveNum,jdbcType=VARCHAR},
+      </if>
+      <if test="dgUpWeekDevelopActiveNum != null" >
+        dgUpWeekDevelopActiveNum = #{dgUpWeekDevelopActiveNum,jdbcType=VARCHAR},
+      </if>
+      <if test="dgWeekDevelopStoreHFNum != null" >
+        dgWeekDevelopStoreHFNum = #{dgWeekDevelopStoreHFNum,jdbcType=VARCHAR},
+      </if>
+      <if test="dgUpWeekOwnStoreHFNum != null" >
+        dgUpWeekOwnStoreHFNum = #{dgUpWeekOwnStoreHFNum,jdbcType=VARCHAR},
+      </if>
+      <if test="dgWeekPlanBuyNum != null" >
+        dgWeekPlanBuyNum = #{dgWeekPlanBuyNum,jdbcType=VARCHAR},
+      </if>
+      <if test="dgWeekActualBuyNum != null" >
+        dgWeekActualBuyNum = #{dgWeekActualBuyNum,jdbcType=VARCHAR},
+      </if>
+      <if test="dgWeekPlanTurnover != null" >
+        dgWeekPlanTurnover = #{dgWeekPlanTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="dgWeekActualTurnover != null" >
+        dgWeekActualTurnover = #{dgWeekActualTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayPlanRegisterNum != null" >
+        nextDayPlanRegisterNum = #{nextDayPlanRegisterNum,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayPlanAddActiveNum != null" >
+        nextDayPlanAddActiveNum = #{nextDayPlanAddActiveNum,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayPlanWhActiveNum != null" >
+        nextDayPlanWhActiveNum = #{nextDayPlanWhActiveNum,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayPlanAddHFNum != null" >
+        nextDayPlanAddHFNum = #{nextDayPlanAddHFNum,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayPlanWhHFNum != null" >
+        nextDayPlanWhHFNum = #{nextDayPlanWhHFNum,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayOrderStoreNum != null" >
+        nextDayOrderStoreNum = #{nextDayOrderStoreNum,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayPlanTurnover != null" >
+        nextDayPlanTurnover = #{nextDayPlanTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDaySalesTurnover != null" >
+        nextDaySalesTurnover = #{nextDaySalesTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDayBuyTurnover != null" >
+        nextDayBuyTurnover = #{nextDayBuyTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="feedback != null" >
+        feedback = #{feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="strategyPlan != null" >
+        strategyPlan = #{strategyPlan,jdbcType=VARCHAR},
+      </if>
+      <if test="support != null" >
+        support = #{support,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null" >
+        picUrl = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        createBy = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        updateBy = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deptId != null" >
+        deptId = #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="week != null" >
+        week = #{week,jdbcType=VARCHAR},
+      </if>
+      <if test="todayPlanLineTurnover != null" >
+        todayPlanLineTurnover = #{todayPlanLineTurnover,jdbcType=VARCHAR},
+      </if>
+      <if test="todayPlanTurnover != null" >
+        todayPlanTurnover = #{todayPlanTurnover,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where reportId = #{reportId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.salesman.model.Daily" >
+    update tbl_user_daily_t
+    set visitLine = #{visitLine,jdbcType=VARCHAR},
+      distributionCenter = #{distributionCenter,jdbcType=VARCHAR},
+      lineStoreNum = #{lineStoreNum,jdbcType=VARCHAR},
+      visitStoreNum = #{visitStoreNum,jdbcType=VARCHAR},
+      visitStoreReapNum = #{visitStoreReapNum,jdbcType=VARCHAR},
+      planRegisterNum = #{planRegisterNum,jdbcType=VARCHAR},
+      actualRegisterlNum = #{actualRegisterlNum,jdbcType=VARCHAR},
+      yetDevelopStoreNum = #{yetDevelopStoreNum,jdbcType=VARCHAR},
+      registerlStoreRatio = #{registerlStoreRatio,jdbcType=VARCHAR},
+      planActiveStoreNum = #{planActiveStoreNum,jdbcType=VARCHAR},
+      actualActiveStoreNum = #{actualActiveStoreNum,jdbcType=VARCHAR},
+      ownActiveStoreNum = #{ownActiveStoreNum,jdbcType=VARCHAR},
+      lineActiveStoreRatio = #{lineActiveStoreRatio,jdbcType=VARCHAR},
+      planDevelopHF = #{planDevelopHF,jdbcType=VARCHAR},
+      actualDevelopHF = #{actualDevelopHF,jdbcType=VARCHAR},
+      lineYetStoreHFNum = #{lineYetStoreHFNum,jdbcType=VARCHAR},
+      lineStoreHFRatio = #{lineStoreHFRatio,jdbcType=VARCHAR},
+      extraStoreRegisterNum = #{extraStoreRegisterNum,jdbcType=VARCHAR},
+      extraStoreActiveNum = #{extraStoreActiveNum,jdbcType=VARCHAR},
+      extraStoreHFNum = #{extraStoreHFNum,jdbcType=VARCHAR},
+      planOrderNum = #{planOrderNum,jdbcType=VARCHAR},
+      actualOrderNum = #{actualOrderNum,jdbcType=VARCHAR},
+      turnover = #{turnover,jdbcType=VARCHAR},
+      buyTurnover = #{buyTurnover,jdbcType=VARCHAR},
+      salesTurnover = #{salesTurnover,jdbcType=VARCHAR},
+      dgWeekRegisterStoreNum = #{dgWeekRegisterStoreNum,jdbcType=VARCHAR},
+      dgUpWeekRegisterStoreNum = #{dgUpWeekRegisterStoreNum,jdbcType=VARCHAR},
+      dgWeekDevelopActiveNum = #{dgWeekDevelopActiveNum,jdbcType=VARCHAR},
+      dgUpWeekDevelopActiveNum = #{dgUpWeekDevelopActiveNum,jdbcType=VARCHAR},
+      dgWeekDevelopStoreHFNum = #{dgWeekDevelopStoreHFNum,jdbcType=VARCHAR},
+      dgUpWeekOwnStoreHFNum = #{dgUpWeekOwnStoreHFNum,jdbcType=VARCHAR},
+      dgWeekPlanBuyNum = #{dgWeekPlanBuyNum,jdbcType=VARCHAR},
+      dgWeekActualBuyNum = #{dgWeekActualBuyNum,jdbcType=VARCHAR},
+      dgWeekPlanTurnover = #{dgWeekPlanTurnover,jdbcType=VARCHAR},
+      dgWeekActualTurnover = #{dgWeekActualTurnover,jdbcType=VARCHAR},
+      nextDayPlanRegisterNum = #{nextDayPlanRegisterNum,jdbcType=VARCHAR},
+      nextDayPlanAddActiveNum = #{nextDayPlanAddActiveNum,jdbcType=VARCHAR},
+      nextDayPlanWhActiveNum = #{nextDayPlanWhActiveNum,jdbcType=VARCHAR},
+      nextDayPlanAddHFNum = #{nextDayPlanAddHFNum,jdbcType=VARCHAR},
+      nextDayPlanWhHFNum = #{nextDayPlanWhHFNum,jdbcType=VARCHAR},
+      nextDayOrderStoreNum = #{nextDayOrderStoreNum,jdbcType=VARCHAR},
+      nextDayPlanTurnover = #{nextDayPlanTurnover,jdbcType=VARCHAR},
+      nextDaySalesTurnover = #{nextDaySalesTurnover,jdbcType=VARCHAR},
+      nextDayBuyTurnover = #{nextDayBuyTurnover,jdbcType=VARCHAR},
+      todayPlanLineTurnover = #{todayPlanLineTurnover,jdbcType=VARCHAR},
+      todayPlanTurnover = #{todayPlanTurnover,jdbcType=VARCHAR},
+      feedback = #{feedback,jdbcType=VARCHAR},
+      strategyPlan = #{strategyPlan,jdbcType=VARCHAR},
+      support = #{support,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      picUrl = #{picUrl,jdbcType=VARCHAR},
+      createBy = #{createBy,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      updateBy = #{updateBy,jdbcType=VARCHAR},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      deptId = #{deptId,jdbcType=VARCHAR},
+      week = #{week,jdbcType=VARCHAR}
+    where reportId = #{reportId,jdbcType=VARCHAR}
+  </update>
+</mapper>

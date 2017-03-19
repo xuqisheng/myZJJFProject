@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.FinWalletRechargeInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.FinWalletRechargeInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="orderNo" property="orderNo" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="sessionId" property="sessionId" jdbcType="VARCHAR" />
+    <result column="walletId" property="walletId" jdbcType="VARCHAR" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="tradeWay" property="tradeWay" jdbcType="INTEGER" />
+    <result column="tradeNo" property="tradeNo" jdbcType="VARCHAR" />
+    <result column="couponId" property="couponId" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="paySuccessTime" property="paySuccessTime" jdbcType="TIMESTAMP" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, orderNo, status, sessionId, walletId, money, tradeWay, tradeNo, couponId, addTime, 
+    paySuccessTime, isDelete, remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from FinWalletRechargeInfo
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from FinWalletRechargeInfo
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.FinWalletRechargeInfo" >
+    insert into FinWalletRechargeInfo (id, orderNo, status, 
+      sessionId, walletId, money, 
+      tradeWay, tradeNo, couponId, 
+      addTime, paySuccessTime, isDelete, 
+      remark)
+    values (#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{sessionId,jdbcType=VARCHAR}, #{walletId,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, 
+      #{tradeWay,jdbcType=INTEGER}, #{tradeNo,jdbcType=VARCHAR}, #{couponId,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{paySuccessTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=BIT}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.FinWalletRechargeInfo" >
+    insert into FinWalletRechargeInfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderNo != null" >
+        orderNo,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="sessionId != null" >
+        sessionId,
+      </if>
+      <if test="walletId != null" >
+        walletId,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="tradeWay != null" >
+        tradeWay,
+      </if>
+      <if test="tradeNo != null" >
+        tradeNo,
+      </if>
+      <if test="couponId != null" >
+        couponId,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="paySuccessTime != null" >
+        paySuccessTime,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="sessionId != null" >
+        #{sessionId,jdbcType=VARCHAR},
+      </if>
+      <if test="walletId != null" >
+        #{walletId,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="tradeWay != null" >
+        #{tradeWay,jdbcType=INTEGER},
+      </if>
+      <if test="tradeNo != null" >
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="couponId != null" >
+        #{couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paySuccessTime != null" >
+        #{paySuccessTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.FinWalletRechargeInfo" >
+    update FinWalletRechargeInfo
+    <set >
+      <if test="orderNo != null" >
+        orderNo = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="sessionId != null" >
+        sessionId = #{sessionId,jdbcType=VARCHAR},
+      </if>
+      <if test="walletId != null" >
+        walletId = #{walletId,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="tradeWay != null" >
+        tradeWay = #{tradeWay,jdbcType=INTEGER},
+      </if>
+      <if test="tradeNo != null" >
+        tradeNo = #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="couponId != null" >
+        couponId = #{couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paySuccessTime != null" >
+        paySuccessTime = #{paySuccessTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.FinWalletRechargeInfo" >
+    update FinWalletRechargeInfo
+    set orderNo = #{orderNo,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      sessionId = #{sessionId,jdbcType=VARCHAR},
+      walletId = #{walletId,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DECIMAL},
+      tradeWay = #{tradeWay,jdbcType=INTEGER},
+      tradeNo = #{tradeNo,jdbcType=VARCHAR},
+      couponId = #{couponId,jdbcType=VARCHAR},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      paySuccessTime = #{paySuccessTime,jdbcType=TIMESTAMP},
+      isDelete = #{isDelete,jdbcType=BIT},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.ScmsManagerMgMapper" >
+	<!-- 获取会计列表条件 -->
+	<sql id="getPageList_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="isDelete != null">
+				AND isDelete = #{isDelete}
+			</if>
+			<if test="status != null">
+				AND status = #{status}
+			</if>
+			<if test="managerName != null and managerName != ''">
+				AND managerName like CONCAT('%' , #{managerName} , '%') 
+			</if>
+			<if test="managerCode != null and managerCode != ''">
+				AND managerCode = #{managerCode}
+			</if>
+			<if test="mobile != null and mobile != ''">
+				AND mobile = #{mobile}
+			</if>
+			<if test="userName != null and userName != ''">
+				AND userName = #{userName}
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 获取会计列表 -->
+ 	<select id="getPageList" parameterType="com.corner.kefu.beans.ro.scms.ScmsManagerMgRo"  resultType="com.corner.core.beans.ScmsManager">
+		select * from ScmsManager
+		<include refid="getPageList_condition" />
+		<if test="sortName != null and sortName != ''">
+			<if test="sortOrder != null and sortOrder != ''">
+				<include refid="BasePublicMapper.orderSql" />
+			</if>
+		</if>
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取会计列表 总记录数-->
+ 	<select id="getPageListSize" parameterType="com.corner.kefu.beans.ro.scms.ScmsManagerMgRo"  resultType="int">
+		select count(1) from ScmsManager
+		<include refid="getPageList_condition" />
+	</select>
+	
+	<!-- 获取经销商信息 通过商品ID-->
+ 	<select id="findScmsManagerByItemId" parameterType="java.lang.String" resultType="com.corner.core.beans.ScmsManager">
+		select * from ScmsManager where id in (select managerId from ScmsGroupMap where groupId in (select groupId from ScmsItem where itemBaseId = #{itemBaseId}))
+	</select>
+	
+	<!-- 获取经销商信息-->
+ 	<select id="getAllScmsManager" parameterType="com.corner.kefu.beans.ro.scms.ScmsManagerMgRo" resultType="com.corner.core.beans.ScmsManager">
+		select id, managerName, userName, managerCode, password, token, salt, job, lastTime,mobile, callNum, email, fax, province, city, county, areaId, bsCircleId, managerAddress, 
+    	managerMark, branderName, branderTel, regTime, updateTime, updateMark, status, isDelete,minimum from ScmsManager
+    	<trim prefix="WHERE" prefixOverrides="AND |OR ">
+    		isDelete=0 and status=2
+    		<if test="managerName != null and managerName != ''">
+				AND managerName like CONCAT('%' , #{managerName} , '%') 
+			</if>
+    	</trim>
+	</select>
+</mapper>

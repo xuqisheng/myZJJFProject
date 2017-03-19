@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.ItemCatelogMgMapper">
+	<cache flushInterval="600000" />
+	<resultMap id="BaseResultMap" type="com.corner.core.beans.ItemCatelog" extends="com.corner.core.dao.ItemCatelogMapper.BaseResultMap">
+	</resultMap>
+	
+	
+	<sql id="orderSql">
+		ORDER BY
+		<![CDATA[${sortName} ${sortOrder} ]]>
+	</sql>
+	
+	<select id="getAllItemCateByBatch" parameterType="com.corner.kefu.beans.ro.ItemCatelogRo" resultType="com.corner.core.beans.ItemCatelog">
+	SELECT Item.* FROM ItemCatelog Item LEFT JOIN ItemCatelog it ON
+		it.id=Item.pid
+		where 1=1
+		<if test="id != null">
+			and
+			Item.id= #{id,jdbcType=INTEGER}
+		</if>
+		<if test="spid == null">
+			AND Item.spid=0
+		</if>
+
+		<if test="status!=null">
+			and Item.status = #{status}
+		</if>
+		<if test="isdelete!=null">
+			and Item.isDelete = #{isdelete}
+		</if>
+		<if test="spid != null">
+			<if test="spid != -1">
+				and (Item.spid LIKE "%"#{spid,jdbcType=VARCHAR}"%"
+				or Item.id = #{spid,jdbcType=VARCHAR})
+			</if>
+		</if>
+		<include refid="orderSql" />
+		<if test="pageIndex>=0 and pageSize>0">
+			limit ${pageIndex},${pageSize}
+		</if>
+	
+	</select>
+	
+	
+	
+	<resultMap  id="treeItemCatelog" type="com.corner.kefu.beans.vo.sp.ItemCatelogVo">
+	   <id column="yijiId" property="id"/>
+	   <result column="name" property="name" jdbcType="VARCHAR" />
+       <result column="pid" property="pid" jdbcType="INTEGER" />
+       <collection property="catelogVoList" ofType="com.corner.kefu.beans.vo.sp.ItemCatelogVo">
+          <id column="erjiId" property="id"/>
+	      <result column="erjiName" property="name" jdbcType="VARCHAR" />
+          <result column="erjiPid" property="pid" jdbcType="INTEGER" />
+       </collection>
+	</resultMap>
+	
+	<select id="getTreeItemCateLog" resultMap="treeItemCatelog">
+		SELECT
+			yiji.id AS yijiId,
+			yiji.`name`,
+			yiji.pid,
+			erji.id AS erjiId,
+			erji.`name` AS erjiName,
+			erji.pid AS erjiPid
+		FROM
+			ItemCatelog yiji
+		LEFT JOIN ItemCatelog erji ON erji.pid = yiji.id
+		WHERE
+			yiji.`status` = 1
+		AND yiji.isDelete = 0
+		AND erji.`status` = 1
+		AND erji.isDelete = 0
+		ORDER BY
+			yiji.id
+	</select>
+	
+	<resultMap type="com.corner.kefu.beans.vo.sp.ItemCatelogVo" id="itemBaseCateLogVoMap">
+	   <id column="erjiId" property="id"/>
+	   <result column="name" property="name" jdbcType="VARCHAR" />
+       <result column="pid" property="pid" jdbcType="INTEGER" />
+       <collection property="catelogVoList" ofType="com.corner.kefu.beans.vo.sp.ItemCatelogVo">
+          <id column="itemBaseId" property="id"/>
+	      <result column="itemBaseName" property="name" jdbcType="VARCHAR" />
+          <result column="itemBaseCateId" property="pid" jdbcType="INTEGER" />
+       </collection>
+	</resultMap>
+	
+	<select id="getItemBaseCateLogVoList" resultMap="itemBaseCateLogVoMap">
+	   SELECT
+			erji.id AS erjiId,
+			erji.`name`,
+			erji.pid,
+			itemBase.id AS itemBaseId,
+			itemBase.`name` AS itemBaseName,
+			itemBase.cateId AS itemBaseCateId
+		FROM
+			(
+				SELECT
+					*
+				FROM
+					ItemCatelog
+				WHERE
+					pid != 0
+				AND `status` = 1
+				AND isDelete = 0
+			) AS erji
+		JOIN ItemBase itemBase ON itemBase.cateId = erji.id
+		AND itemBase.`status` = 1
+		AND itemBase.isDelete = 0
+	</select>
+	
+	<resultMap type="com.corner.kefu.beans.vo.sp.ItemCatelogVo" id="cateLogTreeMap">
+	   <id column="yijiId" property="id"/>
+	   <result column="yijiName" property="name" jdbcType="VARCHAR" />
+       <result column="yijiPid" property="pid" jdbcType="INTEGER" />
+       <collection property="catelogVoList" ofType="com.corner.kefu.beans.vo.sp.ItemCatelogVo">
+          <id column="erjiId" property="id"/>
+	      <result column="erjiName" property="name" jdbcType="VARCHAR" />
+          <result column="erjiPid" property="pid" jdbcType="INTEGER" />
+            <collection property="catelogVoList" ofType="com.corner.kefu.beans.vo.sp.ItemCatelogVo">
+              <id column="sanjiId" property="id"/>
+	          <result column="sanjiName" property="name" jdbcType="VARCHAR" />
+              <result column="sanjiPid" property="pid" jdbcType="INTEGER" />
+            </collection>
+       </collection>
+	</resultMap>
+	
+	
+	<select id="getItemCateLogTreeList" resultMap="cateLogTreeMap">
+	   SELECT
+			sanji.id AS sanjiId,
+			<!-- sanji.`name` AS sanjiName, -->
+			CONCAT(sanji.mdseId,'-',sanji.`name`) as sanjiName,
+			sanji.cateId AS sanjiPid,
+			erji.id AS erjiId,
+			erji.`name` AS erjiName,
+			erji.pid AS erjiPid,
+			yiji.id AS yijiId,
+			yiji.`name` AS yijiName,
+			yiji.pid AS yijiPid
+		FROM
+			(
+				SELECT
+					*
+				FROM
+					ItemBase
+				WHERE
+					`status` = 1
+				AND isDelete = 0
+			) AS sanji
+		JOIN ItemCatelog AS erji ON sanji.cateId = erji.id
+		AND erji.`status` = 1
+		AND erji.isDelete = 0
+		JOIN ItemCatelog AS yiji ON erji.pid = yiji.id
+		AND yiji.`status` = 1
+		AND yiji.isDelete = 0
+		ORDER BY
+			yiji.id,
+			erji.id,
+			sanji.id
+	</select>
+	
+	
+	<resultMap type="com.corner.kefu.beans.vo.sp.ItemCatelogVo" id="cateLogListMap">
+	   <id column="yijiId" property="id"/>
+	   <result column="yijiName" property="name" jdbcType="VARCHAR" />
+       <result column="yijiPid" property="pid" jdbcType="INTEGER" />
+       <collection property="catelogVoList" ofType="com.corner.kefu.beans.vo.sp.ItemCatelogVo">
+          <id column="erjiId" property="id"/>
+	      <result column="erjiName" property="name" jdbcType="VARCHAR" />
+          <result column="erjiPid" property="pid" jdbcType="INTEGER" />
+       </collection>
+	</resultMap>
+	<select id="getItemCateLogList" resultMap="cateLogListMap">
+	SELECT
+		erji.id AS erjiId,
+		erji.`name` AS erjiName,
+		erji.pid AS erjiPid,
+		yiji.id AS yijiId,
+		yiji.`name` AS yijiName,
+		yiji.pid AS yijiPid
+	FROM
+		(
+			SELECT
+				*
+			FROM
+				ItemCatelog
+			WHERE
+				isDelete = 0
+		) AS erji
+	JOIN (
+		SELECT
+			*
+		FROM
+			ItemCatelog
+		WHERE
+			isDelete = 0
+	) AS yiji ON erji.pid = yiji.id
+		ORDER BY
+				yiji.id,
+				erji.id
+	</select>
+</mapper>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.CreditDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.CreditDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="creditNo" property="creditNo" jdbcType="VARCHAR" />
+    <result column="creditItemId" property="creditItemId" jdbcType="INTEGER" />
+    <result column="quantity" property="quantity" jdbcType="SMALLINT" />
+    <result column="totalCredit" property="totalCredit" jdbcType="INTEGER" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, creditNo, creditItemId, quantity, totalCredit, storeId, addTime, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from CreditDetail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from CreditDetail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.CreditDetail" >
+    insert into CreditDetail (id, creditNo, creditItemId, 
+      quantity, totalCredit, storeId, 
+      addTime, isDelete)
+    values (#{id,jdbcType=INTEGER}, #{creditNo,jdbcType=VARCHAR}, #{creditItemId,jdbcType=INTEGER}, 
+      #{quantity,jdbcType=SMALLINT}, #{totalCredit,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.CreditDetail" >
+    insert into CreditDetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="creditNo != null" >
+        creditNo,
+      </if>
+      <if test="creditItemId != null" >
+        creditItemId,
+      </if>
+      <if test="quantity != null" >
+        quantity,
+      </if>
+      <if test="totalCredit != null" >
+        totalCredit,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="creditNo != null" >
+        #{creditNo,jdbcType=VARCHAR},
+      </if>
+      <if test="creditItemId != null" >
+        #{creditItemId,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=SMALLINT},
+      </if>
+      <if test="totalCredit != null" >
+        #{totalCredit,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.CreditDetail" >
+    update CreditDetail
+    <set >
+      <if test="creditNo != null" >
+        creditNo = #{creditNo,jdbcType=VARCHAR},
+      </if>
+      <if test="creditItemId != null" >
+        creditItemId = #{creditItemId,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=SMALLINT},
+      </if>
+      <if test="totalCredit != null" >
+        totalCredit = #{totalCredit,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        storeId = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.CreditDetail" >
+    update CreditDetail
+    set creditNo = #{creditNo,jdbcType=VARCHAR},
+      creditItemId = #{creditItemId,jdbcType=INTEGER},
+      quantity = #{quantity,jdbcType=SMALLINT},
+      totalCredit = #{totalCredit,jdbcType=INTEGER},
+      storeId = #{storeId,jdbcType=INTEGER},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

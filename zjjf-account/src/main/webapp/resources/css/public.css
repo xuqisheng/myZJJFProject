@@ -1,0 +1,7 @@
+*{ margin:0; padding:0; font-size:12px;}
+ #userMgfm{margin:0;padding:10px 30px;}
+.ftitle{font-size:14px;font-weight:bold;padding:5px 0;margin-bottom:10px;border-bottom:1px solid #ccc;}
+.fitem{margin-bottom:5px;}
+.fitem label{display:inline-block;width:80px;}
+.fitem input{width:160px;}
+.fitem select{width:160px;}

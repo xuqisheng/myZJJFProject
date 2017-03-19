@@ -1,0 +1,37 @@
+@charset "utf-8";
+.banner-product1{
+	height: 596px;
+	background:url(../images/product_banner1.png?3) center top no-repeat;
+}
+.banner-product2{
+	background:url(../images/product_banner2.png?3) center top no-repeat;
+	height: 606px;
+}
+.bg-gray{
+	background-color: #fafafa;
+}
+.orange{
+	color: #ed4b1c;
+}
+.index-main{
+	padding: 80px 0;
+}
+.index-main img{
+	width: 100%;
+}
+.txt01{
+	position: absolute;
+	top: 20%;
+	left: 3%;
+}
+.txt02{
+	position: absolute;
+	top: 20%;
+	right: 3%;
+}
+.img01,.img03{
+	float: right;
+}
+.img02{
+	float: left;
+}

@@ -1,0 +1,231 @@
+@charset "utf-8";
+body {
+    font-family: "Microsoft YaHei", sans-serif;
+    background: #ececec;
+    text-align: center;
+}
+img {
+    vertical-align: middle;
+}
+input::-webkit-input-placeholder {
+    color: #aaa !important;
+}
+input:-moz-placeholder {
+    color: #aaa !important; /* Mozilla Firefox 4 to 18 */
+}
+input::-moz-placeholder {
+    color: #aaa !important; /* Mozilla Firefox 19+ */
+}
+input:-ms-input-placeholder {
+    color: #aaa !important; /* Internet Explorer 10+ */
+}
+/* 注册公共 */
+.clearfix {
+    display: block;
+    zoom: 1;
+    &:after {
+        content: "";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden
+    }
+}
+.top {
+    line-height: 60px;
+    font-size: 14px;
+    color: #ed4b1c;
+    .sep {
+        width: 54px;
+        display: inline-block;
+    }
+}
+.logo {
+    margin-top: 80px;
+    width: 100%;
+    height: 167px;
+    background: url(../images/invite-reg-logo.png) no-repeat center;
+}
+.title {
+    font-size: 30px;
+    color: #666;
+}
+.btn-submit {
+    margin: 30px auto;
+    border: 0 none;
+    width: 80%;
+    min-width: 480px;
+    height: 80px;
+    line-height: 80px;
+    display: block;
+    background: #ed4b1c;
+    font-size: 30px;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    &:hover {
+        opacity: .9;
+    }
+}
+.form-box {
+    position: relative;
+    margin: 0 auto 1px;
+    box-sizing: border-box;
+    width: 80%;
+    min-width: 480px;
+    padding: 20px 0;
+    background: #fff;
+    &.first {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+    &.last {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+    input {
+        padding: 0 20px;
+        box-sizing: border-box;
+        height: 60px;
+        line-height: 60px;
+        border: 0 none;
+        font-size: 1.5rem;
+        font-weight: normal;
+        font-family: Helvetica, Tahoma, sans-serif;
+    }
+    .area-arr {
+        position: absolute;
+        right: 20px;
+        top: 40px;
+        width: 11px;
+        height: 19px;
+        display: inline-block;
+        background: url(../images/invite-reg-selectarr.png) no-repeat center;
+    }
+}
+.tel {
+    padding-bottom: 30px;
+    font-size: 1.5rem;
+    color: #999
+}
+/* 首页 */
+.index-banner {
+    margin-top: -210px;
+    height: 578px;
+    background: url(../images/invite-reg-banner.png) no-repeat center top;
+}
+.title .main-color {
+    color: #ed4b1c;
+}
+.index-content {
+    margin-top: 30px;
+    .form-box {
+        text-align: left;
+        .icon {
+            float: left;
+            margin: 10px 0 0 20px;
+            width: 41px;
+            height: 41px;
+            display: block;
+            background-image: url(../images/invite-reg-icon.png);
+        }
+        .icon-tel {
+            background-position: -42px 0;
+            &.active {
+                background-position: 0 0;
+            }
+        }
+        .icon-code {
+            background-position: -42px -43px;
+            &.active {
+                background-position: 0 -43px;
+            }
+        }
+        .icon-pwd {
+            background-position: -42px -86px;
+            &.active {
+                background-position: 0 -86px;
+            }
+        }
+        input {
+            width: 76%;
+        }
+        .input-code {
+            width: 56%;
+        }
+        .button-code {
+            float: right;
+            margin-right: 3%;
+            border: 1px solid #ed4b1c !important;
+            width: 18%;
+            min-width: 130px;
+            background: #fff;
+            font-size: 1.2rem;
+            color: #ed4b1c;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            &[disabled] {
+                border: 0 none !important;
+                background: #aaa;
+                font-size: 1rem;
+                color: #fff;
+            }
+        }
+    }
+}
+/* step页 */
+.step-title {
+    margin: 50px 0 40px;
+}
+.step-content {
+    .form-box {
+        input {
+            width: 100%
+        }
+    }
+}
+.warn {
+    input::-webkit-input-placeholder {
+        color: #ed4b1c !important;
+    }
+    input:-moz-placeholder {
+        color: #ed4b1c !important; /* Mozilla Firefox 4 to 18 */
+    }
+    input::-moz-placeholder {
+        color: #ed4b1c !important; /* Mozilla Firefox 19+ */
+    }
+    input:-ms-input-placeholder {
+        color: #ed4b1c !important; /* Internet Explorer 10+ */
+    }
+}
+/* 成功页 */
+.success {
+    position: relative;
+    margin: 50px auto 0;
+    padding: 50px 0;
+    width: 80%;
+    background: #fff;
+    border-radius: 8px;
+    .h2 {
+        line-height: 60px;
+        font-size: 36px;
+        color: #333;
+        vertical-align: middle;
+    }
+    .h3 {
+        margin-top: 10px;
+        line-height: 50px;
+        font-size: 1.6rem;
+        color: #666;
+    }
+    .mm {
+        position: absolute;
+        bottom: -8px;
+        right: -15px;
+        width: 102px;
+        height: 203px;
+        background: url(../images/invite-reg-mm.png) no-repeat center;
+    }
+}

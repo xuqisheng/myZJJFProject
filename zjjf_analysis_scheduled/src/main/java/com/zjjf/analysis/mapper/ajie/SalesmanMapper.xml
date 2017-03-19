@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.ajie.SalesmanMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.ajie.Salesman" >
+    <id column="shopId" property="shopId" jdbcType="VARCHAR" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="groupId" property="groupId" jdbcType="VARCHAR" />
+    <result column="shopNo" property="shopNo" jdbcType="VARCHAR" />
+    <result column="shopName" property="shopName" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="shopAddress" property="shopAddress" jdbcType="VARCHAR" />
+    <result column="shopLicense" property="shopLicense" jdbcType="VARCHAR" />
+    <result column="shopType" property="shopType" jdbcType="VARCHAR" />
+    <result column="isMultipleShop" property="isMultipleShop" jdbcType="VARCHAR" />
+    <result column="shopArea" property="shopArea" jdbcType="VARCHAR" />
+    <result column="sku" property="sku" jdbcType="VARCHAR" />
+    <result column="staffNum" property="staffNum" jdbcType="VARCHAR" />
+    <result column="DistributionNum" property="distributionNum" jdbcType="VARCHAR" />
+    <result column="turnover" property="turnover" jdbcType="VARCHAR" />
+    <result column="mainProduct" property="mainProduct" jdbcType="VARCHAR" />
+    <result column="saleRatio" property="saleRatio" jdbcType="VARCHAR" />
+    <result column="dcShop" property="dcShop" jdbcType="VARCHAR" />
+    <result column="baccyLicence" property="baccyLicence" jdbcType="VARCHAR" />
+    <result column="isPos" property="isPos" jdbcType="VARCHAR" />
+    <result column="isComputer" property="isComputer" jdbcType="VARCHAR" />
+    <result column="isWifi" property="isWifi" jdbcType="VARCHAR" />
+    <result column="ipay" property="ipay" jdbcType="VARCHAR" />
+    <result column="otherPatform" property="otherPatform" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="userId" property="userId" jdbcType="VARCHAR" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="startShopHours" property="startShopHours" jdbcType="VARCHAR" />
+    <result column="endShopHours" property="endShopHours" jdbcType="VARCHAR" />
+    <result column="isDelete" property="isDelete" jdbcType="INTEGER" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="longitude" property="longitude" jdbcType="DOUBLE" />
+    <result column="latitude" property="latitude" jdbcType="DOUBLE" />
+    <result column="salesmanId" property="salesmanId" jdbcType="VARCHAR" />
+    <result column="salesmanName" property="salesmanName" jdbcType="VARCHAR" />
+    <result column="picUrl" property="picUrl" jdbcType="VARCHAR" />
+    <result column="spGroupId" property="spGroupId" jdbcType="VARCHAR" />
+    <result column="spGroupName" property="spGroupName" jdbcType="VARCHAR" />
+    <result column="bossName" property="bossName" jdbcType="VARCHAR" />
+    <result column="bossTel" property="bossTel" jdbcType="VARCHAR" />
+    <result column="registerTel" property="registerTel" jdbcType="VARCHAR" />
+    <result column="isRegister" property="isRegister" jdbcType="CHAR" />
+    <result column="markLine" property="markLine" jdbcType="VARCHAR" />
+    <result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    shopId, storeId, groupId, shopNo, shopName, telephone, shopAddress, shopLicense, 
+    shopType, isMultipleShop, shopArea, sku, staffNum, DistributionNum, turnover, mainProduct, 
+    saleRatio, dcShop, baccyLicence, isPos, isComputer, isWifi, ipay, otherPatform, remarks, 
+    userId, userName, startShopHours, endShopHours, isDelete, createTime, updateTime, 
+    createBy, updateBy, province, city, area, longitude, latitude, salesmanId, salesmanName, 
+    picUrl, spGroupId, spGroupName, bossName, bossTel, registerTel, isRegister, markLine, 
+    provinceId, cityId, areaId, addTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_shop_t
+    where shopId = #{shopId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getAll" resultType="com.zjjf.analysis.beans.ajie.Salesman" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from tbl_shop_t
+  	limit #{offset}, 1000
+  </select>
+  
+  <select id="getByMap" resultType="com.zjjf.analysis.beans.ajie.Salesman" parameterType="java.util.Map">
+  	select
+  	<include refid="Base_Column_List" />
+  	from tbl_shop_t
+  	<where>
+  		<if test="salesmanId != null">salesmanId = #{salesmanId}</if>
+  	</where>
+  </select>
+  
+  <select id="getSumInfo" resultType="com.zjjf.analysis.beans.analysis.saleman.SalemanDaily" parameterType="java.util.Map">
+  	SELECT COUNT(1) AS 'newRegStore' FROM `tbl_shop_t`
+  	<where>
+  		<if test="dayTime != null">and DATE_FORMAT(addTime,'%Y%m%d') = #{dayTime}</if>
+  		<if test="storeIds != null">and storeId in ${storeIds}</if>
+  	</where>
+  </select>
+
+</mapper>

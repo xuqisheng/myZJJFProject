@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.AnalysisSpOrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.orders.AnalysisSpOrderDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="infoId" property="infoId" jdbcType="INTEGER" />
+    <result column="org_pk_id" property="org_pk_id" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="itemId" property="itemId" jdbcType="VARCHAR" />
+    <result column="barCode" property="barCode" jdbcType="VARCHAR" />
+    <result column="brand" property="brand" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="spec" property="spec" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="quantity" property="quantity" jdbcType="SMALLINT" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="totalPrice" property="totalPrice" jdbcType="DECIMAL" />
+    <result column="plantMemPrice" property="plantMemPrice" jdbcType="DECIMAL" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+    <result column="maoli" property="maoli" jdbcType="DECIMAL" />
+    <result column="fee" property="fee" jdbcType="DECIMAL" />
+    <result column="plantDisPrice" property="plantDisPrice" jdbcType="DECIMAL" />
+    <result column="orderId2" property="orderId2" jdbcType="VARCHAR" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="spId" property="spId" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="youHui" property="youHui" jdbcType="VARCHAR" />
+    <result column="restrict" property="restrict" jdbcType="INTEGER" />
+    <result column="updateTimeStamp" property="updateTimeStamp" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="cityName" property="cityName" jdbcType="VARCHAR" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="areaName" property="areaName" jdbcType="VARCHAR" />
+    <result column="storeName" property="storeName" jdbcType="VARCHAR" />
+    <result column="spGroupName" property="spGroupName" jdbcType="VARCHAR" />
+    <result column="supplierName" property="supplierName" jdbcType="VARCHAR" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="gaveTime" property="gaveTime" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, infoId, org_pk_id, orderId, itemId, barCode, brand, name, spec, img, quantity, 
+    price, totalPrice, plantMemPrice, storeId, addTime, gaveTime, isDelete, col1, col2, col3, maoli, 
+    fee, plantDisPrice, orderId2, spGroupId, spId, remark, youHui, restrict, updateTimeStamp, 
+    createTime, cityId, cityName, areaId, areaName, storeName, spGroupName, supplierName
+  </sql>
+  
+  
+  <select id="getBySupplierIdItemBaseId" resultType="com.zjjf.analysis.beans.analysis.orders.AnalysisSpOrderDetail">
+	  select quantity, price from `analysis_sporderdetail` where spId=#{spId} and itemBaseId=#{itemBaseId} and dayTime &gt;= #{dayTimeBegin} and dayTime &lt;= #{dayTimeEnd}
+  </select>
+  
+  <select id="getItemByOrderId" resultType="com.zjjf.analysis.beans.analysis.orders.AnalysisSpOrderDetail" parameterType="java.lang.String" >
+	  select  
+		  t1.brand,
+		  t1.name,
+		  t1.barCode AS "mdseId",
+		  t1.spec,
+		  t1.plantMemPrice AS "areaPrice",
+		  t1.quantity,
+		  t1.price 
+		from
+		  `analysis_sporderdetail` t1 
+  </select>
+  
+  <select id="getItemTotalCount" resultType="java.lang.Integer" parameterType="java.lang.String" >
+	  select  count(*) from `analysis_sporderdetail` t1 where t1.orderId = #{orderId}
+  </select>
+  
+  <select id="getData" resultType="com.zjjf.analysis.beans.analysis.orders.SpOrderDetailVo" parameterType="java.util.Map" >
+	  select 
+		  t1.`barCode`,
+		  t1.`name`,
+		  t1.`spec`,
+		  t1.`orderId` as "orderNo",
+		  t1.`orderId2` as "chirdOrderNo",
+		  t1.`price`,
+		  t1.`quantity`,
+		  t1.`totalPrice`,
+		  date_format(t1.gaveTime, '%Y-%m-%d %T') as "addTime",
+		  t1.cityName,
+		  t1.areaName,
+		  t1.supplierName,
+		  t1.spGroupName,
+		  t1.storeId
+	   from
+		`analysis_sporderdetail` t1
+	  <where>
+	   	  <if test="areaIdList != null and areaIdList != '' " >
+	 		  	  and t1.areaId 
+	          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="cityIdList != null and cityIdList != '' " >
+	 		  	  and t1.cityId in 
+	          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="areaId != null and areaId != '' " >
+	      	and t1.areaId = #{areaId}
+	      </if>
+	      <if test="cityId != null and cityId != '' " >
+	      	and t1.cityId = #{cityId}
+	      </if>
+	      <if test="spGroupId != null and spGroupId != '' " >
+	      	and t1.spGroupId = #{spGroupId}
+	      </if>
+	      <if test="nameOrbarCode != null and nameOrbarCode != '' " >
+	      	and (t1.name like "%"#{nameOrbarCode}"%" or t1.barCode like "%"#{nameOrbarCode}"%")
+	      </if>
+	      <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+	      	and t1.dayTime &gt;= #{dayTimeBegin}
+	      </if>
+	      <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+	      	and t1.dayTime &lt;= #{dayTimeEnd}
+	      </if>
+	      <if test="orderNos != null and orderNos != '' " >
+	      	and (t1.orderId like "%"#{orderNos}"%" or t1.orderId2 like "%"#{orderNos}"%")
+	      </if>
+      </where>
+	   limit #{pageNo}, #{offset}
+  </select>
+  
+  <select id="getDataCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+	  select count(*) from `analysis_sporderdetail` t1
+	 <where>
+	   	  <if test="areaIdList != null and areaIdList != '' " >
+	 		  	  and t1.areaId 
+	          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="cityIdList != null and cityIdList != '' " >
+	 		  	  and t1.cityId in 
+	          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="areaId != null and areaId != '' " >
+	      	and t1.areaId = #{areaId}
+	      </if>
+	      <if test="cityId != null and cityId != '' " >
+	      	and t1.cityId = #{cityId}
+	      </if>
+	      <if test="spGroupId != null and spGroupId != '' " >
+	      	and t1.spGroupId = #{spGroupId}
+	      </if>
+	      <if test="nameOrbarCode != null and nameOrbarCode != '' " >
+	      	and (t1.name like "%"#{nameOrbarCode}"%" or t1.barCode like "%"#{nameOrbarCode}"%")
+	      </if>
+	      <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+	      	and t1.dayTime &gt;= #{dayTimeBegin}
+	      </if>
+	      <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+	      	and t1.dayTime &lt;= #{dayTimeEnd}
+	      </if>
+	      <if test="orderNos != null and orderNos != '' " >
+	      	and (t1.orderId like "%"#{orderNos}"%" or t1.orderId2 like "%"#{orderNos}"%")
+	      </if>
+	  </where>
+  </select>
+  
+  <select id="getDataExcel" resultType="com.zjjf.analysis.beans.analysis.orders.SpOrderDetailVo" parameterType="java.util.Map" >
+	   select 
+		  t1.`barCode`,
+		  t1.`name`,
+		  t1.`spec`,
+		  t1.`orderId` as "orderNo",
+		  t1.`orderId2` as "chirdOrderNo",
+		  t1.`price`,
+		  t1.`quantity`,
+		  t1.`totalPrice`,
+		  date_format(t1.gaveTime, '%Y-%m-%d %T') as "addTime",
+		  t1.cityName,
+		  t1.areaName,
+		  t1.supplierName,
+		  t1.spGroupName,
+		  t1.storeId
+	   from
+		`analysis_sporderdetail` t1
+   	   <where>
+	   	  <if test="areaIdList != null and areaIdList != '' " >
+	 		  	  and t1.areaId 
+	          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="cityIdList != null and cityIdList != '' " >
+	 		  	  and t1.cityId in 
+	          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="areaId != null and areaId != '' " >
+	      	and t1.areaId = #{areaId}
+	      </if>
+	      <if test="cityId != null and cityId != '' " >
+	      	and t1.cityId = #{cityId}
+	      </if>
+	      <if test="spGroupId != null and spGroupId != '' " >
+	      	and t1.spGroupId = #{spGroupId}
+	      </if>
+	      <if test="nameOrbarCode != null and nameOrbarCode != '' " >
+	      	and (t1.name like "%"#{nameOrbarCode}"%" or t1.barCode like "%"#{nameOrbarCode}"%")
+	      </if>
+	      <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+	      	and t1.dayTime &gt;= #{dayTimeBegin}
+	      </if>
+	      <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+	      	and t1.dayTime &lt;= #{dayTimeEnd}
+	      </if>
+	      <if test="orderNos != null and orderNos != '' " >
+	      	and (t1.orderId like "%"#{orderNos}"%" or t1.orderId2 like "%"#{orderNos}"%")
+	      </if>
+      </where>
+	   limit 10000
+  </select>
+  
+</mapper>

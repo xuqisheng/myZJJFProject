@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.RegionStoreMapMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.RegionStoreMapKey" >
+    <id column="regionId" property="regionId" jdbcType="INTEGER" />
+    <id column="stores" property="stores" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.corner.core.beans.RegionStoreMapKey" >
+    delete from RegionStoreMap
+    where regionId = #{regionId,jdbcType=INTEGER}
+      and stores = #{stores,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.RegionStoreMapKey" >
+    insert into RegionStoreMap (regionId, stores)
+    values (#{regionId,jdbcType=INTEGER}, #{stores,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.RegionStoreMapKey" >
+    insert into RegionStoreMap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="regionId != null" >
+        regionId,
+      </if>
+      <if test="stores != null" >
+        stores,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="regionId != null" >
+        #{regionId,jdbcType=INTEGER},
+      </if>
+      <if test="stores != null" >
+        #{stores,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

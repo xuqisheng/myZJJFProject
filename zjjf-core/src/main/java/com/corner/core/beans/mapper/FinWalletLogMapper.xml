@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.FinWalletLogMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.FinWalletLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="paySideType" property="paySideType" jdbcType="TINYINT" />
+    <result column="payerWalletId" property="payerWalletId" jdbcType="VARCHAR" />
+    <result column="payerLastBalance" property="payerLastBalance" jdbcType="DECIMAL" />
+    <result column="getSideType" property="getSideType" jdbcType="TINYINT" />
+    <result column="geterWalletId" property="geterWalletId" jdbcType="VARCHAR" />
+    <result column="geterLastBalance" property="geterLastBalance" jdbcType="DECIMAL" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="subjectType" property="subjectType" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="tradeWay" property="tradeWay" jdbcType="INTEGER" />
+    <result column="systemCode" property="systemCode" jdbcType="INTEGER" />
+    <result column="businessType" property="businessType" jdbcType="INTEGER" />
+    <result column="voucherMain" property="voucherMain" jdbcType="VARCHAR" />
+    <result column="voucherSub" property="voucherSub" jdbcType="VARCHAR" />
+    <result column="couponId" property="couponId" jdbcType="VARCHAR" />
+    <result column="tradeNo" property="tradeNo" jdbcType="VARCHAR" />
+    <result column="purpose" property="purpose" jdbcType="TINYINT" />
+    <result column="businessLogNo" property="businessLogNo" jdbcType="VARCHAR" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, paySideType, payerWalletId, payerLastBalance, getSideType, geterWalletId, geterLastBalance, 
+    amount, subjectType, addTime, tradeWay, systemCode, businessType, voucherMain, voucherSub, 
+    couponId, tradeNo, purpose, businessLogNo, isDelete, remark, sort
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from FinWalletLog
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from FinWalletLog
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.FinWalletLog" >
+    insert into FinWalletLog (id, paySideType, payerWalletId, 
+      payerLastBalance, getSideType, geterWalletId, 
+      geterLastBalance, amount, subjectType, 
+      addTime, tradeWay, systemCode, 
+      businessType, voucherMain, voucherSub, 
+      couponId, tradeNo, purpose, 
+      businessLogNo, isDelete, remark, 
+      sort)
+    values (#{id,jdbcType=VARCHAR}, #{paySideType,jdbcType=TINYINT}, #{payerWalletId,jdbcType=VARCHAR}, 
+      #{payerLastBalance,jdbcType=DECIMAL}, #{getSideType,jdbcType=TINYINT}, #{geterWalletId,jdbcType=VARCHAR}, 
+      #{geterLastBalance,jdbcType=DECIMAL}, #{amount,jdbcType=DECIMAL}, #{subjectType,jdbcType=INTEGER}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{tradeWay,jdbcType=INTEGER}, #{systemCode,jdbcType=INTEGER}, 
+      #{businessType,jdbcType=INTEGER}, #{voucherMain,jdbcType=VARCHAR}, #{voucherSub,jdbcType=VARCHAR}, 
+      #{couponId,jdbcType=VARCHAR}, #{tradeNo,jdbcType=VARCHAR}, #{purpose,jdbcType=TINYINT}, 
+      #{businessLogNo,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}, #{remark,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.FinWalletLog" >
+    insert into FinWalletLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="paySideType != null" >
+        paySideType,
+      </if>
+      <if test="payerWalletId != null" >
+        payerWalletId,
+      </if>
+      <if test="payerLastBalance != null" >
+        payerLastBalance,
+      </if>
+      <if test="getSideType != null" >
+        getSideType,
+      </if>
+      <if test="geterWalletId != null" >
+        geterWalletId,
+      </if>
+      <if test="geterLastBalance != null" >
+        geterLastBalance,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="subjectType != null" >
+        subjectType,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="tradeWay != null" >
+        tradeWay,
+      </if>
+      <if test="systemCode != null" >
+        systemCode,
+      </if>
+      <if test="businessType != null" >
+        businessType,
+      </if>
+      <if test="voucherMain != null" >
+        voucherMain,
+      </if>
+      <if test="voucherSub != null" >
+        voucherSub,
+      </if>
+      <if test="couponId != null" >
+        couponId,
+      </if>
+      <if test="tradeNo != null" >
+        tradeNo,
+      </if>
+      <if test="purpose != null" >
+        purpose,
+      </if>
+      <if test="businessLogNo != null" >
+        businessLogNo,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="paySideType != null" >
+        #{paySideType,jdbcType=TINYINT},
+      </if>
+      <if test="payerWalletId != null" >
+        #{payerWalletId,jdbcType=VARCHAR},
+      </if>
+      <if test="payerLastBalance != null" >
+        #{payerLastBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="getSideType != null" >
+        #{getSideType,jdbcType=TINYINT},
+      </if>
+      <if test="geterWalletId != null" >
+        #{geterWalletId,jdbcType=VARCHAR},
+      </if>
+      <if test="geterLastBalance != null" >
+        #{geterLastBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="subjectType != null" >
+        #{subjectType,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeWay != null" >
+        #{tradeWay,jdbcType=INTEGER},
+      </if>
+      <if test="systemCode != null" >
+        #{systemCode,jdbcType=INTEGER},
+      </if>
+      <if test="businessType != null" >
+        #{businessType,jdbcType=INTEGER},
+      </if>
+      <if test="voucherMain != null" >
+        #{voucherMain,jdbcType=VARCHAR},
+      </if>
+      <if test="voucherSub != null" >
+        #{voucherSub,jdbcType=VARCHAR},
+      </if>
+      <if test="couponId != null" >
+        #{couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null" >
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="purpose != null" >
+        #{purpose,jdbcType=TINYINT},
+      </if>
+      <if test="businessLogNo != null" >
+        #{businessLogNo,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.FinWalletLog" >
+    update FinWalletLog
+    <set >
+      <if test="paySideType != null" >
+        paySideType = #{paySideType,jdbcType=TINYINT},
+      </if>
+      <if test="payerWalletId != null" >
+        payerWalletId = #{payerWalletId,jdbcType=VARCHAR},
+      </if>
+      <if test="payerLastBalance != null" >
+        payerLastBalance = #{payerLastBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="getSideType != null" >
+        getSideType = #{getSideType,jdbcType=TINYINT},
+      </if>
+      <if test="geterWalletId != null" >
+        geterWalletId = #{geterWalletId,jdbcType=VARCHAR},
+      </if>
+      <if test="geterLastBalance != null" >
+        geterLastBalance = #{geterLastBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="subjectType != null" >
+        subjectType = #{subjectType,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeWay != null" >
+        tradeWay = #{tradeWay,jdbcType=INTEGER},
+      </if>
+      <if test="systemCode != null" >
+        systemCode = #{systemCode,jdbcType=INTEGER},
+      </if>
+      <if test="businessType != null" >
+        businessType = #{businessType,jdbcType=INTEGER},
+      </if>
+      <if test="voucherMain != null" >
+        voucherMain = #{voucherMain,jdbcType=VARCHAR},
+      </if>
+      <if test="voucherSub != null" >
+        voucherSub = #{voucherSub,jdbcType=VARCHAR},
+      </if>
+      <if test="couponId != null" >
+        couponId = #{couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null" >
+        tradeNo = #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="purpose != null" >
+        purpose = #{purpose,jdbcType=TINYINT},
+      </if>
+      <if test="businessLogNo != null" >
+        businessLogNo = #{businessLogNo,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.FinWalletLog" >
+    update FinWalletLog
+    set paySideType = #{paySideType,jdbcType=TINYINT},
+      payerWalletId = #{payerWalletId,jdbcType=VARCHAR},
+      payerLastBalance = #{payerLastBalance,jdbcType=DECIMAL},
+      getSideType = #{getSideType,jdbcType=TINYINT},
+      geterWalletId = #{geterWalletId,jdbcType=VARCHAR},
+      geterLastBalance = #{geterLastBalance,jdbcType=DECIMAL},
+      amount = #{amount,jdbcType=DECIMAL},
+      subjectType = #{subjectType,jdbcType=INTEGER},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      tradeWay = #{tradeWay,jdbcType=INTEGER},
+      systemCode = #{systemCode,jdbcType=INTEGER},
+      businessType = #{businessType,jdbcType=INTEGER},
+      voucherMain = #{voucherMain,jdbcType=VARCHAR},
+      voucherSub = #{voucherSub,jdbcType=VARCHAR},
+      couponId = #{couponId,jdbcType=VARCHAR},
+      tradeNo = #{tradeNo,jdbcType=VARCHAR},
+      purpose = #{purpose,jdbcType=TINYINT},
+      businessLogNo = #{businessLogNo,jdbcType=VARCHAR},
+      isDelete = #{isDelete,jdbcType=BIT},
+      remark = #{remark,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

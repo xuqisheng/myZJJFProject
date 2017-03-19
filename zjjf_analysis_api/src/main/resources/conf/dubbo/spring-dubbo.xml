@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+           http://www.springframework.org/schema/beans/spring-beans.xsd  
+           http://www.springframework.org/schema/mvc  
+           http://www.springframework.org/schema/mvc/spring-mvc.xsd
+           http://www.springframework.org/schema/context  
+           http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/tx 
+    	   http://www.springframework.org/schema/tx/spring-tx.xsd
+           http://www.springframework.org/schema/task 
+           http://www.springframework.org/schema/task/spring-task.xsd
+           http://www.springframework.org/schema/cache
+           http://www.springframework.org/schema/cache/spring-cache.xsd
+           http://code.alibabatech.com/schema/dubbo
+           http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+ 
+ 
+	<!--消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+	<dubbo:application name="zjjf_analysis_api" />
+	
+	<!--zookeeper注册中心; 使用multicast广播注册中心暴露的服务地址 120.76.101.151-->
+	<!--120.76.208.143阿街beta环境-->
+	<dubbo:registry address="zookeeper://127.0.0.1:2181" />
+	<dubbo:protocol name="dubbo" port="20880" />
+		
+		
+	<dubbo:annotation package="com.zjjf.analysis.services" />  
+	
+	<dubbo:service interface="com.zjjf.analysis.producer.authority.IUserService" ref="authorityUserServiceImpl" />
+	<bean id="authorityUserServiceImpl" class="com.zjjf.analysis.services.authority.impl.AuthorityUserServiceImpl" />
+	
+	<dubbo:service interface="com.zjjf.analysis.producer.authority.IAuthorityShiroService" ref="authorityShiroServiceImpl" />
+	<bean id="authorityShiroServiceImpl" class="com.zjjf.analysis.services.authority.AuthorityShiroServiceImpl" />
+	
+</beans>
+
+
+

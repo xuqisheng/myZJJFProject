@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.ScOrderDetailMgMapper">
+
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ScOrderDetail"  extends="com.corner.core.dao.ScOrderDetailMapper.BaseResultMap">
+  </resultMap>
+
+
+   <insert id="batchSave" parameterType="java.util.ArrayList">
+     <foreach collection="list" separator=";" item="item">
+    insert into ScOrderDetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="item.id != null" >
+        id,
+      </if>
+      <if test="item.orderId != null" >
+        orderId,
+      </if>
+      <if test="item.orderId2 != null" >
+        orderId2,
+      </if>
+      <if test="item.maOrderInfoId != null" >
+        maOrderInfoId,
+      </if>
+      <if test="item.itemId != null" >
+        itemId,
+      </if>
+      <if test="item.wayCode != null" >
+        wayCode,
+      </if>
+      <if test="item.barCode != null" >
+        barCode,
+      </if>
+      <if test="item.brand != null" >
+        brand,
+      </if>
+      <if test="item.name != null" >
+        name,
+      </if>
+      <if test="item.spec != null" >
+        spec,
+      </if>
+      <if test="item.img != null" >
+        img,
+      </if>
+      <if test="item.pkg != null" >
+        pkg,
+      </if>
+      <if test="item.quantity != null" >
+        quantity,
+      </if>
+      <if test="item.price != null" >
+        price,
+      </if>
+      <if test="item.totalPrice != null" >
+        totalPrice,
+      </if>
+      <if test="item.areaId != null" >
+        areaId,
+      </if>
+      <if test="item.areaTotalPrice != null" >
+        areaTotalPrice,
+      </if>
+      <if test="item.areaPrice != null" >
+        areaPrice,
+      </if>
+      <if test="item.areaName != null" >
+        areaName,
+      </if>
+      <if test="item.zjjfPrice != null" >
+        zjjfPrice,
+      </if>
+      <if test="item.marketTotalPrice != null" >
+        marketTotalPrice,
+      </if>
+      <if test="item.marketPrice != null" >
+        marketPrice,
+      </if>
+      <if test="item.maoli != null" >
+        maoli,
+      </if>
+      <if test="item.fee != null" >
+        fee,
+      </if>
+      <if test="item.spId != null" >
+        spId,
+      </if>
+      <if test="item.scmsGroupId != null" >
+        scmsGroupId,
+      </if>
+      <if test="item.managerId != null" >
+        managerId,
+      </if>
+      <if test="item.remark != null" >
+        remark,
+      </if>
+      <if test="item.youHui != null" >
+        youHui,
+      </if>
+      <if test="item.addTime != null" >
+        addTime,
+      </if>
+      <if test="item.isDelete != null" >
+        isDelete,
+      </if>
+      <if test="item.restrict != null" >
+        restrict,
+      </if>
+      <if test="item.status != null" >
+        status,
+      </if>
+      <if test="item.freight != null" >
+        freight,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="item.id != null" >
+        #{item.id,jdbcType=VARCHAR},
+      </if>
+      <if test="item.orderId != null" >
+        #{item.orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="item.orderId2 != null" >
+        #{item.orderId2,jdbcType=VARCHAR},
+      </if>
+      <if test="item.maOrderInfoId != null" >
+        #{item.maOrderInfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="item.itemId != null" >
+        #{item.itemId,jdbcType=VARCHAR},
+      </if>
+      <if test="item.wayCode != null" >
+        #{item.wayCode,jdbcType=VARCHAR},
+      </if>
+      <if test="item.barCode != null" >
+        #{item.barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="item.brand != null" >
+        #{item.brand,jdbcType=VARCHAR},
+      </if>
+      <if test="item.name != null" >
+        #{item.name,jdbcType=VARCHAR},
+      </if>
+      <if test="item.spec != null" >
+        #{item.spec,jdbcType=VARCHAR},
+      </if>
+      <if test="item.img != null" >
+        #{item.img,jdbcType=VARCHAR},
+      </if>
+      <if test="item.pkg != null" >
+        #{item.pkg,jdbcType=VARCHAR},
+      </if>
+      <if test="item.quantity != null" >
+        #{item.quantity,jdbcType=SMALLINT},
+      </if>
+      <if test="item.price != null" >
+        #{item.price,jdbcType=DECIMAL},
+      </if>
+      <if test="item.totalPrice != null" >
+        #{item.totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="item.areaId != null" >
+        #{item.areaId,jdbcType=INTEGER},
+      </if>
+      <if test="item.areaTotalPrice != null" >
+        #{item.areaTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="item.areaPrice != null" >
+        #{item.areaPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="item.areaName != null" >
+        #{item.areaName,jdbcType=VARCHAR},
+      </if>
+      <if test="item.zjjfPrice != null" >
+        #{item.zjjfPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="item.marketTotalPrice != null" >
+        #{item.marketTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="item.marketPrice != null" >
+        #{item.marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="item.maoli != null" >
+        #{item.maoli,jdbcType=DECIMAL},
+      </if>
+      <if test="item.fee != null" >
+        #{item.fee,jdbcType=DECIMAL},
+      </if>
+      <if test="item.spId != null" >
+        #{item.spId,jdbcType=VARCHAR},
+      </if>
+      <if test="item.scmsGroupId != null" >
+        #{item.scmsGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="item.managerId != null" >
+        #{item.managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="item.remark != null" >
+        #{item.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="item.youHui != null" >
+        #{item.youHui,jdbcType=VARCHAR},
+      </if>
+      <if test="item.addTime != null" >
+        #{item.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item.isDelete != null" >
+        #{item.isDelete,jdbcType=BIT},
+      </if>
+      <if test="item.restrict != null" >
+        #{item.restrict,jdbcType=INTEGER},
+      </if>
+      <if test="item.status != null" >
+        #{item.status,jdbcType=TINYINT},
+      </if>
+      <if test="item.freight != null" >
+        #{item.freight,jdbcType=TINYINT},
+      </if>
+    </trim>
+     </foreach>
+   </insert>
+   
+   
+   <select id="getOrderDetailListBySupplier" parameterType="com.corner.core.beans.Supplier" resultType="com.corner.scms.beans.vo.sc.ScOrderDetailVo">
+       SELECT
+		b.id AS itemId,
+		c.mdseId AS wayCode,
+		b.goodName,
+		c.spec,
+		c.imgS AS img,
+		a.num AS quantity,
+		b.areaId,
+		b.areaPrice,
+		b.areaName,
+		b.zjjfPrice,
+		b.marketPrice,
+		b.groupId AS scmsGroupId,
+		b.managerId,
+		b.zjjfPrice*a.num as totalPrice,
+		b.marketPrice*a.num as marketTotalPrice,
+		b.itemBaseId,
+		b.goodName as name,
+		c.id AS itemBaseId,
+		c.brand as brand,
+		a.supplierId as spId,
+		c.pkg,
+		(SELECT mdseId from ItemBase where upId = 0 and tgId = c.tgId) as barCode
+	FROM
+		(
+			SELECT
+				supplierId,
+				scmsItemId,
+				barCode,
+				`name`,
+				spec,
+				smallImg,
+				num
+			FROM
+				ScmsShoppingCart
+			WHERE
+			supplierId = #{id}
+			AND isDelete = 0
+			AND `status` = 1
+		) a
+	JOIN ScmsItem b ON a.scmsItemId = b.id
+	JOIN ItemBase c ON b.itemBaseId = c.id
+	JOIN ScmsMinimum d ON b.miniumId = d.id
+   </select>
+   
+   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultType="java.util.Map">
+		SELECT a.*,a.mdseId as wayCode,b.mdseId as barCode from ItemBase a JOIN ItemBase b on a.tgId = b.tgId where b.upId = 0 and a.`status` = 1 and a.isDelete = 0 and a.id= #{id}
+	</select>
+   
+   
+   	<!-- 查询经销商下所有的订单 -->
+	<select id="getScOrderDetailById" parameterType="java.util.Map" resultType="com.corner.scms.beans.vo.sc.ScOrderDetailVo">
+		SELECT
+			*,
+			SUM(quantity) as countNum,
+			SUM(areaTotalPrice) as xiaoji
+		FROM
+			ScOrderDetail
+		WHERE
+			maOrderInfoId=#{maOrderInfoId}
+		GROUP BY itemId
+	</select>
+	
+   <!-- 查询订单明细 汇总-->
+   <select id="getOrderDetail" parameterType="com.corner.scms.beans.ro.sc.ScOrderDetailRo" resultType="com.corner.scms.beans.vo.sc.ScOrderDetailVo">
+	   	SELECT
+	   		c.maOrderInfoId,
+			c.img,
+			c. NAME,
+			c.spec,
+			c.pkg,
+			c.orderId,
+			c.itemId,
+			c.barCode,
+			c.wayCode,
+			c.areaName,
+			SUM(c.countNum) AS countNum,
+			IFNULL(SUM(c.visit),0) AS visit,
+			IFNULL(SUM(c.own),0) AS own
+		FROM
+			(
+			SELECT
+				a.maOrderInfoId as maOrderInfoId,
+				a.img AS img,
+				a. NAME AS NAME,
+				a.spec AS spec,
+				a.pkg AS pkg,
+				a.orderId AS orderId,
+				a.itemId AS itemId,
+				a.barCode AS barCode,
+				a.wayCode AS wayCode,
+				a.areaName AS areaName,
+				SUM(a.quantity) AS countNum,
+				CASE
+					WHEN b.ordertype = 0 THEN SUM(a.quantity)
+				END AS visit,
+				CASE
+					WHEN b.ordertype = 2 THEN SUM(a.quantity)
+				END AS own
+			FROM
+				ScOrderDetail a
+			JOIN  (
+				SELECT
+					orderId,
+					ordertype
+				FROM
+					ScOrderInfo
+				where `level` = 1
+			) b ON a.orderId = b.orderId
+			WHERE 1 = 1
+			AND a.maOrderInfoId = #{maOrderInfoId}
+			AND a.itemId = #{itemId}
+			GROUP BY ordertype
+			) c
+   </select>
+   
+   <!-- 查询订单明细 列表 -->
+   <select id="getOrderDetailList" parameterType="com.corner.scms.beans.ro.sc.ScOrderDetailRo" resultType="com.corner.scms.beans.vo.sc.ScOrderDetailVo">
+	   	SELECT
+			a.orderId,
+			a.supplierName,
+			a.address,
+			a.mobile,
+			b.zjjfPrice,
+			b.quantity,
+			CASE
+				WHEN a.ordertype=0 THEN '送货上门'
+				WHEN a.ordertype=1 THEN '当面付'
+				WHEN a.ordertype=2 THEN '店面自提'
+			END as ordertype,
+			a.supportTime,
+			b.pkg
+		FROM
+			ScOrderInfo a
+		JOIN (
+			SELECT
+				zjjfPrice,
+				quantity,
+				pkg,
+				orderId
+			FROM
+				ScOrderDetail
+			WHERE 1=1
+			AND maOrderInfoId = #{maOrderInfoId}
+			AND itemId = #{itemId}
+		) b ON a.orderId = b.orderId
+		WHERE level = 1
+		order by a.getOrderTime
+		<include refid="BasePublicMapper.pageSql" />
+   </select>
+   
+   <!-- 查询订单明细 列表总数 -->
+   <select id="getOrderDetailListCount" parameterType="com.corner.scms.beans.ro.sc.ScOrderDetailRo" resultType="java.lang.Integer">
+	   	SELECT
+			count(1)
+		FROM
+			(
+			SELECT
+				b.orderId,
+				a.supplierName,
+				a.address,
+				a.mobile,
+				b.zjjfPrice,
+				b.quantity,
+				CASE
+					WHEN a.ordertype=0 THEN '送货上门'
+					WHEN a.ordertype=1 THEN '当面付'
+					WHEN a.ordertype=2 THEN '店面自提'
+				END as ordertype,
+				a.supportTime,
+				b.pkg
+			FROM
+				ScOrderInfo a
+			JOIN (
+				SELECT
+					zjjfPrice,
+					quantity,
+					pkg,
+					orderId
+				FROM
+					ScOrderDetail
+				WHERE 1=1
+				AND maOrderInfoId = #{maOrderInfoId}
+				AND itemId = #{itemId}
+			) b ON a.orderId = b.orderId
+			WHERE level = 1
+		) C
+   </select>
+   
+   <!-- 根据id获得商品的状态 -->
+   <select id="getGoodsStatusById" parameterType="java.util.Map" resultType="java.lang.Byte">
+   		select status from ScOrderDetail where isDelete = 0 and id = #{id} and orderId = #{orderId}
+   </select>
+  
+  <!-- 修改商品状态 -->
+  <update id="updateGoodsStatus" parameterType="java.util.Map">
+  	update ScOrderDetail 
+  	<set>
+  		<if test="status != null and status != ''">
+  			status = #{status}
+  		</if>
+  	</set>
+  	<trim prefix="WHERE" prefixOverrides="AND | OR">
+  		<if test="id != null and id != ''">
+  			and id = #{id}
+  		</if>
+  		<if test="orderId != null and orderId != ''">
+  			and orderId = #{orderId}
+  		</if>
+  	</trim>
+  </update>
+  <!-- 查出采购单下所有商品的状态 -->
+  <select id="getAllGoodsStatus" parameterType="java.util.Map" resultType="java.lang.Integer">
+  	select 
+  		count(1)
+  	from 
+  		ScOrderDetail 
+  	where
+		isDelete = 0
+	and 
+		maOrderInfoId 
+	in (
+		select 
+			maOrderInfoId 
+		from 
+			ScOrderDetail
+		where 
+			isDelete = 0
+		<if test="id != null">
+			and id=#{id}
+		</if>	
+		<if test="orderId != null and orderId != ''">
+			and orderId = #{orderId}
+		</if>
+	)
+	and status &lt; 2
+  </select>
+  <!-- 查出批发商单下所有商品的状态 -->
+  <select id="getSupplierAllGoodsStatus" parameterType="java.util.Map" resultType="java.lang.Integer">
+  		select 
+	  		count(1)
+	  	from 
+	  		ScOrderDetail 
+	  	where
+			isDelete = 0
+		and 
+			orderId = #{orderId}
+		and 
+			status &lt; 2	 
+  </select>
+  
+   
+   <select id="getOrderDetailListByScOrderInfo" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+      select * from ScOrderDetail where orderId = #{scOrderInfo.orderId} <!-- and supplierId= -->
+   </select>
+   
+   <select id="findDetailByOid2" parameterType="java.lang.String" resultType="com.corner.core.beans.ScOrderDetail">
+   		select * from ScOrderDetail where orderId2 = #{orderId2}
+   </select>
+   
+   <select id="getOrderDetailVoListByScOrderInfo" parameterType="java.util.HashMap" resultType="com.corner.scms.beans.vo.sc.ScOrderDetailVo">
+      select a.*,c.branderName,c.branderTel,c.houseAddress,c.id as warehouseId,c.name as wareHouseName from 
+      (select * from ScOrderDetail where orderId = #{scOrderInfo.orderId}) a join
+      ScmsGroup b on a.scmsGroupId = b.id
+      join ScmsWarehouse c on b.warehouseId = c.id
+   </select>
+   
+   <update id="updateOrderId2" parameterType="java.util.HashMap">
+     update ScOrderDetail set orderId2=#{orderId2} where id = #{orderDetailId}
+   </update>
+   
+   <update id="deleteMyOrderinfoDetail" parameterType="com.corner.scms.beans.ro.sc.ScOrderInfoMgRo">
+   		update ScOrderDetail set isDelete=1 where orderId=#{orderId}
+   </update>
+   
+   <select id="findDetailByOid" parameterType="java.lang.String" resultType="com.corner.core.beans.ScOrderDetail">
+   		SELECT * from ScOrderDetail where orderId =#{orderId}
+   </select>
+   
+   <delete id="deleteByScOrderInfo" parameterType="com.corner.core.beans.ScOrderInfo">
+     Update ScOrderDetail set isDelete = 1 where orderId = #{orderId} AND spId=#{supplierId}
+   </delete>
+   <select id="getNewestPriceByScOrderInfo" parameterType="java.util.HashMap" resultType="com.corner.core.beans.ScOrderDetail">
+      SELECT
+		a.id,
+		b.zjjfPrice,
+		b.zjjfPrice as price,
+		b.zjjfPrice * a.quantity AS totalPrice,
+		a.quantity
+	FROM
+		(
+			SELECT
+				*
+			FROM
+				ScOrderDetail
+			WHERE
+				orderId = #{scOrderInfo.orderId}
+			AND spId = #{scOrderInfo.supplierId}
+		) a
+	JOIN ScmsItem b ON a.itemId = b.id
+   </select>
+   <update id="updaeScOrderdetailPrice" parameterType="com.corner.core.beans.ScOrderDetail">
+    update ScOrderDetail set totalPrice = #{totalPrice} where id = #{id}
+   </update>
+   <select id="findDetailByOrderIdOrOrderId2" parameterType="java.util.Map" resultType="com.corner.scms.beans.vo.sc.ScOrderDetailVo">
+      SELECT * from ScOrderDetail 
+      <trim prefix="WHERE" prefixOverrides="AND |OR ">
+      	isDelete = 0
+      	<if test="orderId != null and orderId != ''">
+      		and orderId = #{orderId}
+      	</if>
+      	<if test="orderId2 != null and orderId2 != ''">
+      		and orderId2 = #{orderId2}
+      	</if>
+      </trim>
+   </select>
+   
+   <update id="batchUpdatePrice" parameterType="java.util.List">
+     <foreach collection="list" separator=";" item="item">
+     update ScOrderDetail set 
+       price = #{item.price},
+       totalPrice = #{item.totalPrice},
+       zjjfPrice=#{item.price}
+       where id = #{item.id}
+     </foreach>
+   </update>
+   <!-- 通过订单号获取是否有未确认收货的订单 -->
+   <update id="updateScOrderInfoStatusByOrderId2" parameterType="java.lang.String">
+		UPDATE MaOrderInfo a 
+		JOIN (SELECT COUNT(1) as total , maOrderInfoId from ScOrderInfo where maOrderInfoId =#{maOrderInfoId} and `status` &lt; 4) b
+		on a.id = b.maOrderInfoId
+		set a.warehouseStatus = 4 , a.`status` = 5 , a.endTime = NOW()
+		where id = #{maOrderInfoId} and b.total = 0;
+   </update>
+   
+   <select id="getIsLastAffrimOrder" parameterType="java.lang.String" resultType="com.corner.core.beans.ScOrderDetail">
+   		SELECT orderId2 ,COUNT(1) as areaId,(SELECT count(1) from ScOrderInfo where `level` = 2 and maOrderInfoId = #{maOrderInfoId} and status &lt; 4) as scmsGroupId from ScOrderDetail where maOrderInfoId = #{maOrderInfoId} and `status` &lt; 3
+   </select>
+   
+   
+   <select id="getScOrderDetailListByOrderId" parameterType="com.corner.core.beans.ScOrderInfo" resultType="com.corner.core.beans.ScOrderDetail">
+      select * from
+      ScOrderDetail where orderId2 = #{orderId}
+   </select>
+   
+   
+   <update id="batchUpdateMaOrderInfoId" parameterType="java.util.List">
+     <foreach collection="list" separator=";" index="index" item="item">
+       update ScOrderDetail set maOrderInfoId = #{item.maOrderInfoId} where id = #{item.id}
+     </foreach>
+   </update>
+   
+   <!-- 查询订单明细 列表 -->
+   <select id="findOrderDetailList" parameterType="java.util.Map" resultType="com.corner.core.beans.ScOrderDetail">
+	   	select * from ScOrderDetail 
+	   	 <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	      	1=1 
+	      	<if test="id != null and id != ''">
+	      		and id = #{id}
+	      	</if>
+	      	<if test="isDelete != null and isDelete != ''">
+	      		and isDelete = #{isDelete}
+	      	</if>
+	      	<if test="maOrderInfoId != null and maOrderInfoId != ''">
+	      		and maOrderInfoId = #{maOrderInfoId}
+	      	</if>
+	      	<if test="orderId != null and orderId != ''">
+	      		and orderId = #{orderId}
+	      	</if>
+	      	<if test="orderId2 != null and orderId2 != ''">
+	      		and orderId2 = #{orderId2}
+	      	</if>
+      	</trim>
+   </select>
+</mapper>

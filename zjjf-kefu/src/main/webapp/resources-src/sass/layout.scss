@@ -1,0 +1,147 @@
+@import "_normalize";
+
+body {
+    font-family: "Microsoft YaHei", sans-serif;
+    background: #e7e8eb;
+}
+#nav {
+    position: fixed;
+    left: 0;
+    width: 220px;
+    background: #2c3037;
+    overflow-x: hidden;
+    overflow-y: auto;
+    ul,
+    li {
+        margin: 0;
+        padding: 0;
+        display: inline  /* ie 空一行bug */
+    }
+    h1 {
+        margin: 0;
+        height: 70px;
+        background: #0096e0 url(../images/logo.png?v123) no-repeat center;
+        font-size: 26px;
+        text-align: center;
+        color: white;
+        overflow: hidden
+    }
+    .category {
+        padding: 0 7%;
+        opacity: 0.6;
+    }
+    .category,
+    .category a {
+        height: 60px;
+        line-height: 60px;
+        display: block;
+        font-size: 15px;
+        text-decoration: none;
+        color: white;
+        cursor: pointer;
+        overflow: hidden
+    }
+    .category:hover,
+    .subcategory a:hover {
+        background: #393e47;
+        opacity: 0.8
+    }
+    .active {
+        opacity: 1 !important;
+        /* background:url(../images/nav_rg.png) no-repeat right center #484d5a !important; */
+        &:hover {
+            background: #484d5a;
+            opacity: 1
+        }
+    }
+    .on{
+        background: #33373f;
+        display: block;
+    }
+    .subcategory {
+        display: none;
+        a {
+            padding-left: 50px;
+            height: 36px;
+            line-height: 36px;
+            display: block;
+            font-size: 14px;
+            color: white;
+            text-decoration: none;
+            opacity: 0.6
+        }
+    }
+    .icon {
+        margin-right:15px;
+        margin-top: -3px;
+        width: 22px;
+        height: 20px;
+        display: inline-block;
+        background: url(../images/index.png?v123) no-repeat;
+        vertical-align: middle
+    }
+    .icon-ad {
+        background-position: 0 -20px
+    }
+    .icon-customer {
+        background-position: 0 -40px
+    }
+    .icon-spgroupgoods {
+        background-position: 0 -60px
+    }
+    .icon-jointpurchase {
+        background-position: 0 -80px
+    }
+    .icon-order {
+        background-position: 0 -100px
+    }
+    .icon-goods {
+        background-position: 0 -120px
+    }
+    .icon-promotion {
+        background-position: 0 -140px
+    }
+    .icon-warehouse {
+        background-position: 0 -160px;
+    }
+    .icon-wallet {
+        background-position: 0 -180px;
+    }
+    .icon-direction {
+        float:right;
+        width: 26px;
+        height: 60px;
+        display: inline-block
+    }
+    [data-direction="up"] .icon-direction {
+        background: url(../images/direction-up.png) center no-repeat
+    }
+    [data-direction="down"] .icon-direction {
+        background: url(../images/direction-down.png) center no-repeat
+    }
+}
+#main {
+    margin-left: 220px;
+    overflow-y: hidden
+}
+#header {
+    padding: 5px 15px;
+    height: 60px;
+    line-height: 60px;
+    background: #fff;
+    font-size: 13px;
+    color: #666;
+    .info {
+        float: right;
+        position: relative;
+        right: 16px;
+        .username,
+        a {
+            color:#0096e0;
+            text-decoration: none;
+        }
+    }
+}
+#article {
+    min-width: 716px;
+}

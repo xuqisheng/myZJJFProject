@@ -1,0 +1,1116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.task.dao.KaiDianBaoTaskMgMapper">
+
+	<update id="updateKDBPlantItemPrice" parameterType="java.lang.String">
+		INSERT INTO PlantItem 
+		 (id, itemBaseId, spGroupId, spId, areaId, areaName, areaPrice, plantMemPrice, plantDisPrice, 
+   			maoli, fee, ordId, addTime, updateTime, tuijian, goodsStock, middleStock, upper, 
+   			lower, scInPrice, sales, clickRate, remark, youHui, `restrict`, `status`, isDelete)
+		SELECT
+		id, itemBaseId, spGroupId, spId, areaId, areaName, areaPrice, plantMemPrice, plantDisPrice, 
+   			maoli, fee, ordId, addTime, updateTime, tuijian, goodsStock, middleStock, upper, 
+   			lower, scInPrice, sales, clickRate, remark, youHui, `restrict`, `status`, isDelete
+		FROM PlantItemPre ON DUPLICATE KEY UPDATE
+		areaPrice=values(areaPrice),
+		plantMemPrice=values(plantMemPrice),
+		plantDisPrice=values(plantDisPrice),
+		maoli=values(maoli),
+		fee=values(fee), 
+		ordId=values(ordId), 
+		addTime=values(addTime),
+		updateTime=values(updateTime), 
+		tuijian=values(tuijian), 
+		remark=values(remark),
+		youHui=values(youHui),
+		`restrict`=values(`restrict`),
+		`status`=values(`status`),
+		isDelete=values(isDelete);
+		INSERT INTO PlantItemLog SELECT * FROM PlantItemPre;
+		delete from PlantItemPre
+	</update>
+	
+	 <select id="getAllPlantItemPre" resultType="com.corner.task.beans.PlantItemPre">
+      select * from PlantItemPre
+    </select>
+	
+	
+	<!-- <insert id="insertOrUpdatePlantItemPre" parameterType="java.util.ArrayList">
+		  <foreach collection="list" separator=";" item="item" index="index">
+		     insert into PlantItemPre
+			    <trim prefix="(" suffix=")" suffixOverrides="," >
+			      <if test="item.id != null" >
+			        id,
+			      </if>
+			      <if test="item.itemBaseId != null" >
+			        itemBaseId,
+			      </if>
+			      <if test="item.areaId != null" >
+			        areaId,
+			      </if>
+			      <if test="item.areaName != null" >
+			        areaName,
+			      </if>
+			      <if test="item.areaPrice != null" >
+			        areaPrice,
+			      </if>
+			      <if test="item.plantMemPrice != null" >
+			        plantMemPrice,
+			      </if>
+			      <if test="item.plantDisPrice != null" >
+			        plantDisPrice,
+			      </if>
+			      <if test="item.maoli != null" >
+			        maoli,
+			      </if>
+			      <if test="item.fee != null" >
+			        fee,
+			      </if>
+			      <if test="item.ordId != null" >
+			        ordId,
+			      </if>
+			      <if test="item.addTime != null" >
+			        addTime,
+			      </if>
+			      <if test="item.updateTime != null" >
+			        updateTime,
+			      </if>
+			      <if test="item.tuijian != null" >
+			        tuijian,
+			      </if>
+			      <if test="item.goodsStock != null" >
+			        goodsStock,
+			      </if>
+			      <if test="item.middleStock != null" >
+			        middleStock,
+			      </if>
+			      <if test="item.sales != null" >
+			        sales,
+			      </if>
+			      <if test="item.clickRate != null" >
+			        clickRate,
+			      </if>
+			      <if test="item.status != null" >
+			        status,
+			      </if>
+			      <if test="item.isDelete != null" >
+			        isDelete,
+			      </if>
+			      <if test="item.spGroupId != null" >
+			        spGroupId,
+			      </if>
+			      <if test="item.spId != null" >
+			        spId,
+			      </if>
+			      <if test="item.remark != null" >
+			        remark,
+			      </if>
+			      <if test="item.youHui != null" >
+			        youHui,
+			      </if>
+			      <if test="item.restrict != null" >
+			        `restrict`,
+			      </if>
+			      <if test="item.upper != null" >
+			        upper,
+			      </if>
+			      <if test="item.lower != null" >
+			        lower,
+			      </if>
+			      <if test="item.scInPrice != null" >
+			        scInPrice,
+			      </if>
+			    </trim>
+			    <trim prefix="values (" suffix=")" suffixOverrides="," >
+			      <if test="item.id != null" >
+			        #{item.id,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.itemBaseId != null" >
+			        #{item.itemBaseId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.areaId != null" >
+			        #{item.areaId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.areaName != null" >
+			        #{item.areaName,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.areaPrice != null" >
+			        #{item.areaPrice,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.plantMemPrice != null" >
+			        #{item.plantMemPrice,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.plantDisPrice != null" >
+			        #{item.plantDisPrice,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.maoli != null" >
+			        #{item.maoli,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.fee != null" >
+			        #{item.fee,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.ordId != null" >
+			        #{item.ordId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.addTime != null" >
+			        #{item.addTime,jdbcType=TIMESTAMP},
+			      </if>
+			      <if test="item.updateTime != null" >
+			        #{item.updateTime,jdbcType=TIMESTAMP},
+			      </if>
+			      <if test="item.tuijian != null" >
+			        #{item.tuijian,jdbcType=BIT},
+			      </if>
+			      <if test="item.goodsStock != null" >
+			        #{item.goodsStock,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.middleStock != null" >
+			        #{item.middleStock,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.sales != null" >
+			        #{item.sales,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.clickRate != null" >
+			        #{item.clickRate,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.status != null" >
+			        #{item.status,jdbcType=TINYINT},
+			      </if>
+			      <if test="item.isDelete != null" >
+			        #{item.isDelete,jdbcType=BIT},
+			      </if>
+			      <if test="item.spGroupId != null" >
+			        #{item.spGroupId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.spId != null" >
+			        #{item.spId,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.remark != null" >
+			        #{item.remark,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.youHui != null" >
+			        #{item.youHui,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.restrict != null" >
+			        #{item.restrict,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.upper != null" >
+			        #{item.upper,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.lower != null" >
+			        #{item.lower,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.scInPrice != null" >
+			        #{item.scInPrice,jdbcType=DECIMAL},
+			      </if>
+			    </trim>
+			    on duplicate key update
+			      <if test="item.areaId != null" >
+			        areaId = #{item.areaId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.areaName != null" >
+			        areaName = #{item.areaName,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.areaPrice != null" >
+			        areaPrice = #{item.areaPrice,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.plantMemPrice != null" >
+			        plantMemPrice = #{item.plantMemPrice,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.plantDisPrice != null" >
+			        plantDisPrice = #{item.plantDisPrice,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.maoli != null" >
+			        maoli = #{item.maoli,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.fee != null" >
+			        fee = #{item.fee,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.ordId != null" >
+			        ordId = #{item.ordId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.addTime != null" >
+			        addTime = #{item.addTime,jdbcType=TIMESTAMP},
+			      </if>
+			      <if test="item.updateTime != null" >
+			        updateTime = #{item.updateTime,jdbcType=TIMESTAMP},
+			      </if>
+			      <if test="item.tuijian != null" >
+			        tuijian = #{item.tuijian,jdbcType=BIT},
+			      </if>
+			      <if test="item.goodsStock != null" >
+			        goodsStock = #{item.goodsStock,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.middleStock != null" >
+			        middleStock = #{item.middleStock,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.sales != null" >
+			        sales = #{item.sales,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.clickRate != null" >
+			        clickRate = #{item.clickRate,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.status != null" >
+			        `status` = #{item.status,jdbcType=TINYINT},
+			      </if>
+			      <if test="item.isDelete != null" >
+			        isDelete = #{item.isDelete,jdbcType=BIT},
+			      </if>
+			      <if test="item.spGroupId != null" >
+			        spGroupId = #{item.spGroupId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.spId != null" >
+			        spId = #{item.spId,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.remark != null" >
+			        remark = #{item.remark,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.youHui != null" >
+			        youHui = #{item.youHui,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.restrict != null" >
+			        `restrict` = #{item.restrict,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.upper != null" >
+			        upper = #{item.upper,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.lower != null" >
+			        lower = #{item.lower,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.scInPrice != null" >
+			        scInPrice = #{item.scInPrice,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.itemBaseId != null" >
+			        itemBaseId = #{item.itemBaseId,jdbcType=INTEGER}
+			      </if>
+		  </foreach>
+		</insert> -->
+		
+		<insert id="insertOrUpdatePlantItem" parameterType="java.util.ArrayList">
+		  <foreach collection="list" separator=";" item="item" index="index">
+		     insert into PlantItem
+			    <trim prefix="(" suffix=")" suffixOverrides="," >
+			      <if test="item.id != null" >
+			        id,
+			      </if>
+			      <if test="item.itemBaseId != null" >
+			        itemBaseId,
+			      </if>
+			      <if test="item.areaId != null" >
+			        areaId,
+			      </if>
+			      <if test="item.areaName != null" >
+			        areaName,
+			      </if>
+			      <if test="item.areaPrice != null" >
+			        areaPrice,
+			      </if>
+			      <if test="item.plantMemPrice != null" >
+			        plantMemPrice,
+			      </if>
+			      <if test="item.plantDisPrice != null" >
+			        plantDisPrice,
+			      </if>
+			      <if test="item.maoli != null" >
+			        maoli,
+			      </if>
+			      <if test="item.fee != null" >
+			        fee,
+			      </if>
+			      <if test="item.ordId != null" >
+			        ordId,
+			      </if>
+			      <if test="item.addTime != null" >
+			        addTime,
+			      </if>
+			      <if test="item.updateTime != null" >
+			        updateTime,
+			      </if>
+			      <if test="item.tuijian != null" >
+			        tuijian,
+			      </if>
+			      <if test="item.goodsStock != null" >
+			        goodsStock,
+			      </if>
+			      <if test="item.middleStock != null" >
+			        middleStock,
+			      </if>
+			      <if test="item.sales != null" >
+			        sales,
+			      </if>
+			      <if test="item.clickRate != null" >
+			        clickRate,
+			      </if>
+			      <if test="item.status != null" >
+			        status,
+			      </if>
+			      <if test="item.isDelete != null" >
+			        isDelete,
+			      </if>
+			      <if test="item.spGroupId != null" >
+			        spGroupId,
+			      </if>
+			      <if test="item.spId != null" >
+			        spId,
+			      </if>
+			      <if test="item.remark != null" >
+			        remark,
+			      </if>
+			      <if test="item.youHui != null" >
+			        youHui,
+			      </if>
+			      <if test="item.restrict != null" >
+			        `restrict`,
+			      </if>
+			      <if test="item.upper != null" >
+			        upper,
+			      </if>
+			      <if test="item.lower != null" >
+			        lower,
+			      </if>
+			      <if test="item.scInPrice != null" >
+			        scInPrice,
+			      </if>
+			    </trim>
+			    <trim prefix="values (" suffix=")" suffixOverrides="," >
+			      <if test="item.id != null" >
+			        #{item.id,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.itemBaseId != null" >
+			        #{item.itemBaseId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.areaId != null" >
+			        #{item.areaId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.areaName != null" >
+			        #{item.areaName,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.areaPrice != null" >
+			        #{item.areaPrice,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.plantMemPrice != null" >
+			        #{item.plantMemPrice,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.plantDisPrice != null" >
+			        #{item.plantDisPrice,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.maoli != null" >
+			        #{item.maoli,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.fee != null" >
+			        #{item.fee,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.ordId != null" >
+			        #{item.ordId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.addTime != null" >
+			        #{item.addTime,jdbcType=TIMESTAMP},
+			      </if>
+			      <if test="item.updateTime != null" >
+			        #{item.updateTime,jdbcType=TIMESTAMP},
+			      </if>
+			      <if test="item.tuijian != null" >
+			        #{item.tuijian,jdbcType=BIT},
+			      </if>
+			      <if test="item.goodsStock != null" >
+			        #{item.goodsStock,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.middleStock != null" >
+			        #{item.middleStock,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.sales != null" >
+			        #{item.sales,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.clickRate != null" >
+			        #{item.clickRate,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.status != null" >
+			        #{item.status,jdbcType=TINYINT},
+			      </if>
+			      <if test="item.isDelete != null" >
+			        #{item.isDelete,jdbcType=BIT},
+			      </if>
+			      <if test="item.spGroupId != null" >
+			        #{item.spGroupId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.spId != null" >
+			        #{item.spId,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.remark != null" >
+			        #{item.remark,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.youHui != null" >
+			        #{item.youHui,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.restrict != null" >
+			        #{item.restrict,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.upper != null" >
+			        #{item.upper,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.lower != null" >
+			        #{item.lower,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.scInPrice != null" >
+			        #{item.scInPrice,jdbcType=DECIMAL},
+			      </if>
+			    </trim>
+			    on duplicate key update
+			      <if test="item.areaId != null" >
+			        areaId = #{item.areaId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.areaName != null" >
+			        areaName = #{item.areaName,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.areaPrice != null" >
+			        areaPrice = #{item.areaPrice,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.plantMemPrice != null" >
+			        plantMemPrice = #{item.plantMemPrice,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.plantDisPrice != null" >
+			        plantDisPrice = #{item.plantDisPrice,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.maoli != null" >
+			        maoli = #{item.maoli,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.fee != null" >
+			        fee = #{item.fee,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.ordId != null" >
+			        ordId = #{item.ordId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.addTime != null" >
+			        addTime = #{item.addTime,jdbcType=TIMESTAMP},
+			      </if>
+			      <if test="item.updateTime != null" >
+			        updateTime = #{item.updateTime,jdbcType=TIMESTAMP},
+			      </if>
+			      <if test="item.tuijian != null" >
+			        tuijian = #{item.tuijian,jdbcType=BIT},
+			      </if>
+			      <if test="item.goodsStock != null" >
+			        goodsStock = #{item.goodsStock,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.middleStock != null" >
+			        middleStock = #{item.middleStock,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.sales != null" >
+			        sales = #{item.sales,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.clickRate != null" >
+			        clickRate = #{item.clickRate,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.status != null" >
+			        `status` = #{item.status,jdbcType=TINYINT},
+			      </if>
+			      <if test="item.isDelete != null" >
+			        isDelete = #{item.isDelete,jdbcType=BIT},
+			      </if>
+			      <if test="item.spGroupId != null" >
+			        spGroupId = #{item.spGroupId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.spId != null" >
+			        spId = #{item.spId,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.remark != null" >
+			        remark = #{item.remark,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.youHui != null" >
+			        youHui = #{item.youHui,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.restrict != null" >
+			        `restrict` = #{item.restrict,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.upper != null" >
+			        upper = #{item.upper,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.lower != null" >
+			        lower = #{item.lower,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.scInPrice != null" >
+			        scInPrice = #{item.scInPrice,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.itemBaseId != null" >
+			        itemBaseId = #{item.itemBaseId,jdbcType=INTEGER}
+			      </if>
+		  </foreach>
+		</insert>
+		
+		<insert id="batchAddPlantItemLog" parameterType="java.util.ArrayList">
+		   <foreach collection="list" separator=";" item="item" index="index">
+		      insert into PlantItemLog
+			    <trim prefix="(" suffix=")" suffixOverrides="," >
+			      <if test="item.id != null" >
+			        id,
+			      </if>
+			      <if test="item.itemBaseId != null" >
+			        itemBaseId,
+			      </if>
+			      <if test="item.areaId != null" >
+			        areaId,
+			      </if>
+			      <if test="item.areaName != null" >
+			        areaName,
+			      </if>
+			      <if test="item.areaPrice != null" >
+			        areaPrice,
+			      </if>
+			      <if test="item.plantMemPrice != null" >
+			        plantMemPrice,
+			      </if>
+			      <if test="item.plantDisPrice != null" >
+			        plantDisPrice,
+			      </if>
+			      <if test="item.maoli != null" >
+			        maoli,
+			      </if>
+			      <if test="item.fee != null" >
+			        fee,
+			      </if>
+			      <if test="item.ordId != null" >
+			        ordId,
+			      </if>
+			      <if test="item.addTime != null" >
+			        addTime,
+			      </if>
+			      <if test="item.updateTime != null" >
+			        updateTime,
+			      </if>
+			      <if test="item.tuijian != null" >
+			        tuijian,
+			      </if>
+			      <if test="item.goodsStock != null" >
+			        goodsStock,
+			      </if>
+			      <if test="item.middleStock != null" >
+			        middleStock,
+			      </if>
+			      <if test="item.sales != null" >
+			        sales,
+			      </if>
+			      <if test="item.clickRate != null" >
+			        clickRate,
+			      </if>
+			      <if test="item.status != null" >
+			        `status`,
+			      </if>
+			      <if test="item.isDelete != null" >
+			        isDelete,
+			      </if>
+			      <if test="item.spGroupId != null" >
+			        spGroupId,
+			      </if>
+			      <if test="item.spId != null" >
+			        spId,
+			      </if>
+			      <if test="item.remark != null" >
+			        remark,
+			      </if>
+			      <if test="item.youHui != null" >
+			        youHui,
+			      </if>
+			      <if test="item.restrict != null" >
+			        `restrict`,
+			      </if>
+			      <if test="item.upper != null" >
+			        upper,
+			      </if>
+			      <if test="item.lower != null" >
+			        lower,
+			      </if>
+			      <if test="item.scInPrice != null" >
+			        scInPrice,
+			      </if>
+			    </trim>
+			    <trim prefix="values (" suffix=")" suffixOverrides="," >
+			      <if test="item.id != null" >
+			        #{item.id,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.itemBaseId != null" >
+			        #{item.itemBaseId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.areaId != null" >
+			        #{item.areaId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.areaName != null" >
+			        #{item.areaName,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.areaPrice != null" >
+			        #{item.areaPrice,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.plantMemPrice != null" >
+			        #{item.plantMemPrice,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.plantDisPrice != null" >
+			        #{item.plantDisPrice,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.maoli != null" >
+			        #{item.maoli,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.fee != null" >
+			        #{item.fee,jdbcType=DECIMAL},
+			      </if>
+			      <if test="item.ordId != null" >
+			        #{item.ordId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.addTime != null" >
+			        #{item.addTime,jdbcType=TIMESTAMP},
+			      </if>
+			      <if test="item.updateTime != null" >
+			        #{item.updateTime,jdbcType=TIMESTAMP},
+			      </if>
+			      <if test="item.tuijian != null" >
+			        #{item.tuijian,jdbcType=BIT},
+			      </if>
+			      <if test="item.goodsStock != null" >
+			        #{item.goodsStock,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.middleStock != null" >
+			        #{item.middleStock,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.sales != null" >
+			        #{item.sales,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.clickRate != null" >
+			        #{item.clickRate,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.status != null" >
+			        #{item.status,jdbcType=TINYINT},
+			      </if>
+			      <if test="item.isDelete != null" >
+			        #{item.isDelete,jdbcType=BIT},
+			      </if>
+			      <if test="item.spGroupId != null" >
+			        #{item.spGroupId,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.spId != null" >
+			        #{item.spId,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.remark != null" >
+			        #{item.remark,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.youHui != null" >
+			        #{item.youHui,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.restrict != null" >
+			        #{item.restrict,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.upper != null" >
+			        #{item.upper,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.lower != null" >
+			        #{item.lower,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.scInPrice != null" >
+			        #{item.scInPrice,jdbcType=DECIMAL},
+			      </if>
+			    </trim>
+		   </foreach>
+		</insert>
+		
+		<delete id="removeAllPlantItemPre">
+         delete from PlantItemPre
+        </delete>
+        
+        <select id="getPlantItemByPlantItemPreId" parameterType="com.corner.task.beans.PlantItemPre" resultType="com.corner.task.beans.PlantItem">
+          select * from PlantItem where id = #{id}
+        </select>
+        
+        <update id="updatePlantItemByPlantItemPre" parameterType="com.corner.task.beans.PlantItemPre">
+          update PlantItem
+		    <set>
+		      <!-- <if test="itemBaseId != null" >
+		        itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+		      </if> -->
+		      <!-- <if test="spGroupId != null" >
+		        spGroupId = #{spGroupId,jdbcType=INTEGER},
+		      </if> -->
+		      <!-- <if test="spId != null" >
+		        spId = #{spId,jdbcType=VARCHAR},
+		      </if> -->
+		      <!-- <if test="areaId != null" >
+		        areaId = #{areaId,jdbcType=INTEGER},
+		      </if> -->
+		      <!-- <if test="areaName != null" >
+		        areaName = #{areaName,jdbcType=VARCHAR},
+		      </if> -->
+		      <if test="areaPrice != null" >
+		        areaPrice = #{areaPrice,jdbcType=DECIMAL},
+		      </if>
+		      <if test="plantMemPrice != null" >
+		        plantMemPrice = #{plantMemPrice,jdbcType=DECIMAL},
+		      </if>
+		      <if test="plantDisPrice != null" >
+		        plantDisPrice = #{plantDisPrice,jdbcType=DECIMAL},
+		      </if>
+		      <if test="maoli != null" >
+		        maoli = #{maoli,jdbcType=DECIMAL},
+		      </if>
+		      <if test="fee != null" >
+		        fee = #{fee,jdbcType=DECIMAL},
+		      </if>
+		      <!-- <if test="ordId != null" >
+		        ordId = #{ordId,jdbcType=INTEGER},
+		      </if> -->
+		      <if test="addTime != null" >
+		        addTime = #{addTime,jdbcType=TIMESTAMP},
+		      </if>
+		      <if test="updateTime != null" >
+		        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+		      </if>
+		      <!-- <if test="tuijian != null" >
+		        tuijian = #{tuijian,jdbcType=BIT},
+		      </if> -->
+		      <!-- <if test="goodsStock != null" >
+		        goodsStock = #{goodsStock,jdbcType=INTEGER},
+		      </if>
+		      <if test="middleStock != null" >
+		        middleStock = #{middleStock,jdbcType=INTEGER},
+		      </if>
+		      <if test="upper != null" >
+		        upper = #{upper,jdbcType=INTEGER},
+		      </if>
+		      <if test="lower != null" >
+		        lower = #{lower,jdbcType=INTEGER},
+		      </if>
+		      <if test="scInPrice != null" >
+		        scInPrice = #{scInPrice,jdbcType=DECIMAL},
+		      </if>
+		      <if test="sales != null" >
+		        sales = #{sales,jdbcType=INTEGER},
+		      </if>
+		      <if test="clickRate != null" >
+		        clickRate = #{clickRate,jdbcType=INTEGER},
+		      </if> -->
+		      <if test="remark != null" >
+		        remark = #{remark,jdbcType=VARCHAR},
+		      </if>
+		      <if test="youHui != null" >
+		        youHui = #{youHui,jdbcType=VARCHAR},
+		      </if>
+		      <if test="restrict != null" >
+		        `restrict` = #{restrict,jdbcType=INTEGER},
+		      </if>
+		      <if test="status != null" >
+		        `status` = #{status,jdbcType=TINYINT},
+		      </if>
+		      <!-- <if test="isDelete != null" >
+		        isDelete = #{isDelete,jdbcType=BIT},
+		      </if> -->
+		      <if test="stockTactic != null" >
+        stockTactic = #{stockTactic,jdbcType=INTEGER},
+      </if>
+      <if test="priceTactic != null" >
+        priceTactic = #{priceTactic,jdbcType=INTEGER},
+      </if>
+      <if test="isSKUPromotion != null" >
+        isSKUPromotion = #{isSKUPromotion,jdbcType=INTEGER},
+      </if>
+      <if test="SKUProStartTime != null" >
+        SKUProStartTime = #{SKUProStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="SKUProEndTime != null" >
+        SKUProEndTime = #{SKUProEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="SKUProPrice != null" >
+        SKUProPrice = #{SKUProPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="SKUProLimitNum != null" >
+        SKUProLimitNum = #{SKUProLimitNum,jdbcType=INTEGER},
+      </if>
+      <if test="tagLabelId1 != null" >
+        tagLabelId1 = #{tagLabelId1,jdbcType=VARCHAR},
+      </if>
+      <if test="tagLabelId2 != null" >
+        tagLabelId2 = #{tagLabelId2,jdbcType=VARCHAR},
+      </if>
+      <if test="tagLabelId3 != null" >
+        tagLabelId3 = #{tagLabelId3,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsType != null" >
+        goodsType = #{goodsType,jdbcType=INTEGER},
+      </if>
+      <if test="warehouseId != null" >
+        warehouseId = #{warehouseId,jdbcType=VARCHAR},
+      </if>
+      <if test="logicStockId != null" >
+        logicStockId = #{logicStockId,jdbcType=VARCHAR},
+      </if>
+      <if test="logicStockTypeMg != null" >
+        logicStockTypeMg = #{logicStockTypeMg,jdbcType=TINYINT},
+      </if>
+		    </set>
+		    where id = #{id,jdbcType=VARCHAR}
+        </update>
+        <insert id="insertLog" parameterType="com.corner.task.beans.PlantItemPre">
+           insert into PlantItemLog
+		    <trim prefix="(" suffix=")" suffixOverrides="," >
+		      <if test="id != null" >
+		        id,
+		      </if>
+		      <if test="itemBaseId != null" >
+		        itemBaseId,
+		      </if>
+		      <if test="spGroupId != null" >
+		        spGroupId,
+		      </if>
+		      <if test="spId != null" >
+		        spId,
+		      </if>
+		      <if test="areaId != null" >
+		        areaId,
+		      </if>
+		      <if test="areaName != null" >
+		        areaName,
+		      </if>
+		      <if test="areaPrice != null" >
+		        areaPrice,
+		      </if>
+		      <if test="plantMemPrice != null" >
+		        plantMemPrice,
+		      </if>
+		      <if test="plantDisPrice != null" >
+		        plantDisPrice,
+		      </if>
+		      <if test="maoli != null" >
+		        maoli,
+		      </if>
+		      <if test="fee != null" >
+		        fee,
+		      </if>
+		      <if test="ordId != null" >
+		        ordId,
+		      </if>
+		      <if test="addTime != null" >
+		        addTime,
+		      </if>
+		      <if test="updateTime != null" >
+		        updateTime,
+		      </if>
+		      <if test="tuijian != null" >
+		        tuijian,
+		      </if>
+		      <if test="goodsStock != null" >
+		        goodsStock,
+		      </if>
+		      <if test="middleStock != null" >
+		        middleStock,
+		      </if>
+		      <if test="upper != null" >
+		        upper,
+		      </if>
+		      <if test="lower != null" >
+		        lower,
+		      </if>
+		      <if test="scInPrice != null" >
+		        scInPrice,
+		      </if>
+		      <if test="sales != null" >
+		        sales,
+		      </if>
+		      <if test="clickRate != null" >
+		        clickRate,
+		      </if>
+		      <if test="remark != null" >
+		        remark,
+		      </if>
+		      <if test="youHui != null" >
+		        youHui,
+		      </if>
+		      <if test="restrict != null" >
+		        `restrict`,
+		      </if>
+		      <if test="status != null" >
+		        status,
+		      </if>
+		      <if test="isDelete != null" >
+		        isDelete,
+		      </if>
+		      <if test="stockTactic != null" >
+		        stockTactic,
+		      </if>
+		      <if test="priceTactic != null" >
+		        priceTactic,
+		      </if>
+		      <if test="isSKUPromotion != null" >
+		        isSKUPromotion,
+		      </if>
+		      <if test="SKUProStartTime != null" >
+		        SKUProStartTime,
+		      </if>
+		      <if test="SKUProEndTime != null" >
+		        SKUProEndTime,
+		      </if>
+		      <if test="SKUProPrice != null" >
+		        SKUProPrice,
+		      </if>
+		      <if test="SKUProLimitNum != null" >
+		        SKUProLimitNum,
+		      </if>
+		      <if test="tagLabelId1 != null" >
+		        tagLabelId1,
+		      </if>
+		      <if test="tagLabelId2 != null" >
+		        tagLabelId2,
+		      </if>
+		      <if test="tagLabelId3 != null" >
+		        tagLabelId3,
+		      </if>
+		      <if test="goodsType != null" >
+		        goodsType,
+		      </if>
+		      <if test="warehouseId != null" >
+		        warehouseId,
+		      </if>
+		      <if test="logicStockId != null" >
+		        logicStockId,
+		      </if>
+		      <if test="logicStockTypeMg != null" >
+		        logicStockTypeMg,
+		      </if>
+		    </trim>
+		    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		      <if test="id != null" >
+		        #{id,jdbcType=VARCHAR},
+		      </if>
+		      <if test="itemBaseId != null" >
+		        #{itemBaseId,jdbcType=INTEGER},
+		      </if>
+		      <if test="spGroupId != null" >
+		        #{spGroupId,jdbcType=INTEGER},
+		      </if>
+		      <if test="spId != null" >
+		        #{spId,jdbcType=VARCHAR},
+		      </if>
+		      <if test="areaId != null" >
+		        #{areaId,jdbcType=INTEGER},
+		      </if>
+		      <if test="areaName != null" >
+		        #{areaName,jdbcType=VARCHAR},
+		      </if>
+		      <if test="areaPrice != null" >
+		        #{areaPrice,jdbcType=DECIMAL},
+		      </if>
+		      <if test="plantMemPrice != null" >
+		        #{plantMemPrice,jdbcType=DECIMAL},
+		      </if>
+		      <if test="plantDisPrice != null" >
+		        #{plantDisPrice,jdbcType=DECIMAL},
+		      </if>
+		      <if test="maoli != null" >
+		        #{maoli,jdbcType=DECIMAL},
+		      </if>
+		      <if test="fee != null" >
+		        #{fee,jdbcType=DECIMAL},
+		      </if>
+		      <if test="ordId != null" >
+		        #{ordId,jdbcType=INTEGER},
+		      </if>
+		      <if test="addTime != null" >
+		        #{addTime,jdbcType=TIMESTAMP},
+		      </if>
+		      <if test="updateTime != null" >
+		        #{updateTime,jdbcType=TIMESTAMP},
+		      </if>
+		      <if test="tuijian != null" >
+		        #{tuijian,jdbcType=BIT},
+		      </if>
+		      <if test="goodsStock != null" >
+		        #{goodsStock,jdbcType=INTEGER},
+		      </if>
+		      <if test="middleStock != null" >
+		        #{middleStock,jdbcType=INTEGER},
+		      </if>
+		      <if test="upper != null" >
+		        #{upper,jdbcType=INTEGER},
+		      </if>
+		      <if test="lower != null" >
+		        #{lower,jdbcType=INTEGER},
+		      </if>
+		      <if test="scInPrice != null" >
+		        #{scInPrice,jdbcType=DECIMAL},
+		      </if>
+		      <if test="sales != null" >
+		        #{sales,jdbcType=INTEGER},
+		      </if>
+		      <if test="clickRate != null" >
+		        #{clickRate,jdbcType=INTEGER},
+		      </if>
+		      <if test="remark != null" >
+		        #{remark,jdbcType=VARCHAR},
+		      </if>
+		      <if test="youHui != null" >
+		        #{youHui,jdbcType=VARCHAR},
+		      </if>
+		      <if test="restrict != null" >
+		        #{restrict,jdbcType=INTEGER},
+		      </if>
+		      <if test="status != null" >
+		        #{status,jdbcType=TINYINT},
+		      </if>
+		      <if test="isDelete != null" >
+		        #{isDelete,jdbcType=BIT},
+		      </if>
+		      <if test="stockTactic != null" >
+		        #{stockTactic,jdbcType=INTEGER},
+		      </if>
+		      <if test="priceTactic != null" >
+		        #{priceTactic,jdbcType=INTEGER},
+		      </if>
+		      <if test="isSKUPromotion != null" >
+		        #{isSKUPromotion,jdbcType=INTEGER},
+		      </if>
+		      <if test="SKUProStartTime != null" >
+		        #{SKUProStartTime,jdbcType=TIMESTAMP},
+		      </if>
+		      <if test="SKUProEndTime != null" >
+		        #{SKUProEndTime,jdbcType=TIMESTAMP},
+		      </if>
+		      <if test="SKUProPrice != null" >
+		        #{SKUProPrice,jdbcType=DECIMAL},
+		      </if>
+		      <if test="SKUProLimitNum != null" >
+		        #{SKUProLimitNum,jdbcType=INTEGER},
+		      </if>
+		      <if test="tagLabelId1 != null" >
+		        #{tagLabelId1,jdbcType=VARCHAR},
+		      </if>
+		      <if test="tagLabelId2 != null" >
+		        #{tagLabelId2,jdbcType=VARCHAR},
+		      </if>
+		      <if test="tagLabelId3 != null" >
+		        #{tagLabelId3,jdbcType=VARCHAR},
+		      </if>
+		      <if test="goodsType != null" >
+		        #{goodsType,jdbcType=INTEGER},
+		      </if>
+		      <if test="warehouseId != null" >
+		        #{warehouseId,jdbcType=VARCHAR},
+		      </if>
+		      <if test="logicStockId != null" >
+		        #{logicStockId,jdbcType=VARCHAR},
+		      </if>
+		      <if test="logicStockTypeMg != null" >
+		        #{logicStockTypeMg,jdbcType=TINYINT},
+		      </if>
+		    </trim>
+        </insert>
+        
+        
+        
+        <select id="checkItemIsHave" parameterType="com.corner.task.beans.PlantItemPre" resultType="java.lang.String">
+         select checkItemIsHave(
+         #{warehouseId},
+           #{itemBaseId},
+           #{logicStockTypeMg}
+         )
+        </select>
+        
+        <delete id="deleteFromPlantItemPreById" parameterType="com.corner.task.beans.PlantItemPre">
+         delete from PlantItemPre where id = #{id}
+        </delete>
+        
+        
+</mapper>
+

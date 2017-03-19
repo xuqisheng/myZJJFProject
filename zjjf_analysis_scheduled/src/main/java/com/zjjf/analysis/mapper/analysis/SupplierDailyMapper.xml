@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.SupplierDailyMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.supplier.SupplierDaily" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="turnover" property="turnover" jdbcType="DECIMAL" />
+    <result column="validTurnover" property="validTurnover" jdbcType="DECIMAL" />
+    <result column="totalRebate" property="totalRebate" jdbcType="DECIMAL" />
+    <result column="totalCoupon" property="totalCoupon" jdbcType="DECIMAL" />
+    <result column="totalFreight" property="totalFreight" jdbcType="DECIMAL" />
+    <result column="orderCount" property="orderCount" jdbcType="DECIMAL" />
+    <result column="sku" property="sku" jdbcType="INTEGER" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="newRegistered" property="newRegistered" jdbcType="INTEGER" />
+    <result column="deliveryTimes" property="deliveryTimes" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="areaName" property="areaName" jdbcType="VARCHAR" />
+    <result column="cityName" property="cityName" jdbcType="VARCHAR" />
+    <result column="spGroupName" property="spGroupName" jdbcType="VARCHAR" />
+    <result column="supplierName" property="supplierName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, supplierId, spGroupId, dayTime, turnover, validTurnover, totalRebate, totalCoupon, totalFreight, orderCount, sku, quantity, newRegistered, deliveryTimes, 
+    cityId, areaId, cityName, areaName, supplierName, spGroupName
+    updateTime, createTime
+  </sql>
+
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.analysis.supplier.SupplierDaily" >
+    insert into supplier_daily (supplierId, spGroupId, 
+      dayTime, turnover, validTurnover, sku, totalRebate, totalCoupon, totalFreight, orderCount,
+      cityId, areaId, cityName, areaName, supplierName, spGroupName,
+      quantity, newRegistered, deliveryTimes, createTime)
+    values (#{supplierId,jdbcType=VARCHAR}, #{spGroupId,jdbcType=INTEGER}, 
+      #{dayTime,jdbcType=INTEGER}, #{turnover,jdbcType=DECIMAL}, #{validTurnover,jdbcType=DECIMAL}, #{sku,jdbcType=INTEGER}, 
+      #{totalRebate,jdbcType=DECIMAL}, #{totalCoupon,jdbcType=DECIMAL}, #{totalFreight,jdbcType=DECIMAL}, #{orderCount,jdbcType=DECIMAL},
+      #{cityId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, #{cityName,jdbcType=VARCHAR},#{areaName,jdbcType=VARCHAR},#{supplierName,jdbcType=VARCHAR},#{spGroupName,jdbcType=VARCHAR},
+      #{quantity,jdbcType=INTEGER}, #{newRegistered,jdbcType=INTEGER}, #{deliveryTimes,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER})
+  </insert>
+  
+  <select id="getDataByTime" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select  
+	    id, 
+	    supplierId, 
+	    spGroupId, 
+	    dayTime, 
+	    IFNULL(turnover, 0)  as turnover,
+		IFNULL(totalRebate, 0)  as totalRebate,
+		IFNULL(totalCoupon, 0)  as totalCoupon,
+		IFNULL(totalFreight, 0)  as totalFreight,
+	    orderCount, 
+	    sku, 
+	    quantity, 
+	    newRegistered, 
+	    deliveryTimes, 
+	    updateTime, 
+	    createTime 
+    from `supplier_daily` where DATE_FORMAT(`dayTime`, '%Y%m%d') = #{yyyyMMddTime} order by `dayTime` asc limit #{offset}, 1000 
+  </select>
+  
+  <select id="getExitRecord" resultType="com.zjjf.analysis.beans.analysis.supplier.SupplierDaily">
+  	 select id, supplierId, spGroupId, dayTime from supplier_daily where spGroupId =#{spGroupId} and supplierId=#{supplierId} and dayTime=#{dayTime}
+  </select>
+  
+  <select id="getTurnoverByThisMonth" resultMap="BaseResultMap" parameterType="java.util.Map" >
+  	 select IFNULL(sum(todayTurnover), 0)  as turnover
+  	  from `turnover_page`
+      where date_format(`addTime`, '%Y%m%d') &gt;=#{monthBegin} and date_format(`addTime`, '%Y%m%d') &lt; #{monthEnd} and supplierId=#{supplierId}
+  </select>
+  
+  <select id="getTurnoverByLastMonth" resultMap="BaseResultMap" parameterType="java.util.Map" >
+  	 select IFNULL(sum(todayTurnover), 0)  as turnover
+  	  from `turnover_page`
+      where date_format(`addTime`, '%Y%m%d') &gt;#{monthBegin} and date_format(`addTime`, '%Y%m%d') &lt;= #{monthEnd} and supplierId=#{supplierId}
+  </select>
+  
+  <select id="getBeforeDay" resultMap="BaseResultMap" parameterType="java.util.Map" >
+  	 select IFNULL(sum(turnover), 0)  as turnover from `supplier_daily`
+      where date_format(`dayTime`, '%Y%m%d')=#{beforeDay} and supplierId=#{supplierId}  
+  </select>
+  
+  <select id="getThisMonthTurnover" resultType="com.zjjf.analysis.beans.analysis.base.SupplierFreePage" parameterType="java.util.Map" >
+  	 select IFNULL(sum(turnover), 0)  as monthTurnover,
+  	 		IFNULL(sum(totalRebate), 0)  as monthRebate,
+  	 		IFNULL(sum(totalCoupon), 0)  as monthCoupon,
+  	 		IFNULL(sum(totalCoupon + totalRebate), 0)  as monthTotalFree
+  	 	from `supplier_daily`
+      where date_format(`dayTime`, '%Y%m%d') &gt;=#{monthBegin} and date_format(`dayTime`, '%Y%m%d') &lt; #{monthEnd} and supplierId=#{supplierId} and spGroupId = #{spGroupId}
+  </select>
+  
+  
+  <select id="getBySpGroupId_supplierId_dayTime" resultMap="BaseResultMap">
+  	 select * from `supplier_daily` where supplierId=#{supplierId} and spGroupId = #{spGroupId} and `dayTime` = #{dayTime}
+  </select>
+  
+  <select id="getMonthData" resultMap="BaseResultMap">
+  	 select id, IFNULL(sum(turnover), 0)  as turnover, IFNULL(sum(totalCoupon + totalRebate), 0)  as totalFree from `supplier_daily` where supplierId=#{supplierId} and spGroupId = #{spGroupId}
+     and `dayTime` &gt;=#{dayTimeBegin} and `dayTime` &lt;=#{dayTimeEnd} 
+  </select>
+  		
+  <update id="updateBean" parameterType="com.zjjf.analysis.beans.analysis.supplier.SupplierDaily" >
+    update supplier_daily
+    <set >
+      <if test="turnover != null" >
+        turnover = #{turnover},
+      </if>
+      <if test="validTurnover != null" >
+        validTurnover = #{validTurnover},
+      </if>
+      <if test="sku != null" >
+        sku = #{sku},
+      </if>
+      <if test="totalCoupon != null" >
+        totalCoupon = #{totalCoupon},
+      </if>
+      <if test="totalRebate != null" >
+        totalRebate = #{totalRebate},
+      </if>
+      <if test="totalFreight != null" >
+        totalFreight = #{totalFreight},
+      </if>
+      <if test="orderCount != null" >
+        orderCount = #{orderCount},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity},
+      </if>
+      <if test="newRegistered != null" >
+        newRegistered = #{newRegistered},
+      </if>
+      <if test="deliveryTimes != null" >
+        deliveryTimes = #{deliveryTimes},
+      </if>
+    </set>
+    where id = #{id} and supplierId=#{supplierId} and spGroupId=#{spGroupId} and dayTime=#{dayTime}
+  </update>
+  
+  <update id="updateTurnover">
+    update supplier_daily set turnover = #{turnover} where id =#{id}
+  </update>
+  
+  <select id="getSupplierList" resultType="com.zjjf.analysis.beans.analysis.supplier.SupplierDaily">
+     select id, supplierId, spGroupId from supplier_daily where dayTime = #{dayTime} limit #{offset}, 1000 
+  </select>
+  
+
+</mapper>

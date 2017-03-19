@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.auth.dao.mg.AuthMgMapper" >
+	<resultMap id="BaseResultMap" type="com.corner.auth.beans.vo.AuthVo" extends="com.corner.auth.dao.AuthMapper.BaseResultMap">
+		<collection property="auths" ofType="com.corner.auth.beans.Auth" >
+		    <id column="id2" property="id" jdbcType="VARCHAR" />
+		    <result column="authString2" property="authString" jdbcType="VARCHAR" />
+		    <result column="authName2" property="authName" jdbcType="VARCHAR" />
+		    <result column="icon2" property="icon" jdbcType="VARCHAR" />
+		    <result column="action2" property="action" jdbcType="VARCHAR" />
+		    <result column="ordId2" property="ordId" jdbcType="INTEGER" />
+		    <result column="upId2" property="upId" jdbcType="VARCHAR" />
+		    <result column="roleRemark2" property="roleRemark" jdbcType="VARCHAR" />
+		    <result column="createTime2" property="createTime" jdbcType="TIMESTAMP" />
+		    <result column="createUser2" property="createUser" jdbcType="VARCHAR" />
+		    <result column="appId2" property="appId" jdbcType="TINYINT" />
+		    <result column="position2" property="position" jdbcType="TINYINT" />
+		    <result column="type2" property="type" jdbcType="TINYINT" />
+		    <result column="level2" property="level" jdbcType="TINYINT" />
+		    <result column="status2" property="status" jdbcType="TINYINT" />
+		    <result column="isDelete2" property="isDelete" jdbcType="BIT" />
+	    </collection>
+	</resultMap>
+	<!-- 通过用户角色查出用户的菜单权限 -->
+	<select id="getAuthByAppIdOrRoleId" parameterType="java.util.Map" resultMap="BaseResultMap">
+		SELECT a.id id, a.authName authName, a.type as type ,a.upId upId, a.action , a.icon, a.ordId ,b.id as id2 ,b.authName as authName2,b.upId as upId2 , b.type as type2,b.action action2, b.icon icon2,b.ordId ordId2 from 
+			(SELECT a.id id, a.authName authName, a.type as type ,a.upId upId, a.action , a.icon, a.ordId,b.roleId,a.appId from Auth a
+				LEFT JOIN RoleAuthMap b on a.id = b.authId where a.`level` = 1 and a.isDelete = 0 and `status` =1 
+				<if test="roleId != null and roleId != ''">
+				and b.roleId in <foreach collection="roleId" open="(" close=")" separator="," item="id"> #{id} </foreach>
+				</if>
+			) a
+			LEFT JOIN 
+			(SELECT a.id id, a.authName authName, a.type as type ,a.upId upId, a.action , a.icon, a.ordId,b.roleId,a.appId from Auth a
+				LEFT JOIN RoleAuthMap b on a.id = b.authId where a.`level` = 2 and a.isDelete = 0 and `status` =1 
+				<if test="roleId != null and roleId != ''">
+				and b.roleId in <foreach collection="roleId" open="(" close=")" separator="," item="id"> #{id} </foreach>
+				</if>
+			) b on a.id = b.upId
+			WHERE 1=1
+			<if test="appId != null and appId != ''"> and (a.appId =  #{appId} or b.appId = #{appId})</if>
+		ORDER BY a.ordId ,a.id, b.ordId asc;
+	</select>
+	<!-- 获取会计列表条件 -->
+	<sql id="getAuthListPage_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			1=1
+			<if test="authName != null and authName != ''">
+				AND (authName like CONCAT('%',#{authName},'%') or upId like CONCAT('%',#{authName},'%'))
+			</if>
+			<if test="action != null and action != ''">
+				AND action like CONCAT('%',#{action},'%')
+			</if>
+			<if test="appId != null and appId != ''">
+				AND appId = #{appId}
+			</if>
+			<if test="upId != null and upId != ''">
+				AND upId = #{upId}
+			</if>
+			<if test="type != null and type != ''">
+				AND type = #{type}
+			</if>
+			<if test="level != null and level != ''">
+				AND level = #{level}
+			</if>
+		</trim>
+	</sql>
+	<!-- 获取列表 -->
+	<select id="getAuthListPage" parameterType="com.corner.auth.beans.ro.AuthRo" resultType="com.corner.auth.beans.Auth">
+		SELECT * FROM
+		(SELECT
+			a.id,
+			a.authString,
+			a.authName,
+			a.icon,
+			a.action,
+			a.ordId,
+			IFNULL(b.authName, '无') AS upId,
+			a.roleRemark,
+			a.createTime,
+			a.createUser,
+			a.appId,
+			a.position,
+			a.level,
+			a.type,
+			a.status,
+			a.isDelete
+		FROM
+			Auth a
+		LEFT JOIN Auth b ON a.upId = b.id) Auth
+		<include refid="getAuthListPage_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取列表 总记录数 -->
+	<select id="getAuthListPageCount" parameterType="com.corner.auth.beans.ro.AuthRo" resultType="int">
+		SELECT count(1) from Auth
+		<include refid="getAuthListPage_condition" />
+	</select>
+</mapper>

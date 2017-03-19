@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpSupplierMgMapper">
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.Supplier" extends="com.corner.core.dao.SupplierMapper.BaseResultMap">
+  </resultMap>
+  <resultMap id="MyBaseResultMap"
+		type="com.corner.kefu.beans.vo.sp.SupplierVo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="supplierName" property="supplierName" jdbcType="VARCHAR" />
+		<result column="supplierCode" property="supplierCode" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="token" property="token" jdbcType="VARCHAR" />
+		<result column="salt" property="salt" jdbcType="VARCHAR" />
+		<result column="lastTime" property="lastTime" jdbcType="TIMESTAMP" />
+		<result column="loginIP" property="loginIP" jdbcType="VARCHAR" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="callNum" property="callNum" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="INTEGER" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+		<result column="bsCircleId" property="bsCircleId" jdbcType="INTEGER" />
+		<result column="supplierAddress" property="supplierAddress"
+			jdbcType="VARCHAR" />
+		<result column="supplierMark" property="supplierMark" jdbcType="VARCHAR" />
+		<result column="managerName" property="managerName" jdbcType="VARCHAR" />
+		<result column="managerTel" property="managerTel" jdbcType="VARCHAR" />
+		<result column="regTime" property="regTime" jdbcType="TIMESTAMP" />
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="updateMark" property="updateMark" jdbcType="VARCHAR" />
+		<result column="bankCardurl" property="bankCardurl" jdbcType="VARCHAR" />
+		<result column="bankNum" property="bankNum" jdbcType="VARCHAR" />
+		<result column="bankName" property="bankName" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+		<result column="isDelete" property="isDelete" jdbcType="BIT" />
+		<result column="col1" property="col1" jdbcType="VARCHAR" />
+		<result column="col2" property="col2" jdbcType="VARCHAR" />
+		<result column="col3" property="col3" jdbcType="VARCHAR" />
+		<result column="freight" property="freight" jdbcType="DECIMAL" />
+		<result column="startPrice" property="startPrice" jdbcType="DECIMAL" />
+		<result column="provinceName" property="provinceName" jdbcType="VARCHAR" />
+		<result column="areaName" property="areaName" jdbcType="VARCHAR" />
+		<result column="cityName" property="cityName" jdbcType="VARCHAR" />
+	</resultMap>
+  
+  <select id="getRegionSupplierList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from Supplier where areaid = #{id,jdbcType=INTEGER} and isDelete = 0 and status = 2
+  </select>
+
+
+	<select id="selectSupplierBySupplierCode" resultType="com.corner.core.beans.Supplier">
+		select * from Supplier where supplierCode = #{supplierCode,jdbcType=VARCHAR}
+	</select>
+	<select id="selectSupplierSelective" resultType="com.corner.kefu.beans.vo.sp.SupplierVo"
+		parameterType="com.corner.kefu.beans.ro.sp.SupplierRo">
+		SELECT r.name as areaName ,s.* FROM Supplier s join Region r on
+		s.areaId=r.id where s.isdelete=0
+		<if test="id!=null">
+			and s.id=#{id,jdbcType=VARCHAR}
+		</if>
+		<if test="mobile != null">
+			and (s.mobile LIKE CONCAT('%',#{mobile},'%') or s.supplierName LIKE CONCAT('%',#{mobile},'%'))
+		</if>
+		<if test="areaid!=null">
+			<if test="areaid!=0">
+				and s.areaId = #{areaid,jdbcType=INTEGER}
+			</if>
+		</if>
+		order by updateTime desc
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+	<select id="selectSupplierSelectiveCount" resultType="java.lang.Integer"
+		parameterType="com.corner.kefu.beans.ro.sp.SupplierRo">
+		select count(1) from Supplier where isdelete=0
+		<if test="mobile!=null">
+			and mobile=#{mobile,jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+	
+	<select id="getSupplier" resultType="com.corner.core.beans.Supplier">
+	  select * from Supplier
+	</select>
+	
+	<select id="getSupplierVoById" parameterType="com.corner.core.beans.Supplier" resultMap="MyBaseResultMap">
+	     select a.*,b.name as areaName from Supplier a join Region b on a.`areaId` = b.`id` WHERE a.id = #{id} 
+	</select>
+	
+	<select id="selectSupplierList" parameterType="com.corner.kefu.beans.vo.sp.SupplierVo" resultMap="MyBaseResultMap">
+       select
+       *
+       from Supplier where isDelete =0 and status = 2
+       <if test="supplierName != null">
+         and supplierName LIKE "%" #{supplierName} "%"
+       </if>
+    </select>
+    
+    <select id="getMaxSequenceNum" parameterType="com.corner.core.beans.Supplier" resultType="java.lang.Integer">
+    	SELECT
+			MAX(sequenceNum)
+		FROM
+			Supplier
+		WHERE
+			`status` = 2
+		AND isDelete = 0
+		AND areaId = #{areaId}
+    </select>
+    
+    <select id="getSupplierBySpGroupId" parameterType="java.lang.Integer" resultType="com.corner.kefu.beans.vo.sp.SupplierVo">
+    	<!-- 
+    	SELECT
+			a.id,
+			a.supplierCode,
+			a.supplierName,
+			a.mobile,
+			(SELECT `name` FROM Region WHERE `status`=1 AND isDelete=0 AND id=a.province) as provinceName,
+			(SELECT `name` FROM Region WHERE `status`=1 AND isDelete=0 AND id=a.city) as cityName,
+		  	(SELECT `name` FROM Region WHERE `status`=1 AND isDelete=0 AND id=a.areaId) as areaName,
+			c.id AS spGroupId,
+			c.`name` as groupName
+		FROM
+			Supplier a
+		JOIN SpGroupMap b ON a.id = b.spId
+		JOIN SpGroup c ON b.groupId = c.id
+		AND c.`status` = 1
+		AND c.isDelete = 0
+		AND 
+		<foreach collection="array" item="spGroupId" separator="or" open="(" close=")">
+			c.id = #{spGroupId} 
+		</foreach>
+		WHERE
+			a.`status` = 2
+		AND a.isDelete = 0
+		-->
+		SELECT
+			a.id,
+			a.supplierCode,
+			a.supplierName,
+			a.mobile,
+			a.province,
+			a.city,
+			a.areaId,
+			a1.`name` AS provinceName,
+			a2.`name` AS cityName,
+			a3.`name` AS areaName,
+			c.id AS spGroupId,
+			c.`name` AS groupName
+		FROM
+			Supplier a
+		INNER JOIN SpGroupMap b ON a.id = b.spId
+		INNER JOIN SpGroup c ON b.groupId = c.id AND c.`status` = 1 AND c.isDelete = 0 
+			AND 
+			<foreach collection="array" item="spGroupId" separator="or" open="(" close=")">
+				c.id = #{spGroupId} 
+			</foreach>
+		LEFT JOIN Region a1 ON a1.id = a.province AND a1.`status` = 1 AND a1.isDelete = 0 
+		LEFT JOIN Region a2 ON a2.id = a.city AND a2.`status` = 1 AND a2.isDelete = 0 
+		LEFT JOIN Region a3 ON a3.id = a.areaId AND a3.`status` = 1 AND a3.isDelete = 0 
+		WHERE
+			a.`status` = 2
+		AND a.isDelete = 0
+		order by c.id,a.province,a.city,a.areaId
+    </select>
+    
+    
+    <select id="getSupplierByMap" parameterType="java.util.Map" resultType="com.corner.kefu.beans.vo.sp.SupplierVo">
+		SELECT
+			a.id,
+			a.supplierCode,
+			a.supplierName,
+			a.mobile,
+			a.province,
+			a.city,
+			a.areaId,
+			a1.`name` AS provinceName,
+			a2.`name` AS cityName,
+			a3.`name` AS areaName,
+			c.id AS spGroupId,
+			c.`name` AS groupName
+		FROM
+			Supplier a
+		INNER JOIN SpGroupMap b ON a.id = b.spId
+		INNER JOIN SpGroup c ON b.groupId = c.id AND c.`status` = 1 AND c.isDelete = 0 
+		<if test="spGroupIds">
+			AND 
+			<foreach collection="spGroupIds" item="item" separator="or" open="(" close=")">
+				c.id = #{item,jdbcType=INTEGER} 
+			</foreach>
+		</if>
+		LEFT JOIN Region a1 ON a1.id = a.province AND a1.`status` = 1 AND a1.isDelete = 0 
+		LEFT JOIN Region a2 ON a2.id = a.city AND a2.`status` = 1 AND a2.isDelete = 0 
+		LEFT JOIN Region a3 ON a3.id = a.areaId AND a3.`status` = 1 AND a3.isDelete = 0 
+		WHERE
+			a.`status` = 2
+		AND a.isDelete = 0
+		<if test="spIds">
+		    AND
+			<foreach collection="spIds" index="index" item="item" separator="or" open="(" close=")">
+				a.id = #{item,jdbcType=VARCHAR} 
+			</foreach>
+		</if>
+		ORDER BY c.id,a.province,a.city,a.areaId
+    </select>
+    
+    <select id="getSupplierByMobile" parameterType="java.lang.String" resultType="com.corner.core.beans.Supplier">
+       select * from Supplier where mobile = #{mobile}
+    </select>
+    
+    
+    <resultMap type="com.corner.kefu.beans.vo.RegionVo" id="supplierTreeMap">
+     <id column="shen_id" jdbcType="INTEGER" property="id" />
+		<result column="shen_pId" jdbcType="INTEGER" property="pId" />
+		<result column="shen_name" jdbcType="VARCHAR" property="name" />
+		<result column="shen_regionLevel" jdbcType="TINYINT" property="regionLevel" />
+		<collection property="regionList" ofType="com.corner.kefu.beans.vo.RegionVo">
+		  <id column="shi_id" jdbcType="INTEGER" property="id" />
+		  <result column="shi_pId" jdbcType="INTEGER" property="pId" />
+		  <result column="shi_name" jdbcType="VARCHAR" property="name" />
+		  <result column="shi_regionLevel" jdbcType="TINYINT" property="regionLevel" />
+		  <collection property="regionList" ofType="com.corner.kefu.beans.vo.RegionVo">
+		    <id column="area_id" jdbcType="INTEGER" property="id" />
+		    <result column="area_pId" jdbcType="INTEGER" property="pId" />
+		    <result column="area_name" jdbcType="VARCHAR" property="name" />
+		    <result column="area_regionLevel" jdbcType="TINYINT" property="regionLevel" />
+		    <collection property="regionList" ofType="com.corner.kefu.beans.vo.RegionVo">
+		     <id column="sp_id" jdbcType="INTEGER" property="supplierId" />
+		     <result column="sp_pId" jdbcType="INTEGER" property="pId" />
+		     <result column="sp_name" jdbcType="VARCHAR" property="name" />
+		     <result column="sp_code" jdbcType="VARCHAR" property="supplierCode" />
+		     <result column="sp_mobile" jdbcType="VARCHAR" property="supplierMobile" />
+		    </collection>
+		  </collection>   
+		</collection>
+    </resultMap>
+    
+    
+    <select id="getTreeSupplierList" resultMap="supplierTreeMap">
+		   SELECT
+			sp.id AS sp_id,
+			sp.supplierName AS sp_name,
+			sp.supplierCode AS sp_code,
+			sp.mobile As sp_mobile,
+			sp.areaId As sp_pId,
+			area.id AS area_id,
+			area.`name` AS area_name,
+			area.pId AS area_pId,
+			area.regionLevel AS area_regionLevel,
+			city.id AS shi_id,
+			city.`name` AS shi_name,
+			city.pId AS shi_pId,
+			city.regionLevel AS shi_regionLevel,
+			pro.id AS shen_id,
+			pro.`name` AS shen_name,
+			pro.pId AS shen_pId,
+			pro.regionLevel AS shen_regionLevel
+		FROM
+			(
+				SELECT
+					*
+				FROM
+					Supplier
+				WHERE
+					isDelete = 0
+				AND `status` = 2
+			) AS sp
+		JOIN Region AS area ON sp.areaId = area.id
+		AND area.isDelete = 0
+		AND area.`status` = 1
+		JOIN Region AS city ON area.pId = city.id
+		AND city.isDelete = 0
+		AND city.`status` = 1
+		JOIN Region AS pro ON city.pId = pro.id
+		AND pro.isDelete = 0
+		AND pro.`status` = 1
+		ORDER BY shen_id,
+		shi_id,
+		area_id,
+		sp_id
+	</select>
+	
+	<select id="getMnagerSupplierList" parameterType="com.corner.kefu.beans.ro.erp.ERPManagerRo" resultType="com.corner.kefu.beans.vo.sp.SupplierVo">
+	  SELECT
+		a.*, (
+			SELECT
+				NAME
+			FROM
+				Region
+			WHERE
+				id = a.province
+		) AS provinceName,
+		(
+			SELECT
+				NAME
+			FROM
+				Region
+			WHERE
+				id = a.city
+		) AS cityName,
+		(
+			SELECT
+				NAME
+			FROM
+				Region
+			WHERE
+				id = a.areaId
+		) AS areaName
+	FROM
+		Supplier a
+	WHERE
+		a.id IN (
+			SELECT
+				supplierId
+			FROM
+				ERPManagerSpWarehouseMap
+			WHERE
+				eRpManagerId = #{id}
+		)
+	</select>
+</mapper>

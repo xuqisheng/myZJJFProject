@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.PaySuccessRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.PaySuccessRecord" >
+    <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="OutTradeNO" property="outTradeNO" jdbcType="VARCHAR" />
+    <result column="OtherTradeNO" property="otherTradeNO" jdbcType="VARCHAR" />
+    <result column="TotelFee" property="totelFee" jdbcType="DECIMAL" />
+    <result column="NotifyId" property="notifyId" jdbcType="VARCHAR" />
+    <result column="NotifyTime" property="notifyTime" jdbcType="VARCHAR" />
+    <result column="Subject" property="subject" jdbcType="VARCHAR" />
+    <result column="TradeState" property="tradeState" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, OutTradeNO, OtherTradeNO, TotelFee, NotifyId, NotifyTime, Subject, TradeState
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PaySuccessRecord
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from PaySuccessRecord
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.PaySuccessRecord" >
+    insert into PaySuccessRecord (Id, OutTradeNO, OtherTradeNO, 
+      TotelFee, NotifyId, NotifyTime, 
+      Subject, TradeState)
+    values (#{id,jdbcType=BIGINT}, #{outTradeNO,jdbcType=VARCHAR}, #{otherTradeNO,jdbcType=VARCHAR}, 
+      #{totelFee,jdbcType=DECIMAL}, #{notifyId,jdbcType=VARCHAR}, #{notifyTime,jdbcType=VARCHAR}, 
+      #{subject,jdbcType=VARCHAR}, #{tradeState,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.PaySuccessRecord" >
+    insert into PaySuccessRecord
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="outTradeNO != null" >
+        OutTradeNO,
+      </if>
+      <if test="otherTradeNO != null" >
+        OtherTradeNO,
+      </if>
+      <if test="totelFee != null" >
+        TotelFee,
+      </if>
+      <if test="notifyId != null" >
+        NotifyId,
+      </if>
+      <if test="notifyTime != null" >
+        NotifyTime,
+      </if>
+      <if test="subject != null" >
+        Subject,
+      </if>
+      <if test="tradeState != null" >
+        TradeState,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="outTradeNO != null" >
+        #{outTradeNO,jdbcType=VARCHAR},
+      </if>
+      <if test="otherTradeNO != null" >
+        #{otherTradeNO,jdbcType=VARCHAR},
+      </if>
+      <if test="totelFee != null" >
+        #{totelFee,jdbcType=DECIMAL},
+      </if>
+      <if test="notifyId != null" >
+        #{notifyId,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyTime != null" >
+        #{notifyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null" >
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeState != null" >
+        #{tradeState,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.PaySuccessRecord" >
+    update PaySuccessRecord
+    <set >
+      <if test="outTradeNO != null" >
+        OutTradeNO = #{outTradeNO,jdbcType=VARCHAR},
+      </if>
+      <if test="otherTradeNO != null" >
+        OtherTradeNO = #{otherTradeNO,jdbcType=VARCHAR},
+      </if>
+      <if test="totelFee != null" >
+        TotelFee = #{totelFee,jdbcType=DECIMAL},
+      </if>
+      <if test="notifyId != null" >
+        NotifyId = #{notifyId,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyTime != null" >
+        NotifyTime = #{notifyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null" >
+        Subject = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeState != null" >
+        TradeState = #{tradeState,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.PaySuccessRecord" >
+    update PaySuccessRecord
+    set OutTradeNO = #{outTradeNO,jdbcType=VARCHAR},
+      OtherTradeNO = #{otherTradeNO,jdbcType=VARCHAR},
+      TotelFee = #{totelFee,jdbcType=DECIMAL},
+      NotifyId = #{notifyId,jdbcType=VARCHAR},
+      NotifyTime = #{notifyTime,jdbcType=VARCHAR},
+      Subject = #{subject,jdbcType=VARCHAR},
+      TradeState = #{tradeState,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

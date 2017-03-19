@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:task="http://www.springframework.org/schema/task" xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="  
+            http://www.springframework.org/schema/beans  
+            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+            http://www.springframework.org/schema/context   
+            http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+            http://www.springframework.org/schema/aop 
+            http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+            http://www.springframework.org/schema/mvc  
+            http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+            http://www.springframework.org/schema/cache
+       		http://www.springframework.org/schema/cache/spring-cache-4.0.xsd
+       		http://www.springframework.org/schema/task 
+       		http://www.springframework.org/schema/task/spring-task-4.0.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx-4.0.xsd"
+	default-autowire="byName">
+
+	<!-- 包扫描 扫描注解 -->
+	<context:component-scan base-package="com.corner">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<!-- 定时任务扫描 开启这个配置，spring才能识别@Scheduled注解 -->
+	<task:annotation-driven />
+
+	<!-- 加载配置信息 -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath*:config/dao/jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 消息国际化 -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>classpath*:config/web/validateMessage.properties</value>
+		</property>
+	</bean>
+
+	<!-- 通用缓存配置 -->
+	<bean id="springCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+		<property name="cacheManager"  >
+			<bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+				<property name="configLocation" value="classpath:config/cache/ehcache.xml" />
+			</bean>
+		</property>
+	</bean>
+	<cache:annotation-driven cache-manager="springCacheManager" proxy-target-class="true" />
+
+
+	<!-- 通用线程池配置 -->
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 线程池维护线程的最少数量 -->
+		<property name="corePoolSize" value="5" />
+		<!-- 线程池维护线程所允许的空闲时间 -->
+		<property name="keepAliveSeconds" value="30000" />
+		<!-- 线程池维护线程的最大数量 -->
+		<property name="maxPoolSize" value="1000" />
+		<!-- 线程池所使用的缓冲队列 -->
+		<property name="queueCapacity" value="200" />
+	</bean>
+
+	<!-- 数据库配置-->
+	<import resource="spring-mybatis.xml"/>
+	
+	<!-- 权限验证框架 -->
+	<import resource="spring-shiro.xml"/>
+	
+</beans>

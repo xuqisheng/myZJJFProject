@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.RegionMgMapper" >
+   
+   <resultMap id="BaseResultMap" type="com.corner.core.beans.Region" extends="com.corner.core.dao.RegionMapper.BaseResultMap">
+   </resultMap>
+   
+	<select id="findRegionByPId" parameterType="java.lang.String"
+		resultType="com.corner.core.beans.Region">
+		select * from Region where status=1 and isDelete=0 and pId = #{pId}
+	</select>
+	<update id="updateRegionHasStore"  parameterType="java.util.Map" >
+		UPDATE Region SET hasStore = 1 WHERE id in(#{provinceId,jdbcType=VARCHAR},#{cityId,jdbcType=VARCHAR},#{areaId,jdbcType=VARCHAR})
+	</update>
+	
+	<select id="getAllSupplierRegionList" resultMap="BaseResultMap">
+	 SELECT
+		id,
+		`name`
+	FROM
+		Region
+	WHERE
+		id IN (
+			SELECT DISTINCT
+				areaid
+			FROM
+				Supplier
+			WHERE
+				isDelete = 0
+			AND `status` = 2
+		)
+	</select>
+	
+	<!-- 根据pid查出所有地区 -->
+	<select id="getRegionByPidOrRegionLevel" parameterType="java.util.Map" resultMap="BaseResultMap">
+		SELECT
+			*
+		FROM
+			`Region`
+		WHERE
+			isDelete = 0
+		<if test="pId != null">
+			AND pId = #{pId};
+		</if>
+		<if test="regionLevel != null">
+			AND regionLevel = #{regionLevel}
+		</if>
+	</select>
+	
+	
+	<select id="getStoreRegion" parameterType="com.corner.kefu.beans.ro.StoreMgRo" resultType="com.corner.core.beans.Region">
+	  select * from
+	  Region where id in(#{provinceId},#{cityId},#{areaId})
+	  order by regionLevel asc
+	</select>
+	
+	
+	<select id="getAllRetionByPid" parameterType="java.util.Map" resultType="com.corner.core.beans.Region" >
+ 	SELECT
+		*
+	FROM
+		Region
+	WHERE
+		isDelete = 0
+	<if test="pId != null">
+		AND pId = #{pId,jdbcType=INTEGER}
+	</if>
+ </select>
+ 
+   
+   <select id="getRegionListByProvinceId" parameterType="java.lang.Integer" resultType="com.corner.core.beans.Region">
+       SELECT
+		qu.*
+	FROM
+		Region qu
+	JOIN Region shi ON qu.pId = shi.id
+	AND qu.`status` = 1
+	AND qu.isDelete = 0
+	AND shi.`status` = 1
+	AND shi.isDelete = 0
+	JOIN Region shen ON shi.pId = shen.id
+	AND shen.isDelete = 0
+	AND shen.`status` = 1
+	WHERE shen.id = #{id}
+   </select>
+   
+   
+   <select id="getRegionListByCityId" parameterType="java.lang.Integer" resultType="com.corner.core.beans.Region">
+   SELECT
+	qu.*
+	FROM
+		Region qu
+	JOIN Region shi ON qu.pId = shi.id
+	AND qu.`status` = 1
+	AND qu.isDelete = 0
+	AND shi.`status` = 1
+	AND shi.isDelete = 0
+	WHERE
+		shi.id = #{id}
+   </select>
+</mapper>

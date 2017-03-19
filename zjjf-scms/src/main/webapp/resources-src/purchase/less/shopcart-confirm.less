@@ -1,0 +1,113 @@
+@import 'global-comm';
+@import 'footer-comm';
+@import 'shopcart-comm';
+
+.shopcart-detail {
+  padding: 20px;
+  border: 1px solid #ddd;
+  font-size: 12px;
+  .radio {
+    .size(14px);
+    display: inline-block;
+    background: url(../images/radio.png) 0 0 no-repeat;
+    vertical-align: middle;
+    &.active {
+      background-position: -15px 0;
+    }
+  }
+  .div {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    .p {
+      text-indent: 30px;
+      line-height: 14px;
+    }
+  }
+  .b {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .back {
+    margin: 0;
+    padding: 6px;
+    text-align: right;
+    a {
+      text-decoration: none;
+      color: #007fbf;
+    }
+  }
+  .order-list {
+    .clearfix();
+    .lh(){
+      height: 50px;
+      line-height: 50px;
+    }
+    .w-info {
+      float: left;
+      width: 680px;
+      display: block;
+    }
+    .w-price {
+      float: left;
+      width: 140px;
+      display: block;
+      text-align: center;
+    }
+    .list-head {
+      margin-bottom: 1px;
+      padding: 0 15px;
+      .lh();
+      background: #f4f5f8;
+    }
+    .list-body {
+      margin-bottom: 1px;
+      padding: 15px;
+      background: #f4f5f8;
+    }
+    .list-box-item {
+      margin-bottom: 30px;
+      .clearfix();
+      .name {
+        .pic {
+          border: 1px solid #eee;
+          float: left;
+        }
+        .text {
+          float: left;
+          margin-left: 20px;
+          .size(560px,80px);
+          overflow: hidden;
+        }
+      }
+      .price {
+        line-height: 80px;
+        font-weight: bold;
+      }
+      .number {
+        line-height: 80px;
+      }
+      .totleprice {
+        color: @main-color;
+      }
+    }
+    .list-foot {
+        padding: 20px;
+        height: 60px;
+        line-height: 33px;
+        background: #f4f5f8;
+        text-align: right;
+    }
+  }
+}
+.shopcart-operate {
+  margin-top: 28px;
+  height: 60px;
+  line-height: 60px;
+  background: #f4f5f8;
+  text-align: right;
+  .price {
+    margin-right: 30px;
+    font-size: 18px;
+    color: @main-color;
+  }
+}

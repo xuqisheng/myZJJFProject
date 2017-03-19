@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.NoticeMapper">
+    
+	<sql id="tblNoticeInfoColumns">
+		a.id AS "noticeId",
+		a.groupid AS "groupid",
+		a.place AS "place",
+		a.meetingTime AS "meetingTime",
+		a.subject AS "subject",
+		a.content AS "content",
+		a.createBy AS "createBy",
+		a.createTime AS "createTime",
+		a.updateBy AS "updateBy",
+		a.updateTime AS "updateTime"
+	</sql>
+	
+	<sql id="NoticeInfoJoins">
+	</sql>
+    
+	<select id="get" resultType="Notice">
+		SELECT 
+			<include refid="tblNoticeInfoColumns"/>
+		FROM tbl_notice_info_t a
+		<include refid="NoticeInfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findNoticListByUserId" resultType="Notice">
+		SELECT DISTINCT
+		    a.id AS "noticeId",
+			a.SUBJECT AS "subject",
+			a.content AS "content",
+			DATE_FORMAT(a.createTime, '%m月%d日 %H:%i') AS createTime,
+			u1.userName,d.deptName
+		FROM
+			tbl_notice_info_t a
+		INNER JOIN tbl_user_notice_t un ON un.noticeId = a.id
+		 LEFT JOIN salesman u1 ON u1.id = a.createBy
+		 LEFT JOIN tbl_department_t d ON d.deptId=a.groupId
+		WHERE un.userId = #{userId}
+		<if test="createTime != null and createTime!=''">
+			and DATE_FORMAT(a.createTime, '%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+		</if>
+		ORDER BY a.createTime DESC
+	</select>
+	
+	<select id="findMyCreateNoticList" resultType="Notice">
+		SELECT DISTINCT
+		    a.id AS "noticeId",
+			a.SUBJECT AS "subject",
+			a.content AS "content",
+			DATE_FORMAT(a.createTime, '%m月%d日 %H:%i') AS createTime,
+			u1.userName,d.deptName
+		FROM
+			tbl_notice_info_t a
+		 LEFT JOIN salesman u1 ON u1.id = a.createBy
+		 LEFT JOIN tbl_department_t d ON d.deptId=a.groupId
+		WHERE a.createBy = #{userId}
+		<if test="createTime != null and createTime!=''">
+			and DATE_FORMAT(a.createTime, '%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+		</if>
+		ORDER BY a.createTime DESC
+	</select>
+	
+	<select id="findNewNotic2One" resultType="Notice">
+		SELECT DISTINCT
+		    a.id AS "noticeId",
+			a.subject AS "subject",
+			a.content AS "content",
+			DATE_FORMAT(a.createTime, '%m月%d日 %H:%i') AS createTime,
+			u1.userName,d.deptName
+		FROM
+			salesman u
+		INNER JOIN tbl_user_dept_t ud ON u.id = ud.userId
+		INNER JOIN tbl_department_t d on d.deptId = ud.deptId
+		INNER JOIN tbl_user_notice_t un on un.userId = u.id
+		INNER JOIN tbl_notice_info_t a on a.id= un.noticeId
+		 LEFT JOIN salesman u1 ON u1.id = a.createBy
+		where a.createTime >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH) 
+		and u.id = #{userId} ORDER BY a.createTime desc limit 1 
+	</select>
+	
+	<select id="findParticipantByNoticeId" resultType="String">
+		SELECT
+			GROUP_CONCAT(u.userName) AS participant
+		FROM
+			tbl_user_notice_t t
+		LEFT JOIN salesman u ON t.userId = u.id
+		WHERE t.noticeId = #{noticeId}
+	</select>
+	
+	<select id="findList" resultType="Notice">
+		SELECT 
+			<include refid="tblNoticeInfoColumns"/>
+		FROM tbl_notice_info_t a
+		<include refid="NoticeInfoJoins"/>
+		<where>
+			<if test="place != null and place != ''">
+				AND a.place = #{place}
+			</if>
+			<if test="subject != null and subject != ''">
+				AND a.subject = #{subject}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Notice">
+		SELECT 
+			<include refid="tblNoticeInfoColumns"/>
+		FROM tbl_notice_info_t a
+		<include refid="NoticeInfoJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tbl_notice_info_t(
+			id,
+			groupId,
+			place,
+			meetingTime,
+			subject,
+			content,
+			createBy,
+			createTime,
+			updateBy,
+			updateTime,
+			picUrl
+		) VALUES (
+			#{id},
+			#{groupId},
+			#{place},
+			#{meetingTime},
+			#{subject},
+			#{content},
+			#{createBy},
+			#{createTime},
+			#{updateBy},
+			#{updateTime},
+			#{picUrl}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tbl_notice_info_t SET 	
+			groupid = #{groupId},
+			place = #{place},
+			meetingTime = #{meetingTime},
+			subject = #{subject},
+			content = #{content},
+			createBy = #{createBy},
+			createTime = #{createTime},
+			updateBy = #{updateBy},
+			updateTime = #{updateTime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM tbl_notice_info_t
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 插入用户与公告的关系 -->
+	<insert id="insertUserNotice">
+		INSERT INTO tbl_user_notice_t(
+			noticeId,
+			userId,
+			groupid
+		) VALUES (
+			#{noticeId},
+			#{userId},
+			#{groupId}
+		)
+	</insert>
+	
+	<select id="findNoticDetailById" resultType="Notice" parameterType="java.lang.String">
+		SELECT DISTINCT
+			a. SUBJECT AS "subject",
+			a.content AS "content",
+			DATE_FORMAT(a.createTime, '%m月%d日 %H:%i') AS createTime,
+			u1.userName,
+			picUrl,
+			dic.label AS postName,
+			d.deptName
+		FROM
+			tbl_notice_info_t a
+		 LEFT JOIN salesman u1 ON u1.id = a.createBy
+		 LEFT JOIN tbl_department_t d ON d.deptId=a.groupId
+		 LEFT JOIN tbl_dict_t dic ON u1.postType = dic.`value`
+		  AND dic.type = 'post_type' AND dic.isDelete=0
+		WHERE a.id = #{noticId}
+	</select>
+	
+	<select id="getNewNotic2One" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		SELECT
+			t.`subject`,DATE_FORMAT(t.createTime, '%m月%d日 %H:%i') AS createTime,'1' as type,'公告' AS typeName
+		FROM
+			tbl_notice_info_t t
+		INNER JOIN tbl_user_notice_t un ON un.noticeId = t.id
+		WHERE
+			t.createTime = (
+				SELECT
+					max(tt.createTime)
+				FROM
+					tbl_notice_info_t tt
+				INNER JOIN tbl_user_notice_t n ON n.noticeId = tt.id
+				WHERE n.userId = #{userId}
+			)
+		AND un.userId = #{userId} LIMIT 1
+	</select>
+	
+	
+	<delete id="delNoticeById" parameterType="java.lang.String">
+		delete from  tbl_notice_info_t where id=#{id}
+	</delete>
+	
+	<delete id="delUserNoticeById" parameterType="java.lang.String">
+		delete from  tbl_user_notice_t where noticeId=#{noticeId}
+	</delete> 
+	
+	<select id="getNoticeUserById" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT
+			GROUP_CONCAT(t.userId) AS participant
+		FROM
+			tbl_user_notice_t t
+		WHERE
+			t.noticeId = #{noticeId}
+	</select>
+</mapper>

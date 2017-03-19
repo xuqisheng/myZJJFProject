@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.TurnoverPageMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.base.TurnoverPage" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="VARCHAR" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="todayTurnover" property="todayTurnover" jdbcType="DECIMAL" />
+    <result column="yesTodayTurnover" property="yesTodayTurnover" jdbcType="DECIMAL" />
+    <result column="dailyIncrease" property="dailyIncrease" jdbcType="DECIMAL" />
+    <result column="thisMonthTurnover" property="thisMonthTurnover" jdbcType="DECIMAL" />
+    <result column="lastMonthTurnover" property="lastMonthTurnover" jdbcType="DECIMAL" />
+    <result column="monthIncrease" property="monthIncrease" jdbcType="DECIMAL" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, supplierId, addTime, cityId, areaId, spGroupId, todayTurnover, yesTodayTurnover, 
+    dailyIncrease, thisMonthTurnover, lastMonthTurnover, monthIncrease, updateTime, createTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from turnover_page
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from turnover_page
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.analysis.base.TurnoverPage" >
+    insert into turnover_page (id, supplierId, addTime, 
+      cityId, areaId, spGroupId, 
+      todayTurnover, yesTodayTurnover, dailyIncrease, 
+      thisMonthTurnover, lastMonthTurnover, monthIncrease, 
+      updateTime, createTime)
+    values (#{id,jdbcType=INTEGER}, #{supplierId,jdbcType=VARCHAR}, #{addTime,jdbcType=VARCHAR}, 
+      #{cityId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, #{spGroupId,jdbcType=INTEGER}, 
+      #{todayTurnover,jdbcType=DECIMAL}, #{yesTodayTurnover,jdbcType=DECIMAL}, #{dailyIncrease,jdbcType=DECIMAL}, 
+      #{thisMonthTurnover,jdbcType=DECIMAL}, #{lastMonthTurnover,jdbcType=DECIMAL}, #{monthIncrease,jdbcType=DECIMAL}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zjjf.analysis.beans.analysis.base.TurnoverPage" >
+    insert into turnover_page
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="supplierId != null" >
+        supplierId,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="cityId != null" >
+        cityId,
+      </if>
+      <if test="areaId != null" >
+        areaId,
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId,
+      </if>
+      <if test="todayTurnover != null" >
+        todayTurnover,
+      </if>
+      <if test="yesTodayTurnover != null" >
+        yesTodayTurnover,
+      </if>
+      <if test="dailyIncrease != null" >
+        dailyIncrease,
+      </if>
+      <if test="thisMonthTurnover != null" >
+        thisMonthTurnover,
+      </if>
+      <if test="lastMonthTurnover != null" >
+        lastMonthTurnover,
+      </if>
+      <if test="monthIncrease != null" >
+        monthIncrease,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="spGroupId != null" >
+        #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="todayTurnover != null" >
+        #{todayTurnover,jdbcType=DECIMAL},
+      </if>
+      <if test="yesTodayTurnover != null" >
+        #{yesTodayTurnover,jdbcType=DECIMAL},
+      </if>
+      <if test="dailyIncrease != null" >
+        #{dailyIncrease,jdbcType=DECIMAL},
+      </if>
+      <if test="thisMonthTurnover != null" >
+        #{thisMonthTurnover,jdbcType=DECIMAL},
+      </if>
+      <if test="lastMonthTurnover != null" >
+        #{lastMonthTurnover,jdbcType=DECIMAL},
+      </if>
+      <if test="monthIncrease != null" >
+        #{monthIncrease,jdbcType=DECIMAL},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zjjf.analysis.beans.analysis.base.TurnoverPage" >
+    update turnover_page
+    <set >
+      <if test="supplierId != null" >
+        supplierId = #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        cityId = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        areaId = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId = #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="todayTurnover != null" >
+        todayTurnover = #{todayTurnover,jdbcType=DECIMAL},
+      </if>
+      <if test="yesTodayTurnover != null" >
+        yesTodayTurnover = #{yesTodayTurnover,jdbcType=DECIMAL},
+      </if>
+      <if test="dailyIncrease != null" >
+        dailyIncrease = #{dailyIncrease,jdbcType=DECIMAL},
+      </if>
+      <if test="thisMonthTurnover != null" >
+        thisMonthTurnover = #{thisMonthTurnover,jdbcType=DECIMAL},
+      </if>
+      <if test="lastMonthTurnover != null" >
+        lastMonthTurnover = #{lastMonthTurnover,jdbcType=DECIMAL},
+      </if>
+      <if test="monthIncrease != null" >
+        monthIncrease = #{monthIncrease,jdbcType=DECIMAL},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zjjf.analysis.beans.analysis.base.TurnoverPage" >
+    update turnover_page
+    set supplierId = #{supplierId,jdbcType=VARCHAR},
+      addTime = #{addTime,jdbcType=VARCHAR},
+      cityId = #{cityId,jdbcType=INTEGER},
+      areaId = #{areaId,jdbcType=INTEGER},
+      spGroupId = #{spGroupId,jdbcType=INTEGER},
+      todayTurnover = #{todayTurnover,jdbcType=DECIMAL},
+      yesTodayTurnover = #{yesTodayTurnover,jdbcType=DECIMAL},
+      dailyIncrease = #{dailyIncrease,jdbcType=DECIMAL},
+      thisMonthTurnover = #{thisMonthTurnover,jdbcType=DECIMAL},
+      lastMonthTurnover = #{lastMonthTurnover,jdbcType=DECIMAL},
+      monthIncrease = #{monthIncrease,jdbcType=DECIMAL},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      createTime = #{createTime,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

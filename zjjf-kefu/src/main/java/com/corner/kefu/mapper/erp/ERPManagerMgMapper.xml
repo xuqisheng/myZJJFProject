@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.erp.ERPManagerMgMapper">
+
+	<sql id="getAllERPManagerParam">
+		FROM
+				ERPManager
+			WHERE
+				isDelete = 0
+			<if test="regionLevel!=null and regionLevel==2">
+			   and provinceId = #{regionId}
+			</if>
+			<if test="regionLevel!=null and regionLevel==3">
+			   and cityId = #{regionId}
+			</if>
+			<if test="regionLevel!=null and regionLevel==4">
+			   and areaId = #{regionId}
+			</if>
+			<if test="status!=null and status!=-1">
+			   and status = #{status}
+			</if>
+			<if test="codeOrName!=null and codeOrName!=''">
+			   and (
+			           managerCode like "%"#{codeOrName}"%"
+			           or
+			           managerName like "%"#{codeOrName}"%"
+			     )
+			</if>
+			<if test="keyStr!=null and keyStr!=''">
+			   and managerName like "%"#{keyStr}"%"
+			</if>
+	</sql>
+	<!-- 获取批发商所有的供应商 -->
+	<select id="getAllERPManager" parameterType="com.corner.kefu.beans.ro.erp.ERPManagerRo" resultType="com.corner.kefu.beans.vo.erp.ERPManagerVo">
+	 SELECT
+		a.*
+	FROM
+		(
+			SELECT
+				*
+			<include refid="getAllERPManagerParam"/>
+		) a
+	LEFT JOIN ERPManagerSpWarehouseMap b ON a.id = b.eRPManagerId
+	GROUP BY
+		a.id
+	ORDER BY
+		a.addTime DESC
+	<include refid="BasePublicMapper.pageSql" />
+		
+	</select>
+	<select id="getAllERPManagerCount" parameterType="com.corner.kefu.beans.ro.erp.ERPManagerRo" resultType="java.lang.Integer">
+		SELECT
+			count(1)
+			<include refid="getAllERPManagerParam"/>
+	</select>
+	
+	<!-- 获取生成的最大值 -->
+	<select id="getMaxNum" resultType="java.lang.Integer">
+		SELECT
+			MAX(serialNum)
+		FROM
+			ERPManager
+	</select>
+	
+	
+	<sql id="getJsonErpManagerItem_condition">
+	   FROM
+		(
+			SELECT
+				*
+			FROM
+				ERPManagerItem
+			WHERE
+				`status` = 1
+			AND isDelete = 0
+		) a
+	JOIN (
+		SELECT
+			*
+		FROM
+			ItemBase
+		WHERE
+			`status` = 1
+		AND isDelete = 0
+	) b ON a.itemBaseId = b.id
+	JOIN (
+		SELECT
+			*
+		FROM
+			ERPManager
+		WHERE
+			isDelete = 0
+   ) c ON a.managerId = c.id
+	<where>
+	  <if test="managerId!=null">
+	     and a.managerId = #{managerId}
+	  </if>
+	  <if test="keyStr!=null and keyStr!=''">
+	    and (
+	      b.name like "%"#{keyStr}"%" or b.mdseId like "%"#{keyStr}"%"
+	    )
+	  </if>
+	</where>
+	</sql>
+	
+	<select id="getJsonErpManagerItem" parameterType="com.corner.kefu.beans.ro.erp.ERPmanagerItemRo" resultType="com.corner.kefu.beans.vo.erp.ERPManagerItemVo">
+	   SELECT
+		a.*,b.`name` as itemBaseName,c.managerName,b.mdseId,b.spec,b.pkg
+		<include refid="getJsonErpManagerItem_condition"/>
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+	
+	<select id="getCountJsonErpManagerItem" parameterType="com.corner.kefu.beans.ro.erp.ERPmanagerItemRo" resultType="java.lang.Integer">
+	  SELECT
+		count(1)
+		<include refid="getJsonErpManagerItem_condition"/>
+	</select>
+	
+	<delete id="deleteManagerAndSupplier" parameterType="com.corner.kefu.beans.ro.erp.ERPManagerRo">
+	   DELETE FROM ERPManagerSpWarehouseMap where eRPManagerId = #{id}
+	</delete>
+	
+	
+	
+	<sql id="getERPManagerByWhId_condition">
+	FROM
+			ERPManager
+		WHERE
+			isDelete = 0
+		AND `status` IN (0, 1)
+		AND id IN (
+			SELECT
+				eRPManagerId
+			FROM
+				ERPManagerSpWarehouseMap
+			WHERE
+				eRPWarehouseId = #{whId}
+		)
+		<if test="keyStr!=null and keyStr!=''">
+		 and managerName like "%"#{keyStr}"%"
+		</if>
+	</sql>
+	<select id="getERPManagerByWhId" parameterType="com.corner.kefu.beans.ro.erp.ERPManagerRo" resultType="com.corner.kefu.beans.vo.erp.ERPManagerVo">
+	   SELECT
+			*
+		<include refid="getERPManagerByWhId_condition"/>
+		order by addTime desc
+		<include refid="BasePublicMapper.pageSql"/>
+	</select>
+	
+	<select id="getCountERPManagerByWhId" parameterType="com.corner.kefu.beans.ro.erp.ERPManagerRo" resultType="java.lang.Integer">
+	  select count(1)
+		<include refid="getERPManagerByWhId_condition"/>
+	</select>
+</mapper>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.SupplierDailyTurnoverMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.supplier.SupplierDaily" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="turnover" property="turnover" jdbcType="DECIMAL" />
+    <result column="totalRebate" property="totalRebate" jdbcType="DECIMAL" />
+    <result column="totalCoupon" property="totalCoupon" jdbcType="DECIMAL" />
+    <result column="totalFreight" property="totalFreight" jdbcType="DECIMAL" />
+    <result column="orderCount" property="orderCount" jdbcType="INTEGER" />
+    <result column="sku" property="sku" jdbcType="INTEGER" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="newRegistered" property="newRegistered" jdbcType="INTEGER" />
+    <result column="deliveryTimes" property="deliveryTimes" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, supplierId, spGroupId, dayTime, turnover, totalRebate, totalCoupon, totalFreight, 
+    orderCount, sku, quantity, newRegistered, deliveryTimes, updateTime, createTime
+  </sql>
+  
+  <select id="getTurnoverData" resultType="com.zjjf.analysis.beans.vo.orders.sporder.SpOrderTurnoverVo" parameterType="java.util.Map" >
+    select 
+      t1.supplierId,
+	  t3.`name` as "cityName",
+	  t4.`name` as "areaName",
+	  t2.`supplierName`,
+	  IFNULL(t1.`turnover`, 0) as "todayTurnover"
+	from
+	  `supplier_daily` t1 
+	  left join base_supplier t2 on t1.`supplierId` = t2.org_pk_id 
+	  left join base_region	t3 on t2.`city` = t3.`id`
+	  left join base_region	t4 on t2.`areaId`= t4.`id`
+	  where t1.`dayTime`=#{todayTime} 
+	  <if test="cityId != null and cityId != '' " >
+        and t3.id = #{cityId}
+      </if>
+      <if test="areaId != null and areaId != ''  " >
+        and t4.id = #{areaId}
+      </if>
+      <if test="spGroupId != null and spGroupId != '' " >
+        and t1.spGroupId = #{spGroupId}
+      </if>
+      <if test="supplierName != null and supplierName != '' " >
+        and t2.`supplierName` like "%"#{supplierName}"%"
+      </if>
+	  limit #{offset}, #{limit} 
+  </select>
+  
+  <select id="getTurnoverDataCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+    select count(*) from
+	  `supplier_daily` t1 
+	  left join base_supplier t2 on t1.`supplierId` = t2.org_pk_id 
+	  left join base_region	t3 on t2.`city` = t3.`id`
+	  left join base_region	t4 on t2.`areaId`= t4.`id`
+	  where t1.`dayTime`=#{todayTime}
+	  <if test="cityId != null  and cityId != ''  " >
+        and t3.id = #{cityId}
+      </if>
+      <if test="areaId != null  and areaId != ''  " >
+        and t4.id = #{areaId}
+      </if>
+      <if test="spGroupId != null  and spGroupId != ''  " >
+        and t1.spGroupId = #{spGroupId}
+      </if>
+      <if test="supplierName != null  and supplierName != ''  " >
+        and t2.`supplierName` like "%"#{supplierName}"%"
+      </if>
+  </select>
+  
+  <select id="getDataBySupplierIdAndTime" resultType="com.zjjf.analysis.beans.vo.orders.sporder.SpOrderTurnoverVo" parameterType="java.util.Map" >
+    select IFNULL(sum(t1.turnover), 0)  as monthTurnover,
+    	   IFNULL(sum(t1.totalCoupon), 0)  as monthCoupon,
+    	   IFNULL(sum(t1.totalFreight), 0)  as monthFreightr,
+    	   IFNULL(sum(t1.totalRebate), 0)  as monthRebate,
+    	   IFNULL(sum(t1.turnover), 0)  as monthTurnover,
+    	   IFNULL(sum(t1.`totalFreight` + t1.`totalRebate`), 0)  as monthTotalFree,
+           IFNULL(sum(t1.`totalFreight` + t1.`totalRebate`)/sum(t1.`turnover`), 0)  as "monthIncrease"
+      from `supplier_daily` t1
+	  left join base_supplier t2 on t1.`supplierId` = t2.org_pk_id 
+	  left join base_region	t3 on t2.`city` = t3.`id`
+	  left join base_region	t4 on t2.`areaId`= t4.`id`
+	  where t1.`dayTime` &gt;=#{dayTimeBegin} and t1.`dayTime` &lt;=#{dayTimeEnd} 
+	  <if test="supplierId != null and supplierId != ''  " >
+        and t1.supplierId=#{supplierId}
+      </if>
+	  limit 1
+  </select>
+  
+  <select id="getTurnoverExcelData" resultType="com.zjjf.analysis.beans.vo.orders.sporder.SpOrderTurnoverVo" parameterType="java.util.Map" >
+    select 
+      t1.supplierId,
+	  t3.`name` as "cityName",
+	  t4.`name` as "areaName",
+	  t2.`supplierName`,
+	  IFNULL(t1.`turnover`, 0) as "todayTurnover"
+	from
+	  `supplier_daily` t1 
+	  left join base_supplier t2 on t1.`supplierId` = t2.org_pk_id 
+	  left join base_region	t3 on t2.`city` = t3.`id`
+	  left join base_region	t4 on t2.`areaId`= t4.`id`
+	  where t1.`dayTime`=#{yestodayTime} 
+	  <if test="cityId != null and cityId != ''  " >
+        and t3.id = #{cityId}
+      </if>
+      <if test="areaId != null and areaId != ''  " >
+        and t4.id = #{areaId}
+      </if>
+      <if test="spGroupId != null and spGroupId != ''  " >
+        and t1.spGroupId = #{spGroupId}
+      </if>
+      <if test="supplierName != null and supplierName != ''  " >
+        and t2.`supplierName` like "%"#{supplierName}"%"
+      </if>
+	  limit 10000
+  </select>
+  
+</mapper>

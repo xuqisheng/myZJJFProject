@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ScmsFreightTplMapMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ScmsFreightTplMap" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="tplId" property="tplId" jdbcType="VARCHAR" />
+    <result column="orderNum" property="orderNum" jdbcType="SMALLINT" />
+    <result column="orderPrice" property="orderPrice" jdbcType="DECIMAL" />
+    <result column="freightPrice" property="freightPrice" jdbcType="DECIMAL" />
+    <result column="freight" property="freight" jdbcType="REAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, tplId, orderNum, orderPrice, freightPrice, freight
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ScmsFreightTplMap
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ScmsFreightTplMap
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ScmsFreightTplMap" >
+    insert into ScmsFreightTplMap (id, tplId, orderNum, 
+      orderPrice, freightPrice, freight
+      )
+    values (#{id,jdbcType=VARCHAR}, #{tplId,jdbcType=VARCHAR}, #{orderNum,jdbcType=SMALLINT}, 
+      #{orderPrice,jdbcType=DECIMAL}, #{freightPrice,jdbcType=DECIMAL}, #{freight,jdbcType=REAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ScmsFreightTplMap" >
+    insert into ScmsFreightTplMap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tplId != null" >
+        tplId,
+      </if>
+      <if test="orderNum != null" >
+        orderNum,
+      </if>
+      <if test="orderPrice != null" >
+        orderPrice,
+      </if>
+      <if test="freightPrice != null" >
+        freightPrice,
+      </if>
+      <if test="freight != null" >
+        freight,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="tplId != null" >
+        #{tplId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=SMALLINT},
+      </if>
+      <if test="orderPrice != null" >
+        #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="freightPrice != null" >
+        #{freightPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="freight != null" >
+        #{freight,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ScmsFreightTplMap" >
+    update ScmsFreightTplMap
+    <set >
+      <if test="tplId != null" >
+        tplId = #{tplId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null" >
+        orderNum = #{orderNum,jdbcType=SMALLINT},
+      </if>
+      <if test="orderPrice != null" >
+        orderPrice = #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="freightPrice != null" >
+        freightPrice = #{freightPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="freight != null" >
+        freight = #{freight,jdbcType=REAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ScmsFreightTplMap" >
+    update ScmsFreightTplMap
+    set tplId = #{tplId,jdbcType=VARCHAR},
+      orderNum = #{orderNum,jdbcType=SMALLINT},
+      orderPrice = #{orderPrice,jdbcType=DECIMAL},
+      freightPrice = #{freightPrice,jdbcType=DECIMAL},
+      freight = #{freight,jdbcType=REAL}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

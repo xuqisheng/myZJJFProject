@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.StoreGroupMapper">
+
+	<resultMap id="BaseResultMap" type="com.corner.scms.beans.vo.StoreGroupVo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="number" property="number" jdbcType="INTEGER" />
+		<result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+		<result column="date" property="date" jdbcType="TIMESTAMP" />
+		<result column="Remark" property="remark" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, number, supplierId, date, Remark, name
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from StoreGroup
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		StoreGroup
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.corner.scms.beans.vo.StoreGroupVo">
+		insert into StoreGroup (id,
+		number, supplierId,
+		date, Remark, name
+		)
+		values (#{id,jdbcType=VARCHAR},
+		#{number,jdbcType=INTEGER},
+		#{supplierId,jdbcType=VARCHAR},
+		#{date,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.corner.scms.beans.vo.StoreGroupVo">
+		insert into StoreGroup
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="number != null">
+				number,
+			</if>
+			<if test="supplierId != null">
+				supplierId,
+			</if>
+			<if test="date != null">
+				date,
+			</if>
+			<if test="remark != null">
+				Remark,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="number != null">
+				#{number,jdbcType=INTEGER},
+			</if>
+			<if test="supplierId != null">
+				#{supplierId,jdbcType=VARCHAR},
+			</if>
+			<if test="date != null">
+				#{date,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.corner.scms.beans.vo.StoreGroupVo">
+		update StoreGroup
+		<set>
+			<if test="number != null">
+				number = #{number,jdbcType=INTEGER},
+			</if>
+			<if test="supplierId != null">
+				supplierId = #{supplierId,jdbcType=VARCHAR},
+			</if>
+			<if test="date != null">
+				date = #{date,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remark != null">
+				Remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.corner.scms.beans.vo.StoreGroupVo">
+		update StoreGroup
+		set number = #{number,jdbcType=INTEGER},
+		supplierId =
+		#{supplierId,jdbcType=VARCHAR},
+		date = #{date,jdbcType=TIMESTAMP},
+		Remark = #{remark,jdbcType=VARCHAR},
+		name = #{name,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+
+	<!-- **********************************************查询分组************************************************************************* -->
+	<select id="getAllStoreGroupByCondition" parameterType="com.corner.scms.beans.vo.StoreGroupVo"
+		resultType="com.corner.scms.beans.vo.StoreGroupVo">
+		select * from
+		<include refid="condition" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<select id="getAllStoreGroupByConditionCount" parameterType="com.corner.scms.beans.vo.StoreGroupVo"
+		resultType="java.lang.Integer">
+		select count(1) from
+		<include refid="condition" />
+	</select>
+
+	<sql id="condition">
+		StoreGroup where 1=1
+		<if test="supplierId!= null">
+			and supplierId=#{supplierId}
+		</if>
+		<if test="sortName!= null">
+			<include refid="BasePublicMapper.orderSql" />
+		</if>
+
+	</sql>
+
+
+	<!-- **********************************************查询是否有线下客户分组************************************************************************* -->
+	<select id="findXianXiaGroup" parameterType="com.corner.scms.beans.vo.StoreGroupVo"
+		resultType="com.corner.scms.beans.vo.StoreGroupVo">
+		select * from StoreGroup where supplierId=#{supplierId} and
+		name='线下客户组'
+	</select>
+
+	<!-- **********************************************查询所有线下所有的客户************************************************************************* -->
+	<select id="findNumber" parameterType="com.corner.scms.beans.vo.StoreGroupVo"
+		resultType="com.corner.core.beans.ScmsStore">
+		select * from ScmsStore where spId=#{supplierId} and
+		isDelete=0
+	</select>
+
+	<!-- **********************************************查询所有分组************************************************************************* -->
+	<select id="findAllGroups" parameterType="com.corner.scms.beans.vo.StoreGroupVo"
+		resultType="com.corner.scms.beans.vo.StoreGroupVo">
+		select * from StoreGroup where supplierId=#{supplierId} and
+		name !='线下客户组'
+	</select>
+
+
+	<!-- **********************************************更新分组的number +1************************************************************************* -->
+	<update id="updateNumber" parameterType="java.lang.String">
+		update StoreGroup set
+		number=number+1 where id=#{storeGroupID}
+	</update>
+
+
+	<!-- **********************************************更新分组的number -1************************************************************************* -->
+	<update id="updateNumberMis" parameterType="java.lang.String">
+		update StoreGroup set
+		number=number-1 where id=#{storeGroupID}
+	</update>
+
+
+	<select id="findGroupsByconditionalread" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="com.corner.scms.beans.vo.StoreGroupVo">
+		SELECT * from StoreGroup INNER JOIN SpVoucherActiveMiddle
+		on (StoreGroup.id=SpVoucherActiveMiddle.storeGroupID)
+		where
+		SpVoucherActiveMiddle.spVoucherActiveId=#{spVoucherActiveId}
+		and
+		SpVoucherActiveMiddle.supplierId=#{supplierId} and SpVoucherActiveMiddle.isDelete=0
+	</select>
+
+
+	<select id="findGroupsByconditionalready" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="com.corner.scms.beans.vo.StoreGroupVo">
+		SELECT * from StoreGroup INNER JOIN SpVoucherActiveMiddle
+		on (StoreGroup.id=SpVoucherActiveMiddle.storeGroupID)
+		where
+		SpVoucherActiveMiddle.supplierId=#{supplierId} and SpVoucherActiveMiddle.isDelete=0
+	</select>
+	
+	<select id="findGroupsByconditionalreadyno" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="com.corner.scms.beans.vo.StoreGroupVo">
+		SELECT * from StoreGroup where id not in (select storeGroupID from SpVoucherActiveMiddle where supplierId=#{supplierId} 
+		and SpVoucherActiveMiddle.isDelete=0) and StoreGroup.name!='线下客户组'
+		and supplierId=#{supplierId}
+	</select>
+	
+	<select id="findGroupsByconditionother" parameterType="com.corner.scms.beans.ro.PromotionRo"
+		resultType="com.corner.scms.beans.vo.StoreGroupVo">
+		SELECT * from StoreGroup INNER JOIN SpVoucherActiveMiddle
+		on (StoreGroup.id=SpVoucherActiveMiddle.storeGroupID)
+		where
+		SpVoucherActiveMiddle.spVoucherActiveId!=#{spVoucherActiveId}
+		and
+		SpVoucherActiveMiddle.supplierId=#{supplierId} and StoreGroup.name!='线下客户组'
+		and SpVoucherActiveMiddle.isDelete=0
+	</select>
+	
+	<select id="findSpVoucherActiveMiddle" parameterType="com.corner.scms.beans.vo.StoreGroupVo" resultType="com.corner.core.beans.SpVoucherActiveMiddle">
+	    select * from SpVoucherActiveMiddle where storeGroupID=#{id} and supplierId=#{supplierId} and SpVoucherActiveMiddle.isDelete=0
+	</select>
+	
+	<select id="findUrl" resultType="string">
+		SELECT ConfigShare.supplierUrl from ConfigShare WHERE id=1
+	</select>
+
+</mapper>

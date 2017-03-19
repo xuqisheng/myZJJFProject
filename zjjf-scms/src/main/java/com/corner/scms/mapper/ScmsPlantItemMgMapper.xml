@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.ScmsPlantItemMgMapper" >
+
+<select id="findItemBySidAndItemid" parameterType="java.util.Map" resultType="com.corner.core.beans.PlantItem">
+	SELECT * from PlantItem where spId = #{supplierid} and itemBaseId = #{itemId} and isDelete = 0
+</select>
+
+<select id="findId" parameterType="java.lang.String" resultType="java.lang.Integer">
+	select itemBaseId from ScmsItem where id=#{itemId} 
+</select>
+
+<sql id="selectParameter">
+	PlantItem pi
+	JOIN ItemBase ib ON pi.itemBaseId = ib.id
+	where 
+	 	pi.spId = #{spId}
+		and pi.isDelete = 0
+		and pi.status in (1,3)
+		and ib.isDelete = 0
+	<if test="commodityIdAndName !=null and commodityIdAndName!=''">
+		and (ib.mdseId like "%"#{commodityIdAndName}"%" or ib.name like "%"#{commodityIdAndName}"%")
+	</if>
+	<if test="beginGoodsStock != null">
+		and goodsStock &gt;= #{beginGoodsStock}
+	</if>
+	<if test="endGoodsStock != null">
+		and goodsStock &lt;= #{endGoodsStock}
+	</if>
+	group by pi.itemBaseId
+	order BY goodsStock
+</sql>
+
+<!--根据条件获得所有的库存  -->
+ <select id="getAllPlantItemByParam" parameterType="com.corner.scms.beans.ro.StockManagerParamRo" resultType="com.corner.scms.beans.vo.PlantItemVo">
+	SELECT
+		ib.NAME,
+		ib.mdseId,
+		ib.spec,
+		ib.measure,
+		ib.pkg,
+		pi.id,
+		MIN(pi.goodsStock) as goodsStock,
+		pi.upper,
+		pi.lower,
+		pi.itemBaseId,
+		pi.spId,
+		pi.middleStock,
+		(pi.goodsStock+pi.middleStock) as countStock
+	FROM
+	<include refid="selectParameter"/>
+	LIMIT #{pageIndex},#{pageSize}
+ </select>
+ 
+ <!--获取总数  -->
+ <select id="getPlantItemCount" parameterType="com.corner.scms.beans.ro.StockManagerParamRo" resultType="java.lang.Integer">
+ 	select 
+ 		count(1)
+ 	from
+ 	(
+ 	  SELECT
+		ib.NAME,
+		ib.mdseId,
+		ib.spec,
+		ib.measure,
+		ib.pkg,
+		pi.id,
+		pi.goodsStock,
+		pi.upper,
+		pi.lower,
+		pi.itemBaseId,
+		pi.spId,
+		pi.middleStock,
+		(pi.goodsStock+pi.middleStock) as countStock
+	FROM
+	<include refid="selectParameter"/>
+ 	) as a
+ </select>
+ 
+ <!-- 根据批发商id查询旗下的商品名称 -->
+ <select id="getCommodityNameBySpId" parameterType="com.corner.scms.beans.ro.StockManagerParamRo" resultType="com.corner.scms.beans.vo.PlantItemVo">
+ 	select 
+ 		ib.name,
+ 		ib.mdseId,
+ 		ib.spec,
+ 		pi.id,
+ 	    pi.itemBaseId,
+ 	    pi.goodsStock 	
+ 	from PlantItem pi 
+ 	join ItemBase ib 
+ 	on pi.itemBaseId=ib.id  
+ 	where 
+ 		pi.spId = #{spId}
+ 	and pi.isDelete = 0	
+ 	and pi.status in (1,3)
+ 	and ib.isDelete = 0
+ 	<if test="commodityName != null and commodityName != ''">
+ 		and (ib.name like "%"#{commodityName}"%" or ib.shortNm like #{commodityName}"%")
+ 	</if>
+ 	group by pi.itemBaseId
+ </select>
+ <!-- 商品库存管理 -->
+  <update id="updatePlantItemStock" parameterType="java.util.Map">
+	  UPDATE PlantItem a
+	  JOIN (
+	  SELECT
+	  b.itemBaseId,
+	  a.quantity,
+	  a.spId
+	  FROM
+	  ScmsOrderDetail a
+	  JOIN PlantItem b
+	  on a.itemId = b.id
+	  WHERE
+	  a.orderId = #{orderId,jdbcType=VARCHAR}
+	  ) b ON a.itemBaseId=b.itemBaseId and a.spId =b.spId
+	  <if test="actype == 0">
+		  SET a.goodsStock=a.goodsStock-b.quantity
+	  </if>
+	  <if test="actype == 1">
+		  SET a.goodsStock=a.goodsStock+b.quantity
+	  </if>
+  </update>
+ <!-- 修正库存 -->
+ <update id="updatePlantItem" parameterType="com.corner.scms.beans.ro.StockManagerParamRo">
+ 	update 
+ 		PlantItem 
+ 	<set>
+ 		<if test="xType != null and xType==1 and num !=null">
+ 			scInPrice = (#{scInPrice}*#{num}-goodsStock*IFNULL(scInPrice,0))/(goodsStock-#{num}),
+ 			goodsStock = goodsStock - #{num},
+ 		</if>
+  		<if test="xType != null and xType==2 and num !=null">
+ 			scInPrice = (#{scInPrice}*#{num}+goodsStock*IFNULL(scInPrice,0))/(goodsStock+#{num}),
+ 			goodsStock = goodsStock + #{num},
+ 		</if>
+ 		<if test="updateTime!=null">
+ 			updateTime=#{updateTime},
+ 		</if>
+ 	</set>
+ 	where
+ 		itemBaseId = #{itemBaseId}
+ 	and spId = #{spId}
+ </update>
+ 
+ <!-- 修改上下限 -->
+ <update id="updatePlantItemUpperLower" parameterType="com.corner.scms.beans.ro.StockManagerParamRo">
+ 	update 
+ 		PlantItem 
+ 	<set>
+ 		<if test="upper != null" >
+ 		upper = #{upper},
+ 		</if>
+ 		<if test="lower != null" >
+ 		lower = #{lower}
+ 		</if>
+ 	</set>
+ 	where
+ 		spId = #{spId}
+ 	and itemBaseId = #{itemBaseId}
+ </update>
+
+ <update id="updatePlantItemBySpIdAndBaseId" parameterType="com.corner.core.beans.PlantItem">
+ 	UPDATE PlantItem
+		SET goodsStock = goodsStock - (#{goodsStock})
+ 		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			AND itemBaseId = #{itemBaseId}
+			AND spId = #{spId}
+		</trim>
+ </update> 
+ <!-- 根据商品商品ID，批发商ID 查出库存信息 -->
+ <select id="selectPlantItemBySpIdAndBaseId" parameterType="com.corner.core.beans.PlantItem" resultType="com.corner.core.beans.PlantItem">
+ 		select * from PlantItem
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			AND itemBaseId = #{itemBaseId}
+			AND spId = #{spId}
+		</trim>
+ </select>
+ <!-- 根据商品名称查出商品名称和 -->
+ <select id="getAllCommodityNameAndItemBaseIdByName" parameterType="java.util.HashMap" resultType="com.corner.scms.beans.vo.PlantItemVo">
+		SELECT
+			pi.id,
+			pi.plantDisPrice,
+			pi.goodsStock,
+			pi.itemBaseId,
+			ib.name,
+			ib.spec
+		FROM
+			PlantItem pi
+		JOIN ItemBase ib ON pi.itemBaseId = ib.id
+		WHERE
+		    pi.spId = #{spId}
+		and	pi.isDelete = 0
+		and pi.status in (1,3)
+		and ib.isDelete = 0
+		<if test="commodityName != null and commodityName != ''">
+ 			and (ib.name like "%"#{commodityName}"%" or ib.shortNm like #{commodityName}"%")
+ 		</if>
+		group by pi.itemBaseId
+ </select>
+ 
+ <!-- 根据商品编号和批发商id查出商品库存 -->
+ <select id="getGoodsStockByitemBaseIdAndspId" parameterType="java.util.HashMap" resultType="com.corner.scms.beans.vo.PlantItemVo">
+ 		SELECT
+			goodsStock,
+			scInPrice,
+			id
+		FROM
+			PlantItem
+		WHERE
+		    spId = #{spId}
+		and	isDelete = 0
+		and itemBaseId = #{itemBaseId}
+ </select>
+ 
+ <!-- 商品管理begin -->
+ <resultMap type="com.corner.scms.beans.vo.PlantItemVo" id="plantItemVoResultMap" extends="com.corner.core.dao.PlantItemMapper.BaseResultMap">
+    <result column="mdseId" property="mdseId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="groupName" property="groupName" jdbcType="VARCHAR" />
+    <result column="spec" property="spec" jdbcType="VARCHAR" />
+    <result column="measure" property="measure" jdbcType="VARCHAR" />
+    <result column="cateId" property="cateId" jdbcType="INTEGER" />
+    <result column="cateNameO" property="cateNameO" jdbcType="VARCHAR" />
+    <result column="cateNameT" property="cateNameT" jdbcType="VARCHAR" />
+    <collection property="userTypes" ofType="com.corner.scms.beans.vo.ScmsUserTypeVo" javaType="java.util.ArrayList">
+      <id column="userTypeId" property="id" jdbcType="TINYINT" />
+      <result column="userTypeName" property="name" jdbcType="VARCHAR" />
+      <result column="salePrice" property="salePrice" jdbcType="DECIMAL" />
+    </collection>
+ </resultMap>
+ 
+  <select id="getAllItemBaseIdPrice" parameterType="java.util.HashMap" resultMap="plantItemVoResultMap">
+    SELECT a.id FROM PlantItem a JOIN ItemBase b ON a.itemBaseId = b.id WHERE a.spId = #{spId} AND a.itemBaseId = #{itemBaseId}
+  </select> 
+
+	<sql id="aaa">
+		SELECT
+		a.id,
+		a.itemBaseId,
+		a.spGroupId,
+		a.spId,
+		a.scInPrice,
+		a.plantMemPrice,
+		a.areaPrice,
+		a.status,
+		b.cateId,
+		b.name,
+		b.mdseId,
+		b.spec,
+		b.measure,
+		b.pkg,
+		l.name as cateNameT,
+		ll.name as cateNameO
+		FROM
+		PlantItem a
+		JOIN ItemBase b ON a.itemBaseId = b.id
+		AND b.status = 1
+		AND b.isDelete = 0
+		JOIN SpGroup g on a.spGroupId = g.id
+		AND g.`status`=1
+		AND g.isDelete=0
+		JOIN ItemCatelog l on b.cateId = l.id
+		AND l.status = 1
+		AND l.isDelete = 0
+		join ItemCatelog ll on l.pid = ll.id
+		AND ll.status = 1
+		AND ll.isDelete = 0
+		WHERE a.spId = #{spId}
+		AND a.isDelete = 0
+		<if test="status != null and status != -1">
+			AND a.status = #{status}
+		</if>
+		<if test="catId !=null and catId != -1">
+			and b.cateId = #{catId}
+		</if>
+		<if test="pCatId !=null and catId == -1 and pCatId != -1">
+			and l.pid = #{pCatId}
+		</if>
+		<if test="keyStr !=null and keyStr != ''">
+			and(b.name like "%"#{keyStr}"%" or b.mdseId like "%"#{keyStr}"%" or b.shortNm like #{keyStr}"%")
+		</if>
+		GROUP BY a.itembaseId
+	</sql>
+
+ <sql id="supplier_plantItem_conditionSQL">
+      FROM
+		  (
+		  <include refid="aaa"/>
+		  	Limit #{pageIndex},#{pageSize}
+		  ) c
+		  LEFT JOIN 
+		  (SELECT 
+		      d.salePrice,
+		      e.name,
+		      e.id,
+		      d.itemBaseId,
+		      d.spId 
+		    FROM
+		      ScmsSpSalePrice d 
+		      JOIN ScmsUserType e 
+		        ON d.cusType = e.id) f 
+		   ON c.itemBaseId = f.itemBaseId 
+           AND c.spId = f.spId
+ </sql>
+ <sql id="pageSql">
+   Limit
+   #{pageIndex},#{pageSize}
+ </sql>
+ 
+ 
+ <select id="selectSupplierAllPlantItem" parameterType="com.corner.scms.beans.ro.PlantItemRo" resultMap="plantItemVoResultMap">
+	   SELECT 
+		  c.id,
+		  c.itemBaseId,
+		  c.spGroupId,
+		  c.spId,
+		  c.scInPrice,
+		  c.cateId,
+		  c.name,
+		  c.mdseId,
+		  c.spec,
+		  c.measure,
+		  c.pkg,
+		  c.areaPrice,
+		  c.plantMemPrice,
+		  c.status,
+		  f.salePrice,
+		  f.name AS userTypeName,
+		  f.id AS userTypeId,
+		  c.cateNameT,
+		  c.cateNameO
+		  <include refid="supplier_plantItem_conditionSQL"/>
+
+ </select>
+ 
+  <select id="selectCountSupplierAllPlantItem" parameterType="com.corner.scms.beans.ro.PlantItemRo" resultType="java.lang.Integer">
+     select count(1)
+     FROM ( 
+	  <include refid="aaa"/>
+		  ) AS S 
+  </select>
+   
+ <select id="selectItemBaseByName" parameterType="java.lang.String" resultType="com.corner.scms.beans.vo.PlantItemVo">
+  select id,cateId,mdseId,name,spec,measure,imgS,pkg
+  from 	ItemBase 
+  where status = 1 and isDelete = 0 and (name like "%"#{productName}"%" or shortNm like #{productName}"%")
+ </select>
+ 
+ <select id="selectPlantItemByCondition" parameterType="com.corner.scms.beans.ro.PlantItemRo" resultMap="plantItemVoResultMap">
+     SELECT
+		a.id,
+		a.`status`,
+		a.plantMemPrice,
+		a.areaPrice,
+		a.spId,
+		a.itemBaseId,
+		a.spGroupId,
+		b.cateId,
+		b.pkg,
+		b.imgS,
+		b.mdseId,
+		b.`name`,
+		b.spec,
+		b.measure,
+		d.id AS userTypeId,
+		d.`name` AS userTypeName,
+		c.salePrice,
+		e.`name` AS groupName
+	FROM
+		PlantItem a
+	JOIN ItemBase b ON a.itemBaseId = b.id
+	AND b.status = 1
+	AND b.isDelete = 0
+	LEFT JOIN ScmsSpSalePrice c ON a.spId = c.spId
+	AND a.itemBaseId = c.itemBaseId
+	LEFT JOIN ScmsUserType d ON c.cusType = d.id
+	JOIN SpGroup e ON a.spGroupId = e.id
+	AND e.`status`=1
+	AND e.isDelete=0 
+	WHERE a.spId = #{spId} 
+	AND a.itemBaseId = #{itemBaseId} 
+	AND a.isDelete = 0 
+ </select>
+ <select id="selectPlantItemAndUserTypePrice" parameterType="com.corner.scms.beans.ro.PlantItemRo" resultMap="plantItemVoResultMap">
+    SELECT 
+	  b.itemBaseId,b.id,c.cusType as userTypeId,d.name as userTypeName,c.salePrice
+	FROM
+	  ItemBase a 
+	  JOIN PlantItem b 
+	    ON a.id = b.itemBaseId 
+	  LEFT JOIN ScmsSpSalePrice c 
+	    ON c.itemBaseId = b.itemBaseid and c.spId = b.spId 
+	  LEFT JOIN ScmsUserType d 
+	    ON c.cusType = d.id 
+	WHERE a.id = #{itemBaseId} and b.spId = #{spId} and a.isDelete = 0 and b.isDelete = 0 and a.useType = 1
+ </select>
+ 
+ <select id="selectSpPriceList" parameterType="com.corner.scms.beans.ro.PlantItemRo" resultType="com.corner.core.beans.ScmsSpSalePrice">
+    select * from ScmsSpSalePrice where plantItemId = #{id}
+ </select>
+ <!-- 商品管理end -->
+ <!-- 孟星魂	add by 2015年12月12日 13:37:14 -->
+ <!-- 根据批发商ID，商品ID，客户类型获取出货价格 -->
+ <select id="selectSalePrice" parameterType="java.util.Map" resultType="com.corner.core.beans.ScmsSpSalePrice">
+    SELECT
+	*
+	FROM
+		ScmsSpSalePrice
+	<trim prefix="WHERE" prefixOverrides="AND |OR ">
+	spId = #{spId}
+	AND itemBaseId = #{itemBaseId}
+	AND cusType = #{storeType}
+	AND status = '1' and isDelete = '0' 
+	</trim>
+ </select>
+ <!-- 修正库存 -->
+ <update id="updatePlantItemBySpIdAndItemBaseId" parameterType="java.util.Map">
+ 	update 
+ 		PlantItem 
+ 	<set>
+ 		<if test="num != null and num !=null">
+ 			goodsStock = goodsStock - #{num},
+ 		</if>
+ 		<if test="plantDisPrice !=null and plantDisPrice == ''">
+ 			areaPrice = #{plantDisPrice},
+ 		</if>
+ 		<if test="updateTime!=null">
+ 			updateTime = #{updateTime},
+ 		</if>
+ 	</set>
+ 	where
+ 		itemBaseId = #{itemBaseId}
+ 	and spId = #{spId}
+ </update>
+ 
+ <!-- scms批发商商品库管理************************************************begin -->
+ <!-- 根据批发商编号获得所有批发商的商品的条件sql -->
+ <sql id="getSupplierGoodsIsParam" >
+ 	FROM
+		`PlantItem` a
+	JOIN (
+		SELECT
+			id,
+			mdseId,
+			NAME,
+			spec,
+			pkg
+		FROM
+			ItemBase
+		WHERE
+			isDelete = 0
+		<if test="cateId != null">
+			AND cateId = #{cateId }
+		</if>	
+		<if test="noAndName != null and noAndName != ''">
+			AND (
+				mdseId LIKE "%" #{noAndName } "%"
+				OR `name` LIKE "%" #{noAndName } "%"
+			)
+		</if>
+		
+	) b ON a.itemBaseId = b.id
+	<trim prefix="WHERE" prefixOverrides="AND | OR">
+			AND isDelete = 0
+		<if test="spId != null and spId != ''">
+			AND spId = #{spId }
+		</if>
+		<choose>
+			<when test="status != null">
+				AND `status` = #{status}
+			</when>
+			<otherwise>
+				AND `status` IN (0, 1)
+			</otherwise>
+		</choose>
+		AND spGroupId IN (
+			SELECT
+				groupId
+			FROM
+				SpGroup
+			WHERE
+			<if test="spId != null and spId != ''">
+				spId = #{spId }
+			</if>
+		)
+	</trim>	
+ </sql>
+ <!-- 根据参数获得所有批发商的商品 -->
+ <select id="getSupplierGoodsByParam" parameterType="com.corner.scms.beans.vo.PlantItemVo" resultType="com.corner.scms.beans.vo.PlantItemVo">
+ 	SELECT
+		a.id,
+		a.areaPrice,
+		a.status,
+		b.mdseId,
+		b. NAME,
+		b.spec,
+		b.pkg
+	<include refid="getSupplierGoodsIsParam"/>
+	<if test="pageIndex != null and pageSize != null">
+		<include refid="pageSql"/>
+	</if>
+ </select>
+ <!-- 获取总数 -->
+ <select id="getSupplierGoodsByParamCount" parameterType="com.corner.scms.beans.vo.PlantItemVo" resultType="java.lang.Integer">
+ 	SELECT COUNT(1) FROM (
+ 		SELECT
+		a.id,
+		a.areaPrice,
+		a.status,
+		b.mdseId,
+		b. NAME,
+		b.spec,
+		b.pkg
+	<include refid="getSupplierGoodsIsParam"/>
+ 	) a
+ </select>
+ 
+ <update id="updatePlantItemStatus" parameterType="java.util.Map">
+ 	update PlantItem
+	<set>
+		<if test="areaPrice != null">
+			areaPrice = #{areaPrice},
+		</if>
+		<if test="status != null">
+			status=#{status},
+		</if>
+	</set>
+ 	where itemBaseId = #{itemBaseId} and spId=#{spId} and spGroupId=#{spGroupId}
+ </update>
+ <!-- scms批发商商品库管理************************************************end -->
+ 
+ <!-- 批发商库存预警 -->
+  <sql id="getPlantItemGoodsByGroupAndSpIdSql">
+    	FROM
+			(
+			SELECT
+				id,
+				NAME,
+				mdseId,
+				spec,
+				pkg,
+				lower
+			FROM
+				ItemBase
+			WHERE
+				STATUS = 1
+			AND isDelete = 0
+			) a
+		JOIN (
+			<!-- SELECT
+				id,
+				itemBaseId,
+				goodsStock
+			FROM
+				PlantItem
+			WHERE
+				STATUS = 1
+			AND isDelete = 0
+			<if test="spId != null and spId != ''">
+				AND spId = #{spId}
+			</if>
+			group by itemBaseId -->
+			SELECT
+			item.id,
+			item.itemBaseId,
+			logi.stockNum AS goodsStock
+		FROM
+			PlantItem AS item
+		JOIN ERPLogicStock logi ON item.logicStockId = logi.id
+		WHERE
+				item.status = 1
+			AND item.isDelete = 0
+			<if test="spId != null and spId != ''">
+				AND item.spId = #{spId}
+			</if>
+		group by item.itemBaseId
+		) b ON a.id = b.itemBaseId
+		WHERE
+			a.lower >= b.goodsStock
+    </sql>
+    
+    <select id="getPlantItemGoodsByGroupAndSpId" parameterType="com.corner.scms.beans.ro.StockManagerParamRo" resultType="com.corner.scms.beans.vo.PlantItemVo">
+    	SELECT
+			a. NAME,
+			a.spec,
+			a.pkg,
+			a.mdseId,
+			a.lower AS goodsLower,
+			b.goodsStock
+		<include refid="getPlantItemGoodsByGroupAndSpIdSql"/>
+		<include refid="pageSql"/>
+	</select>
+    <select id="getPlantItemGoodsByGroupAndSpIdCount" parameterType="com.corner.scms.beans.ro.StockManagerParamRo" resultType="java.lang.Integer">
+    	select count(1) from (
+    		SELECT
+				a. NAME,
+				a.spec,
+				a.pkg,
+				a.lower AS goodsLower,
+				b.goodsStock
+			<include refid="getPlantItemGoodsByGroupAndSpIdSql"/>
+    	) c
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+

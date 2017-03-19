@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.ScmsItemCatelogMgMapper" >
+ 
+    
+     <select id="selectAll" resultType="com.corner.core.beans.ItemCatelog">
+       select
+       id, name, pid, spid
+        from ItemCatelog where status =1 and isDelete =0
+        order by id
+     </select>
+</mapper>

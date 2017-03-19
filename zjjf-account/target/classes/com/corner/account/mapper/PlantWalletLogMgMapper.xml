@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.account.dao.PlantWalletLogMgMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.PlantWalletLog" extends="com.corner.core.dao.PlantWalletLogMapper.BaseResultMap">
+  </resultMap>
+  <update id="updateWalletByLog" parameterType="com.corner.core.beans.PlantWalletLog">
+  	insert into PlantWalletLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="payer != null" >
+        payer,
+      </if>
+      <if test="geter != null" >
+        geter,
+      </if>
+        plantWalletId,
+        actionType,
+      <if test="optType != null" >
+        optType,
+      </if>
+      <if test="actionTime != null" >
+        actionTime,
+      </if>
+      <if test="tradeWay != null" >
+        tradeWay,
+      </if>
+      <if test="tradeNo != null" >
+        tradeNo,
+      </if>
+      <if test="bankCode != null" >
+        bankCode,
+      </if>
+      <if test="bankNo != null" >
+        bankNo,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="spWithDrawId != null" >
+        spWithDrawId,
+      </if>
+      <if test="sheetId != null" >
+        sheetId,
+      </if>
+      <if test="couponId != null" >
+        couponId,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="orderPId != null" >
+        orderPId,
+      </if>
+        money,
+      	balance
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="payer != null" >
+        #{payer,jdbcType=TINYINT},
+      </if>
+      <if test="geter != null" >
+        #{geter,jdbcType=TINYINT},
+      </if>
+        #{plantWalletId,jdbcType=VARCHAR},
+        #{actionType,jdbcType=TINYINT},
+      <if test="optType != null" >
+        #{optType,jdbcType=TINYINT},
+      </if>
+      <if test="actionTime != null" >
+        #{actionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeWay != null" >
+        #{tradeWay,jdbcType=TINYINT},
+      </if>
+      <if test="tradeNo != null" >
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null" >
+        #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNo != null" >
+        #{bankNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="spWithDrawId != null" >
+        #{spWithDrawId,jdbcType=BIGINT},
+      </if>
+      <if test="sheetId != null" >
+        #{sheetId,jdbcType=VARCHAR},
+      </if>
+      <if test="couponId != null" >
+        #{couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPId != null" >
+        #{orderPId,jdbcType=VARCHAR},
+      </if>
+        #{money,jdbcType=DECIMAL},
+        (SELECT wallet from PlantWallet where id = #{plantWalletId,jdbcType=VARCHAR})
+    </trim>
+    ;UPDATE PlantWallet set wallet = wallet + #{money} ,walletUpdateTime = NOW() where id = #{plantWalletId}
+  </update>
+</mapper>

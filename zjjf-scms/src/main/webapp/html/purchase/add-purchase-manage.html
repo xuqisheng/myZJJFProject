@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>新增采购入库</title>
+		<link rel="stylesheet" type="text/css" href="../../resources/css/base.css" />
+		<link rel="stylesheet" type="text/css" href="../../resources/css/order-detail.css" />
+		<script src="../../resources/vendor/jquery/jquery-1.12.4.min.js"></script>
+		<script src="../../resources/js/comm.js"></script>
+		<script src="../../resources/vendor/drag/drag.1.0-min.js"></script>
+		<script src="../../resources/vendor/My97DatePicker/WdatePicker.js"></script>
+		
+	</head>
+	<style type="text/css">
+
+	</style>
+
+	<body>
+		<div class="wrap-bd">
+			<div class="mb-small clearfix">
+				<div class="fl title">新增采购入库</div>
+			</div>
+			<div class="op-section clearfix">
+				<div class="mb-default">
+					<label id="" class="mr-small">
+					采购订单：					
+					<span class="button " style="margin-right: 200px;" id="add_purchase">选择销售订单</span>
+					</label>
+					<label id="" class="mr-small">
+					入库时间：
+					<input type="text" name="" id="" value="" class="input input-search-date" onFocus="WdatePicker()"/>
+					</label>
+				</div>
+				<div class="mb-small">
+					</label>
+					<label id="" class="mr-small">
+					备注：
+					<input type="text" name="" id="" value="" class="input input-search-text"/>
+					</label>
+				</div>
+				<table class="table-list table-border mt-default">
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>商品供应码</th>
+							<th>箱码</th>
+							<th>商品条形码</th>
+							<th>商品名称</th>
+							<th>规格</th>
+							<th>待入库数量</th>
+							<th>入库数量</th>
+							<th>入库价格</th>
+							<th>生产日期</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody class="table-tbody">
+						<tr>
+							<td>1</td>
+							<td>
+								<input type="text" name="" id="" value="" class="input input-search-date" />
+							</td>
+							<td>1</td>
+							<td>1</td>
+							<td>1</td>
+							<td>1</td>
+							<td>1</td>
+							<td>
+								<input type="text" name="" id="" value="" class="input input-search-date" />
+							</td>
+							<td>
+								<input type="text" name="" id="" value="" class="input input-search-date" />
+							</td>
+							<td>
+								<input type="text" name="" id="" value="" class="input input-search-date" onFocus="WdatePicker()"/>
+							</td>
+							<td>
+								<span class="button button-operate">删除</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="dialog hidden" id="J_dialogAddNew">
+					<form action="" method="post" id="">
+						<div class="dialog-head" style="cursor: move;">
+							<div class="dialog-title">选择采购单</div>
+							<div class="dialog-close"></div>
+						</div>
+						<div class="dialog-body dialog-padding">
+							<p>
+								<input type="text" value="" name="" id="" class="input" style="width:360px">
+								<input type="button" name="" id="" value="搜索" class="input-search-button" />
+							</p>
+							<table class="table-list table-border mt-default">
+								<thead>
+									<tr>
+										<th>序号</th>
+										<th>采购单号</th>
+										<th>采购仓库</th>
+										<th>供应商名称</th>
+									</tr>
+								</thead>
+								<tbody class="table-tbody">
+									<tr>
+										<td>1</td>
+										<td>132454534534</td>
+										<td>转角犀利服务站</td>
+										<td>深圳一处供应商</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="dialog-foot">
+							<input type="hidden" name="" value="" id="">
+							<input type="button" class="dialog-button dialog-ok" id="" value="确认">
+							<input type="button" class="dialog-button dialog-cancel ml-default" value="取消">
+							<input type="reset" class="hidden" />
+						</div>
+
+					</form>
+				</div>
+				<div class="mb-default mt-default">
+					<input type="button" name="" id="" value="确认" class="button-save" />
+					<input type="button" name="" id="" value="取消" class="button-cancel" />
+				</div>
+			</div>
+		</div>
+
+	</body>
+	<script type="text/javascript">
+		var oDialog = document.getElementsByClassName("dialog")[0];
+//		var oDialogHead = document.getElementsByClassName("dialog-head")[0];
+		startDrag(oDialog, oDialog);
+		$(function() {
+			dialogPosCenter('#J_dialogAddNew');
+			$('#add_purchase').on('click', function() {
+				$('#J_dialogAddNew, .cover-all').fadeIn();
+			});
+			$('.dialog').on('click', '.dialog-cancel, .dialog-close', function() {
+				$('.dialog, .cover-all').fadeOut();
+			});
+			$('.table-list td').click(function() {
+				$(this).parent().css('background', '#009dd9').addClass('.chosed').siblings().css('background', '#fff').removeClass('.chosed');
+				console.log($('.chosed'))
+
+			})
+		})
+	</script>
+
+</html>

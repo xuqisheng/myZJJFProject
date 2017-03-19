@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.ItemBaseMgMapper" >
+<resultMap id="BaseResultMap" type="com.corner.core.beans.ItemBase" extends="com.corner.core.dao.ItemBaseMapper.BaseResultMap">
+</resultMap>
+<!-- 获取会计列表条件 -->
+	<sql id="getItemBaseList_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			isDelete = 0
+			<if test="mdseId != null and mdseId !=''">
+				AND mdseId like CONCAT('%',#{mdseId},'%')
+			</if>
+			<if test="name != null and name !=''" >
+		        AND (name like CONCAT('%',#{name},'%')  or shortNm like CONCAT('%',#{name},'%'))
+		    </if>
+		</trim>
+	</sql>
+	<select id="getItemBaseList" parameterType="com.corner.core.beans.ItemBase" resultType="com.corner.core.beans.ItemBase">
+		SELECT id,cateId,mdseId,`name`,brand,spec,imgS,imgB from ItemBase
+		<include refid="getItemBaseList_condition" />
+	</select>
+	<select id="getItemBaseByMdseId" parameterType="com.corner.core.beans.ItemBase" resultType="com.corner.core.beans.ItemBase">
+		SELECT * from ItemBase where mdseId = #{mdseId}
+	</select>
+	<select id="getListByItem" parameterType="com.corner.core.beans.ItemBase" resultType="com.corner.core.beans.ItemBase">
+		SELECT * from ItemBase where tgId = #{tgId} 
+	</select>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultType="java.util.Map">
+		SELECT a.*,a.mdseId as wayCode,b.mdseId as barCode from ItemBase a JOIN ItemBase b on a.tgId = b.tgId where b.upId = 0 and a.`status` = 1 and a.isDelete = 0 and a.id= #{id}
+	</select>
+	
+	
+	
+	<!-- 商品库管理*****************************************************************begin -->
+	<sql id="selectParam">
+		FROM
+			ItemBase ib
+		left JOIN ItemCatelog ic ON ib.cateId = ic.id
+		left JOIN ItemCatelog il ON ic.pid = il.id
+		WHERE 
+			1=1
+		<if test="yiJiId!=null and yiJiId!=0">
+			AND ic.pid=#{yiJiId}
+		</if>
+		<if test="erJiId!=null and erJiId!=0">
+			AND ic.id=#{erJiId}
+		</if>
+		<if test="status!=null">
+			AND ib.status=#{status}
+		</if>
+		<if test="noAndName!=null and noAndName!=''">
+			AND (ib.mdseId = #{noAndName} OR ib.`name` like "%"#{noAndName}"%" OR ib.shortNm like #{noAndName}"%")
+		</if>
+		and upId=0
+		order by ib.addTime desc
+	</sql>
+	
+	<!-- 根据条件查询所有的商品 -->
+	<select id="selectItemBaseByParam" parameterType="com.corner.kefu.beans.ro.ItemBaseRo" resultType="com.corner.kefu.beans.vo.ItemBaseVo">
+		SELECT
+			ib.*,
+			(SELECT COUNT(1) FROM ItemBase ib1 WHERE ib1.upId = ib.id and ib1.isDelete=0) as countNum,
+			il.id as yiJiId,
+			il.name as yiJiName,
+			ic.id as erJiId,
+			ic.name as erJiName
+		<include refid="selectParam"/>
+		<if test="pageSize!=0">
+			limit ${pageIndex},${pageSize}
+		</if>
+	</select>
+	
+	<select id="selectCountItemBase" parameterType="com.corner.kefu.beans.ro.ItemBaseRo" resultType="java.lang.Integer">
+	select count(1) 
+	<include refid="selectParam"/>
+	</select>
+	
+	
+	
+	<!-- 商品库管理******************************************************************end* -->
+	
+	
+	<select id="selectItemBaseByMdseId" parameterType="java.lang.String" resultType="com.corner.kefu.beans.vo.ItemBaseVo">
+	  SELECT i.name AS catename,it.* FROM ItemBase it JOIN ItemCatelog i ON it.cateId=i.id where it.mdseId=#{mdseId,jdbcType=VARCHAR} and i.isDelete=0 and it.isDelete=0<!-- and i.status=1  and i.isDelete=0 and it.isDelete-->
+	</select>
+	
+	<select id="selectItemByBrand" parameterType="java.lang.String" resultType="com.corner.core.beans.ItemBase">
+		select * from ItemBase where mdseId=#{mdseId,jdbcType=VARCHAR}
+	</select>
+	
+	
+	<select id="getSpVoucherItemBaseList" parameterType="com.corner.core.beans.ItemBase" resultType="java.lang.String">
+	   SELECT 
+		  a.id 
+		FROM
+		  ItemBase a 
+		  JOIN ItemCatelog b 
+		    ON a.cateId = b.id 
+		WHERE (a.cateId = #{cateId} 
+		    OR b.pid = #{cateId}) 
+		  AND a.isDelete = 0 
+		  AND a.status = 1 
+	</select>
+	
+</mapper>

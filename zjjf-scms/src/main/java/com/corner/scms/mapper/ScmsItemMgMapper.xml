@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.ScmsItemMgMapper" >
+	<update id="batchUpdateSales" parameterType="java.util.List">
+		<foreach collection="list" separator=";" index="index" item="item">
+			update ScmsItem set sales = sales+#{item.quantity} where id = #{item.itemId}
+		</foreach>
+	</update>
+	<!-- 修改scmsItem销量通过orderId -->
+	<update id="updateScmsItemGoodsStockByOrderId" parameterType="java.util.Map" >
+	  	UPDATE ScmsItem a
+			JOIN (
+				SELECT
+					a.quantity,
+					b.year,
+					b.`month`,
+					b.itemBaseId
+				FROM
+					ScOrderDetail a
+				JOIN ScmsItem b ON a.itemId = b.id
+				WHERE
+					orderId = #{orderId}
+			) b ON a.`month` = b.`month`
+			AND a.`year` = b.`year`
+			AND a.itemBaseId = b.itemBaseId
+		<if test="actype == 0">
+			SET a.middleStock=a.middleStock+b.quantity,a.goodsStock=a.goodsStock-b.quantity
+		</if>
+		<if test="actype == 1">
+			SET a.middleStock=a.middleStock-b.quantity,a.goodsStock=a.goodsStock+b.quantity
+		</if>
+		<if test="actype == 2">
+			SET a.middleStock=a.middleStock-b.quantity
+		</if>
+	</update>
+</mapper>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>参与批发商</title>
+		<link rel="stylesheet" type="text/css" href="../../../resources/css/base.css" />
+		<link rel="stylesheet" type="text/css" href="../../../resources/vendor/jquery/ztree/css/zTreeStyle/zTreeStyle.css" />
+		<script src="../../../resources/vendor/jquery/jquery-1.12.4.min.js"></script>
+		<script src="../../../resources/js/comm.js"></script>
+		<script src="../../../resources/vendor/jquery/ztree/js/jquery.ztree.all.js"></script>
+		
+	</head>
+
+	<body>
+		<div class="wrap-bd">
+			<div class="mb-small">
+				<a href="#" class="crumb">促销管理</a>
+				<a href="#" class="crumb">单品促销</a>
+			</div>
+			<div class="bg wrap-bd">
+				<div class="mb-default ">
+					<label class="label">
+						参与批发商：
+					</label>
+					<button class="button button-operate mr-default" id="J_dialog-addSupplier" type="button">增加批发商</button>
+				</div>
+				<table class="table-list mb-default">
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>所属区域</th>
+							<th>所属定格</th>
+							<th>批发商编号</th>
+							<th>批发商名称</th>
+							<th>手机号</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody class="table-tbody" id="supplier_info">
+					</tbody>
+				</table>
+				<div class="mb-default">
+					<a href="add-goods-promotion.html" class="button button-ok">上一步</a>
+					<a href="supplier-goods.html" class="button button-ok ml-small">下一步</a>
+					<a class="button button-cancel ml-small">取消</a>
+				</div>
+				<div class="dialog hidden J_dialog" id="J_dialogSupplier">
+					<form action="" method="post">
+						<div class="dialog-head">
+
+							选择批发商
+
+							<div id="" class="dialog-close">
+
+							</div>
+						</div>
+						<div class="dialog-body">
+							<form action="" method="post">
+								<div class="mb-default ">
+
+									<input type="text" name="" id="" value="" class="input input-default" placeholder="批发商名称" />
+									<input type="button" name="" id="" value="搜索" class="button button-default" />
+								</div>
+							</form>
+							<div class="ztree" id="ztree">
+								<ul id="treeDemo" class="ztree" style="height:140px; overflow:auto">
+								</ul>
+							</div>
+						</div>
+						<div class="dialog-foot">
+							<div class="">
+								<span class="dialog-button dialog-ok ml-default" id="saveBtn">确认</span>
+								<span class="dialog-button ml-small  dialog-cancel">取消</span>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="cover-all">
+					
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		$(function(){
+			dialogPosCenter('#J_dialogSupplier');
+			$('#J_dialog-addSupplier').on('click', function() {
+				$('#J_dialogSupplier, .cover-all').fadeIn();
+			});
+			$('.J_dialog').on('click', '.dialog-cancel', function() {
+
+				$('.J_dialog, .cover-all').fadeOut();
+			})
+			$('.dialog').on('click', '.dialog-close', function() {
+				$('.J_dialog, .cover-all').fadeOut();
+			})
+			var html="";
+			html+=
+					'<tr>'
+						+'<td>1</td>'
+						+'<td>广州/深圳/南山</td>'
+						+'<td>定格的名称</td>'
+						+'<td>粤B111</td>'
+						+'<td>我的名称</td>'
+						+'<td>15465653453</td>'
+						+'<td><span class="icon-op icon-op-del J_del" title="删除"></span></td>'
+					+'</tr>';
+			
+			$('#saveBtn').click(function(){
+				$('#supplier_info').append(html);
+				$('.J_dialog, .cover-all').fadeOut();
+			})
+			$('#supplier_info').on('click','.J_del',function(){
+				if(confirm('确认删除？')){
+				$(this).parent('td').parent('tr').remove();				
+				}			
+			})
+		})
+		var setting = {
+			view: {
+				showIcon: false
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			},
+
+		};
+
+		var zNodes = [{
+				name: "广东",
+				open: true,
+				children: [{
+					name: "深圳",
+					children: [{
+						name: "南山"
+					}, {
+						name: "福田"
+					}, {
+						name: "宝安"
+					}, {
+						name: "罗湖"
+					}]
+				}, {
+					name: "广州",
+					children: [{
+						name: "广州1"
+					}, {
+						name: "广州2"
+					}, {
+						name: "广州3"
+					}, {
+						name: "广州4"
+					}]
+				}, {
+					name: "汕头",
+					isParent: true
+				}]
+			}, {
+				name: "北京",
+				isParent: true
+			}
+
+		];
+		$(document).ready(function() {
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		})
+	</script>
+</html>

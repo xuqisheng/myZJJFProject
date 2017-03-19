@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.AnalysisErpManagerOrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.erp.AnalysisErpManagerOrderDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="detailId" property="detailId" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="pkg" property="pkg" jdbcType="VARCHAR" />
+    <result column="barCode" property="barCode" jdbcType="VARCHAR" />
+    <result column="mdseId" property="mdseId" jdbcType="VARCHAR" />
+    <result column="itemCode" property="itemCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="spec" property="spec" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="itemId" property="itemId" jdbcType="VARCHAR" />
+    <result column="managerId" property="managerId" jdbcType="VARCHAR" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="areaPrice" property="areaPrice" jdbcType="DECIMAL" />
+    <result column="taxRate" property="taxRate" jdbcType="DECIMAL" />
+    <result column="quantity" property="quantity" jdbcType="SMALLINT" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="operateQuantity" property="operateQuantity" jdbcType="SMALLINT" />
+    <result column="dayTime" property="dayTime" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, detailId, orderId, pkg, barCode, mdseId, itemCode, name, spec, img, itemId, managerId, 
+    supplierId, itemBaseId, areaPrice, taxRate, quantity, addTime, operateQuantity, dayTime, 
+    createTime, updateTime
+  </sql>
+  
+  <select id="getData" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from analysis_erpmanagerorderdetail where managerId = #{managerId} and supplierId=#{supplierId} and itemBaseId=#{itemBaseId}
+  </select>
+  
+</mapper>

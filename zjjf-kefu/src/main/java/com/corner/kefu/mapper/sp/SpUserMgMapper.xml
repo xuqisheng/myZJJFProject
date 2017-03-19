@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpUserMgMapper" >
+	<!--后台定格管理  begin-->
+	<select id="getUserByStoreId" parameterType="java.lang.Integer" resultType="com.corner.core.beans.User">
+	   select * from User where storeId = #{stId}
+	</select>
+	
+	<select id="getUserBySupplierId" parameterType="java.lang.String" resultType="com.corner.core.beans.User">
+	  select * from User where supplierId = #{id}
+	</select>
+	
+	<select id="getUserByMobile" parameterType="java.lang.String" resultType="com.corner.core.beans.User">
+	  select * from User where mobile = #{mobile}
+	</select>
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.TagItemMapMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.TagItemMapKey" >
+    <id column="item_id" property="item_id" jdbcType="VARCHAR" />
+    <id column="tag_id" property="tag_id" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.corner.core.beans.TagItemMapKey" >
+    delete from TagItemMap
+    where item_id = #{item_id,jdbcType=VARCHAR}
+      and tag_id = #{tag_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.TagItemMapKey" >
+    insert into TagItemMap (item_id, tag_id)
+    values (#{item_id,jdbcType=VARCHAR}, #{tag_id,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.TagItemMapKey" >
+    insert into TagItemMap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="item_id != null" >
+        item_id,
+      </if>
+      <if test="tag_id != null" >
+        tag_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="item_id != null" >
+        #{item_id,jdbcType=VARCHAR},
+      </if>
+      <if test="tag_id != null" >
+        #{tag_id,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

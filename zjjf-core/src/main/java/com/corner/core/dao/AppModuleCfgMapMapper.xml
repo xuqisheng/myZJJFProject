@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.AppModuleCfgMapMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.AppModuleCfgMapKey" >
+    <id column="moduleId" property="moduleId" jdbcType="VARCHAR" />
+    <id column="appCfgId" property="appCfgId" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.corner.core.beans.AppModuleCfgMapKey" >
+    delete from AppModuleCfgMap
+    where moduleId = #{moduleId,jdbcType=VARCHAR}
+      and appCfgId = #{appCfgId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.AppModuleCfgMapKey" >
+    insert into AppModuleCfgMap (moduleId, appCfgId)
+    values (#{moduleId,jdbcType=VARCHAR}, #{appCfgId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.AppModuleCfgMapKey" >
+    insert into AppModuleCfgMap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="moduleId != null" >
+        moduleId,
+      </if>
+      <if test="appCfgId != null" >
+        appCfgId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="moduleId != null" >
+        #{moduleId,jdbcType=VARCHAR},
+      </if>
+      <if test="appCfgId != null" >
+        #{appCfgId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

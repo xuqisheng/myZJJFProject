@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.task.dao.AdminMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.task.beans.Admin" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="lastIP" property="lastIP" jdbcType="VARCHAR" />
+    <result column="lastTime" property="lastTime" jdbcType="TIMESTAMP" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="createrId" property="createrId" jdbcType="VARCHAR" />
+    <result column="createrTime" property="createrTime" jdbcType="TIMESTAMP" />
+    <result column="updateId" property="updateId" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="deptId" property="deptId" jdbcType="INTEGER" />
+    <result column="postId" property="postId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userName, password, lastIP, lastTime, email, createrId, createrTime, updateId, 
+    updateTime, deptId, postId, status, isDelete, col1, col2, col3
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from admin
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from admin
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.task.beans.Admin" >
+    insert into admin (id, userName, password, 
+      lastIP, lastTime, email, 
+      createrId, createrTime, updateId, 
+      updateTime, deptId, postId, 
+      status, isDelete, col1, 
+      col2, col3)
+    values (#{id,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{lastIP,jdbcType=VARCHAR}, #{lastTime,jdbcType=TIMESTAMP}, #{email,jdbcType=VARCHAR}, 
+      #{createrId,jdbcType=VARCHAR}, #{createrTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{deptId,jdbcType=INTEGER}, #{postId,jdbcType=INTEGER}, 
+      #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}, #{col1,jdbcType=VARCHAR}, 
+      #{col2,jdbcType=VARCHAR}, #{col3,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.task.beans.Admin" >
+    insert into admin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userName != null" >
+        userName,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="lastIP != null" >
+        lastIP,
+      </if>
+      <if test="lastTime != null" >
+        lastTime,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="createrId != null" >
+        createrId,
+      </if>
+      <if test="createrTime != null" >
+        createrTime,
+      </if>
+      <if test="updateId != null" >
+        updateId,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="deptId != null" >
+        deptId,
+      </if>
+      <if test="postId != null" >
+        postId,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="col1 != null" >
+        col1,
+      </if>
+      <if test="col2 != null" >
+        col2,
+      </if>
+      <if test="col3 != null" >
+        col3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="lastIP != null" >
+        #{lastIP,jdbcType=VARCHAR},
+      </if>
+      <if test="lastTime != null" >
+        #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="createrId != null" >
+        #{createrId,jdbcType=VARCHAR},
+      </if>
+      <if test="createrTime != null" >
+        #{createrTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deptId != null" >
+        #{deptId,jdbcType=INTEGER},
+      </if>
+      <if test="postId != null" >
+        #{postId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null" >
+        #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        #{col3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.task.beans.Admin" >
+    update admin
+    <set >
+      <if test="userName != null" >
+        userName = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="lastIP != null" >
+        lastIP = #{lastIP,jdbcType=VARCHAR},
+      </if>
+      <if test="lastTime != null" >
+        lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="createrId != null" >
+        createrId = #{createrId,jdbcType=VARCHAR},
+      </if>
+      <if test="createrTime != null" >
+        createrTime = #{createrTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        updateId = #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deptId != null" >
+        deptId = #{deptId,jdbcType=INTEGER},
+      </if>
+      <if test="postId != null" >
+        postId = #{postId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null" >
+        col1 = #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        col2 = #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        col3 = #{col3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.task.beans.Admin" >
+    update admin
+    set userName = #{userName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      lastIP = #{lastIP,jdbcType=VARCHAR},
+      lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      email = #{email,jdbcType=VARCHAR},
+      createrId = #{createrId,jdbcType=VARCHAR},
+      createrTime = #{createrTime,jdbcType=TIMESTAMP},
+      updateId = #{updateId,jdbcType=VARCHAR},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      deptId = #{deptId,jdbcType=INTEGER},
+      postId = #{postId,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      col1 = #{col1,jdbcType=VARCHAR},
+      col2 = #{col2,jdbcType=VARCHAR},
+      col3 = #{col3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ScheduleLogMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ScheduleLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="logName" property="logName" jdbcType="VARCHAR" />
+    <result column="intId" property="intId" jdbcType="INTEGER" />
+    <result column="stringId" property="stringId" jdbcType="VARCHAR" />
+    <result column="dateOne" property="dateOne" jdbcType="TIMESTAMP" />
+    <result column="dateTwo" property="dateTwo" jdbcType="TIMESTAMP" />
+    <result column="dateThree" property="dateThree" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, logName, intId, stringId, dateOne, dateTwo, dateThree
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ScheduleLog
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ScheduleLog
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ScheduleLog" >
+    insert into ScheduleLog (id, logName, intId, 
+      stringId, dateOne, dateTwo, 
+      dateThree)
+    values (#{id,jdbcType=INTEGER}, #{logName,jdbcType=VARCHAR}, #{intId,jdbcType=INTEGER}, 
+      #{stringId,jdbcType=VARCHAR}, #{dateOne,jdbcType=TIMESTAMP}, #{dateTwo,jdbcType=TIMESTAMP}, 
+      #{dateThree,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ScheduleLog" >
+    insert into ScheduleLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="logName != null" >
+        logName,
+      </if>
+      <if test="intId != null" >
+        intId,
+      </if>
+      <if test="stringId != null" >
+        stringId,
+      </if>
+      <if test="dateOne != null" >
+        dateOne,
+      </if>
+      <if test="dateTwo != null" >
+        dateTwo,
+      </if>
+      <if test="dateThree != null" >
+        dateThree,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="logName != null" >
+        #{logName,jdbcType=VARCHAR},
+      </if>
+      <if test="intId != null" >
+        #{intId,jdbcType=INTEGER},
+      </if>
+      <if test="stringId != null" >
+        #{stringId,jdbcType=VARCHAR},
+      </if>
+      <if test="dateOne != null" >
+        #{dateOne,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateTwo != null" >
+        #{dateTwo,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateThree != null" >
+        #{dateThree,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ScheduleLog" >
+    update ScheduleLog
+    <set >
+      <if test="logName != null" >
+        logName = #{logName,jdbcType=VARCHAR},
+      </if>
+      <if test="intId != null" >
+        intId = #{intId,jdbcType=INTEGER},
+      </if>
+      <if test="stringId != null" >
+        stringId = #{stringId,jdbcType=VARCHAR},
+      </if>
+      <if test="dateOne != null" >
+        dateOne = #{dateOne,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateTwo != null" >
+        dateTwo = #{dateTwo,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateThree != null" >
+        dateThree = #{dateThree,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ScheduleLog" >
+    update ScheduleLog
+    set logName = #{logName,jdbcType=VARCHAR},
+      intId = #{intId,jdbcType=INTEGER},
+      stringId = #{stringId,jdbcType=VARCHAR},
+      dateOne = #{dateOne,jdbcType=TIMESTAMP},
+      dateTwo = #{dateTwo,jdbcType=TIMESTAMP},
+      dateThree = #{dateThree,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

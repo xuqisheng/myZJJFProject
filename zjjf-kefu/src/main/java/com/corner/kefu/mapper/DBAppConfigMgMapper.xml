@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.DBAppConfigMgMapper">
+	<!-- 配置方案列表 -->
+	<sql id="getAllDBAppConfigSql">
+		<where>
+			<if test="name != null and name != ''">
+				and a.name = #{name}
+			</if>
+		</where>
+	</sql>
+	<select id="getAllDBAppConfig" parameterType="com.corner.kefu.beans.ro.DBAppConfigRo" resultType="com.corner.kefu.beans.vo.DBAppConfigVo">
+		 SELECT 
+		 	a.*,
+			IFNULL((SELECT name FROM AppPayWayCfg WHERE status=1 AND isDelete=0 AND id=a.payCfgId),'无') AS cfgPayName
+ 		 FROM DBAppConfig a
+		 <include refid="getAllDBAppConfigSql"/>
+		 order by `status` desc,id desc
+		 limit #{pageIndex},#{pageSize}
+	</select>
+	<select id="getAllDBAppConfigCount" parameterType="com.corner.kefu.beans.ro.DBAppConfigRo" resultType="java.lang.Integer">
+		 SELECT count(1) FROM DBAppConfig
+		 <include refid="getAllDBAppConfigSql"/>
+	</select>
+	
+	<!-- 删除或恢复 -->
+	<update id="delOrReco" parameterType="java.util.Map">
+		update DBAppConfig set 
+		<if test="isDelete != null">
+			isDelete=#{isDelete}
+		</if>
+		<if test="status != null">
+			status=#{status}
+		</if>
+		where id=#{id}
+	</update>
+	
+	<select id="getSpGroup" parameterType="java.lang.Integer" resultType="com.corner.kefu.beans.vo.sp.SpGroupVo">
+		SELECT
+			a.id,
+			a.areaId,
+			(SELECT `name` FROM Region WHERE `status`=1 AND isDelete=0 AND id=a.areaId) AS areaName,
+			a.`name`,
+			a.appCfgId
+		FROM
+			SpGroup a
+		WHERE
+			a.`status` = 1
+		AND a.isDelete = 0
+		AND appCfgId = #{id}
+	</select>
+	
+	<select id="getAllAppConfig" resultType="com.corner.kefu.beans.vo.DBAppConfigVo">
+		SELECT * FROM DBAppConfig WHERE `status`=1 AND isDelete=0
+	</select>
+	
+	<select id="getAllAppItemTag" resultType="com.corner.core.beans.AppItemTag">
+	  select * from AppItemTag where `status` = 1 and isDelete = 0
+	</select>
+	
+	<delete id="deleteFromAppModelCfgMap" parameterType="com.corner.core.beans.DBAppConfig">
+	 delete from AppModuleCfgMap where appCfgId = #{id}
+	</delete>
+	
+	<select id="getCfgMapByConfigId" parameterType="com.corner.core.beans.DBAppConfig" resultType="com.corner.core.beans.AppModuleCfgMapKey">
+	  select * from AppModuleCfgMap where appCfgId = #{id}
+	</select>
+	
+	<insert id="insertSelectiveReurnId" parameterType="com.corner.core.beans.DBAppConfig" useGeneratedKeys="true" keyProperty="id">
+	  insert into DBAppConfig
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="payCfgId != null" >
+        payCfgId,
+      </if>
+      <if test="paywayList != null" >
+        paywayList,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="payCfgId != null" >
+        #{payCfgId,jdbcType=TINYINT},
+      </if>
+      <if test="paywayList != null" >
+        #{paywayList,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+	</insert>
+	
+	
+	<select id="getAllAppModules" resultType="com.corner.core.beans.AppModule">
+	    SELECT * FROM AppModule WHERE `status` = 1 AND isDelete = 0
+	</select>
+</mapper>

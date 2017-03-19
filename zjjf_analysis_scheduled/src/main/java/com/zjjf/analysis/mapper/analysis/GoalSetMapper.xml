@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.GoalSetMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.supplier.GoalSet" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="year" property="year" jdbcType="INTEGER" />
+    <result column="month" property="month" jdbcType="INTEGER" />
+    <result column="saleGoal" property="saleGoal" jdbcType="VARCHAR" />
+    <result column="terminalGoal" property="terminalGoal" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, year, month, saleGoal, terminalGoal, createTime, updateTime
+  </sql>
+  <select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from goal_set
+    <where>
+    	<if test="id != null">
+    		and id = #{id}
+    	</if>
+    	<if test="year != null">
+    		and year = #{year}
+    	</if>
+    	<if test="month != null">
+    		and month = #{month}
+    	</if>
+    </where>
+    order by id desc
+  </select>
+</mapper>

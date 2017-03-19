@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.DeviceLogMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.salesman.model.DeviceLog" >
+    <id column="logId" property="logId" jdbcType="BIGINT" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="nickName" property="nickName" jdbcType="VARCHAR" />
+    <result column="deviceUUID" property="deviceUUID" jdbcType="VARCHAR" />
+    <result column="deviceName" property="deviceName" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    logId, userName, nickName, deviceUUID, deviceName, mobile, createTime, createBy
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_device_bind_log_t
+    where logId = #{logId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tbl_device_bind_log_t
+    where logId = #{logId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.corner.salesman.model.DeviceLog" >
+    insert into tbl_device_bind_log_t (logId, userName, nickName, 
+      deviceUUID, deviceName, mobile, 
+      createTime, createBy)
+    values (#{logId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
+      #{deviceUUID,jdbcType=VARCHAR}, #{deviceName,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.salesman.model.DeviceLog" >
+    insert into tbl_device_bind_log_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        logId,
+      </if>
+      <if test="userName != null" >
+        userName,
+      </if>
+      <if test="nickName != null" >
+        nickName,
+      </if>
+      <if test="deviceUUID != null" >
+        deviceUUID,
+      </if>
+      <if test="deviceName != null" >
+        deviceName,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="createBy != null" >
+        createBy,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        #{logId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceUUID != null" >
+        #{deviceUUID,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceName != null" >
+        #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.salesman.model.DeviceLog" >
+    update tbl_device_bind_log_t
+    <set >
+      <if test="userName != null" >
+        userName = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        nickName = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceUUID != null" >
+        deviceUUID = #{deviceUUID,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceName != null" >
+        deviceName = #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        createBy = #{createBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where logId = #{logId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.salesman.model.DeviceLog" >
+    update tbl_device_bind_log_t
+    set userName = #{userName,jdbcType=VARCHAR},
+      nickName = #{nickName,jdbcType=VARCHAR},
+      deviceUUID = #{deviceUUID,jdbcType=VARCHAR},
+      deviceName = #{deviceName,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      createBy = #{createBy,jdbcType=VARCHAR}
+    where logId = #{logId,jdbcType=BIGINT}
+  </update>
+  
+	<select id="getDeviceLogPageList" parameterType="com.corner.salesman.model.DeviceLog" resultType="com.corner.salesman.model.DeviceLog">
+		SELECT
+			t.logId,
+			t.mobile,
+			t.userName,
+			t.nickName,
+			t.deviceUUID,
+			t.deviceName,
+			t.createTime
+		FROM
+			tbl_device_bind_log_t t
+		WHERE
+			1 = 1
+	    <if test="userName !=null and userName!=''">
+	    	AND (t.userName like CONCAT('%',#{userName},'%') or t.mobile like CONCAT('%',#{userName},'%'))
+	    </if>
+	    order by t.createTime desc
+	   <include refid="BasePublicMapper.pageSql" />
+	</select>
+	
+	<select id="getDeviceLogListSize" parameterType="com.corner.salesman.model.DeviceLog" resultType="int">
+		SELECT
+			count(1)
+		FROM
+			tbl_device_bind_log_t t
+	    where 1=1
+	    <if test="userName !=null and userName!=''">
+	    	AND (t.userName like CONCAT('%',#{userName},'%') or t.mobile like CONCAT('%',#{userName},'%'))
+	    </if>
+	</select>
+  
+</mapper>

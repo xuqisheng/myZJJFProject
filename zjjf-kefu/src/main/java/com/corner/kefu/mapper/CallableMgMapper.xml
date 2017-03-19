@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.CallableMgMapper" >
+	<!--库存操作存储调用-->
+	<select id="socktOperateLog" statementType="CALLABLE" resultType="string" parameterType="com.corner.core.utils.callable.SocktOperateLog">
+		<![CDATA[
+            {call socktOperateLog(
+              #{businessType,mode=IN,jdbcType=INTEGER},
+              #{voucherMain,mode=IN,jdbcType=VARCHAR},
+              #{result,mode=OUT,jdbcType=VARCHAR}
+            )}
+        ]]>
+	</select>
+	<select id="checkItemIsHave" resultType="string" parameterType="com.corner.core.utils.callable.CheckItemIsHave">
+		select checkItemIsHave(#{whId} , #{itemId} , #{typeMg})
+	</select>
+
+	<select id="getDateTypeUUID" resultType="java.lang.String" parameterType="java.lang.String">
+		select getDateTypeUUID(#{tableName})
+	</select>
+</mapper>
+

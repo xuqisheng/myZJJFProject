@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.auth.dao.AuthMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.auth.beans.Auth" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="authString" property="authString" jdbcType="VARCHAR" />
+    <result column="authName" property="authName" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="action" property="action" jdbcType="VARCHAR" />
+    <result column="ordId" property="ordId" jdbcType="INTEGER" />
+    <result column="upId" property="upId" jdbcType="VARCHAR" />
+    <result column="roleRemark" property="roleRemark" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+    <result column="appId" property="appId" jdbcType="TINYINT" />
+    <result column="position" property="position" jdbcType="TINYINT" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="level" property="level" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, authString, authName, icon, action, ordId, upId, roleRemark, createTime, createUser, 
+    appId, position, type, level, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from Auth
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from Auth
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.auth.beans.Auth" >
+    insert into Auth (id, authString, authName, 
+      icon, action, ordId, 
+      upId, roleRemark, createTime, 
+      createUser, appId, position, 
+      type, level, status, 
+      isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{authString,jdbcType=VARCHAR}, #{authName,jdbcType=VARCHAR}, 
+      #{icon,jdbcType=VARCHAR}, #{action,jdbcType=VARCHAR}, #{ordId,jdbcType=INTEGER}, 
+      #{upId,jdbcType=VARCHAR}, #{roleRemark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createUser,jdbcType=VARCHAR}, #{appId,jdbcType=TINYINT}, #{position,jdbcType=TINYINT}, 
+      #{type,jdbcType=TINYINT}, #{level,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, 
+      #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.auth.beans.Auth" >
+    insert into Auth
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="authString != null" >
+        authString,
+      </if>
+      <if test="authName != null" >
+        authName,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="action != null" >
+        action,
+      </if>
+      <if test="ordId != null" >
+        ordId,
+      </if>
+      <if test="upId != null" >
+        upId,
+      </if>
+      <if test="roleRemark != null" >
+        roleRemark,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="createUser != null" >
+        createUser,
+      </if>
+      <if test="appId != null" >
+        appId,
+      </if>
+      <if test="position != null" >
+        position,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="authString != null" >
+        #{authString,jdbcType=VARCHAR},
+      </if>
+      <if test="authName != null" >
+        #{authName,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="action != null" >
+        #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="ordId != null" >
+        #{ordId,jdbcType=INTEGER},
+      </if>
+      <if test="upId != null" >
+        #{upId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleRemark != null" >
+        #{roleRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=TINYINT},
+      </if>
+      <if test="position != null" >
+        #{position,jdbcType=TINYINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.auth.beans.Auth" >
+    update Auth
+    <set >
+      <if test="authString != null" >
+        authString = #{authString,jdbcType=VARCHAR},
+      </if>
+      <if test="authName != null" >
+        authName = #{authName,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="action != null" >
+        action = #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="ordId != null" >
+        ordId = #{ordId,jdbcType=INTEGER},
+      </if>
+      <if test="upId != null" >
+        upId = #{upId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleRemark != null" >
+        roleRemark = #{roleRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        createUser = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        appId = #{appId,jdbcType=TINYINT},
+      </if>
+      <if test="position != null" >
+        position = #{position,jdbcType=TINYINT},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.auth.beans.Auth" >
+    update Auth
+    set authString = #{authString,jdbcType=VARCHAR},
+      authName = #{authName,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      action = #{action,jdbcType=VARCHAR},
+      ordId = #{ordId,jdbcType=INTEGER},
+      upId = #{upId,jdbcType=VARCHAR},
+      roleRemark = #{roleRemark,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      createUser = #{createUser,jdbcType=VARCHAR},
+      appId = #{appId,jdbcType=TINYINT},
+      position = #{position,jdbcType=TINYINT},
+      type = #{type,jdbcType=TINYINT},
+      level = #{level,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

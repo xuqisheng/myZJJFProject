@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>单品促销</title>
+		<link rel="stylesheet" type="text/css" href="../../../resources/css/base.css" />
+		<link rel="stylesheet" type="text/css" href="../../../resources/css/layout.css" />
+
+		<script src="../../../resources/vendor/jquery/jquery-1.12.4.min.js"></script>
+		<script src="../../../resources/js/comm.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../resources/vendor/My97DatePicker/WdatePicker.js"></script>
+	</head>
+
+	<body>
+		<div class="wrap-bd">
+			<div class="mb-small">
+				<a href="#" class="crumb">促销管理</a>
+				<a href="#" class="crumb">单品促销</a>
+			</div>
+			<div class="mb-small clearfix">
+				<div class="fl mt-default">单品促销</div>
+				<a href="add-goods-promotion.html" class="button button-default fr">新增促销</a>
+			</div>
+			<div class="bg wrap-bd clearfix">
+				<div class="fl mb-default">
+					<form action="" method="post">
+						<label class="label">
+							活动时间：
+							</label>
+							<input type="text" name="ruleStart" id="" value="" class="input input-date J_timeS" />
+							至
+							<input type="text" name="ruleEnd" id="" value="" class="input input-date J_timeE mr-default" />
+						
+						<label class="">
+							活动名称：
+							<input type="text" name="" id="" value="" class="input input-search-text"/>
+						<input type="button" value="搜索" class="input input-search-button ml-default" id="search" />
+						</label>
+					</form>
+				</div>
+				<table class="table-list table-border">
+					<thead class="table-thead">
+						<tr>
+							<th>序号</th>
+							<th>活动名称</th>
+							<th>活动时间</th>
+							<th>活动说明</th>
+							<th>状态</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody class="table-tbody">
+						<tr>
+							<td>1</td>
+							<td>转角活动</td>
+							<td>活动时间</td>
+							<td>活动说明</td>
+							<td>状态</td>
+							<td>
+								<input type="button" name="" class="button button-operate" id="" value="启用" />
+								<input type="button" name="" class="button button-operate" id="" value="停用" />
+								<input type="button" name="" class="button button-operate" id="" value="编辑" />		
+							</td>
+
+						</tr>
+
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+	</body>
+<script type="text/javascript">
+	
+    $(function() {
+    	dateRange('.J_timeS', '.J_timeE', 1);
+    	if(''==1){
+    		$('#isVoluntary').attr('checked',true);
+    	}else{
+    		$('#isVoluntary').attr('checked',false);
+    	}
+    	$('#ruleType').val('-1');
+})
+</script>
+</html>

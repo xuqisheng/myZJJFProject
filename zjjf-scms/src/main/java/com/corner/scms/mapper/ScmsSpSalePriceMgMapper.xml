@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.ScmsSpSalePriceMgMapper" >
+  <select id="insertOrUpdate" parameterType="com.corner.core.beans.ScmsSpSalePrice">
+      insert into ScmsSpSalePrice(id,plantItemId,cusType,salePrice,addTime,updateTime,spId,itemBaseId)
+      values(#{id},#{plantItemId},#{cusType},#{salePrice},#{addTime},#{updateTime},#{spId},#{itemBaseId})
+      on duplicate key update salePrice=values(salePrice),updateTime=values(updateTime);
+     <!--  <if test="areaPrice != null">
+      	update PlantItem set areaPrice = #{areaPrice},updateTime=#{updateTime} where itemBaseId=#{itemBaseId} and spId = #{spId}
+      </if> -->
+  </select>
+   
+   <select id="getPriceByCondition" parameterType="java.util.HashMap" resultType="com.corner.core.beans.ScmsSpSalePrice">
+      select * from ScmsSpSalePrice where spId = #{spId} and itemBaseId = #{itemBaseId}
+   </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+

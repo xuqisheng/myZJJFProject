@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.DictionaryMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.salesman.model.Dictionary" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="value" property="value" jdbcType="VARCHAR" />
+    <result column="label" property="label" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="DECIMAL" />
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="isDelete" property="isDelete" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, value, label, type, description, sort, pid, createBy, createTime, updateBy, updateTime, 
+    remarks, isDelete
+  </sql>
+  
+  <select id="findDictListByType" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_dict_t where type=#{type} and isDelete = 0
+    order by sort asc
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_dict_t
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tbl_dict_t
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.salesman.model.Dictionary" >
+    insert into tbl_dict_t (id, value, label, 
+      type, description, sort, 
+      pid, createBy, createTime, 
+      updateBy, updateTime, remarks, 
+      isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, #{label,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{sort,jdbcType=DECIMAL}, 
+      #{pid,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, 
+      #{isDelete,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.salesman.model.Dictionary" >
+    insert into tbl_dict_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="value != null" >
+        value,
+      </if>
+      <if test="label != null" >
+        label,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="createBy != null" >
+        createBy,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="updateBy != null" >
+        updateBy,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="label != null" >
+        #{label,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=DECIMAL},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.salesman.model.Dictionary" >
+    update tbl_dict_t
+    <set >
+      <if test="value != null" >
+        value = #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="label != null" >
+        label = #{label,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=DECIMAL},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        createBy = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        updateBy = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.salesman.model.Dictionary" >
+    update tbl_dict_t
+    set value = #{value,jdbcType=VARCHAR},
+      label = #{label,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=DECIMAL},
+      pid = #{pid,jdbcType=VARCHAR},
+      createBy = #{createBy,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      updateBy = #{updateBy,jdbcType=VARCHAR},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      isDelete = #{isDelete,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getDictPageList" parameterType="com.corner.salesman.model.Dictionary" resultType="com.corner.salesman.model.Dictionary">
+   	 	select 
+   		 	<include refid="Base_Column_List" />
+   		 from tbl_dict_t
+		WHERE 1=1
+		<if test="isDelete != null and isDelete != ''">
+			AND isDelete = #{isDelete} 
+		</if>
+		<if test="description != null and description != ''">
+			AND (description LIKE CONCAT('%', #{description}, '%') or type LIKE CONCAT('%', #{description}, '%'))
+		</if>
+		ORDER BY type, sort, updateTime DESC
+	   <include refid="BasePublicMapper.pageSql" />
+	</select>
+  
+	<select id="getDictPageSize" parameterType="com.corner.salesman.model.Dictionary" resultType="int">
+   	 	select 
+   		 	count(1)
+   		 from tbl_dict_t
+		WHERE 1=1
+		<if test="isDelete != null and isDelete != ''">
+			AND isDelete = #{isDelete} 
+		</if>
+		<if test="description != null and description != ''">
+			AND (description LIKE CONCAT('%', #{description}, '%') or type LIKE CONCAT('%', #{description}, '%'))
+		</if>
+		ORDER BY type, sort, updateTime DESC
+	</select>
+	
+	<select id="findDictListByTypeAndValue" parameterType="com.corner.salesman.model.Dictionary" resultType="com.corner.salesman.model.Dictionary">
+   	 	select * from tbl_dict_t where type = #{type} and value = #{value}
+	</select>	
+</mapper>

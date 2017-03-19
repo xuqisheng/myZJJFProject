@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SpCommentMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpComment" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="userId" property="userId" jdbcType="VARCHAR" />
+    <result column="userNm" property="userNm" jdbcType="VARCHAR" />
+    <result column="userTel" property="userTel" jdbcType="VARCHAR" />
+    <result column="userFace" property="userFace" jdbcType="VARCHAR" />
+    <result column="userRemark" property="userRemark" jdbcType="VARCHAR" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="storeNm" property="storeNm" jdbcType="VARCHAR" />
+    <result column="orderId1" property="orderId1" jdbcType="VARCHAR" />
+    <result column="orderNo1" property="orderNo1" jdbcType="VARCHAR" />
+    <result column="orderId2" property="orderId2" jdbcType="VARCHAR" />
+    <result column="orderNo2" property="orderNo2" jdbcType="VARCHAR" />
+    <result column="spId" property="spId" jdbcType="VARCHAR" />
+    <result column="spNm" property="spNm" jdbcType="VARCHAR" />
+    <result column="info" property="info" jdbcType="VARCHAR" />
+    <result column="sendFen" property="sendFen" jdbcType="TINYINT" />
+    <result column="qtyFen" property="qtyFen" jdbcType="TINYINT" />
+    <result column="attFen" property="attFen" jdbcType="TINYINT" />
+    <result column="unionFen" property="unionFen" jdbcType="TINYINT" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="csId" property="csId" jdbcType="VARCHAR" />
+    <result column="csNm" property="csNm" jdbcType="VARCHAR" />
+    <result column="csDealInfo" property="csDealInfo" jdbcType="VARCHAR" />
+    <result column="csDealTime" property="csDealTime" jdbcType="TIMESTAMP" />
+    <result column="csDealstat" property="csDealstat" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userId, userNm, userTel, userFace, userRemark, storeId, storeNm, orderId1, orderNo1, 
+    orderId2, orderNo2, spId, spNm, info, sendFen, qtyFen, attFen, unionFen, addTime, 
+    csId, csNm, csDealInfo, csDealTime, csDealstat, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SpComment
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SpComment
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SpComment" >
+    insert into SpComment (id, userId, userNm, 
+      userTel, userFace, userRemark, 
+      storeId, storeNm, orderId1, 
+      orderNo1, orderId2, orderNo2, 
+      spId, spNm, info, sendFen, 
+      qtyFen, attFen, unionFen, 
+      addTime, csId, csNm, 
+      csDealInfo, csDealTime, csDealstat, 
+      status, isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{userNm,jdbcType=VARCHAR}, 
+      #{userTel,jdbcType=VARCHAR}, #{userFace,jdbcType=VARCHAR}, #{userRemark,jdbcType=VARCHAR}, 
+      #{storeId,jdbcType=INTEGER}, #{storeNm,jdbcType=VARCHAR}, #{orderId1,jdbcType=VARCHAR}, 
+      #{orderNo1,jdbcType=VARCHAR}, #{orderId2,jdbcType=VARCHAR}, #{orderNo2,jdbcType=VARCHAR}, 
+      #{spId,jdbcType=VARCHAR}, #{spNm,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, #{sendFen,jdbcType=TINYINT}, 
+      #{qtyFen,jdbcType=TINYINT}, #{attFen,jdbcType=TINYINT}, #{unionFen,jdbcType=TINYINT}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{csId,jdbcType=VARCHAR}, #{csNm,jdbcType=VARCHAR}, 
+      #{csDealInfo,jdbcType=VARCHAR}, #{csDealTime,jdbcType=TIMESTAMP}, #{csDealstat,jdbcType=TINYINT}, 
+      #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SpComment" >
+    insert into SpComment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="userNm != null" >
+        userNm,
+      </if>
+      <if test="userTel != null" >
+        userTel,
+      </if>
+      <if test="userFace != null" >
+        userFace,
+      </if>
+      <if test="userRemark != null" >
+        userRemark,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="storeNm != null" >
+        storeNm,
+      </if>
+      <if test="orderId1 != null" >
+        orderId1,
+      </if>
+      <if test="orderNo1 != null" >
+        orderNo1,
+      </if>
+      <if test="orderId2 != null" >
+        orderId2,
+      </if>
+      <if test="orderNo2 != null" >
+        orderNo2,
+      </if>
+      <if test="spId != null" >
+        spId,
+      </if>
+      <if test="spNm != null" >
+        spNm,
+      </if>
+      <if test="info != null" >
+        info,
+      </if>
+      <if test="sendFen != null" >
+        sendFen,
+      </if>
+      <if test="qtyFen != null" >
+        qtyFen,
+      </if>
+      <if test="attFen != null" >
+        attFen,
+      </if>
+      <if test="unionFen != null" >
+        unionFen,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="csId != null" >
+        csId,
+      </if>
+      <if test="csNm != null" >
+        csNm,
+      </if>
+      <if test="csDealInfo != null" >
+        csDealInfo,
+      </if>
+      <if test="csDealTime != null" >
+        csDealTime,
+      </if>
+      <if test="csDealstat != null" >
+        csDealstat,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userNm != null" >
+        #{userNm,jdbcType=VARCHAR},
+      </if>
+      <if test="userTel != null" >
+        #{userTel,jdbcType=VARCHAR},
+      </if>
+      <if test="userFace != null" >
+        #{userFace,jdbcType=VARCHAR},
+      </if>
+      <if test="userRemark != null" >
+        #{userRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="storeNm != null" >
+        #{storeNm,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId1 != null" >
+        #{orderId1,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo1 != null" >
+        #{orderNo1,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId2 != null" >
+        #{orderId2,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo2 != null" >
+        #{orderNo2,jdbcType=VARCHAR},
+      </if>
+      <if test="spId != null" >
+        #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="spNm != null" >
+        #{spNm,jdbcType=VARCHAR},
+      </if>
+      <if test="info != null" >
+        #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="sendFen != null" >
+        #{sendFen,jdbcType=TINYINT},
+      </if>
+      <if test="qtyFen != null" >
+        #{qtyFen,jdbcType=TINYINT},
+      </if>
+      <if test="attFen != null" >
+        #{attFen,jdbcType=TINYINT},
+      </if>
+      <if test="unionFen != null" >
+        #{unionFen,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="csId != null" >
+        #{csId,jdbcType=VARCHAR},
+      </if>
+      <if test="csNm != null" >
+        #{csNm,jdbcType=VARCHAR},
+      </if>
+      <if test="csDealInfo != null" >
+        #{csDealInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="csDealTime != null" >
+        #{csDealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="csDealstat != null" >
+        #{csDealstat,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SpComment" >
+    update SpComment
+    <set >
+      <if test="userId != null" >
+        userId = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userNm != null" >
+        userNm = #{userNm,jdbcType=VARCHAR},
+      </if>
+      <if test="userTel != null" >
+        userTel = #{userTel,jdbcType=VARCHAR},
+      </if>
+      <if test="userFace != null" >
+        userFace = #{userFace,jdbcType=VARCHAR},
+      </if>
+      <if test="userRemark != null" >
+        userRemark = #{userRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null" >
+        storeId = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="storeNm != null" >
+        storeNm = #{storeNm,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId1 != null" >
+        orderId1 = #{orderId1,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo1 != null" >
+        orderNo1 = #{orderNo1,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId2 != null" >
+        orderId2 = #{orderId2,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo2 != null" >
+        orderNo2 = #{orderNo2,jdbcType=VARCHAR},
+      </if>
+      <if test="spId != null" >
+        spId = #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="spNm != null" >
+        spNm = #{spNm,jdbcType=VARCHAR},
+      </if>
+      <if test="info != null" >
+        info = #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="sendFen != null" >
+        sendFen = #{sendFen,jdbcType=TINYINT},
+      </if>
+      <if test="qtyFen != null" >
+        qtyFen = #{qtyFen,jdbcType=TINYINT},
+      </if>
+      <if test="attFen != null" >
+        attFen = #{attFen,jdbcType=TINYINT},
+      </if>
+      <if test="unionFen != null" >
+        unionFen = #{unionFen,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="csId != null" >
+        csId = #{csId,jdbcType=VARCHAR},
+      </if>
+      <if test="csNm != null" >
+        csNm = #{csNm,jdbcType=VARCHAR},
+      </if>
+      <if test="csDealInfo != null" >
+        csDealInfo = #{csDealInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="csDealTime != null" >
+        csDealTime = #{csDealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="csDealstat != null" >
+        csDealstat = #{csDealstat,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SpComment" >
+    update SpComment
+    set userId = #{userId,jdbcType=VARCHAR},
+      userNm = #{userNm,jdbcType=VARCHAR},
+      userTel = #{userTel,jdbcType=VARCHAR},
+      userFace = #{userFace,jdbcType=VARCHAR},
+      userRemark = #{userRemark,jdbcType=VARCHAR},
+      storeId = #{storeId,jdbcType=INTEGER},
+      storeNm = #{storeNm,jdbcType=VARCHAR},
+      orderId1 = #{orderId1,jdbcType=VARCHAR},
+      orderNo1 = #{orderNo1,jdbcType=VARCHAR},
+      orderId2 = #{orderId2,jdbcType=VARCHAR},
+      orderNo2 = #{orderNo2,jdbcType=VARCHAR},
+      spId = #{spId,jdbcType=VARCHAR},
+      spNm = #{spNm,jdbcType=VARCHAR},
+      info = #{info,jdbcType=VARCHAR},
+      sendFen = #{sendFen,jdbcType=TINYINT},
+      qtyFen = #{qtyFen,jdbcType=TINYINT},
+      attFen = #{attFen,jdbcType=TINYINT},
+      unionFen = #{unionFen,jdbcType=TINYINT},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      csId = #{csId,jdbcType=VARCHAR},
+      csNm = #{csNm,jdbcType=VARCHAR},
+      csDealInfo = #{csDealInfo,jdbcType=VARCHAR},
+      csDealTime = #{csDealTime,jdbcType=TIMESTAMP},
+      csDealstat = #{csDealstat,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

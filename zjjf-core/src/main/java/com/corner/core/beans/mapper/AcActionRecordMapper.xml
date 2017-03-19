@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.AcActionRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.AcActionRecord" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="userId" property="userId" jdbcType="VARCHAR" />
+    <result column="objectId" property="objectId" jdbcType="VARCHAR" />
+    <result column="objectName" property="objectName" jdbcType="VARCHAR" />
+    <result column="objectImg" property="objectImg" jdbcType="VARCHAR" />
+    <result column="actionTime" property="actionTime" jdbcType="TIMESTAMP" />
+    <result column="actionType" property="actionType" jdbcType="INTEGER" />
+    <result column="result" property="result" jdbcType="VARCHAR" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.corner.core.beans.AcActionRecord" extends="BaseResultMap" >
+    <result column="actionDate" property="actionDate" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userId, objectId, objectName, objectImg, actionTime, actionType, result, isDelete
+  </sql>
+  <sql id="Blob_Column_List" >
+    actionDate
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from AcActionRecord
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from AcActionRecord
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.AcActionRecord" >
+    insert into AcActionRecord (id, userId, objectId, 
+      objectName, objectImg, actionTime, 
+      actionType, result, isDelete, 
+      actionDate)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{objectId,jdbcType=VARCHAR}, 
+      #{objectName,jdbcType=VARCHAR}, #{objectImg,jdbcType=VARCHAR}, #{actionTime,jdbcType=TIMESTAMP}, 
+      #{actionType,jdbcType=INTEGER}, #{result,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}, 
+      #{actionDate,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.AcActionRecord" >
+    insert into AcActionRecord
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="objectId != null" >
+        objectId,
+      </if>
+      <if test="objectName != null" >
+        objectName,
+      </if>
+      <if test="objectImg != null" >
+        objectImg,
+      </if>
+      <if test="actionTime != null" >
+        actionTime,
+      </if>
+      <if test="actionType != null" >
+        actionType,
+      </if>
+      <if test="result != null" >
+        result,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="actionDate != null" >
+        actionDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="objectId != null" >
+        #{objectId,jdbcType=VARCHAR},
+      </if>
+      <if test="objectName != null" >
+        #{objectName,jdbcType=VARCHAR},
+      </if>
+      <if test="objectImg != null" >
+        #{objectImg,jdbcType=VARCHAR},
+      </if>
+      <if test="actionTime != null" >
+        #{actionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actionType != null" >
+        #{actionType,jdbcType=INTEGER},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="actionDate != null" >
+        #{actionDate,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.AcActionRecord" >
+    update AcActionRecord
+    <set >
+      <if test="userId != null" >
+        userId = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="objectId != null" >
+        objectId = #{objectId,jdbcType=VARCHAR},
+      </if>
+      <if test="objectName != null" >
+        objectName = #{objectName,jdbcType=VARCHAR},
+      </if>
+      <if test="objectImg != null" >
+        objectImg = #{objectImg,jdbcType=VARCHAR},
+      </if>
+      <if test="actionTime != null" >
+        actionTime = #{actionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actionType != null" >
+        actionType = #{actionType,jdbcType=INTEGER},
+      </if>
+      <if test="result != null" >
+        result = #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="actionDate != null" >
+        actionDate = #{actionDate,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.corner.core.beans.AcActionRecord" >
+    update AcActionRecord
+    set userId = #{userId,jdbcType=VARCHAR},
+      objectId = #{objectId,jdbcType=VARCHAR},
+      objectName = #{objectName,jdbcType=VARCHAR},
+      objectImg = #{objectImg,jdbcType=VARCHAR},
+      actionTime = #{actionTime,jdbcType=TIMESTAMP},
+      actionType = #{actionType,jdbcType=INTEGER},
+      result = #{result,jdbcType=VARCHAR},
+      isDelete = #{isDelete,jdbcType=BIT},
+      actionDate = #{actionDate,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.AcActionRecord" >
+    update AcActionRecord
+    set userId = #{userId,jdbcType=VARCHAR},
+      objectId = #{objectId,jdbcType=VARCHAR},
+      objectName = #{objectName,jdbcType=VARCHAR},
+      objectImg = #{objectImg,jdbcType=VARCHAR},
+      actionTime = #{actionTime,jdbcType=TIMESTAMP},
+      actionType = #{actionType,jdbcType=INTEGER},
+      result = #{result,jdbcType=VARCHAR},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

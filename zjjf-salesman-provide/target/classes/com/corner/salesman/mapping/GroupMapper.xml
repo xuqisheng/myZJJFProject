@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.GroupMapper">
+
+	<sql id="Base_Column_List">
+		groupId,groupName,remark,leaderId
+	</sql>
+	<!-- 分页查询用户信息 -->
+	<select id="findGroupInfo" resultType="com.corner.salesman.model.Group" parameterType="String">
+		select
+			<include refid="Base_Column_List" />
+		from tbl_group_t
+		where leaderId = #{leaderId,jdbcType=VARCHAR} limit 1
+	</select>
+	
+	<select id="getGroupUserTotal" resultType="int" parameterType="String">
+		SELECT
+			count(1)
+		FROM
+			tbl_group_t t
+		INNER JOIN tbl_user_group_t ug ON t.groupId = ug.groupId
+		INNER JOIN salesman u on ug.userId = u.id
+		where t.groupId=#{groupId,jdbcType=VARCHAR}
+	</select>
+	
+</mapper>

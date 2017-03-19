@@ -1,0 +1,11 @@
+
+该工程容器无关系;
+可以直接把代码当做普通的jar包添加进去。
+在 /zjjf-mogodb/src/main/java/org/zjjf/mogodb/common 目录下建立mongo的字段说明接口文件。（方便其他类引用；参见:IM4Collection4SalesmanTrack.java ）
+在 /zjjf-mogodb/src/main/java/org/zjjf/mogodb/common 目录下IMongoDB是全局变量接口。（新定义的集合等全局变量在里面定义，确认无用的请注释；测试常用变量放到zjjf-mogodb\src\main\java\org\zjjf\mogodb\test 目录下面，归档发布以前全部注释里面的代码或者删除掉。）
+在 /zjjf-mogodb/src/main/java/org/zjjf/mogodb/model 目录是用户对外部进行对象转换的模型类。
+在 /zjjf-mogodb/src/main/java/org/zjjf/mogodb/util下面 添加响应的新的集合（MongoDB 里面Collection）的Util类。（参见/zjjf-mogodb/src/main/java/org/zjjf/mogodb/util/MongoTrackhistoryUtil.java的方法，并进行扩展。）
+引用 zjjf-mogodb工程后，需要把资源文件 mogodb.properties一并拷贝过去。
+
+
+

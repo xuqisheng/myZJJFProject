@@ -1,0 +1,100 @@
+﻿@import "__normalize";
+@import "__base";
+@import "__comm";
+
+.btn-join {
+    width: 200px;
+    height: 60px;
+    line-height: 60px;
+    display: inline-block;
+    background: #eb4207;
+    font-size: 22px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 25px;
+    &:hover {
+        background: #ef4f08;
+    }
+}
+.btn-join-box {
+    position: relative;
+    height:100%;
+    .btn-join {
+        position: absolute;
+        bottom: 50px;
+        left: 500px;
+    }
+}
+.banner {
+    width: 100%;
+    height: 440px;
+    background: #3b80f2 url(../images/product-zjdb-banner.png) no-repeat center;
+}
+.content-advantage {
+    background: #f6f6f6;
+    .g-title {
+        padding: 65px 0 25px;
+    }
+    .nav {
+        float: left;
+        border-right: 1px solid #83d6ff;
+        width: 220px;
+        text-align: center;
+        .nav-item {
+            height: 60px;
+            line-height: 60px;
+            color: #0096e0;
+            &.active {
+                font-size: 18px;
+                color: #0096e0;
+                cursor: pointer;
+                background: url(../images/nav-item-active.png) no-repeat right center;
+            }
+        }
+    }
+    .show {
+        float: left;
+        width: 1200px - 220px - 1px;
+        height: 460px;
+        &.bg1 {
+            background: url(../images/product-zjdb-pic1.png) no-repeat center 80px;
+        }
+        &.bg2 {
+            background: url(../images/product-zjdb-pic2.png) no-repeat center 80px;
+        }
+        &.bg3 {
+            background: url(../images/product-zjdb-pic3.png) no-repeat center 80px;
+        }
+        &.bg4 {
+            background: url(../images/product-zjdb-pic4.png) no-repeat center 80px;
+        }
+        &.bg5 {
+            background: url(../images/product-zjdb-pic5.png) no-repeat center 80px;
+        }
+        &.bg6 {
+            background: url(../images/product-zjdb-pic6.png) no-repeat center 80px;
+        }
+    }
+}
+.content-process {
+    .g-title {
+        padding: 65px 0 25px;
+    }
+    .info {
+        padding-top: 350px;
+        height: 100px;
+        background: url(../images/product-zjdb-process.png) no-repeat center top;
+        text-align: center;
+        font-size: 18px;
+        color: #ccc;
+        .txt {
+            border: 1px solid #cfcfcf;
+            padding: 10px 30px;
+            display: inline-block;
+            line-height: 20px;
+            color: #666;
+            border-radius: 30px;
+        }
+    }
+}

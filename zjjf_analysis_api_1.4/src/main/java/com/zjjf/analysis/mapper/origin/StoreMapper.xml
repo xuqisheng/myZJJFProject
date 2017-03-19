@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.origin.StoreMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.store.Store" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="ordId" property="ordId" jdbcType="TINYINT" />
+    <result column="supplierCode" property="supplierCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="contact" property="contact" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="lng" property="lng" jdbcType="VARCHAR" />
+    <result column="lat" property="lat" jdbcType="VARCHAR" />
+    <result column="contactUser" property="contactUser" jdbcType="VARCHAR" />
+    <result column="contactPwd" property="contactPwd" jdbcType="VARCHAR" />
+    <result column="shoperName" property="shoperName" jdbcType="VARCHAR" />
+    <result column="shoperTel" property="shoperTel" jdbcType="VARCHAR" />
+    <result column="shoperQQ" property="shoperQQ" jdbcType="VARCHAR" />
+    <result column="bankAccount" property="bankAccount" jdbcType="VARCHAR" />
+    <result column="bankName" property="bankName" jdbcType="VARCHAR" />
+    <result column="bankCard" property="bankCard" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="sales" property="sales" jdbcType="INTEGER" />
+    <result column="lastTime" property="lastTime" jdbcType="TIMESTAMP" />
+    <result column="lastIP" property="lastIP" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="editTime" property="editTime" jdbcType="TIMESTAMP" />
+    <result column="sendTimeBegin" property="sendTimeBegin" jdbcType="TIME" />
+    <result column="sendTimeEnd" property="sendTimeEnd" jdbcType="TIME" />
+    <result column="sendess" property="sendess" jdbcType="DECIMAL" />
+    <result column="serviceFee" property="serviceFee" jdbcType="DECIMAL" />
+    <result column="rates" property="rates" jdbcType="REAL" />
+    <result column="agreementPeriod" property="agreementPeriod" jdbcType="TINYINT" />
+    <result column="totalPeriod" property="totalPeriod" jdbcType="INTEGER" />
+    <result column="signTime" property="signTime" jdbcType="DATE" />
+    <result column="iosCid" property="iosCid" jdbcType="VARCHAR" />
+    <result column="androidCid" property="androidCid" jdbcType="VARCHAR" />
+    <result column="totalComment" property="totalComment" jdbcType="SMALLINT" />
+    <result column="avgComment" property="avgComment" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDrawC" property="isDrawC" jdbcType="BIT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+    <result column="col4" property="col4" jdbcType="VARCHAR" />
+    <result column="col5" property="col5" jdbcType="VARCHAR" />
+    <result column="col6" property="col6" jdbcType="VARCHAR" />
+    <result column="col7" property="col7" jdbcType="VARCHAR" />
+    <result column="col8" property="col8" jdbcType="VARCHAR" />
+    <result column="col9" property="col9" jdbcType="VARCHAR" />
+    <result column="col10" property="col10" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="qrcodeurl" property="qrcodeurl" jdbcType="VARCHAR" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="acGroupId" property="acGroupId" jdbcType="VARCHAR" />
+    <result column="isFirstOrd" property="isFirstOrd" jdbcType="BIT" />
+    <result column="fromWho" property="fromWho" jdbcType="INTEGER" />
+    <result column="inviteId" property="inviteId" jdbcType="VARCHAR" />
+    <result column="sequenceNum" property="sequenceNum" jdbcType="INTEGER" />
+    <result column="addressRemark" property="addressRemark" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getById" resultType="com.zjjf.analysis.beans.analysis.store.Store" parameterType="java.lang.Integer" >
+    select * from Store where id = #{id}
+  </select>
+  
+  <select id="getBySpGroupId" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select count(*) from Store where spGroupId = #{spGroupId}
+  </select>
+  
+  <select id="getByStoreCode" resultType="java.lang.Integer" parameterType="java.util.Map" >
+     select id from Store where supplierCode in 
+     <foreach collection="supplierCodeList" index="index" item="item" open="(" separator="," close=")">
+       #{item}
+     </foreach> 
+  </select>
+
+  <select id="getMobileById" parameterType="java.lang.String" resultType="java.lang.String">
+  	SELECT mobile FROM `Store` WHERE id = #{id};
+  </select>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.ScmsWarehouseMgMapper" >
+   <resultMap id="BaseResultMap" type="com.corner.core.beans.ScmsWarehouse" extends="com.corner.core.dao.ScmsWarehouseMapper.BaseResultMap">
+   </resultMap>
+   
+   
+   <select id="selectScmsWarehouseBySupplier" parameterType="com.corner.core.beans.Supplier" resultMap="BaseResultMap">
+     SELECT
+		*
+	FROM
+		ScmsWarehouse
+	WHERE
+		id = (
+			SELECT
+				warehouseId
+			FROM
+				ScmsGroup
+			WHERE
+				id = (
+					SELECT
+						bsCircleId
+					FROM
+						Supplier
+					WHERE
+						id = #{id}
+				)
+		)
+   </select>
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.SequenceMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.salesman.model.Sequence" >
+    <id column="name" property="name" jdbcType="VARCHAR" />
+    <result column="current_value" property="current_value" jdbcType="INTEGER" />
+    <result column="increment" property="increment" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    name, current_value, increment
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_sequence_t
+    where name = #{name,jdbcType=VARCHAR}
+  </select>
+  <select id="getNextValSeqByName" resultType="java.lang.String" parameterType="java.lang.String" >
+    select nextval(#{name})
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tbl_sequence_t
+    where name = #{name,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.salesman.model.Sequence" >
+    insert into tbl_sequence_t (name, current_value, increment
+      )
+    values (#{name,jdbcType=VARCHAR}, #{current_value,jdbcType=INTEGER}, #{increment,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.salesman.model.Sequence" >
+    insert into tbl_sequence_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="current_value != null" >
+        current_value,
+      </if>
+      <if test="increment != null" >
+        increment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="current_value != null" >
+        #{current_value,jdbcType=INTEGER},
+      </if>
+      <if test="increment != null" >
+        #{increment,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.salesman.model.Sequence" >
+    update tbl_sequence_t
+    <set >
+      <if test="current_value != null" >
+        current_value = #{current_value,jdbcType=INTEGER},
+      </if>
+      <if test="increment != null" >
+        increment = #{increment,jdbcType=INTEGER},
+      </if>
+    </set>
+    where name = #{name,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.salesman.model.Sequence" >
+    update tbl_sequence_t
+    set current_value = #{current_value,jdbcType=INTEGER},
+      increment = #{increment,jdbcType=INTEGER}
+    where name = #{name,jdbcType=VARCHAR}
+  </update>
+</mapper>

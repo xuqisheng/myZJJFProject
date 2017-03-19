@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SpWithDrawMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpWithDraw" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="cardBankName" property="cardBankName" jdbcType="VARCHAR" />
+    <result column="cardUserName" property="cardUserName" jdbcType="VARCHAR" />
+    <result column="cardNo" property="cardNo" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="applyTime" property="applyTime" jdbcType="TIMESTAMP" />
+    <result column="applyRemark" property="applyRemark" jdbcType="VARCHAR" />
+    <result column="checkId" property="checkId" jdbcType="VARCHAR" />
+    <result column="checkTime" property="checkTime" jdbcType="TIMESTAMP" />
+    <result column="checkRemark" property="checkRemark" jdbcType="VARCHAR" />
+    <result column="denyId" property="denyId" jdbcType="VARCHAR" />
+    <result column="denyTime" property="denyTime" jdbcType="TIMESTAMP" />
+    <result column="denyRemark" property="denyRemark" jdbcType="VARCHAR" />
+    <result column="payerId" property="payerId" jdbcType="VARCHAR" />
+    <result column="payTime" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="payRemark" property="payRemark" jdbcType="VARCHAR" />
+    <result column="payState" property="payState" jdbcType="TINYINT" />
+    <result column="bankcode" property="bankcode" jdbcType="VARCHAR" />
+    <result column="bankDealNo" property="bankDealNo" jdbcType="VARCHAR" />
+    <result column="tradePlant" property="tradePlant" jdbcType="VARCHAR" />
+    <result column="tradeNo" property="tradeNo" jdbcType="VARCHAR" />
+    <result column="payment" property="payment" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, storeId, supplierId, cardBankName, cardUserName, cardNo, amount, status, isDelete, 
+    applyTime, applyRemark, checkId, checkTime, checkRemark, denyId, denyTime, denyRemark, 
+    payerId, payTime, payRemark, payState, bankcode, bankDealNo, tradePlant, tradeNo, 
+    payment
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from SpWithDraw
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from SpWithDraw
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SpWithDraw" useGeneratedKeys="true" keyProperty="id">
+    insert into SpWithDraw (id, storeId, supplierId, 
+      cardBankName, cardUserName, cardNo, 
+      amount, status, isDelete, 
+      applyTime, applyRemark, checkId, 
+      checkTime, checkRemark, denyId, 
+      denyTime, denyRemark, payerId, 
+      payTime, payRemark, payState, 
+      bankcode, bankDealNo, tradePlant, 
+      tradeNo, payment)
+    values (#{id,jdbcType=BIGINT}, #{storeId,jdbcType=INTEGER}, #{supplierId,jdbcType=VARCHAR}, 
+      #{cardBankName,jdbcType=VARCHAR}, #{cardUserName,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=DECIMAL}, #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}, 
+      #{applyTime,jdbcType=TIMESTAMP}, #{applyRemark,jdbcType=VARCHAR}, #{checkId,jdbcType=VARCHAR}, 
+      #{checkTime,jdbcType=TIMESTAMP}, #{checkRemark,jdbcType=VARCHAR}, #{denyId,jdbcType=VARCHAR}, 
+      #{denyTime,jdbcType=TIMESTAMP}, #{denyRemark,jdbcType=VARCHAR}, #{payerId,jdbcType=VARCHAR}, 
+      #{payTime,jdbcType=TIMESTAMP}, #{payRemark,jdbcType=VARCHAR}, #{payState,jdbcType=TINYINT}, 
+      #{bankcode,jdbcType=VARCHAR}, #{bankDealNo,jdbcType=VARCHAR}, #{tradePlant,jdbcType=VARCHAR}, 
+      #{tradeNo,jdbcType=VARCHAR}, #{payment,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SpWithDraw" useGeneratedKeys="true" keyProperty="id">
+    insert into SpWithDraw
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="supplierId != null" >
+        supplierId,
+      </if>
+      <if test="cardBankName != null" >
+        cardBankName,
+      </if>
+      <if test="cardUserName != null" >
+        cardUserName,
+      </if>
+      <if test="cardNo != null" >
+        cardNo,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="applyTime != null" >
+        applyTime,
+      </if>
+      <if test="applyRemark != null" >
+        applyRemark,
+      </if>
+      <if test="checkId != null" >
+        checkId,
+      </if>
+      <if test="checkTime != null" >
+        checkTime,
+      </if>
+      <if test="checkRemark != null" >
+        checkRemark,
+      </if>
+      <if test="denyId != null" >
+        denyId,
+      </if>
+      <if test="denyTime != null" >
+        denyTime,
+      </if>
+      <if test="denyRemark != null" >
+        denyRemark,
+      </if>
+      <if test="payerId != null" >
+        payerId,
+      </if>
+      <if test="payTime != null" >
+        payTime,
+      </if>
+      <if test="payRemark != null" >
+        payRemark,
+      </if>
+      <if test="payState != null" >
+        payState,
+      </if>
+      <if test="bankcode != null" >
+        bankcode,
+      </if>
+      <if test="bankDealNo != null" >
+        bankDealNo,
+      </if>
+      <if test="tradePlant != null" >
+        tradePlant,
+      </if>
+      <if test="tradeNo != null" >
+        tradeNo,
+      </if>
+      <if test="payment != null" >
+        payment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="cardBankName != null" >
+        #{cardBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardUserName != null" >
+        #{cardUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="applyTime != null" >
+        #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyRemark != null" >
+        #{applyRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="checkId != null" >
+        #{checkId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTime != null" >
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkRemark != null" >
+        #{checkRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="denyId != null" >
+        #{denyId,jdbcType=VARCHAR},
+      </if>
+      <if test="denyTime != null" >
+        #{denyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="denyRemark != null" >
+        #{denyRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="payerId != null" >
+        #{payerId,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null" >
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payRemark != null" >
+        #{payRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="payState != null" >
+        #{payState,jdbcType=TINYINT},
+      </if>
+      <if test="bankcode != null" >
+        #{bankcode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankDealNo != null" >
+        #{bankDealNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradePlant != null" >
+        #{tradePlant,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null" >
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payment != null" >
+        #{payment,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SpWithDraw" >
+    update SpWithDraw
+    <set >
+      <if test="storeId != null" >
+        storeId = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierId != null" >
+        supplierId = #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="cardBankName != null" >
+        cardBankName = #{cardBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardUserName != null" >
+        cardUserName = #{cardUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        cardNo = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="applyTime != null" >
+        applyTime = #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyRemark != null" >
+        applyRemark = #{applyRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="checkId != null" >
+        checkId = #{checkId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTime != null" >
+        checkTime = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkRemark != null" >
+        checkRemark = #{checkRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="denyId != null" >
+        denyId = #{denyId,jdbcType=VARCHAR},
+      </if>
+      <if test="denyTime != null" >
+        denyTime = #{denyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="denyRemark != null" >
+        denyRemark = #{denyRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="payerId != null" >
+        payerId = #{payerId,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null" >
+        payTime = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payRemark != null" >
+        payRemark = #{payRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="payState != null" >
+        payState = #{payState,jdbcType=TINYINT},
+      </if>
+      <if test="bankcode != null" >
+        bankcode = #{bankcode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankDealNo != null" >
+        bankDealNo = #{bankDealNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradePlant != null" >
+        tradePlant = #{tradePlant,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null" >
+        tradeNo = #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payment != null" >
+        payment = #{payment,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SpWithDraw" >
+    update SpWithDraw
+    set storeId = #{storeId,jdbcType=INTEGER},
+      supplierId = #{supplierId,jdbcType=VARCHAR},
+      cardBankName = #{cardBankName,jdbcType=VARCHAR},
+      cardUserName = #{cardUserName,jdbcType=VARCHAR},
+      cardNo = #{cardNo,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      applyTime = #{applyTime,jdbcType=TIMESTAMP},
+      applyRemark = #{applyRemark,jdbcType=VARCHAR},
+      checkId = #{checkId,jdbcType=VARCHAR},
+      checkTime = #{checkTime,jdbcType=TIMESTAMP},
+      checkRemark = #{checkRemark,jdbcType=VARCHAR},
+      denyId = #{denyId,jdbcType=VARCHAR},
+      denyTime = #{denyTime,jdbcType=TIMESTAMP},
+      denyRemark = #{denyRemark,jdbcType=VARCHAR},
+      payerId = #{payerId,jdbcType=VARCHAR},
+      payTime = #{payTime,jdbcType=TIMESTAMP},
+      payRemark = #{payRemark,jdbcType=VARCHAR},
+      payState = #{payState,jdbcType=TINYINT},
+      bankcode = #{bankcode,jdbcType=VARCHAR},
+      bankDealNo = #{bankDealNo,jdbcType=VARCHAR},
+      tradePlant = #{tradePlant,jdbcType=VARCHAR},
+      tradeNo = #{tradeNo,jdbcType=VARCHAR},
+      payment = #{payment,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

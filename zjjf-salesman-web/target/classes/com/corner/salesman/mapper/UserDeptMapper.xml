@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.UserDeptMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.salesman.model.UserDept" >
+    <result column="deptId" property="deptId" jdbcType="VARCHAR" />
+    <result column="userId" property="userId" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.corner.salesman.model.UserDept" >
+    insert into tbl_user_dept_t (deptId, userId)
+    values (#{deptId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.salesman.model.UserDept" >
+    insert into tbl_user_dept_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="deptId != null" >
+        deptId,
+      </if>
+      <if test="userId != null" >
+        userId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="deptId != null" >
+        #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.corner.salesman.model.UserDept" >
+    update tbl_user_dept_t
+       set deptId = #{deptId,jdbcType=VARCHAR}
+     where userId = #{userId,jdbcType=VARCHAR}
+  </update>
+  
+  <delete id="deleteUserDeptByUserId" parameterType="com.corner.salesman.model.UserDept">
+       delete from tbl_user_dept_t where userId = #{userId}
+  </delete>
+  
+  <delete id="deleteUserDeptByDeptId" parameterType="java.lang.String">
+       delete from tbl_user_dept_t where deptId=#{deptId}
+  </delete>
+  
+</mapper>

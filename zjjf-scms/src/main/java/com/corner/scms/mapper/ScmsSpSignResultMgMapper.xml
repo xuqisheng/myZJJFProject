@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.ScmsSpSignResultMgMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SignResult" extends="com.corner.core.dao.SignResultMapper.BaseResultMap">
+  </resultMap>
+  
+  <select id="selectSignResult" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    SELECT * FROM SignResult WHERE protocolId = #{plantProtocol.id} AND userId = #{supplier.id} AND signResult=1 AND isDelete=0
+  </select>
+</mapper>

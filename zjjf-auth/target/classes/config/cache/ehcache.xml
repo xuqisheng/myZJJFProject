@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache  updateCheck="false"  name="cornerEhcache">
+
+	<diskStore path="java.io.tmpdir" />
+
+	<defaultCache 
+		maxElementsInMemory="10000" 
+		overflowToDisk="true" 
+		eternal="false"
+		memoryStoreEvictionPolicy="LRU" 
+		maxElementsOnDisk="10000000" 
+		diskExpiryThreadIntervalSeconds="600"
+		timeToIdleSeconds="3600" 
+		timeToLiveSeconds="100000" 
+		diskPersistent="false" />
+
+    <cache name="passwordRetryCache" 
+    	maxElementsInMemory="500" 
+    	eternal="false"
+        overflowToDisk="false" 
+        timeToIdleSeconds="3" 
+        timeToLiveSeconds="3"   
+        memoryStoreEvictionPolicy="LRU" />
+        
+    <cache name="phoneMsgCache" 
+    	maxElementsInMemory="500" 
+    	eternal="false"
+        overflowToDisk="false" 
+        timeToLiveSeconds="120"   
+        memoryStoreEvictionPolicy="LRU" />
+        
+    <cache name="wxTicketCache" 
+    	maxElementsInMemory="5" 
+    	eternal="false"
+        overflowToDisk="false" 
+        timeToLiveSeconds="7000"   
+        memoryStoreEvictionPolicy="LRU" />
+        
+    <cache name="orderTempCache" 
+    	maxElementsInMemory="10000" 
+    	eternal="false"
+        overflowToDisk="false" 
+        timeToLiveSeconds="600"   
+        memoryStoreEvictionPolicy="LRU" />
+
+</ehcache>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpSpHelpMgMapper">
+	<!-- 帮助列表按条件查询 -->
+	<select id="getAllHelpByParameter" parameterType="com.corner.core.beans.SpHelp" resultType="com.corner.kefu.beans.vo.sp.SpHelpVo">
+		SELECT
+			a.id,
+			a.typeId,
+			b.typeName,
+			a.title,
+			a.keyword,
+			a.solution,
+			a.isDelete,
+			b.isDelete,
+			a.updateTime,
+			a.ordId
+		FROM
+			SpHelp a
+		JOIN SpHelpType b ON a.typeid = b.id
+		WHERE 1 = 1
+		<if test="typeId != null">
+			and a.typeId = #{typeId}
+		</if>
+		<if test="title != null and title != ''" >
+			and a.title like "%"#{title}"%"
+		</if>
+		<if test="keyword != null and keyword != ''">
+			and a.keyword like "%"#{keyword}"%"
+		</if>
+		<if test="isDelete != null">
+			and a.isDelete = #{isDelete}
+		</if>
+		order by a.ordId 
+	</select>
+	
+  <!-- 排序 -->
+  <update id="orderHelpList" parameterType="java.util.HashMap">
+		update SpHelp 
+		<set>
+			<if test="ordId != null">
+				ordId = #{ordId}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+</mapper>

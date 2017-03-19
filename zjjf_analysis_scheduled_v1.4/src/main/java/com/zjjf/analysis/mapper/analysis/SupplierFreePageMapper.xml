@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.SupplierFreePageMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.base.SupplierFreePage" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="VARCHAR" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="todayTurnover" property="todayTurnover" jdbcType="DECIMAL" />
+    <result column="totalRebate" property="totalRebate" jdbcType="DECIMAL" />
+    <result column="totalCoupon" property="totalCoupon" jdbcType="DECIMAL" />
+    <result column="totalFree" property="totalFree" jdbcType="DECIMAL" />
+    <result column="increase" property="increase" jdbcType="DECIMAL" />
+    <result column="monthTurnover" property="monthTurnover" jdbcType="DECIMAL" />
+    <result column="monthRebate" property="monthRebate" jdbcType="DECIMAL" />
+    <result column="monthCoupon" property="monthCoupon" jdbcType="DECIMAL" />
+    <result column="monthTotalFree" property="monthTotalFree" jdbcType="DECIMAL" />
+    <result column="monthIncrease" property="monthIncrease" jdbcType="DECIMAL" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.analysis.base.SupplierFreePage" >
+    insert into supplier_free_page (id, supplierId, spGroupId, cityId, 
+      areaId, addTime, dayTime, 
+      todayTurnover, totalRebate, totalCoupon, 
+      totalFree, increase, monthTurnover, 
+      monthRebate, monthCoupon, monthTotalFree, 
+      monthIncrease, updateTime, createTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{supplierId,jdbcType=VARCHAR}, #{spGroupId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, 
+      #{areaId,jdbcType=INTEGER}, #{addTime,jdbcType=VARCHAR}, #{dayTime,jdbcType=INTEGER},
+      #{todayTurnover,jdbcType=DECIMAL}, #{totalRebate,jdbcType=DECIMAL}, #{totalCoupon,jdbcType=DECIMAL}, 
+      #{totalFree,jdbcType=DECIMAL}, #{increase,jdbcType=DECIMAL}, #{monthTurnover,jdbcType=DECIMAL}, 
+      #{monthRebate,jdbcType=DECIMAL}, #{monthCoupon,jdbcType=DECIMAL}, #{monthTotalFree,jdbcType=DECIMAL}, 
+      #{monthIncrease,jdbcType=DECIMAL}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=INTEGER}
+      )
+  </insert>
+ 
+</mapper>

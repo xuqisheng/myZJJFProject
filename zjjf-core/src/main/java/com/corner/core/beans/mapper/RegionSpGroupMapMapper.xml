@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.RegionSpGroupMapMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.RegionSpGroupMap" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="regionId" property="regionId" jdbcType="INTEGER" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="addUser" property="addUser" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="delUser" property="delUser" jdbcType="VARCHAR" />
+    <result column="delTime" property="delTime" jdbcType="TIMESTAMP" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, regionId, spGroupId, addUser, addTime, delUser, delTime, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from RegionSpGroupMap
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from RegionSpGroupMap
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.RegionSpGroupMap" >
+    insert into RegionSpGroupMap (id, regionId, spGroupId, 
+      addUser, addTime, delUser, 
+      delTime, isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{regionId,jdbcType=INTEGER}, #{spGroupId,jdbcType=INTEGER}, 
+      #{addUser,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{delUser,jdbcType=VARCHAR}, 
+      #{delTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.RegionSpGroupMap" >
+    insert into RegionSpGroupMap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="regionId != null" >
+        regionId,
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId,
+      </if>
+      <if test="addUser != null" >
+        addUser,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="delUser != null" >
+        delUser,
+      </if>
+      <if test="delTime != null" >
+        delTime,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="regionId != null" >
+        #{regionId,jdbcType=INTEGER},
+      </if>
+      <if test="spGroupId != null" >
+        #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="addUser != null" >
+        #{addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delUser != null" >
+        #{delUser,jdbcType=VARCHAR},
+      </if>
+      <if test="delTime != null" >
+        #{delTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.RegionSpGroupMap" >
+    update RegionSpGroupMap
+    <set >
+      <if test="regionId != null" >
+        regionId = #{regionId,jdbcType=INTEGER},
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId = #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="addUser != null" >
+        addUser = #{addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delUser != null" >
+        delUser = #{delUser,jdbcType=VARCHAR},
+      </if>
+      <if test="delTime != null" >
+        delTime = #{delTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.RegionSpGroupMap" >
+    update RegionSpGroupMap
+    set regionId = #{regionId,jdbcType=INTEGER},
+      spGroupId = #{spGroupId,jdbcType=INTEGER},
+      addUser = #{addUser,jdbcType=VARCHAR},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      delUser = #{delUser,jdbcType=VARCHAR},
+      delTime = #{delTime,jdbcType=TIMESTAMP},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

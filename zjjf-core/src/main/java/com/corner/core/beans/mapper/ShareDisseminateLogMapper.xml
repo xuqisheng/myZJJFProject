@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ShareDisseminateLogMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ShareDisseminateLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="sendType" property="sendType" jdbcType="INTEGER" />
+    <result column="sendUserId" property="sendUserId" jdbcType="VARCHAR" />
+    <result column="encourageType" property="encourageType" jdbcType="TINYINT" />
+    <result column="encourageVoucher" property="encourageVoucher" jdbcType="VARCHAR" />
+    <result column="acceptUserId" property="acceptUserId" jdbcType="INTEGER" />
+    <result column="acceptPlaceName" property="acceptPlaceName" jdbcType="VARCHAR" />
+    <result column="acceptTel" property="acceptTel" jdbcType="VARCHAR" />
+    <result column="regTime" property="regTime" jdbcType="TIMESTAMP" />
+    <result column="confirmTime" property="confirmTime" jdbcType="TIMESTAMP" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, sendType, sendUserId, encourageType, encourageVoucher, acceptUserId, acceptPlaceName, 
+    acceptTel, regTime, confirmTime, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ShareDisseminateLog
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ShareDisseminateLog
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ShareDisseminateLog" >
+    insert into ShareDisseminateLog (id, sendType, sendUserId, 
+      encourageType, encourageVoucher, acceptUserId, 
+      acceptPlaceName, acceptTel, regTime, 
+      confirmTime, isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{sendType,jdbcType=INTEGER}, #{sendUserId,jdbcType=VARCHAR}, 
+      #{encourageType,jdbcType=TINYINT}, #{encourageVoucher,jdbcType=VARCHAR}, #{acceptUserId,jdbcType=INTEGER}, 
+      #{acceptPlaceName,jdbcType=VARCHAR}, #{acceptTel,jdbcType=VARCHAR}, #{regTime,jdbcType=TIMESTAMP}, 
+      #{confirmTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ShareDisseminateLog" >
+    insert into ShareDisseminateLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sendType != null" >
+        sendType,
+      </if>
+      <if test="sendUserId != null" >
+        sendUserId,
+      </if>
+      <if test="encourageType != null" >
+        encourageType,
+      </if>
+      <if test="encourageVoucher != null" >
+        encourageVoucher,
+      </if>
+      <if test="acceptUserId != null" >
+        acceptUserId,
+      </if>
+      <if test="acceptPlaceName != null" >
+        acceptPlaceName,
+      </if>
+      <if test="acceptTel != null" >
+        acceptTel,
+      </if>
+      <if test="regTime != null" >
+        regTime,
+      </if>
+      <if test="confirmTime != null" >
+        confirmTime,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sendType != null" >
+        #{sendType,jdbcType=INTEGER},
+      </if>
+      <if test="sendUserId != null" >
+        #{sendUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="encourageType != null" >
+        #{encourageType,jdbcType=TINYINT},
+      </if>
+      <if test="encourageVoucher != null" >
+        #{encourageVoucher,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptUserId != null" >
+        #{acceptUserId,jdbcType=INTEGER},
+      </if>
+      <if test="acceptPlaceName != null" >
+        #{acceptPlaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptTel != null" >
+        #{acceptTel,jdbcType=VARCHAR},
+      </if>
+      <if test="regTime != null" >
+        #{regTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="confirmTime != null" >
+        #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ShareDisseminateLog" >
+    update ShareDisseminateLog
+    <set >
+      <if test="sendType != null" >
+        sendType = #{sendType,jdbcType=INTEGER},
+      </if>
+      <if test="sendUserId != null" >
+        sendUserId = #{sendUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="encourageType != null" >
+        encourageType = #{encourageType,jdbcType=TINYINT},
+      </if>
+      <if test="encourageVoucher != null" >
+        encourageVoucher = #{encourageVoucher,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptUserId != null" >
+        acceptUserId = #{acceptUserId,jdbcType=INTEGER},
+      </if>
+      <if test="acceptPlaceName != null" >
+        acceptPlaceName = #{acceptPlaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptTel != null" >
+        acceptTel = #{acceptTel,jdbcType=VARCHAR},
+      </if>
+      <if test="regTime != null" >
+        regTime = #{regTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="confirmTime != null" >
+        confirmTime = #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ShareDisseminateLog" >
+    update ShareDisseminateLog
+    set sendType = #{sendType,jdbcType=INTEGER},
+      sendUserId = #{sendUserId,jdbcType=VARCHAR},
+      encourageType = #{encourageType,jdbcType=TINYINT},
+      encourageVoucher = #{encourageVoucher,jdbcType=VARCHAR},
+      acceptUserId = #{acceptUserId,jdbcType=INTEGER},
+      acceptPlaceName = #{acceptPlaceName,jdbcType=VARCHAR},
+      acceptTel = #{acceptTel,jdbcType=VARCHAR},
+      regTime = #{regTime,jdbcType=TIMESTAMP},
+      confirmTime = #{confirmTime,jdbcType=TIMESTAMP},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.data.analysis.dao.OrderStatisMapper" >
+ 
+     <select id="findOrderStatisList" parameterType ="com.corner.data.analysis.beans.vo.OrderStatisVo" resultType="com.corner.data.analysis.beans.vo.OrderStatisVo">
+		select  cc.* from (
+			select  aa.areaName,aa.areaId,
+			    aa.productPrice,
+				aa.orderPrice,
+				aa.productCode,
+				aa.productName,
+				aa.productSpec,
+				aa.productUnitPrice,
+				bb.dateTotalQuantity,
+				bb.dateTotalMoney,
+				aa.monthTotalQuantity,
+			    aa.monthTotalMoney,
+				aa.wholesalerId,
+				aa.shopRatedName,
+				aa.shopRatedId,
+				aa.category,aa.categoryId,
+				aa.status from(
+			SELECT rr.`name` as areaName,rr.id as areaId,
+				si.goodsPrice productPrice,
+				si.orderPrice orderPrice,
+				sd.barCode productCode,
+				sd.name productName,
+				sd.spec productSpec,
+				sd.price productUnitPrice,
+				sum(sd.quantity) monthTotalQuantity,
+				sum(sd.totalPrice) monthTotalMoney,
+				sp.id wholesalerId,
+				sg.name shopRatedName,
+				sg.id shopRatedId,
+				itc2.name as  category,
+			itc2.id as  categoryId,
+				si.status status
+			FROM
+				SpOrderDetail AS sd
+			JOIN SpOrderInfo AS si ON sd.orderId2 = si.orderId
+			JOIN ItemBase AS ib ON ib.mdseId = sd.barCode
+			JOIN Supplier as sp on sp.id = si.supplierId
+			JOIN SpGroupMap as sgm on sp.id = sgm.spId
+			JOIN SpGroup sg on sgm.groupId = sg.id
+			JOIN ItemCatelog itc ON  ib.cateId = itc.id
+			JOIN ItemCatelog itc2 ON itc.pid = itc2.id
+			LEFT JOIN Store SS on SS.ID= si.storeId
+			left join Region rr on rr.id=SS.areaId
+			
+			 where sd.addTime BETWEEN DATE_FORMAT(#{firstDay}, '%Y-%m-%d') 
+			 and DATE_FORMAT(DATE_ADD(#{lastDay},INTERVAL 1 DAY), '%Y-%m-%d')
+			and si.`status` !=1 and si.`status`!=6  and itc2.name = '促销专区' 
+			GROUP BY sg.id,sd.barCode ) aa
+			left JOIN (
+			SELECT rr.`name` as areaName,rr.id as areaId,
+				si.goodsPrice productPrice,
+				si.orderPrice orderPrice,
+				sd.barCode productCode,
+				sd.name productName,
+				sd.spec productSpec,
+				sd.price productUnitPrice,
+				sum(sd.quantity) dateTotalQuantity,
+				sum(sd.totalPrice) dateTotalMoney,
+				sp.id wholesalerId,
+				sg.name shopRatedName,
+				sg.id shopRatedId,
+				itc2.name as  category,
+			itc2.id as  categoryId,
+				si.status status
+			FROM
+				SpOrderDetail AS sd
+			JOIN SpOrderInfo AS si ON sd.orderId2 = si.orderId
+			JOIN ItemBase AS ib ON ib.mdseId = sd.barCode
+			JOIN Supplier as sp on sp.id = si.supplierId
+			JOIN SpGroupMap as sgm on sp.id = sgm.spId
+			JOIN SpGroup sg on sgm.groupId = sg.id
+			JOIN ItemCatelog itc ON  ib.cateId = itc.id
+			JOIN ItemCatelog itc2 ON itc.pid = itc2.id
+			LEFT JOIN Store SS on SS.ID= si.storeId
+			left join Region rr on rr.id=SS.areaId
+			
+			 where sd.addTime BETWEEN DATE_FORMAT(#{startTime}, '%Y-%m-%d') 
+			 and DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d')
+			and si.`status` !=1 and si.`status`!=6  and itc2.name = '促销专区' 
+			GROUP BY sg.id,sd.barCode ) bb on aa.productCode =bb.productCode and aa.shopRatedId=bb.shopRatedId
+			
+			) cc where cc.dateTotalMoney is not null
+     </select>
+     
+     <select id="getOrderStatisListSize" parameterType ="com.corner.data.analysis.beans.vo.OrderStatisVo" resultType="int">
+		select  count(1) from (
+			select  aa.areaName,aa.areaId,
+			    aa.productPrice,
+				aa.orderPrice,
+				aa.productCode,
+				aa.productName,
+				aa.productSpec,
+				aa.productUnitPrice,
+				bb.dateTotalQuantity,
+				bb.dateTotalMoney,
+				aa.monthTotalQuantity,
+			    aa.monthTotalMoney,
+				aa.wholesalerId,
+				aa.shopRatedName,
+				aa.shopRatedId,
+				aa.category,aa.categoryId,
+				aa.status from(
+			SELECT rr.`name` as areaName,rr.id as areaId,
+				si.goodsPrice productPrice,
+				si.orderPrice orderPrice,
+				sd.barCode productCode,
+				sd.name productName,
+				sd.spec productSpec,
+				sd.price productUnitPrice,
+				sum(sd.quantity) monthTotalQuantity,
+				sum(sd.totalPrice) monthTotalMoney,
+				sp.id wholesalerId,
+				sg.name shopRatedName,
+				sg.id shopRatedId,
+				itc2.name as  category,
+			itc2.id as  categoryId,
+				si.status status
+			FROM
+				SpOrderDetail AS sd
+			JOIN SpOrderInfo AS si ON sd.orderId2 = si.orderId
+			JOIN ItemBase AS ib ON ib.mdseId = sd.barCode
+			JOIN Supplier as sp on sp.id = si.supplierId
+			JOIN SpGroupMap as sgm on sp.id = sgm.spId
+			JOIN SpGroup sg on sgm.groupId = sg.id
+			JOIN ItemCatelog itc ON  ib.cateId = itc.id
+			JOIN ItemCatelog itc2 ON itc.pid = itc2.id
+			LEFT JOIN Store SS on SS.ID= si.storeId
+			left join Region rr on rr.id=SS.areaId
+			
+			 where sd.addTime BETWEEN DATE_FORMAT(#{firstDay}, '%Y-%m-%d') 
+			 and DATE_FORMAT(DATE_ADD(#{lastDay},INTERVAL 1 DAY), '%Y-%m-%d')
+			and si.`status` !=1 and si.`status`!=6  and itc2.name = '促销专区' 
+			GROUP BY sg.id,sd.barCode ) aa
+			left JOIN (
+			SELECT rr.`name` as areaName,rr.id as areaId,
+				si.goodsPrice productPrice,
+				si.orderPrice orderPrice,
+				sd.barCode productCode,
+				sd.name productName,
+				sd.spec productSpec,
+				sd.price productUnitPrice,
+				sum(sd.quantity) dateTotalQuantity,
+				sum(sd.totalPrice) dateTotalMoney,
+				sp.id wholesalerId,
+				sg.name shopRatedName,
+				sg.id shopRatedId,
+				itc2.name as  category,
+			itc2.id as  categoryId,
+				si.status status
+			FROM
+				SpOrderDetail AS sd
+			JOIN SpOrderInfo AS si ON sd.orderId2 = si.orderId
+			JOIN ItemBase AS ib ON ib.mdseId = sd.barCode
+			JOIN Supplier as sp on sp.id = si.supplierId
+			JOIN SpGroupMap as sgm on sp.id = sgm.spId
+			JOIN SpGroup sg on sgm.groupId = sg.id
+			JOIN ItemCatelog itc ON  ib.cateId = itc.id
+			JOIN ItemCatelog itc2 ON itc.pid = itc2.id
+			LEFT JOIN Store SS on SS.ID= si.storeId
+			left join Region rr on rr.id=SS.areaId
+			 where sd.addTime BETWEEN DATE_FORMAT(#{startTime}, '%Y-%m-%d') 
+			 and DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d')
+			and si.`status` !=1 and si.`status`!=6  and itc2.name = '促销专区' 
+			GROUP BY sg.id,sd.barCode ) bb on aa.productCode =bb.productCode and aa.shopRatedId=bb.shopRatedId
+			
+			) cc where cc.dateTotalMoney is not null
+     </select>
+     
+     
+</mapper>

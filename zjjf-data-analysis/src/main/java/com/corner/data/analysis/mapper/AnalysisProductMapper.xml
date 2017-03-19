@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.data.analysis.dao.AnalysisProductMapper" >
+ 
+     <select id="findPagerList" parameterType ="com.corner.data.analysis.beans.vo.AnalysisProductVo" resultType="com.corner.data.analysis.beans.vo.AnalysisProductVo">
+		
+		SELECT B.id id,A.areaId,F.name as areaName,B.sptm,E.yjfl,D.ejfl,B.spmc,B.spec,A.scj,A.hzsjhj,A.hzschj,A.maoli,C.xdcs,C.xssl,C.xsje xsje,C.fyje FROM 
+				(SELECT id,itemBaseId, areaId,areaPrice hzschj,plantDisPrice hzsjhj,plantMemPrice scj,maoli FROM PlantItem) A LEFT JOIN  
+				(SELECT id,itemId,count(itemId) xdcs,SUM(quantity) xssl,SUM(totalPrice) xsje,SUM(fee) fyje FROM SpOrderDetail 
+			WHERE addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND addTime <![CDATA[<= ]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') GROUP BY itemId) C ON A.id = C.itemId LEFT JOIN
+				(SELECT id,mdseId sptm,cateId,name spmc,spec FROM ItemBase) B ON A.itemBaseId = B.id LEFT JOIN 
+				(SELECT id,name ejfl,pid FROM ItemCatelog) D ON B.cateId = D.id LEFT JOIN
+				(SELECT id,name yjfl FROM ItemCatelog) E ON E.id = D.pid LEFT JOIN
+				(SELECT id,name FROM Region) F ON F.id = A.areaId 
+				WHERE 1=1
+					<if test="areaId != null and areaId !=''" >
+						AND A.areaId = #{areaId}
+					</if>
+					<if test="spmc != null and spmc !=''" >
+						AND B.spmc LIKE CONCAT('%',#{spmc},'%') OR B.sptm LIKE CONCAT('%',#{spmc},'%')
+					</if>
+					
+			<include refid="BasePublicMapper.pageSql" />
+     </select>
+     
+     <select id="getPagerListSize" parameterType ="com.corner.data.analysis.beans.vo.AnalysisProductVo" resultType="int">
+		SELECT COUNT(1) FROM  
+			(
+			SELECT B.id id,A.areaId,F.name as areaName,B.sptm,E.yjfl,D.ejfl,B.spmc,B.spec,A.scj,A.hzsjhj,A.hzschj,A.maoli,C.xdcs,C.xssl,C.xsje xsje,C.fyje FROM 
+				(SELECT id,itemBaseId, areaId,areaPrice hzschj,plantDisPrice hzsjhj,plantMemPrice scj,maoli FROM PlantItem) A LEFT JOIN  
+				(SELECT id,itemId,count(itemId) xdcs,SUM(quantity) xssl,SUM(totalPrice) xsje,SUM(fee) fyje FROM SpOrderDetail 
+			WHERE addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND addTime <![CDATA[<= ]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') GROUP BY itemId) C ON A.id = C.itemId LEFT JOIN
+				(SELECT id,mdseId sptm,cateId,name spmc,spec FROM ItemBase) B ON A.itemBaseId = B.id LEFT JOIN 
+				(SELECT id,name ejfl,pid FROM ItemCatelog) D ON B.cateId = D.id LEFT JOIN
+				(SELECT id,name yjfl FROM ItemCatelog) E ON E.id = D.pid LEFT JOIN
+				(SELECT id,name FROM Region) F ON F.id = A.areaId 
+				WHERE 1=1
+					<if test="areaId != null and areaId !=''" >
+						AND A.areaId = #{areaId}
+					</if>
+					<if test="spmc != null and spmc !=''" >
+						AND B.spmc LIKE CONCAT('%',#{spmc},'%') OR B.sptm LIKE CONCAT('%',#{spmc},'%')
+					</if>
+			) SS
+    </select>
+     
+     <select id="getProductDetailById" parameterType ="com.corner.data.analysis.beans.vo.AnalysisProductVo" resultType="com.corner.data.analysis.beans.vo.AnalysisProductVo">
+		SELECT B.id id,A.id uid,A.areaId areaId,F.name AS areaName,B.sptm,E.yjfl,D.ejfl,B.spmc,B.spec,A.scj,A.hzsjhj,A.hzschj,A.maoli,C.xdcs,C.xssl,C.xsje,C.fyje FROM 
+				(SELECT id,itemBaseId, areaId,areaPrice hzschj,plantDisPrice hzsjhj,plantMemPrice scj,maoli FROM PlantItem) A LEFT JOIN  
+				(SELECT id,itemId,count(itemId) xdcs,SUM(quantity) xssl,SUM(totalPrice) xsje,SUM(fee) fyje FROM SpOrderDetail 
+				WHERE addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND addTime <![CDATA[<= ]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') GROUP BY itemId) C ON A.id = C.itemId LEFT JOIN
+				(SELECT id,mdseId sptm,cateId,name spmc,spec FROM ItemBase) B ON A.itemBaseId = B.id LEFT JOIN 
+				(SELECT id,name ejfl,pid FROM ItemCatelog) D ON B.cateId = D.id LEFT JOIN
+				(SELECT id,name yjfl FROM ItemCatelog) E ON E.id = D.pid LEFT JOIN
+				(SELECT id,name FROM Region) F ON F.id = A.areaId 
+				 WHERE B.id=#{id} 
+				 <if test="areaId != null and areaId !=''" >
+						AND A.areaId = #{areaId}
+				</if>
+				 
+    </select>
+     
+</mapper>

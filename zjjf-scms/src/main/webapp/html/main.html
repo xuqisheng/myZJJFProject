@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>转角店宝</title>
+		<link href="../resources/images/favicon.png?v" rel="icon" type="image/x-icon">
+		<link href="../resources/css/base.css?v20160530" rel="stylesheet">
+		<script src="../resources/vendor/jquery/jquery-1.12.4.min.js"></script>
+		<!--[if lt IE 10 ]>
+	    <script src="../../resources/vendor/jquery/jquery.placeholder.js"></script>
+	<![endif]-->
+		<script src="../resources/vendor/layer/layer.js"></script>
+		<link href="../resources/css/layout.css?vv12" rel="stylesheet">
+		<script src="../resources/js/layout.js"></script>
+	</head>
+
+	<body>
+		<nav id="nav">
+			<h1></h1>
+			<ul>
+				<li>
+					<div class="category" data-direction="down">
+						<i class="icon icon-jointpurchase"></i>仓库管理<i class="icon-direction"></i>
+					</div>
+					<div class="subcategory">
+						<a href="management/goods-manage.html" target="mainiframe">仓库管理</a>
+
+					</div>
+				</li>
+				<li>
+					<div class="category" data-direction="down">
+						<i class="icon icon-jointpurchase"></i>销售出库<i class="icon-direction"></i>
+					</div>
+					<div class="subcategory">
+						<a href="sale-out/sale-out.html" target="mainiframe">销售出库</a>
+					</div>
+				</li>
+				<li>
+					<div class="category" data-direction="down">
+						<i class="icon icon-jointpurchase"></i>采购入库<i class="icon-direction"></i>
+					</div>
+					<div class="subcategory">A
+						<a href="purchase/purchase-manage.html" target="mainiframe">采购入库</a>
+					</div>
+				</li>
+			</ul>
+		</nav>
+		<main id="main">
+			<header id="header">
+				<div class="info"><span class="username">${USER_SESSION_KEY.nickName}</span>欢迎回来 |
+					<a href="${root}/kefu/authority/doLoginOut.do">注销</a>
+				</div>
+			</header>
+			<article id="article">
+				<iframe id="mainiframe" name="mainiframe" src="" width="100%" height="100%" frameborder="0"></iframe>
+			</article>
+		</main>
+	</body>
+
+</html>

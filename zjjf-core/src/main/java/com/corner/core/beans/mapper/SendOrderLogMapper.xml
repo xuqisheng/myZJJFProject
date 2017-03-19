@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SendOrderLogMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SendOrderLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="supplierMobile" property="supplierMobile" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="sendTime" property="sendTime" jdbcType="TIMESTAMP" />
+    <result column="isDelete" property="isDelete" jdbcType="TINYINT" />
+    <result column="row1" property="row1" jdbcType="VARCHAR" />
+    <result column="row2" property="row2" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, supplierId, supplierMobile, orderId, storeId, sendTime, isDelete, row1, row2
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SendOrderLog
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SendOrderLog
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SendOrderLog" >
+    insert into SendOrderLog (id, supplierId, supplierMobile, 
+      orderId, storeId, sendTime, 
+      isDelete, row1, row2
+      )
+    values (#{id,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, #{supplierMobile,jdbcType=VARCHAR}, 
+      #{orderId,jdbcType=VARCHAR}, #{storeId,jdbcType=INTEGER}, #{sendTime,jdbcType=TIMESTAMP}, 
+      #{isDelete,jdbcType=TINYINT}, #{row1,jdbcType=VARCHAR}, #{row2,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SendOrderLog" >
+    insert into SendOrderLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="supplierId != null" >
+        supplierId,
+      </if>
+      <if test="supplierMobile != null" >
+        supplierMobile,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="sendTime != null" >
+        sendTime,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="row1 != null" >
+        row1,
+      </if>
+      <if test="row2 != null" >
+        row2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierMobile != null" >
+        #{supplierMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="sendTime != null" >
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="row1 != null" >
+        #{row1,jdbcType=VARCHAR},
+      </if>
+      <if test="row2 != null" >
+        #{row2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SendOrderLog" >
+    update SendOrderLog
+    <set >
+      <if test="supplierId != null" >
+        supplierId = #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierMobile != null" >
+        supplierMobile = #{supplierMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null" >
+        storeId = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="sendTime != null" >
+        sendTime = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="row1 != null" >
+        row1 = #{row1,jdbcType=VARCHAR},
+      </if>
+      <if test="row2 != null" >
+        row2 = #{row2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SendOrderLog" >
+    update SendOrderLog
+    set supplierId = #{supplierId,jdbcType=VARCHAR},
+      supplierMobile = #{supplierMobile,jdbcType=VARCHAR},
+      orderId = #{orderId,jdbcType=VARCHAR},
+      storeId = #{storeId,jdbcType=INTEGER},
+      sendTime = #{sendTime,jdbcType=TIMESTAMP},
+      isDelete = #{isDelete,jdbcType=TINYINT},
+      row1 = #{row1,jdbcType=VARCHAR},
+      row2 = #{row2,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

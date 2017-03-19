@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.SpCommentMgMapper" >
+
+<!-- 工作台获得批发商评论 -->
+<select id="getSpComment" parameterType="com.corner.scms.beans.ro.SpCommentParamterRo" resultType="com.corner.scms.beans.vo.SpCommentVo">
+	SELECT
+		unionFen,
+		COUNT(storeId) AS num
+	FROM
+		`SpComment`
+	WHERE
+		`status` = 1
+	AND isDelete = 0
+	<if test="spId != null and spId != ''">
+		AND spId = #{spId}
+	</if>
+	<choose>
+		<when test="time != null and time == 1">
+			AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; date(addTime)
+		</when>
+		<when test="time != null and time == 2">
+			AND DATE_SUB(CURDATE(), INTERVAL 1 MONTH) &lt; date(addTime)
+		</when>
+		<when test="time != null and time == 3">
+			AND DATE_SUB(CURDATE(), INTERVAL 6 MONTH) &lt; date(addTime)
+		</when>
+		<otherwise>
+			AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; date(addTime)
+		</otherwise>
+	</choose>
+	
+	GROUP BY
+		unionFen;
+</select>
+
+<!-- 工作台获得批发商综合评分 -->
+<select id="getSumSpComment" parameterType="com.corner.scms.beans.ro.SpCommentParamterRo" resultType="com.corner.scms.beans.vo.SpCommentVo">
+	SELECT
+		(b.countScore / b.countNum) AS avgScore,
+		b.countNum
+	FROM
+		(
+		SELECT
+			SUM(a.unionFen * a.num) AS countScore,
+			SUM(a.num) AS countNum
+		FROM
+			(
+			SELECT
+				unionFen,
+				COUNT(storeId) AS num
+			FROM
+				`SpComment`
+			WHERE
+				`status` = 1
+			AND isDelete = 0
+			<if test="spId != null and spId != ''">
+				AND spId = #{spId}
+			</if>
+			GROUP BY
+				unionFen
+			) a
+		) b
+</select>
+
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.MaOrderInfoMgMapper">
+	<resultMap id="BaseResultMap" type="com.corner.kefu.beans.vo.MaOrderInfoVo"  extends="com.corner.core.dao.MaOrderInfoMapper.BaseResultMap">
+		<result column="totQuantity" property="totQuantity" jdbcType="INTEGER" />
+	</resultMap>
+	<!-- 获取会计列表条件 -->
+	<sql id="getPageList_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			isDelete = 0
+			<if test="orderId != null and orderId != ''">
+				and (orderId like CONCAT('%',#{orderId},'%' ) or mobile like CONCAT('%',#{orderId},'%' ))
+			</if>
+			<if test="managerName != null and managerName != ''">
+				and (orderId like CONCAT('%',#{managerName},'%') or managerName like CONCAT('%',#{managerName},'%')) 
+			</if>
+			<if test="managerId != null and managerId != ''">
+				and managerId =#{managerId}
+			</if>
+			<if test="groupId != null and groupId != ''">
+				and groupId = #{groupId}
+			</if>
+			<if test="status != null and status != ''">
+				<choose>
+					<when test="status == 1">and WhPayStatus = 0 and kfStatus = 3</when><!-- 1、查询未接单的订单 -->
+					<when test="status == 2">and WhPayStatus = 1 and kfStatus = 3 and warehouseStatus = 1</when><!-- 2、查询未入库的订单 -->
+					<when test="status == 3">and WhPayStatus = 1 and kfStatus = 3 and warehouseStatus != 1</when><!-- 3、查询已入库的订单 -->
+				</choose>
+			</if>
+		</trim>
+	</sql>
+	<!-- 获取列表 -->
+	<select id="getPageList" parameterType="com.corner.kefu.beans.ro.scms.MaOrderInfoMgRo" resultMap="BaseResultMap">
+		select * from (SELECT moi.*,SUM(sod.quantity) as totQuantity from MaOrderInfo moi JOIN ScOrderDetail sod on moi.id = sod.maOrderInfoId GROUP BY moi.id) MaOrderInfo
+		<include refid="getPageList_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取列表 总记录数 -->
+	<select id="getPageListSize" parameterType="com.corner.kefu.beans.ro.scms.MaOrderInfoMgRo" resultType="int">
+		select count(1) from MaOrderInfo
+		<include refid="getPageList_condition" />
+	</select>
+</mapper>

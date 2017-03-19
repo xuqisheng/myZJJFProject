@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.rpc.salesman.dao.SpGroupLineMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.rpc.salesman.model.SpGroupLine" >
+    <id column="spGroupId" property="spGroupId" jdbcType="VARCHAR" />
+    <result column="spGroupName" property="spGroupName" jdbcType="VARCHAR" />
+    <result column="isDelete" property="isDelete" jdbcType="INTEGER" />
+    <result column="line" property="line" jdbcType="VARCHAR" />
+    <result column="deptId" property="deptId" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    spGroupId, spGroupName, isDelete, line, deptId, createTime, createBy, updateTime, 
+    updateBy
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_sp_group_t
+    where spGroupId = #{spGroupId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tbl_sp_group_t
+    where spGroupId = #{spGroupId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.rpc.salesman.model.SpGroupLine" >
+    insert into tbl_sp_group_t (spGroupId, spGroupName, isDelete, 
+      line, deptId, createTime, 
+      createBy, updateTime, updateBy
+      )
+    values (#{spGroupId,jdbcType=VARCHAR}, #{spGroupName,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, 
+      #{line,jdbcType=VARCHAR}, #{deptId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  
+  <insert id="insertBusAgent" parameterType="com.corner.rpc.salesman.model.SpGroupLine" >
+    insert into tbl_sp_bus_agent_t (spGroupId, userId)
+    values (#{spGroupId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR})
+  </insert>
+	
+  <insert id="insertSpGroupLine" parameterType="com.corner.rpc.salesman.model.SpGroupLine" >
+    insert into tbl_sp_group_line_t (lineId,spGroupId, line)
+    values (#{lineId,jdbcType=VARCHAR}, #{spGroupId,jdbcType=VARCHAR}, #{line,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertLineShopMapper" parameterType="com.corner.rpc.salesman.model.SpGroupLine" >
+    insert into tbl_line_shop_mapper_t (lineId,shopId)
+    values (#{lineId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.corner.rpc.salesman.model.SpGroupLine" >
+    insert into tbl_sp_group_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="spGroupId != null" >
+        spGroupId,
+      </if>
+      <if test="spGroupName != null" >
+        spGroupName,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="line != null" >
+        line,
+      </if>
+      <if test="deptId != null" >
+        deptId,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="createBy != null" >
+        createBy,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="updateBy != null" >
+        updateBy,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="spGroupId != null" >
+        #{spGroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="spGroupName != null" >
+        #{spGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="line != null" >
+        #{line,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null" >
+        #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.rpc.salesman.model.SpGroupLine" >
+    update tbl_sp_group_t
+    <set >
+      <if test="spGroupName != null" >
+        spGroupName = #{spGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="line != null" >
+        line = #{line,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null" >
+        deptId = #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        createBy = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        updateBy = #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where spGroupId = #{spGroupId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.rpc.salesman.model.SpGroupLine" >
+    update tbl_sp_group_t
+    set spGroupName = #{spGroupName,jdbcType=VARCHAR},
+      isDelete = #{isDelete,jdbcType=INTEGER},
+      line = #{line,jdbcType=VARCHAR},
+      deptId = #{deptId,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      createBy = #{createBy,jdbcType=VARCHAR},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      updateBy = #{updateBy,jdbcType=VARCHAR}
+    where spGroupId = #{spGroupId,jdbcType=VARCHAR}
+  </update>
+  
+	<select id="getLineHashMap" resultType="java.util.HashMap" parameterType="java.lang.String">
+	    SELECT DISTINCT
+ 			<!-- ll.lineId,CONCAT('线路',ll.line) lineName -->
+			ll.lineId,ll.line as lineName
+		FROM
+			tbl_sp_bus_agent_t t
+		INNER JOIN tbl_sp_group_line_t ll ON t.spGroupId = ll.spGroupId
+		where t.userId=#{userId}
+	</select>
+  
+	<select id="getSpGroupHashMap" resultType="java.util.HashMap" parameterType="java.lang.String">
+		select 'ALL' spGroupId,'全部' spGroupName from dual
+		
+		UNION 
+		
+	    SELECT
+			sg.spGroupId,
+			sg.spGroupName
+		FROM
+			tbl_sp_bus_agent_t t
+		INNER JOIN tbl_sp_group_t sg ON t.spGroupId = sg.spGroupId
+		WHERE
+			t.userId =#{userId}
+	</select>
+  
+	<select id="getCustHashMap" resultType="java.util.HashMap" parameterType="com.corner.rpc.salesman.model.SpGroupLine">
+	    SELECT
+			s.shopId,s.shopNo,s.shopName
+		FROM
+			tbl_line_shop_mapper_t t
+		INNER JOIN tbl_shop_t s ON t.shopId = s.shopId
+		where t.lineId=#{lineId,jdbcType=VARCHAR}
+		<if test="spGroupId != null and spGroupId !=''">
+			and t.spGroupId = #{spGroupId,jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+	<select id="getShopSiteList" resultType="java.util.HashMap" parameterType="com.corner.rpc.salesman.model.SpGroupLine">
+		SELECT DISTINCT
+			IFNULL(s.latitude, 0) AS latitude,
+		    IFNULL(s.longitude,0) AS longitude,
+		    IFNULL(s.isRegister,'0') as isRegister,
+			s.shopName,
+			s.shopType,
+			s.shopAddress,
+			s.shopId
+		FROM
+			tbl_sp_bus_agent_t t
+		INNER JOIN tbl_sp_group_line_t sg ON sg.spGroupId = t.spGroupId
+		INNER JOIN tbl_line_shop_mapper_t ls ON ls.lineId = sg.lineId
+		INNER JOIN tbl_shop_t s ON ls.shopId = s.shopId
+		WHERE t.userId = #{userId,jdbcType=VARCHAR}
+		<if test="spGroupId != null and spGroupId !='' and spGroupId !='ALL'">
+			and sg.spGroupId = #{spGroupId,jdbcType=VARCHAR}
+		</if>
+		<if test="lineId != null and lineId !='' and lineId !='ALL'">
+			AND sg.lineId = #{lineId,jdbcType=VARCHAR}
+		</if>
+		<if test="isRegister != null and isRegister !='' and isRegister !='ALL'">
+			AND IFNULL(s.isRegister,'0') = #{isRegister,jdbcType=VARCHAR}
+		</if>
+		<if test="shopType != null and shopType !='' and shopType !='ALL'">
+			AND s.shopType = #{shopType,jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+	<select id="getMySpGroupList" resultType="com.corner.rpc.salesman.model.SpGroupLine" parameterType="java.lang.String">
+		select 'ALL' spGroupId,'全部定格' spGroupName from dual
+		
+		UNION 
+		
+	    SELECT
+			sg.spGroupId,
+			sg.spGroupName
+		FROM
+			tbl_sp_bus_agent_t t
+		INNER JOIN tbl_sp_group_t sg ON t.spGroupId = sg.spGroupId
+		WHERE
+			t.userId =#{userId}
+	</select>
+	
+	<select id="getSpGroupByAreaList" resultType="java.util.HashMap" parameterType="java.lang.String">
+	    SELECT DISTINCT
+			t.spGroupId,
+			t.spGroupName
+		FROM tbl_sp_group_t t 
+		WHERE
+			t.areaId =#{areaId}
+	</select>
+	
+	<select id="getSpgLineListById" resultType="java.util.HashMap" parameterType="java.lang.String">
+	    SELECT 
+ 			<!-- t.lineId,CONCAT('线路',t.line) lineName -->
+			t.lineId,t.line lineName
+		FROM
+			tbl_sp_group_line_t t
+		where t.spGroupId=#{spGroupId}
+	</select>
+	
+	<select id="checkIsExistSpGroup" resultType="int" parameterType="java.lang.String">
+	    SELECT 
+			COUNT(1)
+		FROM
+			tbl_sp_group_t t
+		WHERE IFNULL(t.isDelete,'0') = 0 
+		  AND t.spGroupId=#{spGroupId}
+	</select>
+	
+	<select id="checkIsExistSpgLine" resultType="int" parameterType="com.corner.rpc.salesman.model.SpGroupLine">
+	    SELECT 
+			COUNT(1)
+		FROM
+			tbl_sp_group_line_t t
+		WHERE t.spGroupId=#{spGroupId,jdbcType=VARCHAR}
+		and t.line=#{line,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="querySpGroupLine" resultType="com.corner.rpc.salesman.model.SpGroupLine" parameterType="com.corner.rpc.salesman.model.SpGroupLine">
+	    SELECT 
+			t.lineId,t.spGroupId,t.line
+		FROM
+			tbl_sp_group_line_t t
+		WHERE t.spGroupId=#{spGroupId,jdbcType=VARCHAR}
+		and t.line=#{line,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getSpGroupDbUserSet" resultType="java.lang.String" parameterType="java.lang.String">
+		SELECT GROUP_CONCAT(u.userName) as userName from(
+		SELECT DISTINCT t.userId FROM tbl_sp_bus_agent_t t
+		 WHERE t.spGroupId IN (
+				SELECT
+					t1.spGroupId
+				FROM
+					tbl_sp_bus_agent_t t1
+				WHERE
+					t1.userId = #{userId,jdbcType=VARCHAR}
+			)) a LEFT JOIN salesman u on u.id=a.userId
+	</select>
+	
+	<select id="getSpGroupByUserId" resultType="java.lang.String" parameterType="java.lang.String">
+		SELECT
+			t1.spGroupId
+		FROM
+			tbl_sp_bus_agent_t t1
+		WHERE
+			t1.userId = #{userId,jdbcType=VARCHAR} limit 1
+	</select>
+	
+	<select id="queryUserIsDBType" resultType="int" parameterType="java.lang.String">
+	    SELECT
+			count(1)
+		FROM
+			tbl_sp_bus_agent_t t
+		INNER JOIN tbl_sp_group_line_t gl 
+		   ON gl.spGroupId = t.spGroupId
+		WHERE t.userId = #{userId,jdbcType=VARCHAR}
+	</select>
+	
+  <delete id="deleteLineShopMapperByShopId" parameterType="java.lang.String" >
+    delete from tbl_line_shop_mapper_t where shopId= #{shopId,jdbcType=VARCHAR}
+  </delete>
+	
+  <select id="getDeptBindSpGroupList" resultType="java.lang.String" parameterType="java.util.HashMap">
+		select t.spGroupId from tbl_sp_group_t t where 1=1 
+		<if test="deptIdList != null" >
+ 		  and t.deptId in
+          <foreach collection="deptIdList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+          </foreach> 
+		</if>
+		<if test="deptIdList == null" >
+ 		  <!--如果为空，故意给一个不存在的值 -->
+ 		  and t.deptId = 'deptId' 
+		</if>
+  </select>
+</mapper>

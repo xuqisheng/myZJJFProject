@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.erp.ERPWarehouseMgMapper">
+	<!-- 仓库列表 --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+	<sql id="getWarehouseBySupplierIdSql">
+		<where>
+			a.status = 1
+			and a.isDelete = 0
+			<if test="whLevel != null">
+				and a.whLevel = #{whLevel}
+			</if>
+			<if test="supplierId != null and supplierId != ''">
+				and a.supplierId = #{supplierId}		
+			</if>
+			<if test="numAndName != null and numAndName != '' ">
+				and (a.code like #{numAndName}"%" or a.name like "%"#{numAndName}"%")
+			</if>
+			<if test="upId != null and upId != ''">
+				and a.upId = #{upId}
+			</if>
+		</where>
+	</sql>
+	<select id="getWarehouseBySupplierId" parameterType="com.corner.scms.beans.ro.erp.ERPWarehouseRo" resultType="com.corner.scms.beans.vo.erp.ERPWarehouseVo">
+		SELECT
+			a.id,
+			a.code,
+			a.name,
+			a.abbreviation,
+			(select name from Region where status=1 and isDelete=0 and id=a.provinceId) as provinceName,
+			(select name from Region where status=1 and isDelete=0 and id=a.cityId) as cityName,
+			(select name from Region where status=1 and isDelete=0 and id=a.areaId) as areaName,
+			a.address,
+			a.createName,
+			a.upId,
+			a.addTime
+		FROM
+			`ERPWarehouse` a	
+		<include refid="getWarehouseBySupplierIdSql"/>
+		order by a.addTime desc
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<select id="getWarehouseBySupplierIdCount" parameterType="com.corner.scms.beans.ro.erp.ERPWarehouseRo" resultType="java.lang.Integer">
+		SELECT
+			count(1)
+		FROM
+			`ERPWarehouse` a
+		<include refid="getWarehouseBySupplierIdSql"/>
+	</select>
+	
+	<!-- 库区列表 --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+	<sql id="getWhareaBySupplierIdSql">
+		JOIN ERPWarehouse b ON a.upId=b.id AND b.`status`=1 AND b.isDelete=0 
+		<include refid="getWarehouseBySupplierIdSql"/>
+	</sql>
+	<select id="getWhareaBySupplierId" parameterType="com.corner.scms.beans.ro.erp.ERPWarehouseRo" resultType="com.corner.scms.beans.vo.erp.ERPWarehouseVo">
+		SELECT
+			a.id,
+			a.code,
+			a.name,
+			<!-- a.abbreviation, -->
+			<!-- (select name from region where status=1 and isDelete=0 and id=a.provinceId) as provinceName,
+			(select name from region where status=1 and isDelete=0 and id=a.cityId) as cityName,
+			(select name from region where status=1 and isDelete=0 and id=a.areaId) as areaName, -->
+			<!-- a.address, -->
+			a.acreage,
+			a.createName,
+			a.upId,
+			a.addTime,
+			b.name as whName
+		FROM
+			`ERPWarehouse` a
+		<include refid="getWhareaBySupplierIdSql"/>
+		order by a.addTime desc
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<select id="getWhareaBySupplierIdCount" parameterType="com.corner.scms.beans.ro.erp.ERPWarehouseRo" resultType="java.lang.Integer">
+		SELECT
+			count(1)
+		FROM
+			`ERPWarehouse` a
+		<include refid="getWhareaBySupplierIdSql"/>
+	</select>
+
+	<!-- 库位列表 --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+	<sql id="getWhpositionBySupplierIdSql">
+		JOIN ERPWarehouse b ON a.upId=b.id AND b.`status`=1 AND b.isDelete=0
+		JOIN ERPWarehouse c on b.upId=c.id AND c.`status`=1 AND c.isDelete=0
+		<include refid="getWarehouseBySupplierIdSql"/>
+	</sql>
+	<select id="getWhpositionBySupplierId" parameterType="com.corner.scms.beans.ro.erp.ERPWarehouseRo" resultType="com.corner.scms.beans.vo.erp.ERPWarehouseVo">
+		SELECT
+			a.id,
+			a.code,
+			a.name,
+			<!-- a.abbreviation, -->
+			<!-- (select name from region where status=1 and isDelete=0 and id=a.provinceId) as provinceName,
+			(select name from region where status=1 and isDelete=0 and id=a.cityId) as cityName,
+			(select name from region where status=1 and isDelete=0 and id=a.areaId) as areaName, -->
+			<!-- a.address, -->
+			a.acreage,
+			a.maxMum,
+			a.createName,
+			a.upId,
+			a.addTime,
+			b.name as whAreaName,
+			c.name as whName 
+		FROM
+			`ERPWarehouse` a
+		<include refid="getWhpositionBySupplierIdSql"/>
+		order by a.addTime desc
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<select id="getWhpositionBySupplierIdCount" parameterType="com.corner.scms.beans.ro.erp.ERPWarehouseRo" resultType="java.lang.Integer">
+		SELECT
+			count(1)
+		FROM
+			`ERPWarehouse` a
+		<include refid="getWhpositionBySupplierIdSql"/>
+	</select>
+	<!-- 更具upid获取所有下级 -->
+	<select id="getWarehouseByUpId" parameterType="java.util.Map" resultType="com.corner.scms.beans.vo.erp.ERPWarehouseVo">
+		SELECT
+			* 
+		FROM
+			`ERPWarehouse`
+		where 
+			status=1
+		and isDelete=0
+		<if test="supplierId != null and supplierId != ''">
+			and supplierId = #{supplierId} 
+		</if>
+		<if test="upId != null and upId != ''">
+			and upId= #{upId}
+		</if>	
+	</select>
+	
+	<select id="getMaxCode" parameterType="String" resultType="java.lang.String">
+		select code from ERPWarehouse where whLevel=#{whLevel} order By addTime limit 1,1
+	</select>
+	<select id="getWarehouseLevel3" parameterType="java.lang.String" resultType="com.corner.core.beans.ERPWarehouse">
+		SELECT c.* FROM ERPWarehouse a
+			JOIN ERPWarehouse b ON a.id = b.upId
+			JOIN ERPWarehouse c ON b.id = c.upId AND c.whLevel = 3
+	  <where>
+		  a.whLevel = 1 AND b.whLevel = 2 AND c.whLevel = 3 AND a.isDelete = 0 AND b.isDelete = 0 AND c.isDelete =0
+		  AND  a.id = #{id}
+	  </where>
+	</select>
+
+	<select id="getWarehouseById" parameterType="java.util.Map" resultType="com.corner.scms.beans.vo.erp.ERPWarehouseVo">
+		SELECT
+			*
+		FROM
+			`ERPWarehouse`
+		where
+			status=1
+		and isDelete=0
+		<if test="supplierId != null and supplierId != ''">
+			and supplierId = #{supplierId}
+		</if>
+		<if test="id != null and id != ''">
+			and id = #{id}
+		</if>
+	</select>
+
+	<select id="getPhysicsStockByUpId" parameterType="java.util.Map" resultType="com.corner.scms.beans.vo.erp.ERPPhysicsStockVo">
+		select * from ERPPhysicsStock where status = 1 and isDelete = 0 and supplierId = #{supplierId} and warehouseId = #{id}
+	</select>
+
+	<update id="delWarehouse" parameterType="java.util.Map">
+		update ERPWarehouse set isDelete=1 where id = #{id} and supplierId = #{supplierId}
+	</update>
+
+
+   <select id="getWarehouseLevel3ByLevel1Id" parameterType="java.lang.String" resultType="com.corner.scms.beans.vo.erp.ERPWarehouseVo">
+       SELECT
+		qu.*, area.`name` AS whAreaName,
+		ku.`name` AS whName
+	FROM
+		ERPWarehouse qu
+	JOIN ERPWarehouse area ON qu.upId = area.id
+	AND qu.whLevel = 3
+	AND qu.`status` = 1
+	AND qu.isDelete = 0
+	AND area.whLevel = 2
+	AND area.`status` = 1
+	AND area.isDelete = 0
+	JOIN ERPWarehouse ku ON area.upId = ku.id
+	AND ku.whLevel = 1
+	AND ku.`status` = 1
+	AND ku.isDelete = 0
+	WHERE
+		ku.id = #{id}
+   </select>
+</mapper>

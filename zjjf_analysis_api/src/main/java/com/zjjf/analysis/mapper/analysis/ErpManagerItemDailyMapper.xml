@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.ErpManagerItemDailyMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.items.ErpManagerItemDaily" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="managerId" property="managerId" jdbcType="VARCHAR" />
+    <result column="managerName" property="managerName" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="fax" property="fax" jdbcType="VARCHAR" />
+    <result column="branderName" property="branderName" jdbcType="VARCHAR" />
+    <result column="job" property="job" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="whAddress" property="whAddress" jdbcType="VARCHAR" />
+    <result column="whBranderName" property="whBranderName" jdbcType="VARCHAR" />
+    <result column="whMobile" property="whMobile" jdbcType="VARCHAR" />
+    <result column="cleaningDayStatus" property="cleaningDayStatus" jdbcType="TINYINT" />
+    <result column="bankName" property="bankName" jdbcType="VARCHAR" />
+    <result column="bankUserName" property="bankUserName" jdbcType="VARCHAR" />
+    <result column="bankNum" property="bankNum" jdbcType="VARCHAR" />
+    <result column="taxNumber" property="taxNumber" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="cooperWarehouse" property="cooperWarehouse" jdbcType="VARCHAR" />
+    <result column="cooperation" property="cooperation" jdbcType="TINYINT" />
+    <result column="itemCode" property="itemCode" jdbcType="VARCHAR" />
+    <result column="barCode" property="barCode" jdbcType="VARCHAR" />
+    <result column="boxCode" property="boxCode" jdbcType="VARCHAR" />
+    <result column="itemName" property="itemName" jdbcType="VARCHAR" />
+    <result column="itemSpec" property="itemSpec" jdbcType="VARCHAR" />
+    <result column="itemPkg" property="itemPkg" jdbcType="VARCHAR" />
+    <result column="areaPrice" property="areaPrice" jdbcType="DECIMAL" />
+    <result column="taxRate" property="taxRate" jdbcType="DECIMAL" />
+    <result column="avgAreaPrice" property="avgAreaPrice" jdbcType="DECIMAL" />
+    <result column="discountAreaPrice" property="discountAreaPrice" jdbcType="DECIMAL" />
+    <result column="minAreaPrice" property="minAreaPrice" jdbcType="DECIMAL" />
+    <result column="salePrice" property="salePrice" jdbcType="DECIMAL" />
+    <result column="grossProfit" property="grossProfit" jdbcType="DECIMAL" />
+    <result column="grossRate" property="grossRate" jdbcType="DECIMAL" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="updataTime" property="updataTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="itemId" property="itemId" jdbcType="VARCHAR" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, managerId, managerName, address, tel, fax, branderName, job, mobile, email, whAddress, 
+    whBranderName, whMobile, cleaningDayStatus, bankName, bankUserName, bankNum, taxNumber, 
+    status, cooperWarehouse, cooperation, itemCode, barCode, boxCode, itemName, itemSpec, 
+    itemPkg, areaPrice, taxRate, avgAreaPrice, discountAreaPrice, minAreaPrice, salePrice, 
+    grossProfit, grossRate, dayTime, updataTime, createTime, addTime, orderId, itemId, itemBaseId,
+    pid
+  </sql>
+  <select id="getByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from erpmanager
+    
+  </select>
+  
+  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+  select 
+    count(1)
+    from erpmanager
+  </select>
+  
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.analysis.items.ErpManagerItemDaily" >
+    insert into erpmanager (id, managerId, managerName, 
+      address, tel, fax, 
+      branderName, job, mobile, 
+      email, whAddress, whBranderName, 
+      whMobile, cleaningDayStatus, bankName, 
+      bankUserName, bankNum, taxNumber, 
+      status, cooperWarehouse, cooperation, 
+      itemCode, barCode, boxCode, 
+      itemName, itemSpec, itemPkg, 
+      areaPrice, taxRate, avgAreaPrice, 
+      discountAreaPrice, minAreaPrice, salePrice, 
+      grossProfit, grossRate, dayTime, 
+      updataTime, createTime, addTime, orderId, itemId, itemBaseId, pid)
+    values (#{id,jdbcType=VARCHAR}, #{managerId,jdbcType=VARCHAR}, #{managerName,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, 
+      #{branderName,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{whAddress,jdbcType=VARCHAR}, #{whBranderName,jdbcType=VARCHAR}, 
+      #{whMobile,jdbcType=VARCHAR}, #{cleaningDayStatus,jdbcType=TINYINT}, #{bankName,jdbcType=VARCHAR}, 
+      #{bankUserName,jdbcType=VARCHAR}, #{bankNum,jdbcType=VARCHAR}, #{taxNumber,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{cooperWarehouse,jdbcType=VARCHAR}, #{cooperation,jdbcType=TINYINT}, 
+      #{itemCode,jdbcType=VARCHAR}, #{barCode,jdbcType=VARCHAR}, #{boxCode,jdbcType=VARCHAR}, 
+      #{itemName,jdbcType=VARCHAR}, #{itemSpec,jdbcType=VARCHAR}, #{itemPkg,jdbcType=VARCHAR}, 
+      #{areaPrice,jdbcType=DECIMAL}, #{taxRate,jdbcType=DECIMAL}, #{avgAreaPrice,jdbcType=DECIMAL}, 
+      #{discountAreaPrice,jdbcType=DECIMAL}, #{minAreaPrice,jdbcType=DECIMAL}, #{salePrice,jdbcType=DECIMAL}, 
+      #{grossProfit,jdbcType=DECIMAL}, #{grossRate,jdbcType=DECIMAL}, #{dayTime,jdbcType=INTEGER}, 
+      #{updataTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{orderId,jdbcType=VARCHAR}, #{itemId,jdbcType=VARCHAR}, #{itemBaseId,jdbcType=INTEGER},
+      #{pid,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="update" parameterType="com.zjjf.analysis.beans.analysis.items.ErpManagerItemDaily">
+  	update erpmanager
+  	<trim prefix="SET" suffixOverrides=",">
+  		<if test="avgAreaPrice != null">avgAreaPrice = #{avgAreaPrice},</if>
+  		<if test="avgAreaPrice != null">discountAreaPrice = #{discountAreaPrice},</if>
+  		<if test="minAreaPrice != null">minAreaPrice = #{minAreaPrice},</if>
+  		<if test="salePrice != null">salePrice = #{salePrice},</if>
+  		<if test="grossProfit != null">grossProfit = #{grossProfit},</if>
+  		<if test="grossRate != null">grossRate = #{grossRate},</if>
+  	</trim>
+  	where id = #{id}
+  </update>
+</mapper>

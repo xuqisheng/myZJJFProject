@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.ajie.SalemanMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.saleman.Saleman" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="nickName" property="nickName" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="INTEGER" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="province" property="province" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="area" property="area" jdbcType="INTEGER" />
+    <result column="credit" property="credit" jdbcType="INTEGER" />
+    <result column="regTime" property="regTime" jdbcType="TIMESTAMP" />
+    <result column="lastTime" property="lastTime" jdbcType="TIMESTAMP" />
+    <result column="regIP" property="regIP" jdbcType="VARCHAR" />
+    <result column="lastIP" property="lastIP" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="isDelete" property="isDelete" jdbcType="INTEGER" />
+    <result column="registration" property="registration" jdbcType="TIMESTAMP" />
+    <result column="regDays" property="regDays" jdbcType="INTEGER" />
+    <result column="monthCredit" property="monthCredit" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="intensity" property="intensity" jdbcType="INTEGER" />
+    <result column="isManager" property="isManager" jdbcType="BIT" />
+    <result column="isModify" property="isModify" jdbcType="TINYINT" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+    <result column="col4" property="col4" jdbcType="VARCHAR" />
+    <result column="col5" property="col5" jdbcType="VARCHAR" />
+    <result column="col6" property="col6" jdbcType="VARCHAR" />
+    <result column="identitycard" property="identitycard" jdbcType="VARCHAR" />
+    <result column="positiveidentitycard" property="positiveidentitycard" jdbcType="VARCHAR" />
+    <result column="negativeidentitycard" property="negativeidentitycard" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="deviceUUID" property="deviceUUID" jdbcType="VARCHAR" />
+    <result column="deviceName" property="deviceName" jdbcType="VARCHAR" />
+    <result column="userType" property="userType" jdbcType="CHAR" />
+    <result column="postType" property="postType" jdbcType="VARCHAR" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userName, nickName, gender, password, mobile, email, birthday, province, city, 
+    area, credit, regTime, lastTime, regIP, lastIP, status, token, url, isDelete, registration, 
+    regDays, monthCredit, updateTime, intensity, isManager, isModify, col1, col2, col3, 
+    col4, col5, col6, identitycard, positiveidentitycard, negativeidentitycard, address, 
+    deviceUUID, deviceName, userType, postType, createBy, updateBy, createTime, version
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from salesman
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+</mapper>

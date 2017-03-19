@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.account.dao.SpWalletLogMgMapper" >
+	<sql id="getSpWalletPage_condition">
+		WHERE isDelete = 0
+		<if test="spKeyword != null and spKeyword != ''">
+			and (supplierName LIKE CONCAT('%',#{spKeyword},'%') or supplierCode LIKE CONCAT('%',#{spKeyword},'%'))
+		</if>
+	</sql>
+ 	<select id="getSpWalletPage" parameterType="com.corner.account.beans.ro.SpWithDrawMgCondition"  resultType="java.util.Map">
+		SELECT
+			*
+		FROM
+			(
+				SELECT
+					Supplier.*,
+					COUNT(IF(SpWalletLog.optType = 5 , SpWalletLog.id , null)) AS total5,
+					COUNT(IF(SpWalletLog.optType = 12 , SpWalletLog.id , null)) AS total12,
+					COUNT(IF(SpWalletLog.optType = 13 , SpWalletLog.id , null)) AS total13,
+					COUNT(IF(SpWalletLog.optType = 14 , SpWalletLog.id , null)) AS total14
+				FROM
+					Supplier
+				LEFT JOIN SpWalletLog ON SpWalletLog.spId = Supplier.id
+				GROUP BY
+					Supplier.id
+			) Supplier
+		<include refid="getSpWalletPage_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+ 	<select id="getSpWalletPageCount" parameterType="com.corner.account.beans.ro.SpWithDrawMgCondition"  resultType="int">
+		SELECT count(1) from Supplier 
+		<include refid="getSpWalletPage_condition" />
+	</select>
+	
+	<sql id="getSpWalletLogPage_condition">
+		WHERE isDelete = 0 and spId = #{supplierId}
+		<if test="xtype != null and xtype != ''">
+			AND optType = #{xtype}
+		</if>
+		<if test="spKeyword != null and spKeyword != ''">
+			and (supplierName LIKE CONCAT('%',#{spKeyword},'%') or supplierCode LIKE CONCAT('%',#{spKeyword},'%'))
+		</if>
+		<if test="beginTime !=null and endTime !=null">
+			AND actionTime BETWEEN #{beginTime} AND #{endTime}
+		</if>
+	</sql>
+ 	<select id="getSpWalletLogPage" parameterType="com.corner.account.beans.ro.SpWithDrawMgCondition"  resultType="java.util.Map">
+		SELECT * from (SELECT a.*,supplierName,supplierCode,areaId from SpWalletLog a JOIN Supplier b on b.id = a.spId) as Supplier
+		<include refid="getSpWalletLogPage_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+ 	<select id="getSpWalletLogPageCount" parameterType="com.corner.account.beans.ro.SpWithDrawMgCondition"  resultType="int">
+		SELECT count(1) from SpWalletLog 
+		<include refid="getSpWalletLogPage_condition" />
+	</select>
+	
+	
+
+  <update id="updateWalletByLog" parameterType="com.corner.core.beans.SpWalletLog">
+  	insert into SpWalletLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="payer != null" >
+        payer,
+      </if>
+      <if test="geter != null" >
+        geter,
+      </if>
+      <if test="spId != null" >
+        spId,
+      </if>
+      <if test="actionType != null" >
+        actionType,
+      </if>
+      <if test="optType != null" >
+        optType,
+      </if>
+      <if test="actionTime != null" >
+        actionTime,
+      </if>
+      <if test="tradeWay != null" >
+        tradeWay,
+      </if>
+      <if test="tradeNo != null" >
+        tradeNo,
+      </if>
+      <if test="bankCode != null" >
+        bankCode,
+      </if>
+      <if test="bankNo != null" >
+        bankNo,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="spWithDrawId != null" >
+        spWithDrawId,
+      </if>
+      <if test="sheetId != null" >
+        sheetId,
+      </if>
+      <if test="couponId != null" >
+        couponId,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+        money,
+      	balance
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="payer != null" >
+        #{payer,jdbcType=TINYINT},
+      </if>
+      <if test="geter != null" >
+        #{geter,jdbcType=TINYINT},
+      </if>
+      <if test="spId != null" >
+        #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="actionType != null" >
+        #{actionType,jdbcType=TINYINT},
+      </if>
+      <if test="optType != null" >
+        #{optType,jdbcType=TINYINT},
+      </if>
+      <if test="actionTime != null" >
+        #{actionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeWay != null" >
+        #{tradeWay,jdbcType=TINYINT},
+      </if>
+      <if test="tradeNo != null" >
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null" >
+        #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNo != null" >
+        #{bankNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="spWithDrawId != null" >
+        #{spWithDrawId,jdbcType=BIGINT},
+      </if>
+      <if test="sheetId != null" >
+        #{sheetId,jdbcType=VARCHAR},
+      </if>
+      <if test="couponId != null" >
+        #{couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+        #{money,jdbcType=DECIMAL},
+        (SELECT wallet from Supplier where id = #{spId,jdbcType=VARCHAR})
+    </trim>
+    ;UPDATE Supplier set wallet = wallet + #{money} ,walletUpdateTime = NOW() where id = #{spId}
+  </update>
+</mapper>

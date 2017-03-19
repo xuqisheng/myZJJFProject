@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="gulpfile.js|resources-src/es/_test.js|resources-src/vendor/ueditor/third-party/highcharts/modules/map.js|resources-src/vendor/ueditor/ueditor.all.min.js|resources/vendor/ueditor/third-party/highcharts/modules/map.js|resources/vendor/ueditor/ueditor.all.min.js" kind="src" path="src/main/webapp"/>
+	<classpathentry kind="src" path="target/m2e-wtp/web-resources"/>
+	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.WebProject">
+		<attributes>
+			<attribute name="hide" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.baseBrowserLibrary"/>
+	<classpathentry kind="output" path=""/>
+</classpath>

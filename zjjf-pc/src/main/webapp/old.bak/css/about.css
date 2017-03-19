@@ -1,0 +1,109 @@
+@charset "utf-8";
+.banner-about{
+	background:url(../images/b-about.png) center top no-repeat;
+	height: 381px;
+}
+/* 公司简介 */
+.profile{
+	background: #fff url(../images/ab-bg.png) no-repeat center bottom;
+	font-size: 14px;
+}
+.profile .txt-profile{
+	padding: 40px 55px;
+}
+.profile .txt-profile h1{
+	text-align: center;
+	color: #ed4b1c;
+	font-size: 36px;
+}
+.profile .txt-profile i{
+	color: #ed4b1c;
+	font-style: normal;
+}
+.profile .txt-profile h2{
+	margin: 1.2em 0 0;
+	text-indent: 1.5em;
+	color: #ed4b1c;
+	font-size: 24px;
+}
+.profile .txt-profile p{
+	text-indent: 2em;
+	color: #333;
+	font-size: 18px;
+}
+/* 记录 */
+.point{
+	height: 25px;
+	background: url("../images/squre.png") center top no-repeat;
+}
+.record {
+	padding: 40px 0;
+	font-size: 14px;
+}
+.record h1{
+	font-size: 36px;
+}
+.record h1,.record h6{
+	text-align: center;
+	color: #ed4b1c;
+}
+.record li{
+	overflow: hidden;
+	margin-bottom: 15px;
+}
+.record .re-text,.record .re-img{
+	width: 50%;
+}
+.re-border{
+	border-right: 1px solid #ed4b1c;
+}
+.le-border{
+	border-left: 1px solid #ed4b1c;
+}
+.record .re-text{
+	float: left;
+	padding: 5px 35px 5px 54px;
+}
+.record .re-text h2{
+	color: #ed4b1c;
+	font-size: 24px;
+}
+.record .re-text p{
+	font-size: 18px;
+}
+.record .re-img{
+	float: left;
+	text-align: center;
+}
+/* 联系我们 */
+.contact-box{
+	padding: 135px 0;
+}
+.contact-txt{
+	float: left;
+	padding: 20px 40px;
+	width: 565px;
+}
+.contact-txt h1{
+	color: #ed4b1c;
+	font-size: 54px;
+}
+.contact-txt p{
+	margin: 0;
+	padding: 0;
+	line-height: 38px;
+	font-size: 18px;
+}
+.contact-txt p span{
+	font-size: 20px;
+	font-weight: bold;
+}
+.contact-img{
+	float: left;
+	width: 293px;
+}
+.contact-map{
+	float: left;
+	width: 435px;
+	height: 320px;
+}

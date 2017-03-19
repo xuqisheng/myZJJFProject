@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.PayErrorRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.PayErrorRecord" >
+    <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="BillNO" property="billNO" jdbcType="VARCHAR" />
+    <result column="ErrorCode" property="errorCode" jdbcType="VARCHAR" />
+    <result column="ErrorMsg" property="errorMsg" jdbcType="VARCHAR" />
+    <result column="NotifyTime" property="notifyTime" jdbcType="VARCHAR" />
+    <result column="Remark" property="remark" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, BillNO, ErrorCode, ErrorMsg, NotifyTime, Remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PayErrorRecord
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from PayErrorRecord
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.PayErrorRecord" >
+    insert into PayErrorRecord (Id, BillNO, ErrorCode, 
+      ErrorMsg, NotifyTime, Remark
+      )
+    values (#{id,jdbcType=BIGINT}, #{billNO,jdbcType=VARCHAR}, #{errorCode,jdbcType=VARCHAR}, 
+      #{errorMsg,jdbcType=VARCHAR}, #{notifyTime,jdbcType=VARCHAR}, #{remark,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.PayErrorRecord" >
+    insert into PayErrorRecord
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="billNO != null" >
+        BillNO,
+      </if>
+      <if test="errorCode != null" >
+        ErrorCode,
+      </if>
+      <if test="errorMsg != null" >
+        ErrorMsg,
+      </if>
+      <if test="notifyTime != null" >
+        NotifyTime,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="billNO != null" >
+        #{billNO,jdbcType=VARCHAR},
+      </if>
+      <if test="errorCode != null" >
+        #{errorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="errorMsg != null" >
+        #{errorMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyTime != null" >
+        #{notifyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.PayErrorRecord" >
+    update PayErrorRecord
+    <set >
+      <if test="billNO != null" >
+        BillNO = #{billNO,jdbcType=VARCHAR},
+      </if>
+      <if test="errorCode != null" >
+        ErrorCode = #{errorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="errorMsg != null" >
+        ErrorMsg = #{errorMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyTime != null" >
+        NotifyTime = #{notifyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.PayErrorRecord" >
+    update PayErrorRecord
+    set BillNO = #{billNO,jdbcType=VARCHAR},
+      ErrorCode = #{errorCode,jdbcType=VARCHAR},
+      ErrorMsg = #{errorMsg,jdbcType=VARCHAR},
+      NotifyTime = #{notifyTime,jdbcType=VARCHAR},
+      Remark = #{remark,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

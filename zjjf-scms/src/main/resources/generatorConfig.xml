@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry	location="F:\mavenBOX\mysql\mysql-connector-java\5.1.36\mysql-connector-java-5.1.36.jar" />
+	<context id="sysGenerator" targetRuntime="MyBatis3">
+
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+			<property name="prjname" value="zjjf-scms" />
+		</commentGenerator>
+
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://zjjf.f3322.net:3306/corner" 
+			userId="mibo"
+			password="mibo2802">
+		</jdbcConnection>
+
+		<javaModelGenerator targetProject="zjjf-scms" targetPackage="com.corner.scms.beans">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<sqlMapGenerator targetProject="zjjf-scms" targetPackage="com.corner.scms.beans.mapper">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<javaClientGenerator targetProject="zjjf-scms" targetPackage="com.corner.scms.dao" type="XMLMAPPER">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<table schema="corner" tableName="Role" domainObjectName="Role"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<property name="useActualColumnNames" value="true"/>
+		</table>
+
+
+
+	</context>
+</generatorConfiguration>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SpVoucherActiveStoreLogMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpVoucherActiveStoreLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="activeId" property="activeId" jdbcType="INTEGER" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="useMoney" property="useMoney" jdbcType="DECIMAL" />
+    <result column="voucherTempId" property="voucherTempId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="totalOrDerPrice" property="totalOrDerPrice" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, activeId, storeId, useMoney, voucherTempId, status, isDelete, totalOrDerPrice
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SpVoucherActiveStoreLog
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SpVoucherActiveStoreLog
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SpVoucherActiveStoreLog" >
+    insert into SpVoucherActiveStoreLog (id, activeId, storeId, 
+      useMoney, voucherTempId, status, 
+      isDelete, totalOrDerPrice)
+    values (#{id,jdbcType=VARCHAR}, #{activeId,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER}, 
+      #{useMoney,jdbcType=DECIMAL}, #{voucherTempId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
+      #{isDelete,jdbcType=BIT}, #{totalOrDerPrice,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SpVoucherActiveStoreLog" >
+    insert into SpVoucherActiveStoreLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="activeId != null" >
+        activeId,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="useMoney != null" >
+        useMoney,
+      </if>
+      <if test="voucherTempId != null" >
+        voucherTempId,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="totalOrDerPrice != null" >
+        totalOrDerPrice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="activeId != null" >
+        #{activeId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="useMoney != null" >
+        #{useMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="voucherTempId != null" >
+        #{voucherTempId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="totalOrDerPrice != null" >
+        #{totalOrDerPrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SpVoucherActiveStoreLog" >
+    update SpVoucherActiveStoreLog
+    <set >
+      <if test="activeId != null" >
+        activeId = #{activeId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        storeId = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="useMoney != null" >
+        useMoney = #{useMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="voucherTempId != null" >
+        voucherTempId = #{voucherTempId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="totalOrDerPrice != null" >
+        totalOrDerPrice = #{totalOrDerPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SpVoucherActiveStoreLog" >
+    update SpVoucherActiveStoreLog
+    set activeId = #{activeId,jdbcType=INTEGER},
+      storeId = #{storeId,jdbcType=INTEGER},
+      useMoney = #{useMoney,jdbcType=DECIMAL},
+      voucherTempId = #{voucherTempId,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      totalOrDerPrice = #{totalOrDerPrice,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.MyUnderlingMapper">
+
+	<select id="findMyUnderlingList" resultType="com.corner.salesman.model.User" parameterType="java.lang.String">
+		SELECT
+			s.id as userId,
+			s.userName
+		FROM
+			salesman s
+		INNER JOIN tbl_user_dept_t ud ON s.id = ud.userId and s.isDelete=0
+		INNER JOIN tbl_department_t d ON d.deptId = ud.deptId
+		WHERE d.deptId = #{deptId}   
+	</select>
+	
+	<select id="findMyUnderlingTatol" resultType="int" parameterType="java.lang.String">
+		SELECT
+			count(1)
+		FROM
+			salesman s
+		INNER JOIN tbl_user_dept_t ud ON s.id = ud.userId and s.isDelete=0
+		INNER JOIN tbl_department_t d ON d.deptId = ud.deptId
+		WHERE d.deptId = #{deptId}   
+	</select>
+	
+	<select id="findMyUnderlingDeptList" resultType="com.corner.salesman.model.Department" parameterType="java.lang.String">
+        select n2.deptId,n2.deptName,n2.pid as deptPid 
+          from tbl_department_t n1, tbl_department_t n2  
+         where n2.pid = n1.deptId and n2.isDelete=0
+           and n1.deptId = #{deptId}   
+	</select>
+	
+	<select id="findMyselfUserList" resultType="com.corner.salesman.model.User" parameterType="java.lang.String">
+		SELECT
+			s.id as userId,
+			s.userName
+		FROM
+			salesman s WHERE s.id = #{userId}
+	</select>
+	
+	<select id="findDeptUserList" resultType="com.corner.salesman.model.User" parameterType="java.lang.String">
+		SELECT
+			s.id as userId,
+			s.userName
+		FROM
+			salesman s
+		INNER JOIN tbl_user_dept_t ud ON s.id = ud.userId
+		INNER JOIN tbl_department_t d ON d.deptId = ud.deptId
+		INNER JOIN tbl_dept_manager_t dm ON dm.deptId = d.deptId
+		WHERE
+			d.deptId = (
+				SELECT
+					t.deptId
+				FROM
+					tbl_user_dept_t t
+				WHERE
+					t.userId = #{userId}
+			)
+		AND dm.leaderId = #{userId}
+		AND s.isDelete = 0
+	</select>
+	
+</mapper>

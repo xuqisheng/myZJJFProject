@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SpRebateMapMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpRebateMapKey" >
+    <id column="rebateId" property="rebateId" jdbcType="INTEGER" />
+    <id column="spId" property="spId" jdbcType="CHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.corner.core.beans.SpRebateMapKey" >
+    delete from SpRebateMap
+    where rebateId = #{rebateId,jdbcType=INTEGER}
+      and spId = #{spId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SpRebateMapKey" >
+    insert into SpRebateMap (rebateId, spId)
+    values (#{rebateId,jdbcType=INTEGER}, #{spId,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SpRebateMapKey" >
+    insert into SpRebateMap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rebateId != null" >
+        rebateId,
+      </if>
+      <if test="spId != null" >
+        spId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rebateId != null" >
+        #{rebateId,jdbcType=INTEGER},
+      </if>
+      <if test="spId != null" >
+        #{spId,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

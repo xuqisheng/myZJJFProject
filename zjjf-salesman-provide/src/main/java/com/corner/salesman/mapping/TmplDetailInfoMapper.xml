@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.TmplDetailInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.salesman.model.TmplDetailInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="tmplId" property="tmplId" jdbcType="VARCHAR" />
+    <result column="fieldCnName" property="fieldCnName" jdbcType="VARCHAR" />
+    <result column="fieldEnName" property="fieldEnName" jdbcType="VARCHAR" />
+    <result column="fieldType" property="fieldType" jdbcType="INTEGER" />
+    <result column="isDelete" property="isDelete" jdbcType="INTEGER" />
+    <result column="isRequired" property="isRequired" jdbcType="INTEGER" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="length" property="length" jdbcType="INTEGER" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, tmplId, fieldCnName, fieldEnName, fieldType, isDelete, isRequired, createBy, 
+    createTime, updateBy, updateTime, sort, description, length, remarks
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_template_detail_t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findTmplDetailByTmplId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	SELECT
+		t.fieldCnName,
+		t.fieldType,
+		t.isRequired,
+		t.description,
+		t.length
+	FROM
+		tbl_template_detail_t t
+	WHERE
+		t.isDelete = 0
+	AND t.tmplId = #{tmplId,jdbcType=VARCHAR}
+	ORDER BY t.sort ASC
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tbl_template_detail_t
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <delete id="delTmplDetailByTmplId" parameterType="java.lang.String" >
+    delete from tbl_template_detail_t
+    where tmplId = #{tmplId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.corner.salesman.model.TmplDetailInfo" >
+    insert into tbl_template_detail_t (id, tmplId, fieldCnName, 
+      fieldEnName, fieldType, isDelete, 
+      isRequired, createBy, createTime, 
+      updateBy, updateTime, sort, 
+      description, length, remarks
+      )
+    values (#{id,jdbcType=INTEGER}, #{tmplId,jdbcType=VARCHAR}, #{fieldCnName,jdbcType=VARCHAR}, 
+      #{fieldEnName,jdbcType=VARCHAR}, #{fieldType,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, 
+      #{isRequired,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{sort,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{length,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.salesman.model.TmplDetailInfo" >
+    insert into tbl_template_detail_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tmplId != null" >
+        tmplId,
+      </if>
+      <if test="fieldCnName != null" >
+        fieldCnName,
+      </if>
+      <if test="fieldEnName != null" >
+        fieldEnName,
+      </if>
+      <if test="fieldType != null" >
+        fieldType,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="isRequired != null" >
+        isRequired,
+      </if>
+      <if test="createBy != null" >
+        createBy,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="updateBy != null" >
+        updateBy,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="length != null" >
+        length,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tmplId != null" >
+        #{tmplId,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldCnName != null" >
+        #{fieldCnName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldEnName != null" >
+        #{fieldEnName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldType != null" >
+        #{fieldType,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="isRequired != null" >
+        #{isRequired,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="length != null" >
+        #{length,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.salesman.model.TmplDetailInfo" >
+    update tbl_template_detail_t
+    <set >
+      <if test="tmplId != null" >
+        tmplId = #{tmplId,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldCnName != null" >
+        fieldCnName = #{fieldCnName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldEnName != null" >
+        fieldEnName = #{fieldEnName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldType != null" >
+        fieldType = #{fieldType,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="isRequired != null" >
+        isRequired = #{isRequired,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        createBy = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        updateBy = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="length != null" >
+        length = #{length,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.salesman.model.TmplDetailInfo" >
+    update tbl_template_detail_t
+    set tmplId = #{tmplId,jdbcType=VARCHAR},
+      fieldCnName = #{fieldCnName,jdbcType=VARCHAR},
+      fieldEnName = #{fieldEnName,jdbcType=VARCHAR},
+      fieldType = #{fieldType,jdbcType=INTEGER},
+      isDelete = #{isDelete,jdbcType=INTEGER},
+      isRequired = #{isRequired,jdbcType=INTEGER},
+      createBy = #{createBy,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      updateBy = #{updateBy,jdbcType=VARCHAR},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      sort = #{sort,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      length = #{length,jdbcType=INTEGER},
+      remarks = #{remarks,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

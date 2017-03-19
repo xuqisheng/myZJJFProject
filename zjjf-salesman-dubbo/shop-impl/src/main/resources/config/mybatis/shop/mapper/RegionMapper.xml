@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.rpc.shop.dao.RegionMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.rpc.shop.model.Region" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="regionCode" property="regionCode" jdbcType="VARCHAR" />
+    <result column="pId" property="pId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="regionLevel" property="regionLevel" jdbcType="TINYINT" />
+    <result column="hasStore" property="hasStore" jdbcType="BIT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="clik" property="clik" jdbcType="INTEGER" />
+    <result column="storeIds" property="storeIds" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, regionCode, pId, name, regionLevel, hasStore, status, isDelete, clik, storeIds
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from Region
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="queryRegionList" resultMap="BaseResultMap" parameterType="com.corner.rpc.shop.model.Region" >
+		SELECT
+			t.id,
+			t.`name`,
+			t.pId
+		FROM
+			Region t
+		WHERE
+			t.`status` = 1
+		AND t.pId = #{pId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from Region
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.rpc.shop.model.Region" >
+    insert into Region (id, regionCode, pId, 
+      name, regionLevel, hasStore, 
+      status, isDelete, clik, 
+      storeIds)
+    values (#{id,jdbcType=INTEGER}, #{regionCode,jdbcType=VARCHAR}, #{pId,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{regionLevel,jdbcType=TINYINT}, #{hasStore,jdbcType=BIT}, 
+      #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}, #{clik,jdbcType=INTEGER}, 
+      #{storeIds,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.rpc.shop.model.Region" >
+    insert into Region
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="regionCode != null" >
+        regionCode,
+      </if>
+      <if test="pId != null" >
+        pId,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="regionLevel != null" >
+        regionLevel,
+      </if>
+      <if test="hasStore != null" >
+        hasStore,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="clik != null" >
+        clik,
+      </if>
+      <if test="storeIds != null" >
+        storeIds,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="regionCode != null" >
+        #{regionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pId != null" >
+        #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="regionLevel != null" >
+        #{regionLevel,jdbcType=TINYINT},
+      </if>
+      <if test="hasStore != null" >
+        #{hasStore,jdbcType=BIT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="clik != null" >
+        #{clik,jdbcType=INTEGER},
+      </if>
+      <if test="storeIds != null" >
+        #{storeIds,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.rpc.shop.model.Region" >
+    update Region
+    <set >
+      <if test="regionCode != null" >
+        regionCode = #{regionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pId != null" >
+        pId = #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="regionLevel != null" >
+        regionLevel = #{regionLevel,jdbcType=TINYINT},
+      </if>
+      <if test="hasStore != null" >
+        hasStore = #{hasStore,jdbcType=BIT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="clik != null" >
+        clik = #{clik,jdbcType=INTEGER},
+      </if>
+      <if test="storeIds != null" >
+        storeIds = #{storeIds,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.corner.rpc.shop.model.Region" >
+    update Region
+    set regionCode = #{regionCode,jdbcType=VARCHAR},
+      pId = #{pId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      regionLevel = #{regionLevel,jdbcType=TINYINT},
+      hasStore = #{hasStore,jdbcType=BIT},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      clik = #{clik,jdbcType=INTEGER},
+      storeIds = #{storeIds,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <resultMap id="regionVoMap" type="com.corner.rpc.shop.model.RegionVo">
+     <id column="shen_id" jdbcType="INTEGER" property="id" />
+	 <result column="shen_pId" jdbcType="INTEGER" property="pId" />
+	 <result column="shen_name" jdbcType="VARCHAR" property="name" />
+	 <result column="shen_regionLevel" jdbcType="TINYINT" property="regionLevel" />
+	 <collection property="regionList" ofType="com.corner.rpc.shop.model.RegionVo">
+	   <id column="shi_id" jdbcType="INTEGER" property="id" />
+	   <result column="shi_pId" jdbcType="INTEGER" property="pId" />
+	   <result column="shi_name" jdbcType="VARCHAR" property="name" />
+	   <result column="shi_regionLevel" jdbcType="TINYINT" property="regionLevel" />
+	   <collection property="regionList" ofType="com.corner.rpc.shop.model.RegionVo">
+	     <id column="area_id" jdbcType="INTEGER" property="id" />
+	     <result column="area_pId" jdbcType="INTEGER" property="pId" />
+	     <result column="area_name" jdbcType="VARCHAR" property="name" />
+	     <result column="area_regionLevel" jdbcType="TINYINT" property="regionLevel" />
+	   </collection>   
+	 </collection>
+  </resultMap>
+	
+  <select id="getAllEnableRegionList" resultMap="regionVoMap" flushCache="true">
+	  SELECT
+		area.id AS area_id,
+		area.`name` AS area_name,
+		area.pId AS area_pId,
+		area.regionLevel AS area_regionLevel,
+		city.id AS shi_id,
+		city.`name` AS shi_name,
+		city.pId AS shi_pId,
+		city.regionLevel AS shi_regionLevel,
+		shen.id AS shen_id,
+		shen.`name` AS shen_name,
+		shen.pId AS shen_pId,
+		shen.regionLevel AS shen_regionLevel
+	FROM
+		Region AS area
+	JOIN Region AS city ON area.pId = city.id
+	AND area.isDelete = 0
+	AND city.isDelete = 0
+	AND area.`status` = 1
+	AND city.`status` = 1
+	JOIN Region AS shen ON city.pId = shen.id
+	AND shen.isDelete = 0
+	AND shen.`status` = 1
+	AND shen.id!=1
+	ORDER BY
+		shen_id,
+		shi_id,
+		area_id
+  </select>
+	
+  <select id="getEnableRegionCache" resultType="java.util.HashMap">
+	select t.`name` as 'key', CONCAT(t.id,'') as 'value' from Region t where t.isDelete=0 and t.`status`=1
+  </select>
+  
+</mapper>

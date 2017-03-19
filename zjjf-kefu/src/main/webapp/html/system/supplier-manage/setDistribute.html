@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>设置配送供应商</title>
+		<link rel="stylesheet" type="text/css" href="../../../resources/css/base.css" />
+		<script src="../../../resources/vendor/jquery/jquery-1.12.4.min.js"></script>
+		<script src="../../../resources/vendor/jquery/ztree/js/jquery.ztree.all.js"></script>
+		<script src="../../../resources/js/comm.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../../resources/vendor/jquery/ztree/css/zTreeStyle/zTreeStyle.css" />
+	</head>
+
+	<body>
+		<div class="wrap-bd">
+			<div class="mb-default">
+				<a href="#" class="crumb">供应商管理</a>
+				<a href="#" class="crumb">供应商管理</a>
+				<a href="#" class="crumb">设置配送批发商</a>
+			</div>
+			<div class="">
+				<div class="mb-default">设置配送批发商</div>
+			</div>
+			<div class="bg wrap-bd clearfix">
+
+				<div class="mb-default">
+					<label class="label">增加批发商：</label>
+					<span class="button button-operate" id="J_chsSup">选择批发商</span>
+				</div>
+				<table class="table-list mb-default">
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>所属区域</th>
+							<th>批发商编号</th>
+							<th>批发商名称</th>
+							<th>手机号</th>
+							<th>操作</th>
+
+						</tr>
+					</thead>
+					<tbody class="table-tbody">
+						<tr>
+							<td>1</td>
+							<td>164653213</td>
+							<td>农夫山泉呃呃呃</td>
+							<td>500ml</td>
+							<td>50.32</td>
+							<td>
+								<input type="button" name="" id="" value="删除" class="button button-operate" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="cover-all">
+
+				</div>
+				<div class="dialog hidden J_dialog" id="J_choseSupplier">
+					<form action="" method="post">
+						<div class="dialog-head">
+							选择批发商
+							<div id="" class="dialog-close">
+							</div>
+						</div>
+						<div class="dialog-body">
+							<div class="mb-default">
+								<input type="text" name="" id="" value="" class="input input-default" placeholder="批发商名称" />
+								<input type="button" name="" class="input input-search-button" id="" value="搜索" />
+							</div>
+							<div class="ztree" id="ztree" style="height: 150px;overflow: auto;">
+								<ul id="treeDemo" class="ztree">
+								</ul>
+							</div>
+						</div>
+						<div class="dialog-foot">
+							<div class="mt-default">
+								<input type="button" class="dialog-button dialog-ok" name="" id="" value="确认" />
+								<input type="button" class="dialog-button dialog-cancel" name="" id="" value="取消" />
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="mt-default">
+				<input type="button" name="" id="" value="保存" class="button button-ok" />
+				<span id="" class="button dialog-cancel">
+					取消
+				</span>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			dialogPosCenter('#J_choseSupplier');
+			$('#J_chsSup').on('click', function() {
+				$('#J_choseSupplier, .cover-all').fadeIn();
+			});
+			$('.J_dialog').on('click', '.dialog-cancel', function() {
+
+				$('.J_dialog, .cover-all').fadeOut();
+			})
+			$('.dialog').on('click', '.dialog-close', function() {
+
+				$('.J_dialog, .cover-all').fadeOut();
+			})
+		})
+		var setting = {
+			view: {
+				showIcon: false
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			},
+
+		};
+
+		var zNodes = [{
+				name: "广东",
+				open: true,
+				children: [{
+					name: "深圳",
+					children: [{
+						name: "南山"
+					}, {
+						name: "福田"
+					}, {
+						name: "宝安"
+					}, {
+						name: "罗湖"
+					}]
+				}, {
+					name: "广州",
+					children: [{
+						name: "广州1"
+					}, {
+						name: "广州2"
+					}, {
+						name: "广州3"
+					}, {
+						name: "广州4"
+					}]
+				}, {
+					name: "汕头",
+					isParent: true
+				}]
+			}, {
+				name: "北京",
+				isParent: true
+			}
+
+		];
+
+		$(document).ready(function() {
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+			$.fn.zTree.init($("#treeDemo-1"), setting, zNodes);
+		});
+	</script>
+
+</html>

@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.rpc.salesman.dao.VisitHisRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.rpc.salesman.model.VisitHisRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="salesmanId" property="salesmanId" jdbcType="VARCHAR" />
+    <result column="deptId" property="deptId" jdbcType="VARCHAR" />
+    <result column="shopTotal" property="shopTotal" jdbcType="INTEGER" />
+    <result column="visitTotal" property="visitTotal" jdbcType="INTEGER" />
+    <result column="visitDate" property="visitDate" jdbcType="TIMESTAMP" />
+    <result column="week" property="week" jdbcType="VARCHAR" />
+    <result column="lineId" property="lineId" jdbcType="VARCHAR" />
+    <result column="lineName" property="lineName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, salesmanId, deptId, shopTotal, visitTotal, visitDate, week, lineId, lineName
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_shop_visit_his_record_t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getTodayVisitPlansList" resultType="java.util.HashMap"  parameterType="com.corner.rpc.salesman.model.VisitHisRecord">
+	SELECT
+		AA.salesmanId,
+		AA.salesmanName,
+		AA.deptId,
+		BB.lineId,
+		BB.lineName,
+		IFNULL(BB.shopTotal, 0) AS shopTotal,
+		IFNULL(BB.visitTotal, 0) AS visitTotal,
+		DATE_FORMAT(NOW(), '%Y-%m-%d') AS createTime,
+		BB.`week`,
+		CASE
+	WHEN IFNULL(BB.visitTotal, 0) = 0 THEN
+		'0'
+	WHEN BB.visitTotal > 0 and  BB.visitTotal  <![CDATA[<]]> BB.shopTotal THEN
+		'1'
+	WHEN BB.visitTotal = BB.shopTotal THEN
+		'2'
+	END AS `status`
+	FROM
+		(
+			SELECT
+				u.id AS salesmanId,
+				u.userName AS salesmanName,
+				d.deptId,
+				u.postType
+			FROM
+				salesman u
+			INNER JOIN tbl_user_dept_t ud ON u.id = ud.userId
+			INNER JOIN tbl_department_t d ON d.deptId = ud.deptId
+		) AA
+	LEFT JOIN (
+		SELECT
+			DD.salesmanId,
+			DD.lineId,
+			DD.lineName,
+			DD.shopTotal,
+			DD.visitTotal,
+			DD.`week`
+		FROM
+			(
+				SELECT
+					CC.salesmanId,
+					CC.lineId,
+					CC.lineName,
+					IFNULL(CC.shopTotal, 0) AS shopTotal,
+					IFNULL(svhr.visitTotal, 0) AS visitTotal,
+					CC.`week`
+				FROM
+					(
+						SELECT
+							t.salesmanId,
+							t.lineId,
+							t.lineName,
+							t.shopTotal,
+							t.visitTotal,
+							wpm.`week`
+						FROM
+							tbl_line_plans_t t
+						INNER JOIN tbl_week_plans_mapper_t wpm ON wpm.lineId = t.lineId
+						AND wpm.`week` = #{week}
+					) CC
+				LEFT JOIN tbl_shop_visit_his_record_t svhr ON svhr.lineId = CC.lineId
+				AND CC.`week` = svhr.`week`
+				AND DATE_FORMAT(svhr.visitDate, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')
+				AND svhr.`week` = #{week}
+			) DD
+	) BB ON AA.salesmanId = BB.salesmanId
+	WHERE
+		1 = 1
+	<if test="deptId != null and deptId != ''">
+		AND AA.deptId = #{deptId}
+	</if>
+	<if test="postType != null and postType != ''">
+		AND AA.postType=#{postType}
+	</if>
+	ORDER BY BB.visitTotal DESC
+  </select>
+  
+  <select id="getHistoryVisitPlansList" resultType="java.util.HashMap"  parameterType="com.corner.rpc.salesman.model.VisitHisRecord">
+	SELECT
+		u.userName AS salesmanName,
+		t.lineId,
+		t.lineName,
+		t.shopTotal,
+		t.visitTotal,
+		DATE_FORMAT(t.visitDate, '%Y-%m-%d') AS createTime,
+		t.`week`,
+		CASE
+	WHEN t.visitTotal = 0 THEN
+		'0'
+	WHEN t.visitTotal = t.shopTotal THEN
+		'2'
+	ELSE '3'
+	END AS `status`
+	FROM
+		salesman u
+	INNER JOIN tbl_user_dept_t ud ON u.id = ud.userId
+	INNER JOIN tbl_department_t d ON d.deptId = ud.deptId
+	LEFT JOIN tbl_shop_visit_his_record_t t ON u.id=t.salesmanId
+	<if test="createTime != null and createTime != ''">
+		AND DATE_FORMAT(t.visitDate, '%Y-%m-%d') = DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+	</if>
+	<if test="createTime == null or createTime == ''">
+		AND DATE_FORMAT(t.visitDate, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')
+	</if>
+	WHERE
+		1 = 1
+	<if test="deptId != null and deptId != ''">
+		AND d.deptId = #{deptId}
+	</if>
+	ORDER BY t.visitDate DESC,t.visitTotal DESC
+  </select>
+  
+  <select id="checkShopNoIsExist" resultType="int" parameterType="java.lang.String">
+		SELECT
+			count(1)
+		FROM
+			tbl_shop_visit_record_t t
+		WHERE
+			t.shopNo = #{shopNo,jdbcType=VARCHAR}
+            AND DATE_FORMAT(t.visitDate, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')
+  </select>
+  
+  <select id="checkTodayLineIsExist" resultType="int" parameterType="java.lang.String">
+		SELECT
+			count(1)
+		FROM
+			tbl_shop_visit_his_record_t t
+		WHERE
+			t.lineId = #{lineId,jdbcType=VARCHAR}
+            AND DATE_FORMAT(t.visitDate, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')
+  </select>
+  
+  <select id="checkShopVisitStatus" resultType="int" parameterType="java.lang.String">
+		SELECT
+			count(1)
+		FROM
+			tbl_shop_visit_record_t t
+		WHERE t.status=2 
+			AND t.shopNo = #{shopNo}
+            AND DATE_FORMAT(t.visitDate, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')
+  </select>
+	
+  <insert id="insertVisitHisRecord" parameterType="java.util.HashMap" >
+	INSERT INTO tbl_shop_visit_his_record_t (
+		salesmanId,
+		deptId,
+		shopTotal,
+		visitTotal,
+		week,
+		lineId,
+		lineName,
+		visitDate
+	) SELECT
+		salesmanId,
+		deptId,
+		IFNULL(shopTotal,0) shopTotal,
+		IFNULL(visitTotal,0) visitTotal,
+		#{week} as week,
+		lineId,
+		lineName,
+		NOW()
+	FROM
+		tbl_line_plans_t
+	WHERE
+		lineId = #{lineId}
+  </insert>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tbl_shop_visit_his_record_t
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.rpc.salesman.model.VisitHisRecord" >
+    insert into tbl_shop_visit_his_record_t (id, salesmanId, deptId, 
+      shopTotal, visitTotal, visitDate, 
+      week, lineId, lineName
+      )
+    values (#{id,jdbcType=INTEGER}, #{salesmanId,jdbcType=VARCHAR}, #{deptId,jdbcType=VARCHAR}, 
+      #{shopTotal,jdbcType=INTEGER}, #{visitTotal,jdbcType=INTEGER}, #{visitDate,jdbcType=TIMESTAMP}, 
+      #{week,jdbcType=VARCHAR}, #{lineId,jdbcType=VARCHAR}, #{lineName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.rpc.salesman.model.VisitHisRecord" >
+    insert into tbl_shop_visit_his_record_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="salesmanId != null" >
+        salesmanId,
+      </if>
+      <if test="deptId != null" >
+        deptId,
+      </if>
+      <if test="shopTotal != null" >
+        shopTotal,
+      </if>
+      <if test="visitTotal != null" >
+        visitTotal,
+      </if>
+      <if test="visitDate != null" >
+        visitDate,
+      </if>
+      <if test="week != null" >
+        week,
+      </if>
+      <if test="lineId != null" >
+        lineId,
+      </if>
+      <if test="lineName != null" >
+        lineName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="salesmanId != null" >
+        #{salesmanId,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null" >
+        #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopTotal != null" >
+        #{shopTotal,jdbcType=INTEGER},
+      </if>
+      <if test="visitTotal != null" >
+        #{visitTotal,jdbcType=INTEGER},
+      </if>
+      <if test="visitDate != null" >
+        #{visitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="week != null" >
+        #{week,jdbcType=VARCHAR},
+      </if>
+      <if test="lineId != null" >
+        #{lineId,jdbcType=VARCHAR},
+      </if>
+      <if test="lineName != null" >
+        #{lineName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.rpc.salesman.model.VisitHisRecord" >
+    update tbl_shop_visit_his_record_t
+    <set >
+      <if test="salesmanId != null" >
+        salesmanId = #{salesmanId,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null" >
+        deptId = #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopTotal != null" >
+        shopTotal = #{shopTotal,jdbcType=INTEGER},
+      </if>
+      <if test="visitTotal != null" >
+        visitTotal = #{visitTotal,jdbcType=INTEGER},
+      </if>
+      <if test="visitDate != null" >
+        visitDate = #{visitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="week != null" >
+        week = #{week,jdbcType=VARCHAR},
+      </if>
+      <if test="lineId != null" >
+        lineId = #{lineId,jdbcType=VARCHAR},
+      </if>
+      <if test="lineName != null" >
+        lineName = #{lineName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.rpc.salesman.model.VisitHisRecord" >
+    update tbl_shop_visit_his_record_t
+    set salesmanId = #{salesmanId,jdbcType=VARCHAR},
+      deptId = #{deptId,jdbcType=VARCHAR},
+      shopTotal = #{shopTotal,jdbcType=INTEGER},
+      visitTotal = #{visitTotal,jdbcType=INTEGER},
+      visitDate = #{visitDate,jdbcType=TIMESTAMP},
+      week = #{week,jdbcType=VARCHAR},
+      lineId = #{lineId,jdbcType=VARCHAR},
+      lineName = #{lineName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateVisitHisRecord" parameterType="java.lang.String" >
+    update tbl_shop_visit_his_record_t
+       set visitTotal = visitTotal+1
+     where lineId = #{lineId}
+  </update>
+  
+</mapper>

@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.DailyReplyMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.salesman.model.DailyReply" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="reportId" property="reportId" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="postBy" property="postBy" jdbcType="VARCHAR" />
+    <result column="replyBy" property="replyBy" jdbcType="VARCHAR" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="timePoint" property="timePoint" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, reportId, comment, postBy, createBy, createTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_daily_commnent_t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findDailyReplyListById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	SELECT
+	    t.reportId,
+		t.`comment`,
+		t.id AS commentId,
+		u1.userName as replyBy,
+		u2.userName as postBy,
+		t.createBy,
+	    DATE_FORMAT(t.createTime, '%m月%d日 %H:%i') as createTime
+	FROM
+		tbl_daily_commnent_t t
+	LEFT JOIN salesman u1 ON t.createBy = u1.id
+	LEFT JOIN salesman u2 ON t.postBy = u2.id
+    where t.reportId = #{reportId,jdbcType=VARCHAR} 
+    order by t.createTime asc
+  </select>
+  
+  <delete id="delDailyCommnent" parameterType="com.corner.salesman.model.DailyReply">
+  	 delete from tbl_daily_commnent_t where id=#{commentId,jdbcType=VARCHAR}
+  	  <if test="reportId != null and reportId !=''" >
+        and reportId = #{reportId,jdbcType=VARCHAR}
+      </if>
+      <if test="createBy != null and createBy !=''" >
+        and createBy = #{createBy,jdbcType=VARCHAR}
+      </if>
+  </delete>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tbl_daily_commnent_t
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.salesman.model.DailyReply" >
+    insert into tbl_daily_commnent_t (id, reportId, comment, 
+      postBy, createBy, createTime)
+    values (#{id,jdbcType=INTEGER}, #{reportId,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, 
+      #{postBy,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.salesman.model.DailyReply">
+    insert into tbl_daily_commnent_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commentId != null" >
+        id,
+      </if>
+      <if test="reportId != null" >
+        reportId,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+      <if test="postBy != null" >
+        postBy,
+      </if>
+      <if test="createBy != null" >
+        createBy,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commentId != null" >
+        #{commentId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="postBy != null" >
+        #{postBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.salesman.model.DailyReply" >
+    update tbl_daily_commnent_t
+    <set >
+      <if test="reportId != null" >
+        reportId = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="postBy != null" >
+        postBy = #{postBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        createBy = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.salesman.model.DailyReply" >
+    update tbl_daily_commnent_t
+    set reportId = #{reportId,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR},
+      postBy = #{postBy,jdbcType=VARCHAR},
+      createBy = #{createBy,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateDailyRepyTimeById" parameterType="com.corner.salesman.model.DailyReply" >
+    update tbl_user_daily_t
+       set updateBy = #{createBy,jdbcType=VARCHAR},updateTime = #{createTime,jdbcType=TIMESTAMP}
+     where reportId = #{reportId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="findDailyRelatedUser" parameterType="com.corner.salesman.model.DailyReply" resultType="java.lang.String">
+  	select t.postBy from tbl_daily_commnent_t t where t.reportId= #{reportId,jdbcType=VARCHAR} and t.postBy !=''
+	UNION 
+	select t.createBy from tbl_daily_commnent_t t where t.reportId= #{reportId,jdbcType=VARCHAR}
+	UNION
+	select t.createBy from tbl_user_daily_t t where t.reportId= #{reportId,jdbcType=VARCHAR}
+	UNION
+	select dm.leaderId from tbl_dept_manager_t dm where dm.deptId=(
+    select t.deptId from tbl_user_daily_t t where t.reportId= #{reportId,jdbcType=VARCHAR})
+    
+	UNION
+	select t.createBy from tbl_report_info_t t where t.reportId= #{reportId,jdbcType=VARCHAR}
+	UNION
+	select dm.leaderId from tbl_dept_manager_t dm where dm.deptId=(
+    select t.deptId from tbl_report_info_t t where t.reportId= #{reportId,jdbcType=VARCHAR})
+  </select>
+  
+  <select id="findDailyCreateById" parameterType="com.corner.salesman.model.DailyReply" resultType="java.lang.String">
+	select t.createBy from tbl_user_daily_t t where t.reportId= #{reportId,jdbcType=VARCHAR} limit 1
+  </select>
+  
+  <select id="findReportCreateById" parameterType="com.corner.salesman.model.DailyReply" resultType="java.lang.String">
+	select t.createBy from tbl_report_info_t t where t.reportId= #{reportId,jdbcType=VARCHAR} limit 1
+  </select>
+  
+  <select id="findReportIdListByUserId" parameterType="java.lang.String" resultType="java.lang.String">
+  	SELECT DISTINCT t.reportId FROM tbl_daily_commnent_t t
+	 WHERE t.createTime >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+	   AND t.createBy = #{userId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getMyHisComment" parameterType="com.corner.salesman.model.DailyReply" resultType="com.corner.salesman.model.DailyReply">
+		SELECT
+			AA.type,
+			AA.reportId,
+			AA.`comment`,
+			AA.replyBy,
+			AA.postBy,
+			DATE_FORMAT(AA.createTime, '%m月%d日') AS createTime,
+			DATE_FORMAT(AA.createTime, '%H:%i') AS timePoint,
+			u3.userName AS createBy
+		FROM
+			(
+				SELECT
+					3 AS type,
+					t.reportId,
+					t.`comment`,
+					u.userName AS replyBy,
+					u2.userName AS postBy,
+					t.createTime,
+					t1.createBy
+				FROM
+					tbl_daily_commnent_t t
+				LEFT JOIN salesman u ON u.id = t.createBy
+				LEFT JOIN salesman u2 ON u2.id = t.postBy
+				LEFT JOIN tbl_report_info_t t1 ON t1.reportId = t.reportId
+				WHERE
+					t.reportId IN(${reportId}) and t1.createBy is not null
+			) AA
+		LEFT JOIN salesman u3 ON u3.id = AA.createBy
+		ORDER BY AA.createTime DESC
+		<if test="commentTotal !=null and commentTotal!=''">
+			LIMIT ${commentTotal}
+		</if>
+  </select>
+  
+  <select id="getNewComment2One" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+	SELECT
+		CASE
+			WHEN (BB.postBy ='' or BB.postBy IS NULL) AND BB.createBy IS NOT NULL AND BB.reportBy=#{userId} THEN
+				CONCAT( u1.userName,'点评了您的日志')
+	        WHEN (BB.postBy ='' or BB.postBy IS NULL) AND BB.createBy IS NOT NULL AND BB.reportBy!=#{userId} THEN
+				CONCAT( u1.userName,'点评了',u3.userName,'的日志')
+			WHEN BB.postBy IS NOT NULL AND BB.createBy IS NOT NULL AND BB.postBy=#{userId} THEN
+		    	CONCAT(u1.userName,'回复了您的评论')
+			WHEN BB.postBy IS NOT NULL AND BB.createBy IS NOT NULL AND BB.postBy!=#{userId} THEN
+		    	CONCAT(u1.userName,'回复了',u2.userName,'的评论')
+	   END AS `subject`,
+	   DATE_FORMAT(BB.createTime, '%m月%d日 %H:%i') createTime,
+	  '3' AS type,'日志点评/回复' AS typeName
+	FROM
+		( 
+		   SELECT RR.createBy AS reportBy,CC.postBy,CC.createBy,CC.createTime FROM(
+				SELECT AA.reportId,AA.postBy,AA.createBy,AA.createTime FROM
+				  (
+					  SELECT t.reportId,t.postBy,t.createBy,t.createTime FROM tbl_daily_commnent_t t
+					   WHERE t.reportId IN ( SELECT rp.reportId FROM tbl_report_info_t rp	
+	         		   WHERE rp.createBy = #{userId})
+	         		   <!-- 评论和回复都不包含创建人自己 （我的日报别的评论）-->
+	         		    AND t.createBy != #{userId}
+                        AND t.postBy != #{userId}
+	         		   
+					  UNION
+					  
+					  SELECT t.reportId,t.postBy,t.createBy,t.createTime FROM tbl_daily_commnent_t t
+					  WHERE t.reportId IN (
+							SELECT t.reportId FROM
+								tbl_daily_commnent_t t
+							WHERE
+								t.createTime >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+							AND t.createBy = #{userId}
+						)
+						<!-- 我参与过的评论日志（包含我创建和其他人创建我只是参与的） -->
+	         		    AND t.createBy != #{userId}
+	         		    
+	         		    <if test="userType == '1'.toString()">
+	         		    	UNION
+	         		    	
+	         		    	SELECT t.reportId,t.postBy,t.createBy,t.createTime FROM tbl_daily_commnent_t t
+					  		WHERE t.createBy IN (
+					  			select ud.userId from tbl_user_dept_t ud where ud.deptId=#{deptId}
+							) and t.createTime >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+	         		    </if>
+	         		    
+				) AA
+			   ORDER BY AA.createTime DESC	LIMIT 1
+			) CC LEFT JOIN tbl_report_info_t RR ON RR.reportId = CC.reportId
+		) BB
+	LEFT JOIN salesman u1 ON u1.id = BB.createBy
+	LEFT JOIN salesman u2 ON u2.id = BB.postBy
+	LEFT JOIN salesman u3 ON u3.id = BB.reportBy
+  </select>
+  
+</mapper>

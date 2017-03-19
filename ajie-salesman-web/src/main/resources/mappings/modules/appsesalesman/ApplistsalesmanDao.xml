@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.corner.salesman.modules.appsesalesman.dao.ApplistsalesmanDao">
+    
+	<sql id="applistsalesmanColumns">
+		a.id AS "id",
+		a.userName AS "userName",
+		a.nickName AS "nickName",
+		a.gender AS "gender",
+		a.password AS "password",
+		a.mobile AS "mobile",
+		a.email AS "email",
+		a.birthday AS "birthday",
+		a.province AS "province",
+		a.city AS "city",
+		a.area AS "area",
+		a.credit AS "credit",
+		a.regTime AS "regTime",
+		a.lastTime AS "lastTime",
+		a.regIP AS "regIP",
+		a.lastIP AS "lastIP",
+		a.status AS "status",
+		a.token AS "token",
+		a.url AS "url",
+		a.isDelete AS "isDelete",
+		a.registration AS "registration",
+		a.regDays AS "regDays",
+		a.monthCredit AS "monthCredit",
+		a.updateTime AS "updateTime",
+		a.intensity AS "intensity",
+		a.isManager AS "isManager",
+		a.isModify AS "isModify",
+		a.col1 AS "col1",
+		a.col2 AS "col2",
+		a.col3 AS "col3",
+		a.col4 AS "col4",
+		a.col5 AS "col5",
+		a.col6 AS "col6",
+		a.identitycard AS "identitycard",
+		a.positiveidentitycard AS "positiveidentitycard",
+		a.negativeidentitycard AS "negativeidentitycard",
+		a.address AS "address",
+		a.deviceUUID AS "deviceUUID",
+		a.deviceName AS "deviceName",
+		a.userType AS "userType",
+		a.postType AS "postType",
+		a.createBy AS "createBy",
+		a.updateBy AS "updateBy",
+		a.createTime AS "createTime",
+		a.version AS "version"
+	</sql>
+	<sql id="applistsalesmanJoins">
+	
+	</sql>
+	
+	<select id="seldeptName" resultType="Applistsalesman">
+		select deptId,deptName as names from tbl_department_t
+	</select>
+	
+	<select id="selpost" resultType="Applistsalesman">
+		select id,label as labels from tbl_dict_t
+	</select>
+	
+	<select id="get" resultType="Applistsalesman">
+		SELECT 
+			<include refid="applistsalesmanColumns"/>
+		FROM salesman a
+		<include refid="applistsalesmanJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+ 	<update id="delete">
+	update  salesman
+		set userType='1'
+		WHERE id = #{id,jdbcType=VARCHAR}
+	</update> 
+
+	<select id="findList" resultType="Applistsalesman">
+		SELECT 
+		a.id,
+		a.mobile,
+		a.userName,
+		a.lastTime,
+		t.deptName as names,
+		d.label as labels,
+		a.version
+	FROM salesman a
+	LEFT JOIN tbl_user_dept_t tt ON a.id =tt.userId
+	LEFT JOIN tbl_department_t t ON t.deptId =tt.deptId
+	LEFT JOIN tbl_dict_t d ON d.type = 'post_type'
+	
+		<include refid="applistsalesmanJoins"/>
+		<where>			
+			<if test="userName != null and userName != ''">
+				AND a.userName LIKE 
+					<if test="dbName == 'oracle'">'%'||#{userName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{userName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{userName},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+		group by a.userName
+	</select>
+	
+	<select id="findAllList" resultType="Applistsalesman">
+		SELECT 
+			<include refid="applistsalesmanColumns"/>
+		FROM salesman
+		<include refid="applistsalesmanJoins"/>
+		<where>
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+ 	<insert id="addSalesman">
+		INSERT INTO salesman(
+			id,
+			userName,
+			mobile,
+			lastTime,
+			version 
+		) VALUES (	
+			#{id},
+			#{userName},
+			#{mobile},
+			#{lastTime},
+			#{version} 		
+		)
+	</insert>
+	
+	<insert id="insert">
+		INSERT INTO salesman(
+			id,
+			userName,
+			mobile,
+			lastTime,
+			version 
+		) VALUES (	
+			#{id},
+			#{userName},
+			#{mobile},
+			#{lastTime},
+			#{version} 		
+		)
+	</insert>
+	
+	
+	<update id="update">
+		UPDATE salesman SET 	
+			userName=#{userName},
+			mobile=#{mobile},
+			lastTime=#{lastTime},
+			names=#{names},
+			labels=#{labels},
+			version=#{version}
+		WHERE id = #{id}
+	</update>
+	
+	<insert id="addDeptName">
+		insert into tbl_user_dept_t(	
+			userId,
+			deptId 
+		)VALUES(
+			#{id},
+			#{deptId}
+		)
+	</insert>
+</mapper>

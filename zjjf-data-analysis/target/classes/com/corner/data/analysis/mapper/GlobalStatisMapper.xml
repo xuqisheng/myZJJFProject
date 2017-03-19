@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.data.analysis.dao.GlobalStatisMapper" >
+ 
+     <select id="findGlobalStatisList" parameterType ="com.corner.data.analysis.beans.vo.GlobalStatisVo" resultType="com.corner.data.analysis.beans.vo.GlobalStatisVo">
+		<![CDATA[
+		SELECT A.hyzd, B.gpzd, A.xdcs, C.xdsku, C.xl, A.xsje, C.ylspxse, C.ylsplr, C.fyje, D.xzzd, A.areaName
+			 FROM  (SELECT s.areaId,r.name areaName,count(soi.id) xdcs,count(DISTINCT 	soi.storeId) hyzd,
+			sum(soi.orderPrice) xsje,sum(soi.zmaoli) sumMaoli,sum(soi.zfee) sumFee FROM SpOrderInfo 	soi LEFT JOIN Store s ON soi.storeId = s.id 
+			LEFT JOIN Region r on s.areaId = r.id
+					WHERE soi.addTime >= DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND soi.addTime <= DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d')  
+			AND soi.status !=6 AND soi.status != 1 AND soi.level = 1 GROUP BY s.areaId) AS A LEFT JOIN 
+					 (SELECT s.areaId,count(DISTINCT soi.storeId) gpzd  FROM SpOrderInfo soi LEFT JOIN Store s 
+			ON soi.storeId = s.id WHERE soi.addTime >= DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND soi.addTime <= DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') AND soi.storeId 	
+			IN (SELECT  soi1.storeId FROM SpOrderInfo soi1 WHERE soi1.addTime >= DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND soi1.addTime <= DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') 
+			AND soi1.status !=6 AND soi1.status != 1 AND soi1.level = 1 GROUP BY soi1.storeId HAVING count(soi1.storeId)> 3) GROUP BY s.areaId) AS B ON A.areaId = B.areaId LEFT JOIN 
+					 (SELECT p.areaId,count(sod.orderId) xdsku,sum(sod.quantity) xl,sum(if(sod.fee<0,sod.totalPrice,0)) ylspxse,sum(if(sod.fee>0,sod.fee,0)) fyje,
+			sum(if(sod.fee<0,sod.fee,0)) ylsplr  FROM SpOrderDetail sod 
+					 LEFT JOIN PlantItem p ON p.id = sod.itemId WHERE sod.addTime >= DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND sod.addTime <= DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') GROUP BY p.areaId) AS C 
+			ON A.areaId = C.areaId LEFT JOIN (SELECT r.name,s.areaId,count(s.id) xzzd FROM Store s 
+			LEFT JOIN Region r ON r.id=s.areaId WHERE s.addTime >= DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND s.addTime <= DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') GROUP BY s.areaId) AS D 
+			ON A.areaId = D.areaId  LEFT JOIN Region r ON r.id = D.areaId
+   		  ]]>
+     </select>
+     
+     <select id="getGlobalStatisListSize" parameterType ="com.corner.data.analysis.beans.vo.GlobalStatisVo" resultType="int">
+		<![CDATA[
+		SELECT COUNT(1) FROM  
+				(SELECT s.areaId,count(soi.id) xdcs,count(DISTINCT soi.storeId) hyzd,sum(soi.orderPrice) xsje FROM SpOrderInfo soi 
+					LEFT JOIN Store s ON soi.storeId = s.id 
+						 WHERE soi.addTime >= DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND soi.addTime <= DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d')  AND soi.status <>6 AND soi.status <> 1 AND soi.level = 1 GROUP BY s.areaId) AS A
+		LEFT JOIN 
+				 (SELECT s.areaId,count(DISTINCT soi.storeId) gpzd FROM SpOrderInfo soi LEFT JOIN Store s ON soi.storeId = s.id
+		WHERE soi.addTime >= DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND soi.addTime <= DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d')
+		AND soi. STATUS <> 6 AND soi. STATUS <> 1 AND soi. LEVEL = 1 GROUP BY s.areaId HAVING gpzd>3) 
+		AS B ON A.areaId = B.areaId  LEFT JOIN 
+				 (SELECT p.areaId,count(sod.orderId) xdsku,sum(sod.quantity) xl,sum(if(sod.fee<0,sod.totalPrice,0)) ylspxse,sum(if(sod.fee>0,sod.fee,0)) fyje,sum(if(sod.fee<0,sod.fee,0)) ylsplr  FROM SpOrderDetail sod 
+			   LEFT JOIN PlantItem p ON p.id = sod.itemId 
+				   WHERE sod.addTime >= DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND sod.addTime <= DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') GROUP BY p.areaId)
+		 AS C ON A.areaId = C.areaId
+		 LEFT JOIN (SELECT r.name,s.areaId,count(s.id) xzzd FROM Store s LEFT JOIN Region r ON r.id=s.areaId WHERE s.addTime >= DATE_FORMAT(#{startTime}, '%Y-%m-%d') AND s.addTime <= DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d') GROUP BY s.areaId) AS D ON A.areaId = D.areaId 
+    	 ]]>
+     </select>
+     
+     <select id="getFullYearStatisInfo" parameterType ="com.corner.data.analysis.beans.vo.GlobalStatisVo" resultType="com.corner.data.analysis.beans.vo.GlobalStatisVo">
+		<![CDATA[
+	 		SELECT
+				sum(A.orderPrice) ljxse,
+				sum(A.zfee) fy,
+				sum(B.ljxl) ljxl,
+				sum(B.ljylspxse) ljylspxse,
+				C.qnljzd
+			FROM(SELECT orderId,orderPrice,zfee,STATUS,addTime FROM SpOrderInfo
+					WHERE DATE_FORMAT(addTime, '%Y') = DATE_FORMAT(#{startTime}, '%Y') AND STATUS <> 6 AND STATUS <> 1 AND LEVEL = 1 ) AS A
+			CROSS JOIN (
+				SELECT orderId, sum(quantity) ljxl, sum(IF(fee < 0, totalPrice, 0)) ljylspxse FROM SpOrderDetail GROUP BY orderId
+			) AS B ON A.orderId = B.orderId
+			CROSS JOIN (
+				SELECT COUNT(*) qnljzd FROM Store WHERE DATE_FORMAT(addTime, '%Y') = DATE_FORMAT(#{startTime}, '%Y') and areaId is not null 
+			) AS C
+		]]>
+     </select>
+     
+     <select id="getOrderStatisList" parameterType ="com.corner.data.analysis.beans.vo.GlobalStatisVo" resultType="com.corner.data.analysis.beans.vo.GlobalStatisVo">
+		<![CDATA[
+		SELECT
+		    s.areaId,
+			r. NAME areaName,
+			count(soi.id) xdcs,
+			count(DISTINCT soi.storeId) hyzd,
+			sum(soi.orderPrice) xsje,
+			sum(soi.orderPrice) orderPriceTotal
+		FROM
+			SpOrderInfo soi
+		LEFT JOIN Store s ON soi.storeId = s.id
+		LEFT JOIN Region r ON s.areaId = r.id
+		WHERE
+			soi.addTime >= DATE_FORMAT(#{startTime}, '%Y-%m-%d')
+		AND soi.addTime <= DATE_FORMAT(
+			DATE_ADD(#{endTime}, INTERVAL 1 DAY),
+			'%Y-%m-%d'
+		)
+		AND soi. STATUS != 6
+		AND soi. STATUS != 1
+		AND soi. LEVEL = 1
+		GROUP BY
+			s.areaId
+   		  ]]>
+     </select>
+     
+     <select id="getOrderStatisSize" parameterType ="com.corner.data.analysis.beans.vo.GlobalStatisVo" resultType="com.corner.data.analysis.beans.vo.GlobalStatisVo">
+		<![CDATA[
+		SELECT
+		    count(1)
+		FROM
+			SpOrderInfo soi
+		LEFT JOIN Store s ON soi.storeId = s.id
+		WHERE
+			soi.addTime >= DATE_FORMAT(#{startTime}, '%Y-%m-%d')
+		AND soi.addTime <= DATE_FORMAT(
+			DATE_ADD(#{endTime}, INTERVAL 1 DAY),
+			'%Y-%m-%d'
+		)
+		AND soi. STATUS != 6
+		AND soi. STATUS != 1
+		AND soi. LEVEL = 1
+		GROUP BY
+			s.areaId
+   		  ]]>
+     </select>
+     
+     <select id="findAreaGpzdList" parameterType ="com.corner.data.analysis.beans.vo.GlobalStatisVo" resultType="com.corner.data.analysis.beans.vo.GlobalStatisVo">
+		<![CDATA[
+			SELECT
+				s.areaId,
+				count(DISTINCT soi.storeId) gpzd
+			FROM
+				SpOrderInfo soi
+			LEFT JOIN Store s ON soi.storeId = s.id
+			WHERE
+				soi.addTime >= DATE_FORMAT(#{startTime}, '%Y-%m-%d')
+			AND soi.addTime <= DATE_FORMAT(
+				DATE_ADD(#{endTime}, INTERVAL 1 DAY),
+				'%Y-%m-%d'
+			)
+			AND soi.storeId IN (
+				SELECT
+					soi1.storeId
+				FROM
+					SpOrderInfo soi1
+				WHERE
+					soi1.addTime >= DATE_FORMAT(#{startTime}, '%Y-%m-%d')
+				AND soi1.addTime <= DATE_FORMAT(
+					DATE_ADD(#{endTime}, INTERVAL 1 DAY),
+					'%Y-%m-%d'
+				)
+				AND soi1. STATUS != 6
+				AND soi1. STATUS != 1
+				AND soi1. LEVEL = 1
+				GROUP BY
+					soi1.storeId
+				HAVING
+					count(soi1.storeId) > 3
+			)
+			GROUP BY s.areaId
+   		  ]]>
+     </select>
+     
+     <select id="findSalesVolumelList" parameterType ="com.corner.data.analysis.beans.vo.GlobalStatisVo" resultType="com.corner.data.analysis.beans.vo.GlobalStatisVo">
+		<![CDATA[
+			SELECT
+					p.areaId,
+					count(sod.orderId) xdsku,
+					sum(sod.quantity) xl,
+					sum(
+						IF (sod.fee < 0, sod.totalPrice, 0)
+					) ylspxse,
+					sum(IF(sod.fee > 0, sod.fee, 0)) fyje,
+					sum(IF(sod.fee < 0, sod.fee, 0)) ylsplr
+				FROM
+					SpOrderDetail sod
+				LEFT JOIN PlantItem p ON p.id = sod.itemId
+				WHERE
+					sod.addTime >= DATE_FORMAT(#{startTime}, '%Y-%m-%d')
+				AND sod.addTime <= DATE_FORMAT(
+					DATE_ADD(#{endTime}, INTERVAL 1 DAY),
+					'%Y-%m-%d'
+				)
+				GROUP BY p.areaId
+   		  ]]>
+     </select>
+     
+     <select id="findNewStorelList" parameterType ="com.corner.data.analysis.beans.vo.GlobalStatisVo" resultType="com.corner.data.analysis.beans.vo.GlobalStatisVo">
+		<![CDATA[
+			SELECT
+				s.areaId,
+				count(s.id) xzzd
+			FROM
+				Store s
+			LEFT JOIN Region r ON r.id = s.areaId
+			WHERE
+				s.addTime >= DATE_FORMAT(#{startTime}, '%Y-%m-%d')
+			AND s.addTime <= DATE_FORMAT(
+				DATE_ADD(#{endTime}, INTERVAL 1 DAY),
+				'%Y-%m-%d'
+			)
+			GROUP BY s.areaId
+   		  ]]>
+     </select>
+</mapper>

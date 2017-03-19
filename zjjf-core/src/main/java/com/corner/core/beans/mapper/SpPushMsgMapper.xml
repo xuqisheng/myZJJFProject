@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SpPushMsgMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpPushMsg" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="ticker" property="ticker" jdbcType="VARCHAR" />
+    <result column="msgTitle" property="msgTitle" jdbcType="VARCHAR" />
+    <result column="msgType" property="msgType" jdbcType="TINYINT" />
+    <result column="umPushType" property="umPushType" jdbcType="VARCHAR" />
+    <result column="publishId" property="publishId" jdbcType="VARCHAR" />
+    <result column="publishName" property="publishName" jdbcType="VARCHAR" />
+    <result column="publishTime" property="publishTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.corner.core.beans.SpPushMsg" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, ticker, msgTitle, msgType, umPushType, publishId, publishName, publishTime, status, 
+    isDelete
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from SpPushMsg
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SpPushMsg
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SpPushMsg" >
+    insert into SpPushMsg (id, ticker, msgTitle, 
+      msgType, umPushType, publishId, 
+      publishName, publishTime, status, 
+      isDelete, content)
+    values (#{id,jdbcType=VARCHAR}, #{ticker,jdbcType=VARCHAR}, #{msgTitle,jdbcType=VARCHAR}, 
+      #{msgType,jdbcType=TINYINT}, #{umPushType,jdbcType=VARCHAR}, #{publishId,jdbcType=VARCHAR}, 
+      #{publishName,jdbcType=VARCHAR}, #{publishTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
+      #{isDelete,jdbcType=BIT}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SpPushMsg" >
+    insert into SpPushMsg
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="ticker != null" >
+        ticker,
+      </if>
+      <if test="msgTitle != null" >
+        msgTitle,
+      </if>
+      <if test="msgType != null" >
+        msgType,
+      </if>
+      <if test="umPushType != null" >
+        umPushType,
+      </if>
+      <if test="publishId != null" >
+        publishId,
+      </if>
+      <if test="publishName != null" >
+        publishName,
+      </if>
+      <if test="publishTime != null" >
+        publishTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="ticker != null" >
+        #{ticker,jdbcType=VARCHAR},
+      </if>
+      <if test="msgTitle != null" >
+        #{msgTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="msgType != null" >
+        #{msgType,jdbcType=TINYINT},
+      </if>
+      <if test="umPushType != null" >
+        #{umPushType,jdbcType=VARCHAR},
+      </if>
+      <if test="publishId != null" >
+        #{publishId,jdbcType=VARCHAR},
+      </if>
+      <if test="publishName != null" >
+        #{publishName,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null" >
+        #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SpPushMsg" >
+    update SpPushMsg
+    <set >
+      <if test="ticker != null" >
+        ticker = #{ticker,jdbcType=VARCHAR},
+      </if>
+      <if test="msgTitle != null" >
+        msgTitle = #{msgTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="msgType != null" >
+        msgType = #{msgType,jdbcType=TINYINT},
+      </if>
+      <if test="umPushType != null" >
+        umPushType = #{umPushType,jdbcType=VARCHAR},
+      </if>
+      <if test="publishId != null" >
+        publishId = #{publishId,jdbcType=VARCHAR},
+      </if>
+      <if test="publishName != null" >
+        publishName = #{publishName,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null" >
+        publishTime = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.corner.core.beans.SpPushMsg" >
+    update SpPushMsg
+    set ticker = #{ticker,jdbcType=VARCHAR},
+      msgTitle = #{msgTitle,jdbcType=VARCHAR},
+      msgType = #{msgType,jdbcType=TINYINT},
+      umPushType = #{umPushType,jdbcType=VARCHAR},
+      publishId = #{publishId,jdbcType=VARCHAR},
+      publishName = #{publishName,jdbcType=VARCHAR},
+      publishTime = #{publishTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SpPushMsg" >
+    update SpPushMsg
+    set ticker = #{ticker,jdbcType=VARCHAR},
+      msgTitle = #{msgTitle,jdbcType=VARCHAR},
+      msgType = #{msgType,jdbcType=TINYINT},
+      umPushType = #{umPushType,jdbcType=VARCHAR},
+      publishId = #{publishId,jdbcType=VARCHAR},
+      publishName = #{publishName,jdbcType=VARCHAR},
+      publishTime = #{publishTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

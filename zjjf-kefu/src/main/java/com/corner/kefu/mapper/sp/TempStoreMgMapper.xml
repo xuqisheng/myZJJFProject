@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.TempStoreMgMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.TempStore" extends="com.corner.core.dao.TempStoreMapper.BaseResultMap">
+  </resultMap>
+  
+  <select id="getStoreList" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.StoreVo">
+    select storeId as id,storeNm as `name`,mobile from TempStore where flag=#{flag} and ruleId = #{id}
+  </select>
+  
+  <delete id="delTempStore" parameterType="java.util.HashMap">
+    delete from TempStore where flag=#{flag} and ruleId=#{id}
+  </delete>
+  
+  <insert id="batchSave" parameterType="java.util.HashMap">
+    insert into TempStore (id, storeId, ruleId, 
+      flag, storeNm, mobile
+      )
+    values
+    <foreach collection="storeList" separator="," index="index" item="item">
+      (null, #{item.id,jdbcType=INTEGER}, #{ruleId,jdbcType=INTEGER}, 
+      #{flag,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, #{item.mobile,jdbcType=VARCHAR}
+      )    
+    </foreach>
+  </insert>
+  
+  <sql id="pageSql">
+   limit #{pageIndex},#{pageSize}
+  </sql>
+  <sql id="getTempStoreList_condition">
+     FROM
+		Store a
+	JOIN SpGroup b ON a.spGroupId = b.id
+	WHERE
+		a.id IN (
+			SELECT
+				storeId
+			FROM
+				TempStore
+			WHERE
+				flag = #{flag}
+		)
+		<if test="keyStr!=null and keyStr!=''">
+		and (
+		   a.name like "%"#{keyStr}"%"
+		   or a.supplierCode like "%"#{keyStr}"%"
+		   or a.contact like "%"#{keyStr}"%"
+		   or a.mobile like "%"#{keyStr}"%"
+		   or b.name like "%"#{keyStr}"%"
+		)
+		</if>
+  </sql>
+  <select id="getTempStoreList" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.StoreVo">
+    SELECT
+		a.*, b.`name` as spGropName
+    <include refid="getTempStoreList_condition"/> 
+    <if test="pageSize!=0">
+      <include refid="pageSql"/>
+    </if>
+  </select>
+  
+  <select id="getCountTempStoreList" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+     select count(1)
+    <include refid="getTempStoreList_condition"/> 
+  </select>
+</mapper>

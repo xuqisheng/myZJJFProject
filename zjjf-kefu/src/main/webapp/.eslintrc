@@ -1,0 +1,25 @@
+{
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+    "globals": {
+        "$": true,
+        "jQuery": true,
+        "angular": true
+    },
+    "rules": {
+        // Possible Errors
+        "comma-dangle": [2, "never"],
+        "no-console": 1,
+        "no-debugger": 1,
+        // Best Practices
+        "no-eval": 1,
+        "no-void": 1,
+        "no-with": 1,
+        // Stylistic Issues
+        "brace-style": [1, "1tbs", { "allowSingleLine": true }],
+        "comma-spacing": [1, { "before": false, "after": true }]
+    }
+}

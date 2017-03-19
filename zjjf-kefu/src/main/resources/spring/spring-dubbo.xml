@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+
+    <!-- consumer application name -->
+    <dubbo:application name="zjjf-kefu" />
+    <dubbo:consumer timeout="200000" check="false" retries="0" />
+    <dubbo:registry id="zookeeper" address="${zookeeper.address}"/>
+    <!-- 监控定义接口 -->
+    <dubbo:reference interface="com.corner.rpc.salesman.api.service.ShopRegisterService" id="shopRegisterService" />
+    <dubbo:reference interface="com.corner.rpc.salesman.api.service.ShopService" id="shopService"/>
+    <dubbo:reference interface="com.corner.rpc.shop.api.service.StoreService" id="storeService" />
+
+
+    <!--暴露服务接口-->
+    <dubbo:service id="sendVoucherService" interface="com.corner.kefu.service.sp.SendVoucherService" ref="sendVoucherServiceImpl"/>
+    <bean id="sendVoucherServiceImpl" class="com.corner.kefu.service.sp.impl.SendVoucherServiceImpl"/>
+
+</beans>

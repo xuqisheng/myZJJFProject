@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.corner.core.dao.JoinInfoMapper">
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.JoinInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="supplierName" jdbcType="VARCHAR" property="supplierName" />
+    <result column="supplierCode" jdbcType="VARCHAR" property="supplierCode" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="lastTime" jdbcType="TIMESTAMP" property="lastTime" />
+    <result column="loginIP" jdbcType="VARCHAR" property="loginIP" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="callNum" jdbcType="VARCHAR" property="callNum" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="province" jdbcType="INTEGER" property="province" />
+    <result column="city" jdbcType="INTEGER" property="city" />
+    <result column="areaId" jdbcType="INTEGER" property="areaId" />
+    <result column="bsCircleId" jdbcType="INTEGER" property="bsCircleId" />
+    <result column="supplierAddress" jdbcType="VARCHAR" property="supplierAddress" />
+    <result column="supplierMark" jdbcType="VARCHAR" property="supplierMark" />
+    <result column="managerName" jdbcType="VARCHAR" property="managerName" />
+    <result column="managerTel" jdbcType="VARCHAR" property="managerTel" />
+    <result column="regTime" jdbcType="TIMESTAMP" property="regTime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="updateMark" jdbcType="VARCHAR" property="updateMark" />
+    <result column="bankCardurl" jdbcType="VARCHAR" property="bankCardurl" />
+    <result column="bankNum" jdbcType="VARCHAR" property="bankNum" />
+    <result column="bankName" jdbcType="VARCHAR" property="bankName" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="isDelete" jdbcType="BIT" property="isDelete" />
+    <result column="col1" jdbcType="VARCHAR" property="col1" />
+    <result column="col2" jdbcType="VARCHAR" property="col2" />
+    <result column="col3" jdbcType="VARCHAR" property="col3" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, supplierName, supplierCode, password, token, salt, lastTime, loginIP, mobile, 
+    callNum, email, province, city, areaId, bsCircleId, supplierAddress, supplierMark, 
+    managerName, managerTel, regTime, updateTime, updateMark, bankCardurl, bankNum, bankName, 
+    status, isDelete, col1, col2, col3, type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from JoinInfo
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from JoinInfo
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.JoinInfo">
+    insert into JoinInfo (id, supplierName, supplierCode, 
+      password, token, salt, 
+      lastTime, loginIP, mobile, 
+      callNum, email, province, 
+      city, areaId, bsCircleId, 
+      supplierAddress, supplierMark, managerName, 
+      managerTel, regTime, updateTime, 
+      updateMark, bankCardurl, bankNum, 
+      bankName, status, isDelete, 
+      col1, col2, col3, type
+      )
+    values (#{id,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, #{supplierCode,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, 
+      #{lastTime,jdbcType=TIMESTAMP}, #{loginIP,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{callNum,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{province,jdbcType=INTEGER}, 
+      #{city,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, #{bsCircleId,jdbcType=INTEGER}, 
+      #{supplierAddress,jdbcType=VARCHAR}, #{supplierMark,jdbcType=VARCHAR}, #{managerName,jdbcType=VARCHAR}, 
+      #{managerTel,jdbcType=VARCHAR}, #{regTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateMark,jdbcType=VARCHAR}, #{bankCardurl,jdbcType=VARCHAR}, #{bankNum,jdbcType=VARCHAR}, 
+      #{bankName,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}, 
+      #{col1,jdbcType=VARCHAR}, #{col2,jdbcType=VARCHAR}, #{col3,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.JoinInfo">
+    insert into JoinInfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="supplierName != null">
+        supplierName,
+      </if>
+      <if test="supplierCode != null">
+        supplierCode,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="token != null">
+        token,
+      </if>
+      <if test="salt != null">
+        salt,
+      </if>
+      <if test="lastTime != null">
+        lastTime,
+      </if>
+      <if test="loginIP != null">
+        loginIP,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="callNum != null">
+        callNum,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="areaId != null">
+        areaId,
+      </if>
+      <if test="bsCircleId != null">
+        bsCircleId,
+      </if>
+      <if test="supplierAddress != null">
+        supplierAddress,
+      </if>
+      <if test="supplierMark != null">
+        supplierMark,
+      </if>
+      <if test="managerName != null">
+        managerName,
+      </if>
+      <if test="managerTel != null">
+        managerTel,
+      </if>
+      <if test="regTime != null">
+        regTime,
+      </if>
+      <if test="updateTime != null">
+        updateTime,
+      </if>
+      <if test="updateMark != null">
+        updateMark,
+      </if>
+      <if test="bankCardurl != null">
+        bankCardurl,
+      </if>
+      <if test="bankNum != null">
+        bankNum,
+      </if>
+      <if test="bankName != null">
+        bankName,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="isDelete != null">
+        isDelete,
+      </if>
+      <if test="col1 != null">
+        col1,
+      </if>
+      <if test="col2 != null">
+        col2,
+      </if>
+      <if test="col3 != null">
+        col3,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierName != null">
+        #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierCode != null">
+        #{supplierCode,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="lastTime != null">
+        #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIP != null">
+        #{loginIP,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="callNum != null">
+        #{callNum,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="bsCircleId != null">
+        #{bsCircleId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierAddress != null">
+        #{supplierAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierMark != null">
+        #{supplierMark,jdbcType=VARCHAR},
+      </if>
+      <if test="managerName != null">
+        #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerTel != null">
+        #{managerTel,jdbcType=VARCHAR},
+      </if>
+      <if test="regTime != null">
+        #{regTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateMark != null">
+        #{updateMark,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCardurl != null">
+        #{bankCardurl,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNum != null">
+        #{bankNum,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null">
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null">
+        #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null">
+        #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null">
+        #{col3,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.JoinInfo">
+    update JoinInfo
+    <set>
+      <if test="supplierName != null">
+        supplierName = #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierCode != null">
+        supplierCode = #{supplierCode,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="lastTime != null">
+        lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIP != null">
+        loginIP = #{loginIP,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="callNum != null">
+        callNum = #{callNum,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        areaId = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="bsCircleId != null">
+        bsCircleId = #{bsCircleId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierAddress != null">
+        supplierAddress = #{supplierAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierMark != null">
+        supplierMark = #{supplierMark,jdbcType=VARCHAR},
+      </if>
+      <if test="managerName != null">
+        managerName = #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerTel != null">
+        managerTel = #{managerTel,jdbcType=VARCHAR},
+      </if>
+      <if test="regTime != null">
+        regTime = #{regTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateMark != null">
+        updateMark = #{updateMark,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCardurl != null">
+        bankCardurl = #{bankCardurl,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNum != null">
+        bankNum = #{bankNum,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null">
+        bankName = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null">
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null">
+        col1 = #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null">
+        col2 = #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null">
+        col3 = #{col3,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.JoinInfo">
+    update JoinInfo
+    set supplierName = #{supplierName,jdbcType=VARCHAR},
+      supplierCode = #{supplierCode,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      token = #{token,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
+      lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      loginIP = #{loginIP,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      callNum = #{callNum,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      province = #{province,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      areaId = #{areaId,jdbcType=INTEGER},
+      bsCircleId = #{bsCircleId,jdbcType=INTEGER},
+      supplierAddress = #{supplierAddress,jdbcType=VARCHAR},
+      supplierMark = #{supplierMark,jdbcType=VARCHAR},
+      managerName = #{managerName,jdbcType=VARCHAR},
+      managerTel = #{managerTel,jdbcType=VARCHAR},
+      regTime = #{regTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      updateMark = #{updateMark,jdbcType=VARCHAR},
+      bankCardurl = #{bankCardurl,jdbcType=VARCHAR},
+      bankNum = #{bankNum,jdbcType=VARCHAR},
+      bankName = #{bankName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      col1 = #{col1,jdbcType=VARCHAR},
+      col2 = #{col2,jdbcType=VARCHAR},
+      col3 = #{col3,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

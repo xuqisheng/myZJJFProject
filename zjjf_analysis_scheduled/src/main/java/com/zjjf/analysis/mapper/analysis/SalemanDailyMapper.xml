@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.SalemanDailyMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.saleman.SalemanDaily" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="salemanId" property="salemanId" jdbcType="VARCHAR" />
+    <result column="salemanName" property="salemanName" jdbcType="VARCHAR" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+    <result column="isEffect" property="isEffect" jdbcType="INTEGER" />
+    <result column="turnover" property="turnover" jdbcType="DECIMAL" />
+    <result column="zjturnover" property="zjturnover" jdbcType="DECIMAL" />
+    <result column="orderCount" property="orderCount" jdbcType="INTEGER" />
+    <result column="activeStore" property="activeStore" jdbcType="INTEGER" />
+    <result column="newRegStore" property="newRegStore" jdbcType="INTEGER" />
+    <result column="kpiTurnover" property="kpiTurnover" jdbcType="DECIMAL" />
+    <result column="zjKpiTurnover" property="zjKpiTurnover" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, salemanId, dayTime, updateTime, createTime, isEffect, turnover, zjturnover, orderCount, 
+    activeStore, newRegStore, kpiTurnover, zjKpiTurnover
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from saleman_daily_20161026
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.analysis.saleman.SalemanDaily" >
+    insert into saleman_daily_20161026 (id, salemanId, salemanName, dayTime, 
+      updateTime, createTime, isEffect, 
+      turnover, zjturnover, orderCount, 
+      activeStore, newRegStore, kpiTurnover, zjKpiTurnover)
+    values (#{id,jdbcType=INTEGER}, #{salemanId,jdbcType=VARCHAR}, #{salemanName,jdbcType=VARCHAR}, #{dayTime,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=INTEGER}, #{isEffect,jdbcType=INTEGER}, 
+      #{turnover,jdbcType=DECIMAL}, #{zjturnover,jdbcType=DECIMAL}, #{orderCount,jdbcType=INTEGER}, 
+      #{activeStore,jdbcType=INTEGER}, #{newRegStore,jdbcType=INTEGER}, #{kpiTurnover,jdbcType=DECIMAL}, #{zjKpiTurnover,jdbcType=DECIMAL})
+  </insert>
+  
+  <select id="getByMap" resultType="com.zjjf.analysis.beans.analysis.saleman.SalemanDaily" parameterType="java.util.Map">
+  	select 
+    <include refid="Base_Column_List" />
+    from saleman_daily_20161026
+    <where>
+    	<if test="salemanId != null">and salemanId = #{salemanId}</if>
+    	<if test="dayTime != null">and dayTime = #{dayTime}</if>
+    </where>
+  </select>
+  
+  <update id="update" parameterType="com.zjjf.analysis.beans.analysis.saleman.SalemanDaily">
+  	update saleman_daily_20161026 set 
+  	turnover = #{turnover},zjturnover = #{zjturnover},orderCount = #{orderCount},
+  	activeStore = #{activeStore},newRegStore=#{newRegStore},kpiTurnover = #{kpiTurnover},
+  	zjKpiTurnover = #{zjKpiTurnover}, updateTime = NOW()
+  	where salemanId = #{salemanId} and dayTime = #{dayTime}
+  </update>
+</mapper>

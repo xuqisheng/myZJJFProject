@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/zjjf.iml" filepath="$PROJECT_DIR$/zjjf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zjjf-core/zjjf-core.iml" filepath="$PROJECT_DIR$/zjjf-core/zjjf-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zjjf-kefu/zjjf-kefu.iml" filepath="$PROJECT_DIR$/zjjf-kefu/zjjf-kefu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zjjf-kefu-api/zjjf-kefu-api.iml" filepath="$PROJECT_DIR$/zjjf-kefu-api/zjjf-kefu-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zjjf-scms/zjjf-scms.iml" filepath="$PROJECT_DIR$/zjjf-scms/zjjf-scms.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zjjf-task/zjjf-task.iml" filepath="$PROJECT_DIR$/zjjf-task/zjjf-task.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.AppItemLabelMapMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.AppItemLabelMap" >
+    <id column="labelId" property="labelId" jdbcType="VARCHAR" />
+    <id column="plantItemId" property="plantItemId" jdbcType="VARCHAR" />
+    <result column="SKUActiveId" property="SKUActiveId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    labelId, plantItemId, SKUActiveId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.corner.core.beans.AppItemLabelMapKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from AppItemLabelMap
+    where labelId = #{labelId,jdbcType=VARCHAR}
+      and plantItemId = #{plantItemId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.corner.core.beans.AppItemLabelMapKey" >
+    delete from AppItemLabelMap
+    where labelId = #{labelId,jdbcType=VARCHAR}
+      and plantItemId = #{plantItemId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.AppItemLabelMap" >
+    insert into AppItemLabelMap (labelId, plantItemId, SKUActiveId
+      )
+    values (#{labelId,jdbcType=VARCHAR}, #{plantItemId,jdbcType=VARCHAR}, #{SKUActiveId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.AppItemLabelMap" >
+    insert into AppItemLabelMap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="labelId != null" >
+        labelId,
+      </if>
+      <if test="plantItemId != null" >
+        plantItemId,
+      </if>
+      <if test="SKUActiveId != null" >
+        SKUActiveId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="labelId != null" >
+        #{labelId,jdbcType=VARCHAR},
+      </if>
+      <if test="plantItemId != null" >
+        #{plantItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="SKUActiveId != null" >
+        #{SKUActiveId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.AppItemLabelMap" >
+    update AppItemLabelMap
+    <set >
+      <if test="SKUActiveId != null" >
+        SKUActiveId = #{SKUActiveId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where labelId = #{labelId,jdbcType=VARCHAR}
+      and plantItemId = #{plantItemId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.AppItemLabelMap" >
+    update AppItemLabelMap
+    set SKUActiveId = #{SKUActiveId,jdbcType=VARCHAR}
+    where labelId = #{labelId,jdbcType=VARCHAR}
+      and plantItemId = #{plantItemId,jdbcType=VARCHAR}
+  </update>
+</mapper>

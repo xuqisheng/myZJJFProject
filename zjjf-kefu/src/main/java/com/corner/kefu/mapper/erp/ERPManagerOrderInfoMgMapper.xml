@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.erp.ERPManagerOrderInfoMgMapper" >
+  
+  
+   <sql id="pageSql">
+     limit #{pageIndex},#{pageSize}
+   </sql> 
+  
+  
+  <select id="getDetailListByIdArr" parameterType="java.lang.String" resultType="com.corner.core.beans.ERPManagerOrderDetail">
+     SELECT
+		b.mdseId,
+		a.itemCode,
+		b.`name`,
+		b.spec,
+		b.imgS AS img,
+		a.id AS itemId,
+		b.id AS itemBaseId
+	FROM
+		ERPManagerItem a
+	JOIN ItemBase b ON a.itemBaseId = b.id
+	WHERE
+		a.id IN 
+		<foreach collection="array" open="(" separator="," close=")" item="item">
+		  #{item}
+		</foreach>
+  </select>
+  
+  
+  <sql id="getOrderInfoList_condition">
+    FROM
+		ERPManagerOrderInfo a
+	WHERE
+		isDelete = 0
+	<if test="type==null">
+	  and type = 1
+	</if>
+	<if test="type!=null">
+	  and type = #{type}
+	</if>
+	<if test="whName!=null and whName!=''">
+	  and (a.whName like "%"#{whName}"%"
+	       or a.orderId like "%"#{whName}"%"
+	  )
+	</if>
+	<if test="startTime!=null">
+	  and a.addTime &gt;= #{startTime}
+	</if>
+	<if test="endTime!=null">
+	  and a.addTime &lt;#{endTime}
+	</if>
+	<if test="checkStatus!=null and checkStatus!=-1">
+	  and a.checkStatus=#{checkStatus}
+	</if>
+  </sql>
+  <select id="getOrderInfoList" parameterType="com.corner.kefu.beans.ro.erp.ERPManagerOrderInfoRo" resultType="com.corner.kefu.beans.vo.erp.ERPManagerOrderInfoVo">
+    SELECT
+		a.*,(
+			SELECT
+				SUM(quantity)
+			FROM
+				ERPManagerOrderDetail
+			WHERE
+				orderId = a.orderId
+		) AS totalNum
+		<include refid="getOrderInfoList_condition"/>
+		order by a.addTime desc
+		<include refid="pageSql"/>
+  </select>
+  <select id="getCountOrderInfoList" parameterType="com.corner.kefu.beans.ro.erp.ERPManagerOrderInfoRo" resultType="java.lang.Integer">
+     select count(1)
+	<include refid="getOrderInfoList_condition"/>
+  </select>
+  
+  <select id="getOrderInfoVoById" parameterType="com.corner.kefu.beans.ro.erp.ERPManagerOrderInfoRo" resultType="com.corner.kefu.beans.vo.erp.ERPManagerOrderDetailVo">
+    SELECT
+		a.*, (a.areaPrice * a.quantity) AS totalPrice
+	FROM
+		ERPManagerOrderDetail a
+	WHERE
+		orderId = #{orderId}
+    AND isDelete = 0
+  </select>
+  
+  <delete id="delteDetailByOrderId" parameterType="com.corner.core.beans.ERPManagerOrderInfo">
+    <!-- update ERPManagerOrderDetail set isDelete = 1 where orderId = #{orderId} -->
+    delete from ERPManagerOrderDetail where orderId = #{orderId} 
+  </delete>
+  
+  <delete id="deleteOrderInfoById" parameterType="com.corner.core.beans.ERPManagerOrderInfo">
+   update ERPManagerOrderInfo set isDelete = 1 where id = #{id}
+  </delete>
+  
+  <update id="checkErpOrderInfo" parameterType="java.util.HashMap">
+     update ERPManagerOrderInfo set checkStatus=2,checkTime=NOW(),checkUser=#{service.id},checkUserName=#{service.nickName} where id in
+     <foreach collection="idArr" open="(" separator="," close=")" item="item">
+      #{item}
+     </foreach> 
+  </update>
+  
+  
+  
+  <sql id="getPurchaseBack_condition">
+    FROM ERPPurchaseStockInfo a where a.isDelete = 0
+      <if test="keyStr!=null and keyStr!=''">
+        and (
+          whName like "%"#{keyStr}"%"
+          or
+          orderId like "%"#{keyStr}"%"
+        )
+      </if>
+      <if test="startTime!=null">
+	  and a.addTime &gt;= #{startTime}
+	</if>
+	<if test="endTime!=null">
+	  and a.addTime &lt;#{endTime}
+	</if>
+	<if test="checkStatus!=null and checkStatus!=-1">
+	  and a.checkStatus=#{checkStatus}
+	</if>
+  </sql>
+  <select id="getPurchaseBack" parameterType="com.corner.kefu.beans.ro.erp.ERPPurchaseStockInfoRo" resultType="com.corner.kefu.beans.vo.erp.ERPPurchaseStockInfoVo">
+    SELECT
+	a.*, (
+		SELECT
+			sum(operateStock)
+		FROM
+			ERPPurchaseStockDetail
+		WHERE
+			orderId = a.orderId
+	) AS totalNum
+    <include refid="getPurchaseBack_condition"/>
+    order by addTime desc
+    <include refid="pageSql"/>
+  </select>
+  <select id="getCountPurchaseBack" parameterType="com.corner.kefu.beans.ro.erp.ERPPurchaseStockInfoRo" resultType="java.lang.Integer">
+    select count(1)
+    <include refid="getPurchaseBack_condition"/>
+  </select>
+  
+  <select id="getPurcherStockDetailsByOrDerId" parameterType="com.corner.core.beans.ERPPurchaseStockInfo" resultType="com.corner.kefu.beans.vo.erp.ERPPurchaseStockDetailVo">
+    select * from ERPPurchaseStockDetail where orderId = #{orderId}
+  </select>
+
+  <update id="updatePurchaseOrder" parameterType="java.util.HashMap">
+    UPDATE ERPPurchaseStockInfo SET checkStatus=2,checkTime=NOW(),checkUserName=#{service.nickName},checkUser=#{service.id} WHERE id in
+    <foreach collection="managerIdStrArr" open="(" separator="," close=")" item="item">
+       #{item}
+    </foreach>
+  </update>
+</mapper>

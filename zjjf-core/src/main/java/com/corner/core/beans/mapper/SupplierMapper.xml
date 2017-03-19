@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SupplierMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.Supplier" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="supplierName" property="supplierName" jdbcType="VARCHAR" />
+    <result column="supplierCode" property="supplierCode" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="payPassword" property="payPassword" jdbcType="VARCHAR" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+    <result column="salt" property="salt" jdbcType="VARCHAR" />
+    <result column="lastTime" property="lastTime" jdbcType="TIMESTAMP" />
+    <result column="loginIP" property="loginIP" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="callNum" property="callNum" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="bsCircleId" property="bsCircleId" jdbcType="INTEGER" />
+    <result column="supplierAddress" property="supplierAddress" jdbcType="VARCHAR" />
+    <result column="supplierMark" property="supplierMark" jdbcType="VARCHAR" />
+    <result column="managerName" property="managerName" jdbcType="VARCHAR" />
+    <result column="managerTel" property="managerTel" jdbcType="VARCHAR" />
+    <result column="regTime" property="regTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="updateMark" property="updateMark" jdbcType="VARCHAR" />
+    <result column="bankCardurl" property="bankCardurl" jdbcType="VARCHAR" />
+    <result column="bankNum" property="bankNum" jdbcType="VARCHAR" />
+    <result column="bankName" property="bankName" jdbcType="VARCHAR" />
+    <result column="cardUser" property="cardUser" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="wallet" property="wallet" jdbcType="DECIMAL" />
+    <result column="walletAddTime" property="walletAddTime" jdbcType="TIMESTAMP" />
+    <result column="walletUpdateTime" property="walletUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="startPrice" property="startPrice" jdbcType="DECIMAL" />
+    <result column="freight" property="freight" jdbcType="DECIMAL" />
+    <result column="sequenceNum" property="sequenceNum" jdbcType="INTEGER" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+    <result column="supplierType" property="supplierType" jdbcType="TINYINT" />
+    <result column="licenseNum" property="licenseNum" jdbcType="VARCHAR" />
+    <result column="licensePic" property="licensePic" jdbcType="VARCHAR" />
+    <result column="commitmentPic" property="commitmentPic" jdbcType="VARCHAR" />
+    <result column="deposit" property="deposit" jdbcType="DECIMAL" />
+    <result column="depositStatus" property="depositStatus" jdbcType="INTEGER" />
+    <result column="serviceFee" property="serviceFee" jdbcType="DECIMAL" />
+    <result column="rates" property="rates" jdbcType="REAL" />
+    <result column="versionNo" property="versionNo" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, supplierName, supplierCode, password, payPassword, token, salt, lastTime, loginIP, 
+    mobile, callNum, email, province, city, areaId, bsCircleId, supplierAddress, supplierMark, 
+    managerName, managerTel, regTime, updateTime, updateMark, bankCardurl, bankNum, bankName, 
+    cardUser, status, isDelete, wallet, walletAddTime, walletUpdateTime, startPrice, 
+    freight, sequenceNum, col1, col2, col3, supplierType, licenseNum, licensePic, commitmentPic, 
+    deposit, depositStatus, serviceFee, rates, versionNo
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from Supplier
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from Supplier
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.Supplier" >
+    insert into Supplier (id, supplierName, supplierCode, 
+      password, payPassword, token, 
+      salt, lastTime, loginIP, 
+      mobile, callNum, email, 
+      province, city, areaId, 
+      bsCircleId, supplierAddress, supplierMark, 
+      managerName, managerTel, regTime, 
+      updateTime, updateMark, bankCardurl, 
+      bankNum, bankName, cardUser, 
+      status, isDelete, wallet, 
+      walletAddTime, walletUpdateTime, startPrice, 
+      freight, sequenceNum, col1, 
+      col2, col3, supplierType, 
+      licenseNum, licensePic, commitmentPic, 
+      deposit, depositStatus, serviceFee, 
+      rates, versionNo)
+    values (#{id,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, #{supplierCode,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{payPassword,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, 
+      #{salt,jdbcType=VARCHAR}, #{lastTime,jdbcType=TIMESTAMP}, #{loginIP,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{callNum,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, 
+      #{bsCircleId,jdbcType=INTEGER}, #{supplierAddress,jdbcType=VARCHAR}, #{supplierMark,jdbcType=VARCHAR}, 
+      #{managerName,jdbcType=VARCHAR}, #{managerTel,jdbcType=VARCHAR}, #{regTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateMark,jdbcType=VARCHAR}, #{bankCardurl,jdbcType=VARCHAR}, 
+      #{bankNum,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, #{cardUser,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}, #{wallet,jdbcType=DECIMAL}, 
+      #{walletAddTime,jdbcType=TIMESTAMP}, #{walletUpdateTime,jdbcType=TIMESTAMP}, #{startPrice,jdbcType=DECIMAL}, 
+      #{freight,jdbcType=DECIMAL}, #{sequenceNum,jdbcType=INTEGER}, #{col1,jdbcType=VARCHAR}, 
+      #{col2,jdbcType=VARCHAR}, #{col3,jdbcType=VARCHAR}, #{supplierType,jdbcType=TINYINT}, 
+      #{licenseNum,jdbcType=VARCHAR}, #{licensePic,jdbcType=VARCHAR}, #{commitmentPic,jdbcType=VARCHAR}, 
+      #{deposit,jdbcType=DECIMAL}, #{depositStatus,jdbcType=INTEGER}, #{serviceFee,jdbcType=DECIMAL}, 
+      #{rates,jdbcType=REAL}, #{versionNo,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.Supplier" >
+    insert into Supplier
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="supplierName != null" >
+        supplierName,
+      </if>
+      <if test="supplierCode != null" >
+        supplierCode,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="payPassword != null" >
+        payPassword,
+      </if>
+      <if test="token != null" >
+        token,
+      </if>
+      <if test="salt != null" >
+        salt,
+      </if>
+      <if test="lastTime != null" >
+        lastTime,
+      </if>
+      <if test="loginIP != null" >
+        loginIP,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="callNum != null" >
+        callNum,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="areaId != null" >
+        areaId,
+      </if>
+      <if test="bsCircleId != null" >
+        bsCircleId,
+      </if>
+      <if test="supplierAddress != null" >
+        supplierAddress,
+      </if>
+      <if test="supplierMark != null" >
+        supplierMark,
+      </if>
+      <if test="managerName != null" >
+        managerName,
+      </if>
+      <if test="managerTel != null" >
+        managerTel,
+      </if>
+      <if test="regTime != null" >
+        regTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="updateMark != null" >
+        updateMark,
+      </if>
+      <if test="bankCardurl != null" >
+        bankCardurl,
+      </if>
+      <if test="bankNum != null" >
+        bankNum,
+      </if>
+      <if test="bankName != null" >
+        bankName,
+      </if>
+      <if test="cardUser != null" >
+        cardUser,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="wallet != null" >
+        wallet,
+      </if>
+      <if test="walletAddTime != null" >
+        walletAddTime,
+      </if>
+      <if test="walletUpdateTime != null" >
+        walletUpdateTime,
+      </if>
+      <if test="startPrice != null" >
+        startPrice,
+      </if>
+      <if test="freight != null" >
+        freight,
+      </if>
+      <if test="sequenceNum != null" >
+        sequenceNum,
+      </if>
+      <if test="col1 != null" >
+        col1,
+      </if>
+      <if test="col2 != null" >
+        col2,
+      </if>
+      <if test="col3 != null" >
+        col3,
+      </if>
+      <if test="supplierType != null" >
+        supplierType,
+      </if>
+      <if test="licenseNum != null" >
+        licenseNum,
+      </if>
+      <if test="licensePic != null" >
+        licensePic,
+      </if>
+      <if test="commitmentPic != null" >
+        commitmentPic,
+      </if>
+      <if test="deposit != null" >
+        deposit,
+      </if>
+      <if test="depositStatus != null" >
+        depositStatus,
+      </if>
+      <if test="serviceFee != null" >
+        serviceFee,
+      </if>
+      <if test="rates != null" >
+        rates,
+      </if>
+      <if test="versionNo != null" >
+        versionNo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierName != null" >
+        #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierCode != null" >
+        #{supplierCode,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="payPassword != null" >
+        #{payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null" >
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null" >
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="lastTime != null" >
+        #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIP != null" >
+        #{loginIP,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="callNum != null" >
+        #{callNum,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="bsCircleId != null" >
+        #{bsCircleId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierAddress != null" >
+        #{supplierAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierMark != null" >
+        #{supplierMark,jdbcType=VARCHAR},
+      </if>
+      <if test="managerName != null" >
+        #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerTel != null" >
+        #{managerTel,jdbcType=VARCHAR},
+      </if>
+      <if test="regTime != null" >
+        #{regTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateMark != null" >
+        #{updateMark,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCardurl != null" >
+        #{bankCardurl,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNum != null" >
+        #{bankNum,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardUser != null" >
+        #{cardUser,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="wallet != null" >
+        #{wallet,jdbcType=DECIMAL},
+      </if>
+      <if test="walletAddTime != null" >
+        #{walletAddTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="walletUpdateTime != null" >
+        #{walletUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startPrice != null" >
+        #{startPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="freight != null" >
+        #{freight,jdbcType=DECIMAL},
+      </if>
+      <if test="sequenceNum != null" >
+        #{sequenceNum,jdbcType=INTEGER},
+      </if>
+      <if test="col1 != null" >
+        #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        #{col3,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierType != null" >
+        #{supplierType,jdbcType=TINYINT},
+      </if>
+      <if test="licenseNum != null" >
+        #{licenseNum,jdbcType=VARCHAR},
+      </if>
+      <if test="licensePic != null" >
+        #{licensePic,jdbcType=VARCHAR},
+      </if>
+      <if test="commitmentPic != null" >
+        #{commitmentPic,jdbcType=VARCHAR},
+      </if>
+      <if test="deposit != null" >
+        #{deposit,jdbcType=DECIMAL},
+      </if>
+      <if test="depositStatus != null" >
+        #{depositStatus,jdbcType=INTEGER},
+      </if>
+      <if test="serviceFee != null" >
+        #{serviceFee,jdbcType=DECIMAL},
+      </if>
+      <if test="rates != null" >
+        #{rates,jdbcType=REAL},
+      </if>
+      <if test="versionNo != null" >
+        #{versionNo,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.Supplier" >
+    update Supplier
+    <set >
+      <if test="supplierName != null" >
+        supplierName = #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierCode != null" >
+        supplierCode = #{supplierCode,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="payPassword != null" >
+        payPassword = #{payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null" >
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null" >
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="lastTime != null" >
+        lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIP != null" >
+        loginIP = #{loginIP,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="callNum != null" >
+        callNum = #{callNum,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        areaId = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="bsCircleId != null" >
+        bsCircleId = #{bsCircleId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierAddress != null" >
+        supplierAddress = #{supplierAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierMark != null" >
+        supplierMark = #{supplierMark,jdbcType=VARCHAR},
+      </if>
+      <if test="managerName != null" >
+        managerName = #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerTel != null" >
+        managerTel = #{managerTel,jdbcType=VARCHAR},
+      </if>
+      <if test="regTime != null" >
+        regTime = #{regTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateMark != null" >
+        updateMark = #{updateMark,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCardurl != null" >
+        bankCardurl = #{bankCardurl,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNum != null" >
+        bankNum = #{bankNum,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        bankName = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardUser != null" >
+        cardUser = #{cardUser,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="wallet != null" >
+        wallet = #{wallet,jdbcType=DECIMAL},
+      </if>
+      <if test="walletAddTime != null" >
+        walletAddTime = #{walletAddTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="walletUpdateTime != null" >
+        walletUpdateTime = #{walletUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startPrice != null" >
+        startPrice = #{startPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="freight != null" >
+        freight = #{freight,jdbcType=DECIMAL},
+      </if>
+      <if test="sequenceNum != null" >
+        sequenceNum = #{sequenceNum,jdbcType=INTEGER},
+      </if>
+      <if test="col1 != null" >
+        col1 = #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        col2 = #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        col3 = #{col3,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierType != null" >
+        supplierType = #{supplierType,jdbcType=TINYINT},
+      </if>
+      <if test="licenseNum != null" >
+        licenseNum = #{licenseNum,jdbcType=VARCHAR},
+      </if>
+      <if test="licensePic != null" >
+        licensePic = #{licensePic,jdbcType=VARCHAR},
+      </if>
+      <if test="commitmentPic != null" >
+        commitmentPic = #{commitmentPic,jdbcType=VARCHAR},
+      </if>
+      <if test="deposit != null" >
+        deposit = #{deposit,jdbcType=DECIMAL},
+      </if>
+      <if test="depositStatus != null" >
+        depositStatus = #{depositStatus,jdbcType=INTEGER},
+      </if>
+      <if test="serviceFee != null" >
+        serviceFee = #{serviceFee,jdbcType=DECIMAL},
+      </if>
+      <if test="rates != null" >
+        rates = #{rates,jdbcType=REAL},
+      </if>
+      <if test="versionNo != null" >
+        versionNo = #{versionNo,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.Supplier" >
+    update Supplier
+    set supplierName = #{supplierName,jdbcType=VARCHAR},
+      supplierCode = #{supplierCode,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      payPassword = #{payPassword,jdbcType=VARCHAR},
+      token = #{token,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
+      lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      loginIP = #{loginIP,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      callNum = #{callNum,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      province = #{province,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      areaId = #{areaId,jdbcType=INTEGER},
+      bsCircleId = #{bsCircleId,jdbcType=INTEGER},
+      supplierAddress = #{supplierAddress,jdbcType=VARCHAR},
+      supplierMark = #{supplierMark,jdbcType=VARCHAR},
+      managerName = #{managerName,jdbcType=VARCHAR},
+      managerTel = #{managerTel,jdbcType=VARCHAR},
+      regTime = #{regTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      updateMark = #{updateMark,jdbcType=VARCHAR},
+      bankCardurl = #{bankCardurl,jdbcType=VARCHAR},
+      bankNum = #{bankNum,jdbcType=VARCHAR},
+      bankName = #{bankName,jdbcType=VARCHAR},
+      cardUser = #{cardUser,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      wallet = #{wallet,jdbcType=DECIMAL},
+      walletAddTime = #{walletAddTime,jdbcType=TIMESTAMP},
+      walletUpdateTime = #{walletUpdateTime,jdbcType=TIMESTAMP},
+      startPrice = #{startPrice,jdbcType=DECIMAL},
+      freight = #{freight,jdbcType=DECIMAL},
+      sequenceNum = #{sequenceNum,jdbcType=INTEGER},
+      col1 = #{col1,jdbcType=VARCHAR},
+      col2 = #{col2,jdbcType=VARCHAR},
+      col3 = #{col3,jdbcType=VARCHAR},
+      supplierType = #{supplierType,jdbcType=TINYINT},
+      licenseNum = #{licenseNum,jdbcType=VARCHAR},
+      licensePic = #{licensePic,jdbcType=VARCHAR},
+      commitmentPic = #{commitmentPic,jdbcType=VARCHAR},
+      deposit = #{deposit,jdbcType=DECIMAL},
+      depositStatus = #{depositStatus,jdbcType=INTEGER},
+      serviceFee = #{serviceFee,jdbcType=DECIMAL},
+      rates = #{rates,jdbcType=REAL},
+      versionNo = #{versionNo,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

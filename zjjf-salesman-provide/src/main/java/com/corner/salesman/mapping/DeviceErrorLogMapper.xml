@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.DeviceErrorLogMapper" >
+	<resultMap id="BaseResultMap" type="com.corner.salesman.model.DeviceErrorLog" >
+	  <id column="logId" property="logId" jdbcType="INTEGER" />
+	  <result column="errorMsg" property="errorMsg" jdbcType="VARCHAR" />
+	  <result column="errorTime" property="errorTime" jdbcType="TIMESTAMP" />
+	  <result column="deviceType" property="deviceType" jdbcType="CHAR" />
+	  <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+	  <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+	  <result column="version" property="version" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List" >
+	  logId, errorMsg, errorTime, deviceType, createTime, createBy,version
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+	  select 
+	  <include refid="Base_Column_List" />
+	  from tbl_device_error_log_t
+	  where logId = #{logId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+	  delete from tbl_device_error_log_t
+	  where logId = #{logId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.corner.salesman.model.DeviceErrorLog" >
+	  insert into tbl_device_error_log_t (logId, errorMsg, errorTime, 
+	    deviceType, createTime, createBy,version
+	    )
+	  values (#{logId,jdbcType=INTEGER}, #{errorMsg,jdbcType=VARCHAR}, 
+	    #{errorTime,jdbcType=TIMESTAMP}, #{deviceType,jdbcType=CHAR}, 
+	    #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}
+	    )
+	</insert>
+	<insert id="insertSelective" parameterType="com.corner.salesman.model.DeviceErrorLog" >
+	  insert into tbl_device_error_log_t
+	  <trim prefix="(" suffix=")" suffixOverrides="," >
+	    <if test="logId != null" >
+	      logId,
+	    </if>
+	    <if test="errorMsg != null" >
+	      errorMsg,
+	    </if>
+	    <if test="errorTime != null" >
+	      errorTime,
+	    </if>
+	    <if test="deviceType != null" >
+	      deviceType,
+	    </if>
+	    <if test="createTime != null" >
+	      createTime,
+	    </if>
+	    <if test="createBy != null" >
+	      createBy,
+	    </if>
+	    <if test="version != null" >
+	      version,
+	    </if>
+	  </trim>
+	  <trim prefix="values (" suffix=")" suffixOverrides="," >
+	    <if test="logId != null" >
+	      #{logId,jdbcType=INTEGER},
+	    </if>
+	    <if test="errorMsg != null" >
+	      #{errorMsg,jdbcType=VARCHAR},
+	    </if>
+	    <if test="errorTime != null" >
+	      #{errorTime,jdbcType=TIMESTAMP},
+	    </if>
+	    <if test="deviceType != null" >
+	      #{deviceType,jdbcType=CHAR},
+	    </if>
+	    <if test="createTime != null" >
+	      #{createTime,jdbcType=TIMESTAMP},
+	    </if>
+	    <if test="createBy != null" >
+	      #{createBy,jdbcType=VARCHAR},
+	    </if>
+	    <if test="version != null" >
+	       #{version,jdbcType=VARCHAR},
+	    </if>
+	  </trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.corner.salesman.model.DeviceErrorLog" >
+	  update tbl_device_error_log_t
+	  <set >
+	    <if test="errorMsg != null" >
+	      errorMsg = #{errorMsg,jdbcType=VARCHAR},
+	    </if>
+	    <if test="errorTime != null" >
+	      errorTime = #{errorTime,jdbcType=TIMESTAMP},
+	    </if>
+	    <if test="deviceType != null" >
+	      deviceType = #{deviceType,jdbcType=CHAR},
+	    </if>
+	    <if test="createTime != null" >
+	      createTime = #{createTime,jdbcType=TIMESTAMP},
+	    </if>
+	    <if test="createBy != null" >
+	      createBy = #{createBy,jdbcType=VARCHAR},
+	    </if>
+	    <if test="version != null" >
+	       version = #{version,jdbcType=VARCHAR},
+	    </if>
+	  </set>
+	  where logId = #{logId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.corner.salesman.model.DeviceErrorLog" >
+	  update tbl_device_error_log_t
+	  set errorMsg = #{errorMsg,jdbcType=VARCHAR},
+	    errorTime = #{errorTime,jdbcType=TIMESTAMP},
+	    deviceType = #{deviceType,jdbcType=CHAR},
+	    createTime = #{createTime,jdbcType=TIMESTAMP},
+	    createBy = #{createBy,jdbcType=VARCHAR},
+	    version = #{version,jdbcType=VARCHAR}
+	  where logId = #{logId,jdbcType=INTEGER}
+	</update>
+</mapper>

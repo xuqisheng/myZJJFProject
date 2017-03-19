@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-kafka="http://www.springframework.org/schema/integration/kafka"
+       xsi:schemaLocation="
+       	http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+       	http://www.springframework.org/schema/integration/kafka
+       	http://www.springframework.org/schema/integration/kafka/spring-integration-kafka.xsd
+		http://www.springframework.org/schema/integration
+		http://www.springframework.org/schema/integration/spring-integration.xsd">
+		
+		
+
+	<!-- 比官方多了messagingMessageConverter -->
+    <int-kafka:message-driven-channel-adapter
+            id="kafkaMessageDrivenChannelAdapter"
+            listener-container="kafkaMessageListenerContainer"
+            auto-startup="true"
+            phase="100"
+            send-timeout="5000"
+            channel="nullChannel"
+            message-converter="messagingMessageConverter"
+            error-channel="errorChannel"/>
+            
+    <bean id="messagingMessageConverter" class="org.springframework.kafka.support.converter.MessagingMessageConverter"/>
+
+    <bean id="defaultKafkaConsumerFactory" class="org.springframework.kafka.core.DefaultKafkaConsumerFactory">
+        <constructor-arg>
+            <map>
+                <entry key="bootstrap.servers" value="192.168.1.11:9092,192.168.1.12:9092,192.168.1.13:9092"/>
+                <entry key="group.id" value="siTestGroup"/>
+                <entry key="enable.auto.commit" value="false"/>
+                <entry key="auto.commit.interval.ms" value="100"/>
+                <entry key="session.timeout.ms" value="15000"/>
+                <entry key="key.deserializer" value="org.apache.kafka.common.serialization.IntegerDeserializer"/>
+                <entry key="value.deserializer" value="org.apache.kafka.common.serialization.StringDeserializer"/>
+                <entry key="connections.max.idle.ms" value="600000"/>
+            </map>
+        </constructor-arg>
+        <constructor-arg>
+        	<bean class="org.apache.kafka.common.serialization.IntegerDeserializer"></bean>
+        </constructor-arg>
+        <constructor-arg>
+        	<bean class="org.apache.kafka.common.serialization.StringDeserializer"></bean>
+        </constructor-arg>
+    </bean>
+
+   <bean id="kafkaMessageListenerContainer" class="org.springframework.kafka.listener.KafkaMessageListenerContainer">
+        <constructor-arg ref="defaultKafkaConsumerFactory" />
+        <constructor-arg>
+            <bean class="org.springframework.kafka.listener.config.ContainerProperties">
+                <constructor-arg name="topics" value="mykafka.p1.re3,mykafka.p2.re3,mykafka.p4.re3"/>
+            </bean>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="kafkaListenerContainerFactory" class="org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory">
+		<property name="consumerFactory" ref="defaultKafkaConsumerFactory" />
+		<property name="concurrency" value="6" />
+    </bean>
+
+    <!-- 实际执行消息消费的类-->
+    <bean id="kafkaDataListener" class="com.corner.kafka.PojoConsumer"/>
+	
+	<!-- 实际执行消息消费的类-->
+    <bean id="kafkaConsumerService" class="com.corner.kafka.service.impl.ZjjfKafkaConsumerServiceImpl"/>
+	
+</beans>

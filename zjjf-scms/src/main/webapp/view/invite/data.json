@@ -1,0 +1,357 @@
+[
+    {
+        "id": 6,
+        "name": "广东省",
+        "sub": [
+            {
+                "id": 76,
+                "name": "广州",
+                "sub": [
+                    {
+                        "id": 692,
+                        "name": "从化市",
+                        "sub": null
+                    },
+                    {
+                        "id": 693,
+                        "name": "天河区",
+                        "sub": null
+                    },
+                    {
+                        "id": 694,
+                        "name": "东山区",
+                        "sub": null
+                    },
+                    {
+                        "id": 695,
+                        "name": "白云区",
+                        "sub": null
+                    },
+                    {
+                        "id": 696,
+                        "name": "海珠区",
+                        "sub": null
+                    },
+                    {
+                        "id": 697,
+                        "name": "荔湾区",
+                        "sub": null
+                    },
+                    {
+                        "id": 698,
+                        "name": "越秀区",
+                        "sub": null
+                    },
+                    {
+                        "id": 699,
+                        "name": "黄埔区",
+                        "sub": null
+                    },
+                    {
+                        "id": 700,
+                        "name": "番禺区",
+                        "sub": null
+                    },
+                    {
+                        "id": 701,
+                        "name": "花都区",
+                        "sub": null
+                    },
+                    {
+                        "id": 702,
+                        "name": "增城区",
+                        "sub": null
+                    },
+                    {
+                        "id": 703,
+                        "name": "从化区",
+                        "sub": null
+                    },
+                    {
+                        "id": 704,
+                        "name": "市郊",
+                        "sub": null
+                    }
+                ]
+            },
+            {
+                "id": 77,
+                "name": "深圳",
+                "sub": [
+                    {
+                        "id": 705,
+                        "name": "福田区",
+                        "sub": null
+                    },
+                    {
+                        "id": 706,
+                        "name": "罗湖区",
+                        "sub": null
+                    },
+                    {
+                        "id": 707,
+                        "name": "南山区",
+                        "sub": null
+                    },
+                    {
+                        "id": 708,
+                        "name": "宝安区",
+                        "sub": null
+                    },
+                    {
+                        "id": 709,
+                        "name": "龙岗区",
+                        "sub": null
+                    },
+                    {
+                        "id": 710,
+                        "name": "盐田区",
+                        "sub": null
+                    },
+                    {
+                        "id": 3406,
+                        "name": "坪山区",
+                        "sub": null
+                    },
+                    {
+                        "id": 3407,
+                        "name": "横岗区",
+                        "sub": null
+                    },
+                    {
+                        "id": 3408,
+                        "name": "西乡",
+                        "sub": null
+                    },
+                    {
+                        "id": 3409,
+                        "name": "南山餐饮",
+                        "sub": null
+                    },
+                    {
+                        "id": 3410,
+                        "name": "南山转角",
+                        "sub": null
+                    },
+                    {
+                        "id": 3411,
+                        "name": "龙岗转角",
+                        "sub": null
+                    },
+                    {
+                        "id": 3412,
+                        "name": "体验专区",
+                        "sub": null
+                    },
+                    {
+                        "id": 3413,
+                        "name": "福永",
+                        "sub": null
+                    },
+                    {
+                        "id": 3414,
+                        "name": "石岩",
+                        "sub": null
+                    },
+                    {
+                        "id": 3415,
+                        "name": "坂田",
+                        "sub": null
+                    },
+                    {
+                        "id": 3416,
+                        "name": "龙华",
+                        "sub": null
+                    },
+                    {
+                        "id": 3417,
+                        "name": "布吉",
+                        "sub": null
+                    },
+                    {
+                        "id": 3418,
+                        "name": "光明区",
+                        "sub": null
+                    }
+                ]
+            },
+            {
+                "id": 79,
+                "name": "东莞",
+                "sub": [
+                    {
+                        "id": 714,
+                        "name": "南城区",
+                        "sub": null
+                    },
+                    {
+                        "id": 715,
+                        "name": "东城区",
+                        "sub": null
+                    },
+                    {
+                        "id": 716,
+                        "name": "万江区",
+                        "sub": null
+                    },
+                    {
+                        "id": 717,
+                        "name": "莞城区",
+                        "sub": null
+                    },
+                    {
+                        "id": 718,
+                        "name": "石龙镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 719,
+                        "name": "虎门镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 720,
+                        "name": "麻涌镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 721,
+                        "name": "道滘镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 722,
+                        "name": "石碣镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 723,
+                        "name": "沙田镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 724,
+                        "name": "望牛墩镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 725,
+                        "name": "洪梅镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 726,
+                        "name": "茶山镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 727,
+                        "name": "寮步镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 728,
+                        "name": "大岭山镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 729,
+                        "name": "大朗镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 730,
+                        "name": "黄江镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 731,
+                        "name": "樟木头",
+                        "sub": null
+                    },
+                    {
+                        "id": 732,
+                        "name": "凤岗镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 733,
+                        "name": "塘厦镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 734,
+                        "name": "谢岗镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 735,
+                        "name": "厚街镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 736,
+                        "name": "清溪镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 737,
+                        "name": "常平镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 738,
+                        "name": "桥头镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 739,
+                        "name": "横沥镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 740,
+                        "name": "东坑镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 741,
+                        "name": "企石镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 742,
+                        "name": "石排镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 743,
+                        "name": "长安镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 744,
+                        "name": "中堂镇",
+                        "sub": null
+                    },
+                    {
+                        "id": 745,
+                        "name": "高埗镇",
+                        "sub": null
+                    }
+                ]
+            },
+            {
+                "id": 83,
+                "name": "江门",
+                "sub": [
+                    {
+                        "id": 763,
+                        "name": "江海区",
+                        "sub": null
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.account.dao.AccounterMgMapper" >
+
+	<!-- 获取会计列表条件 -->
+	<sql id="getPageList_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id != null">
+				id = #{id}
+			</if>
+			<if test="isDelete != null">
+				AND isDelete = #{isDelete}
+			</if>
+			<if test="status != null">
+				AND status = #{status}
+			</if>
+			<if test="realName != null">
+				AND ( userName like CONCAT('%','${realName}','%')
+				OR mobile like CONCAT('%','${realName}','%')
+				)
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 获取会计列表 -->
+ 	<select id="getPageList" parameterType="com.corner.account.beans.ro.AccounterCondition"  resultType="Accounter">
+		select * from Accounter
+		<include refid="getPageList_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取会计列表 总记录数-->
+ 	<select id="getPageListSize" parameterType="com.corner.account.beans.ro.AccounterCondition"  resultType="int">
+		select count(1) from Accounter
+		<include refid="getPageList_condition" />
+	</select>
+	
+	<!-- 获取用户的角色-->
+ 	<select id="getRolesById" parameterType="java.lang.String"  resultType="string">
+		select s.RoleId from UserRoleMap s where s.UserId = #{id}
+	</select>
+	
+	<insert id="saveUserRoles">
+		delete from UserRoleMap where UserId=#{userId};
+		insert into UserRoleMap(userId,roleId)
+		values
+		<foreach collection="roleIds" item="item"  separator="," >  
+        (#{userId},#{item})
+    	</foreach>  
+	</insert>
+	
+</mapper>

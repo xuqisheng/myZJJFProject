@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.PlantItemDailyMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.items.PlantItemDaily" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="itemId" property="itemId" jdbcType="VARCHAR" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="turnover" property="turnover" jdbcType="DECIMAL" />
+    <result column="maoli" property="maoli" jdbcType="DECIMAL" />
+    <result column="fee" property="fee" jdbcType="DECIMAL" />
+    <result column="orderCount" property="orderCount" jdbcType="INTEGER" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+    <result column="maxPrice" property="maxPrice" jdbcType="DECIMAL" />
+    <result column="minPrice" property="minPrice" jdbcType="DECIMAL" />
+    <result column="averagePrice" property="averagePrice" jdbcType="DECIMAL" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="cityName" property="cityName" jdbcType="VARCHAR" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="areaName" property="areaName" jdbcType="VARCHAR" />
+    <result column="classOneId" property="classOneId" jdbcType="INTEGER" />
+    <result column="classTwoId" property="classTwoId" jdbcType="INTEGER" />
+    <result column="classOne" property="classOne" jdbcType="VARCHAR" />
+    <result column="classTwo" property="classTwo" jdbcType="VARCHAR" />
+    <result column="spGroupName" property="spGroupName" jdbcType="VARCHAR" />
+    <result column="supplierName" property="supplierName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, itemBaseId, itemId, spGroupId, dayTime, turnover, maoli, fee, orderCount, quantity, 
+    updateTime, createTime, maxPrice, minPrice, averagePrice, cityId, cityName, areaId, areaName, spGroupName, supplierId, classOne, classTwo, classOneId, classTwoId
+  </sql>
+  
+  <select id="getDataGraph" resultType="com.zjjf.analysis.beans.analysis.items.PlantItemDailyVo" parameterType="java.util.Map">
+  	SELECT
+  	t1.`itemBaseId`, SUM(t1.`turnover`) AS "totalTurnover",sum(t1.`orderCount`) as "orderCount"
+  	FROM plantitem_daily t1
+  	<where>
+	      <if test="areaIdList != null and areaIdList != '' " >
+  		  	  and t1.areaId in 
+	          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="cityIdList != null and cityIdList != '' " >
+  		  	  and t1.cityId in 
+	          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="itemBaseIdList != null and itemBaseIdList.size() > 0 " >
+	 		  and t1.itemBaseId in 
+	          <foreach collection="itemBaseIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="spIdList != null and spIdList != '' " >
+  		  	  and t1.supplierId in 
+	          <foreach collection="spIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+		  <if test="areaId != null and areaId != '' " >
+	      	and t1.areaId = #{areaId}
+	      </if>
+	      <if test="cityId != null and cityId != '' " >
+	      	and t1.cityId = #{cityId}
+	      </if>
+		  <if test="supplierIdList != null and supplierIdList.size() > 0 " >
+	 		  and t1.`supplierId` in 
+	          <foreach collection="supplierIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	  	  <if test="selectClassifiOne != null and selectClassifiOne != '' " >
+	      	and t1.classOneId = #{selectClassifiOne}
+	      </if>
+	      <if test="selectClassifiTwo != null and selectClassifiTwo != '' " >
+	      	and t1.classTwoId = #{selectClassifiTwo}
+	      </if>
+	      <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+	      	and t1.dayTime &gt;= #{dayTimeBegin}
+	      </if>
+	      <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+	      	and t1.dayTime &lt;= #{dayTimeEnd}
+	      </if>
+	</where>
+  	GROUP BY t1.`itemBaseId`
+  	<if test="averageTurnover != null and averageTurnover != ''" >
+	         ${averageTurnover}
+		  </if>
+  	ORDER BY 
+  		<if test="order_by_column == 1">totalTurnover</if>
+  		<if test="order_by_column == 2">orderCount</if>
+  	DESC limit #{top}
+  </select>
+  
+  <select id="getByMap" resultType="com.zjjf.analysis.beans.analysis.items.PlantItemDaily" parameterType="java.util.Map">
+  	select
+  	<include refid="Base_Column_List"></include>
+  	from plantitem_daily
+  	<where>
+		<if test="itemBaseId != null">itemBaseId = #{itemBaseId}</if>
+		<if test="dayTimeBegin != null">dayTime &gt;= #{dayTimeBegin}</if>
+		<if test="dayTimeEnd != null">dayTime &lt;= #{dayTimeBegin}</if>
+  	</where>
+  </select>
+   
+   <select id="getData" resultType="com.zjjf.analysis.beans.analysis.items.PlantItemDailyVo" parameterType="java.util.Map" >
+      select 
+		  t1.`classTwoId`,
+		  t1.`classOneId`,
+		  sum(t1.`quantity`) as "quantity",
+		  sum(t1.`orderCount`) as "orderCount",
+		  sum(t1.`turnover`) as "totalTurnover",
+		  truncate((sum(t1.`turnover`)/sum(t1.`quantity`)), 2) as "averageTurnover",
+		  t1.`maxPrice`,
+		  t1.`minPrice`,
+		  t1.`averagePrice`,
+		  t1.itemBaseId
+		from
+		  plantitem_daily t1 
+		  <where>
+		      <if test="areaIdList != null and areaIdList != '' " >
+	  		  	  and t1.areaId in 
+		          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+		      <if test="cityIdList != null and cityIdList != '' " >
+	  		  	  and t1.cityId in 
+		          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+		      <if test="itemBaseIdList != null and itemBaseIdList.size() > 0 " >
+		 		  and t1.itemBaseId in 
+		          <foreach collection="itemBaseIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+		      <if test="spIdList != null and spIdList != '' " >
+	  		  	  and t1.supplierId in 
+		          <foreach collection="spIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+			  <if test="areaId != null and areaId != '' " >
+		      	and t1.areaId = #{areaId}
+		      </if>
+		      <if test="cityId != null and cityId != '' " >
+		      	and t1.cityId = #{cityId}
+		      </if>
+		      <if test="spGroupId != null and spGroupId != '' " >
+		      	and t1.spGroupId = #{spGroupId}
+		      </if>
+			  <if test="supplierIdList != null and supplierIdList.size() > 0 " >
+		 		  and t1.`supplierId` in 
+		          <foreach collection="supplierIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+		  	  <if test="selectClassifiOne != null and selectClassifiOne != '' " >
+		      	and t1.classOneId = #{selectClassifiOne}
+		      </if>
+		      <if test="selectClassifiTwo != null and selectClassifiTwo != '' " >
+		      	and t1.classTwoId = #{selectClassifiTwo}
+		      </if>
+		      <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+		      	and t1.dayTime &gt;= #{dayTimeBegin}
+		      </if>
+		      <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+		      	and t1.dayTime &lt;= #{dayTimeEnd}
+		      </if>
+		  </where>
+		  group by t1.`itemBaseId`
+		  <if test="averageTurnover != null and averageTurnover != ''" >
+	         ${averageTurnover}
+		  </if>
+   	   order by sum(t1.`quantity`) desc limit #{pageNo}, #{offset}
+  </select>
+	    		
+  <select id="getDataCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+	   select count(u.a) from (select 
+		  count(*) as a
+		from
+		  plantitem_daily t1 
+		  <where>
+		       <if test="areaIdList != null and areaIdList != '' " >
+	  		  	  and t1.areaId in 
+		          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+		      <if test="cityIdList != null and cityIdList != '' " >
+	  		  	  and t1.cityId in 
+		          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+		      <if test="itemBaseIdList != null and itemBaseIdList.size() > 0 " >
+		 		  and t1.itemBaseId in 
+		          <foreach collection="itemBaseIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+		      <if test="spIdList != null and spIdList != '' " >
+	  		  	  and t1.supplierId in 
+		          <foreach collection="spIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+			  <if test="areaId != null and areaId != '' " >
+		      	and t1.areaId = #{areaId}
+		      </if>
+		      <if test="cityId != null and cityId != '' " >
+		      	and t1.cityId = #{cityId}
+		      </if>
+		      <if test="spGroupId != null and spGroupId != '' " >
+		      	and t1.spGroupId = #{spGroupId}
+		      </if>
+		      <if test="supplierIdList != null and supplierIdList.size() > 0 " >
+		 		  and t1.`supplierId` in 
+		          <foreach collection="supplierIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+		  	  <if test="selectClassifiOne != null and selectClassifiOne != '' " >
+		      	and t1.classOneId = #{selectClassifiOne}
+		      </if>
+		      <if test="selectClassifiTwo != null and selectClassifiTwo != '' " >
+		      	and t1.classTwoId = #{selectClassifiTwo}
+		      </if>
+		      <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+		      	and t1.dayTime &gt;= #{dayTimeBegin}
+		      </if>
+		      <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+		      	and t1.dayTime &lt;= #{dayTimeEnd}
+		      </if>
+		  </where>
+		  group by t1.`itemBaseId`
+		  <if test="averageTurnover != null and averageTurnover != ''" >
+	         ${averageTurnover}
+		  </if>
+		  ) u
+  </select>
+  
+  <select id="getDataExcel" resultType="com.zjjf.analysis.beans.analysis.items.PlantItemDailyVo" parameterType="java.util.Map" >
+  	   select 
+		  t1.`classTwoId`,
+		  t1.`classOneId`,
+		  sum(t1.`quantity`) as "quantity",
+		  sum(t1.`orderCount`) as "orderCount",
+		  sum(t1.`turnover`) as "totalTurnover",
+		  truncate((sum(t1.`turnover`)/sum(t1.`quantity`)), 2) as "averageTurnover",
+		  t1.`maxPrice`,
+		  t1.`minPrice`,
+		  t1.`averagePrice`,
+		  t1.itemBaseId
+		from
+		  plantitem_daily t1 
+		  <where>
+		       <if test="areaIdList != null and areaIdList != '' " >
+	  		  	  and t1.areaId in 
+		          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+		      <if test="cityIdList != null and cityIdList != '' " >
+	  		  	  and t1.cityId in 
+		          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+		      <if test="itemBaseIdList != null and itemBaseIdList.size() > 0 " >
+		 		  and t1.itemBaseId in 
+		          <foreach collection="itemBaseIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+		      <if test="spIdList != null and spIdList != '' " >
+	  		  	  and t1.supplierId in 
+		          <foreach collection="spIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+			  <if test="areaId != null and areaId != '' " >
+		      	and t1.areaId = #{areaId}
+		      </if>
+		      <if test="cityId != null and cityId != '' " >
+		      	and t1.cityId = #{cityId}
+		      </if>
+		      <if test="spGroupId != null and spGroupId != '' " >
+		      	and t1.spGroupId = #{spGroupId}
+		      </if>
+		      <if test="supplierIdList != null and supplierIdList.size() > 0 " >
+		 		  and t1.`supplierId` in 
+		          <foreach collection="supplierIdList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		          </foreach> 
+		      </if>
+		  	  <if test="selectClassifiOne != null and selectClassifiOne != '' " >
+		      	and t1.classOneId = #{selectClassifiOne}
+		      </if>
+		      <if test="selectClassifiTwo != null and selectClassifiTwo != '' " >
+		      	and t1.classTwoId = #{selectClassifiTwo}
+		      </if>
+		      <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+		      	and t1.dayTime &gt;= #{dayTimeBegin}
+		      </if>
+		      <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+		      	and t1.dayTime &lt;= #{dayTimeEnd}
+		      </if>
+		  </where>
+		  group by t1.`itemBaseId`
+		  <if test="averageTurnover != null and averageTurnover != ''" >
+	         ${averageTurnover}
+		  </if>
+   	  order by sum(t1.`quantity`) desc limit 10000
+  </select>
+</mapper>

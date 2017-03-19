@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.ScmsStoreMgMapper">
+	<!-- 获取商铺信息，根据店主名字 -->
+	<select id="getListByContact" parameterType="com.corner.core.beans.ScmsStore"
+		resultType="java.util.Map">
+		select id,scode,name,contact,tel,mobile,address,suType from ScmsStore
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			status = '1' and isDelete = '0' and spId=#{spId}
+			<if test="name != null and name != ''">
+				and name like CONCAT('%',#{name},'%' )
+			</if>
+		</trim>
+	</select>
+
+	<!-- 获取商品信息，根据商品名字 -->
+	<select id="getItemBaseListByName" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		select id,mdseId,name,spec,measure,price from ItemBase
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			status = '1' and isDelete = '0' and id in (SELECT itemBaseId FROM
+			PlantItem where spId=#{spId} and isDelete = '0')
+			<if test="name != null and name != ''">
+				and (name like CONCAT('%',#{name},'%' ) or shortNm like
+				CONCAT('%',#{name},'%' ))
+			</if>
+		</trim>
+	</select>
+	<!-- 获取商品信息，根据商品名字 -->
+	<select id="findBySpidAndMobaile" parameterType="com.corner.core.beans.ScmsStore"
+		resultType="com.corner.core.beans.ScmsStore">
+		SELECT * FROM ScmsStore
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="spId != null and spId != ''">
+				and spId = #{spId}
+			</if>
+			<if test="ordId != null and ordId != ''">
+				and ordId = #{ordId}
+			</if>
+			<if test="name != null and name != ''">
+				and name = #{name}
+			</if>
+			<if test="contact != null and contact != ''">
+				and contact = #{contact}
+			</if>
+			<if test="address != null and address != ''">
+				and address = #{address}
+			</if>
+			<if test="mobile != null and mobile != ''">
+				and mobile = #{mobile}
+			</if>
+			and addTime in (SELECT MAX(addTime) FROM ScmsStore where mobile=
+			#{mobile} and spId = #{spId})
+		</trim>
+	</select>
+
+
+	<!--************************************************************************************************ -->
+
+
+	<!-- 获取客户条件 -->
+	<sql id="getPageList_condition">
+		ScmsStore ss inner join ScmsUserType st on (ss.suType=st.id) where 1=1
+		and ss.isDelete=0
+		<if test="nameOrTelphone != null">
+			and (ss.name like CONCAT('%','${nameOrTelphone}','%') or
+			ss.mobile like CONCAT('%','${nameOrTelphone}','%'))
+		</if>
+		<if test="spId != null">
+			and spId=#{spId}
+		</if>
+	</sql>
+
+	<!-- 获取列表 -->
+	<select id="getPageList" parameterType="com.corner.scms.beans.ro.ScmsStoreCondition"
+		resultType="com.corner.scms.beans.vo.ScmsStoreVo">
+		select ss.*,st.name as suTypeName from
+		<include refid="getPageList_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取列表 总记录数 -->
+	<select id="getPageListSize" parameterType="com.corner.scms.beans.ro.ScmsStoreCondition"
+		resultType="int">
+		select count(1) from
+		<include refid="getPageList_condition" />
+	</select>
+
+	<select id="getPageListDown" parameterType="com.corner.scms.beans.ro.ScmsStoreCondition"
+		resultType="com.corner.scms.beans.vo.StoreVo">
+		select * from
+
+		(select Store.*,StoreGroup.id as StoreGroupId,StoreGroup.name as GroupName
+		from Store inner join StoreGroupMember on
+		(Store.id=StoreGroupMember.storeId)
+		inner join StoreGroup on(StoreGroup.id=StoreGroupMember.storeGroupID) where
+		1=1
+		and Store.isDelete=0 and Store.status=1 and Store.spGroupId in (SELECT
+		SpGroupMap.groupId from SpGroupMap WHERE SpGroupMap.spId=#{spId}) and
+		StoreGroupMember.supplierId=#{spId}
+		union
+		select Store.*,null as GroupName,null as StoreGroupId from Store left join
+		StoreGroupMember on (Store.id=StoreGroupMember.storeId)
+		left join StoreGroup on(StoreGroup.id=StoreGroupMember.storeGroupID) where
+		1=1
+		and Store.isDelete=0 and Store.status=1 and Store.spGroupId in (SELECT
+		SpGroupMap.groupId from SpGroupMap WHERE SpGroupMap.spId=#{spId})
+		and Store.id not in (select StoreGroupMember.storeId from
+		StoreGroupMember where StoreGroupMember.supplierId=#{spId})) as b
+		where 1=1
+
+
+		<if test="gID!='' and gID!=null">
+			and b.StoreGroupId like CONCAT('%','${gID}','%')
+		</if>
+		<if test="from==0">
+			and (b.fromWho=#{from} or b.fromWho=2)
+		</if>
+		<if test="from==1">
+			and b.fromWho=#{from}
+		</if>
+		<if test="nameOrTelphone!=null">
+			and (b.name like CONCAT('%','${nameOrTelphone}','%') or b.mobile like
+			CONCAT('%','${nameOrTelphone}','%'))
+		</if>
+
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+
+
+	<select id="getPageListSizeDown" parameterType="com.corner.scms.beans.ro.ScmsStoreCondition"
+		resultType="int">
+		select count(*) from
+
+		(select Store.*,StoreGroup.name as GroupName from Store inner join
+		StoreGroupMember on (Store.id=StoreGroupMember.storeId)
+		inner join StoreGroup on(StoreGroup.id=StoreGroupMember.storeGroupID) where
+		1=1
+		and Store.isDelete=0 and Store.status=1 and Store.spGroupId in (SELECT
+		SpGroupMap.groupId from SpGroupMap WHERE SpGroupMap.spId=#{spId}) and
+		StoreGroupMember.supplierId=#{spId}
+		union
+		select Store.*,null as GroupName from Store left join StoreGroupMember on
+		(Store.id=StoreGroupMember.storeId)
+		left join StoreGroup on(StoreGroup.id=StoreGroupMember.storeGroupID) where
+		1=1
+		and Store.isDelete=0 and Store.status=1 and Store.spGroupId in (SELECT
+		SpGroupMap.groupId from SpGroupMap WHERE SpGroupMap.spId=#{spId})
+		and Store.id not in (select StoreGroupMember.storeId from
+		StoreGroupMember where StoreGroupMember.supplierId=#{spId})) as b
+		where 1=1
+
+
+		<if test="gID!='' and gID!=null">
+			and b.id like CONCAT('%','${gID}','%')
+		</if>
+		<if test="from==0">
+			and (b.fromWho=#{from} or b.fromWho=2)
+		</if>
+		<if test="from==1">
+			and b.fromWho=#{from}
+		</if>
+		<if test="nameOrTelphone!=null">
+			and (b.name like CONCAT('%','${nameOrTelphone}','%') or b.mobile like
+			CONCAT('%','${nameOrTelphone}','%'))
+		</if>
+	</select>
+
+	<select id="findById" parameterType="java.lang.Integer"
+		resultType="com.corner.scms.beans.vo.ScmsStoreVo">
+		select * from ScmsStore where id=#{id}
+	</select>
+
+	<!-- 删除 -->
+	<update id="deleteById" parameterType="java.lang.Integer">
+		update ScmsStore set isDelete=1 where id=#{id}
+	</update>
+
+</mapper>

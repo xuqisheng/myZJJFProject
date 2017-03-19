@@ -1,0 +1,1000 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.rpc.salesman.dao.ShopMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.rpc.salesman.model.Shop" >
+    <id column="shopId" property="shopId" jdbcType="VARCHAR" />
+    <result column="groupId" property="groupId" jdbcType="VARCHAR" />
+    <result column="shopNo" property="shopNo" jdbcType="VARCHAR" />
+    <result column="shopName" property="shopName" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="shopAddress" property="shopAddress" jdbcType="VARCHAR" />
+    <result column="shopLicense" property="shopLicense" jdbcType="VARCHAR" />
+    <result column="shopType" property="shopType" jdbcType="VARCHAR" />
+    <result column="shopTypeName" property="shopTypeName" jdbcType="VARCHAR" />
+    <result column="isMultipleShop" property="isMultipleShop" jdbcType="INTEGER" />
+    <result column="shopArea" property="shopArea" jdbcType="VARCHAR" />
+    <result column="sku" property="sku" jdbcType="VARCHAR" />
+    <result column="staffNum" property="staffNum" jdbcType="VARCHAR" />
+    <result column="DistributionNum" property="distributionNum" jdbcType="VARCHAR" />
+    <result column="turnover" property="turnover" jdbcType="VARCHAR" />
+    <result column="mainProduct" property="mainProduct" jdbcType="VARCHAR" />
+    <result column="saleRatio" property="saleRatio" jdbcType="INTEGER" />
+    <result column="dcShop" property="dcShop" jdbcType="VARCHAR" />
+    <result column="baccyLicence" property="baccyLicence" jdbcType="INTEGER" />
+    <result column="isPos" property="isPos" jdbcType="INTEGER" />
+    <result column="isComputer" property="isComputer" jdbcType="INTEGER" />
+    <result column="isWifi" property="isWifi" jdbcType="INTEGER" />
+    <result column="ipay" property="ipay" jdbcType="VARCHAR" />
+    <result column="otherPatform" property="otherPatform" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="userId" property="userId" jdbcType="VARCHAR" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="startShopHours" property="startShopHours" jdbcType="VARCHAR" />
+    <result column="endShopHours" property="endShopHours" jdbcType="VARCHAR" />
+    <result column="isDelete" property="isDelete" jdbcType="INTEGER" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="longitude" property="longitude" jdbcType="DOUBLE" />
+    <result column="latitude" property="latitude" jdbcType="DOUBLE" />
+    <result column="salesmanId" property="salesmanId" jdbcType="VARCHAR" />
+    <result column="salesmanName" property="salesmanName" jdbcType="VARCHAR" />
+    <result column="picUrl" property="picUrl" jdbcType="VARCHAR" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="spGroupName" property="spGroupName" jdbcType="VARCHAR" />
+    <result column="bossName" property="bossName" jdbcType="VARCHAR" />
+    <result column="bossTel" property="bossTel" jdbcType="VARCHAR" />
+    <result column="registerTel" property="registerTel" jdbcType="VARCHAR" />
+    <result column="isRegister" property="isRegister" jdbcType="CHAR" />
+    <result column="markLine" property="markLine" jdbcType="VARCHAR" />
+    <result column="shopAdderss" property="shopAdderss" jdbcType="VARCHAR" />
+    <result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="lineId" property="lineId" jdbcType="VARCHAR" />
+    <result column="lineName" property="lineName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    shopId, groupId, shopNo, shopName, telephone, shopAddress, shopLicense, shopType, 
+    isMultipleShop, shopArea, sku, staffNum, DistributionNum, turnover, mainProduct, 
+    saleRatio, dcShop, baccyLicence, isPos, isComputer, isWifi, ipay, otherPatform, remarks, 
+    userId, userName, startShopHours, endShopHours, isDelete, createTime, updateTime, 
+    createBy, updateBy, province, city, area, longitude, latitude, salesmanId, salesmanName, 
+    picUrl, spGroupId, spGroupName, bossName, bossTel, registerTel, isRegister, markLine, 
+    shopAdderss, provinceId, cityId, areaId
+  </sql>
+  
+  <select id="getMyShopLineList" resultType="java.util.HashMap"  parameterType="java.lang.String">
+  		select lineId,lineName from tbl_line_plans_t where salesmanId=#{salesmanId} ORDER BY lineName ASC
+  </select>
+  
+  <select id="getShopSiteList" resultType="java.util.HashMap" parameterType="com.corner.rpc.salesman.model.Shop">
+	SELECT
+		IFNULL(t.latitude, 0) AS latitude,
+		IFNULL(t.longitude, 0) AS longitude,
+		IFNULL(t.isRegister, '0') AS isRegister,
+		t.shopName,
+		t.shopType,
+		t.shopAddress,
+		t.shopId
+	FROM
+		tbl_shop_t t
+	INNER JOIN tbl_line_shop_mapper_t lsm ON lsm.shopNo = t.shopNo
+	LEFT JOIN tbl_line_plans_t lp ON lp.lineId = lsm.lineId
+	LEFT JOIN tbl_shop_visit_record_t svr ON svr.shopNo = t.shopNo
+	where 1=1 
+  	 	<if test="lineId != null and lineId !='' and lineId !='ALL'">
+			AND lp.lineId = #{lineId,jdbcType=VARCHAR}
+		</if>
+  	 	<if test="deptId != null and deptId !=''">
+			AND lp.deptId = #{deptId,jdbcType=VARCHAR}
+		</if>
+		<if test="salesmanId != null and salesmanId !='' and salesmanId !='ALL'">
+			and t.salesmanId=#{salesmanId,jdbcType=VARCHAR}
+		</if>
+		<if test="shopNo != null and shopNo !='' and shopNo !='ALL'">
+			AND t.shopNo = #{shopNo,jdbcType=VARCHAR}
+		</if>
+		<if test="status != null and status !='' and status !='ALL'">
+			AND svr.status = #{status,jdbcType=VARCHAR}
+		</if> 
+		<if test="isRegister != null and isRegister !='' and isRegister !='ALL'">
+			AND t.isRegister = #{isRegister,jdbcType=VARCHAR}
+		</if> 
+		<if test="shopType != null and shopType !='' and shopType !='ALL'">
+			AND t.shopType = #{shopType,jdbcType=VARCHAR}
+		</if> 
+  </select>
+  
+  <select id="getMyShopList" resultMap="BaseResultMap" parameterType="com.corner.rpc.salesman.model.Shop">
+	SELECT
+		t.shopId,
+		t.shopNo,
+		t.shopName,
+		t.shopAddress,
+		IFNULL(svr.`status`, 0) AS `status`,
+		lsm.lineId,
+		lp.lineName,
+		t.salesmanId,
+		'1' AS optType
+	FROM
+		tbl_shop_t t
+	INNER JOIN tbl_line_shop_mapper_t lsm ON lsm.shopNo = t.shopNo
+	INNER JOIN tbl_line_plans_t lp ON lp.lineId = lsm.lineId
+	<if test="lineId != null and lineId !='' and lineId !='ALL'">
+		AND lp.lineId = #{lineId,jdbcType=VARCHAR}
+	</if>
+	LEFT JOIN tbl_shop_visit_record_t svr ON svr.shopNo = t.shopNo
+	 AND DATE_FORMAT(svr.visitDate, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')
+	<if test="status != null and status !='' and status !='ALL'">
+		AND svr.status = #{status,jdbcType=VARCHAR}
+	</if> 
+	LEFT JOIN tbl_user_dept_t ud ON ud.userId = t.salesmanId
+  	<if test="deptId != null and deptId !=''">
+		AND ud.deptId = #{deptId,jdbcType=VARCHAR}
+	</if>
+	INNER JOIN tbl_week_plans_mapper_t tt on tt.lineId=lp.lineId and tt.`week`=#{week}
+	WHERE 1 = 1 
+  	 	<if test="lineId != null and lineId !='' and lineId !='ALL'">
+			AND lp.lineId = #{lineId,jdbcType=VARCHAR}
+		</if>
+  	 	<if test="deptId != null and deptId !=''">
+			AND ud.deptId = #{deptId,jdbcType=VARCHAR}
+		</if>
+		<if test="salesmanId != null and salesmanId !='' and salesmanId !='ALL'">
+			and t.salesmanId=#{salesmanId,jdbcType=VARCHAR}
+		</if>
+		<if test="shopNo != null and shopNo !='' and shopNo !='ALL'">
+			AND t.shopNo = #{shopNo,jdbcType=VARCHAR}
+		</if>
+		<if test="status != null and status !='' and status !='ALL'">
+			AND svr.status = #{status,jdbcType=VARCHAR}
+		</if> 
+		<if test="isRegister != null and isRegister !='' and isRegister !='ALL'">
+			AND t.isRegister = #{isRegister,jdbcType=VARCHAR}
+		</if> 
+		<if test="shopType != null and shopType !='' and shopType !='ALL'">
+			AND t.shopType = #{shopType,jdbcType=VARCHAR}
+		</if> 
+  
+     UNION
+     
+	SELECT
+		t.shopId,
+		t.shopNo,
+		t.shopName,
+		t.shopAddress,
+		IFNULL(svr.`status`, 0) AS `status`,
+		lsm.lineId,
+		lp.lineName,
+		t.salesmanId,
+		'0' AS optType
+	FROM
+		tbl_shop_t t
+	LEFT JOIN tbl_line_shop_mapper_t lsm ON lsm.shopNo = t.shopNo
+	LEFT JOIN tbl_line_plans_t lp ON lp.lineId = lsm.lineId
+	<if test="lineId != null and lineId !='' and lineId !='ALL'">
+		AND lp.lineId = #{lineId,jdbcType=VARCHAR}
+	</if>
+	LEFT JOIN tbl_shop_visit_record_t svr ON svr.shopNo = t.shopNo 
+	<if test="status != null and status !='' and status !='ALL'">
+		AND svr.status = #{status,jdbcType=VARCHAR}
+	</if> 
+	 AND DATE_FORMAT(svr.visitDate, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')
+	LEFT JOIN tbl_user_dept_t ud ON ud.userId = t.salesmanId
+ 	<if test="deptId != null and deptId !=''">
+		AND ud.deptId = #{deptId,jdbcType=VARCHAR}
+	</if>
+	where 1=1 
+  	 	<if test="lineId != null and lineId !='' and lineId !='ALL'">
+			AND lp.lineId = #{lineId,jdbcType=VARCHAR}
+		</if>
+  	 	<if test="deptId != null and deptId !=''">
+			AND ud.deptId = #{deptId,jdbcType=VARCHAR}
+		</if>
+		<if test="salesmanId != null and salesmanId !='' and salesmanId !='ALL'">
+			and t.salesmanId=#{salesmanId,jdbcType=VARCHAR}
+		</if>
+		<if test="shopNo != null and shopNo !='' and shopNo !='ALL'">
+			AND t.shopNo = #{shopNo,jdbcType=VARCHAR}
+		</if>
+		<if test="status != null and status !='' and status !='ALL'">
+			AND svr.status = #{status,jdbcType=VARCHAR}
+		</if> 
+		<if test="isRegister != null and isRegister !='' and isRegister !='ALL'">
+			AND t.isRegister = #{isRegister,jdbcType=VARCHAR}
+		</if> 
+		<if test="shopType != null and shopType !='' and shopType !='ALL'">
+			AND t.shopType = #{shopType,jdbcType=VARCHAR}
+		</if> 
+		AND t.shopNo not in(
+			SELECT
+				t.shopNo
+			FROM
+				tbl_shop_t t
+			INNER JOIN tbl_line_shop_mapper_t lsm ON lsm.shopNo = t.shopNo
+			INNER JOIN tbl_line_plans_t lp ON lp.lineId = lsm.lineId
+	  	 	<if test="lineId != null and lineId !='' and lineId !='ALL'">
+				AND lp.lineId = #{lineId,jdbcType=VARCHAR}
+			</if>
+			LEFT JOIN tbl_user_dept_t ud ON ud.userId = t.salesmanId
+	  	 	<if test="deptId != null and deptId !=''">
+				AND ud.deptId = #{deptId,jdbcType=VARCHAR}
+			</if>
+			INNER JOIN tbl_week_plans_mapper_t tt on tt.lineId=lp.lineId and tt.`week`= #{week}
+			WHERE 1 = 1
+		  	 	<if test="lineId != null and lineId !='' and lineId !='ALL'">
+					AND lp.lineId = #{lineId,jdbcType=VARCHAR}
+				</if>
+		  	 	<if test="deptId != null and deptId !=''">
+					AND ud.deptId = #{deptId,jdbcType=VARCHAR}
+				</if>
+				<if test="salesmanId != null and salesmanId !='' and salesmanId !='ALL'">
+					and t.salesmanId=#{salesmanId,jdbcType=VARCHAR}
+				</if>
+				<if test="shopNo != null and shopNo !='' and shopNo !='ALL'">
+					AND t.shopNo = #{shopNo,jdbcType=VARCHAR}
+				</if>
+				<if test="isRegister != null and isRegister !='' and isRegister !='ALL'">
+					AND t.isRegister = #{isRegister,jdbcType=VARCHAR}
+				</if> 
+				<if test="shopType != null and shopType !='' and shopType !='ALL'">
+					AND t.shopType = #{shopType,jdbcType=VARCHAR}
+				</if> 
+		) GROUP BY t.shopNo
+  </select>
+  
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+  select 
+	    t.shopId, t.groupId, t.shopNo, t.shopName, t.telephone, t.shopAddress, t.shopLicense, t.shopType, dic.label as shopTypeName,
+	    t.isMultipleShop, 
+	    	CASE
+				WHEN t.shopArea IS NULL OR t.shopArea = '' THEN '0'
+				ELSE IFNULL(t.shopArea, '0')
+			END AS shopArea,
+	    	CASE
+				WHEN t.sku IS NULL OR t.sku = '' THEN '0'
+				ELSE IFNULL(t.sku, '0')
+			END AS sku,
+	    	CASE
+				WHEN t.staffNum IS NULL OR t.staffNum = '' THEN '0'
+				ELSE IFNULL(t.staffNum, '0')
+			END AS staffNum,
+	    	CASE
+				WHEN t.DistributionNum IS NULL OR t.DistributionNum = '' THEN '0'
+				ELSE IFNULL(t.DistributionNum, '0')
+			END AS DistributionNum,
+	    	CASE
+				WHEN t.turnover IS NULL OR t.turnover = '' THEN '0'
+				ELSE IFNULL(t.turnover, '0')
+			END AS turnover, t.mainProduct, 
+	    t.saleRatio, t.dcShop, t.baccyLicence, t.isPos, t.isComputer, t.isWifi, t.ipay, t.otherPatform, t.remarks, 
+	    t.userId, t.salesmanId, t.startShopHours, t.endShopHours, t.isDelete, t.createTime, t.updateTime, 
+	    t.createBy, t.updateBy, t.province,t.provinceId, t.city,t.cityId,t.area,t.areaId, t.longitude, t.latitude,
+	    t.picUrl,t.spGroupId,t.spGroupName,t.bossName,t.bossTel,t.registerTel,t.isRegister,t.markLine,
+	    ls.lineId,tb.lineName,n.userName as salesmanName,n.mobile as salesmanTel
+    from tbl_shop_t t 
+    LEFT JOIN tbl_dict_t dic on dic.type='shop_type' and dic.`value`=shopType
+    LEFT JOIN tbl_line_shop_mapper_t ls on ls.shopNo = t.shopNo
+		LEFT JOIN tbl_line_plans_t tb on  ls.lineId=tb.lineId
+		LEFT JOIN salesman n on n.id=t.salesmanId
+    where t.shopId = #{shopId,jdbcType=VARCHAR}
+    <if test="lineId !=null and lineId !=''">
+    	AND ls.lineId=#{lineId,jdbcType=VARCHAR}
+    </if>
+    LIMIT 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tbl_shop_t
+    where shopId = #{shopId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.rpc.salesman.model.Shop" >
+    insert into tbl_shop_t (shopId, groupId, shopNo, 
+      shopName, telephone, shopAddress, 
+      shopLicense, shopType, isMultipleShop, 
+      shopArea, sku, staffNum, 
+      DistributionNum, turnover, mainProduct, 
+      saleRatio, dcShop, baccyLicence, 
+      isPos, isComputer, isWifi, 
+      ipay, otherPatform, remarks, 
+      userId, userName, startShopHours, 
+      endShopHours, isDelete, createTime, 
+      updateTime, createBy, updateBy, 
+      province, city, area, 
+      longitude, latitude, salesmanId, 
+      salesmanName, picUrl, spGroupId, 
+      spGroupName, bossName, bossTel, 
+      registerTel, isRegister, markLine, 
+      shopAdderss, provinceId, cityId, 
+      areaId)
+    values (#{shopId,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{shopNo,jdbcType=VARCHAR}, 
+      #{shopName,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{shopAddress,jdbcType=VARCHAR}, 
+      #{shopLicense,jdbcType=VARCHAR}, #{shopType,jdbcType=VARCHAR}, #{isMultipleShop,jdbcType=INTEGER}, 
+      #{shopArea,jdbcType=VARCHAR}, #{sku,jdbcType=VARCHAR}, #{staffNum,jdbcType=VARCHAR}, 
+      #{distributionNum,jdbcType=VARCHAR}, #{turnover,jdbcType=VARCHAR}, #{mainProduct,jdbcType=VARCHAR}, 
+      #{saleRatio,jdbcType=INTEGER}, #{dcShop,jdbcType=VARCHAR}, #{baccyLicence,jdbcType=INTEGER}, 
+      #{isPos,jdbcType=INTEGER}, #{isComputer,jdbcType=INTEGER}, #{isWifi,jdbcType=INTEGER}, 
+      #{ipay,jdbcType=VARCHAR}, #{otherPatform,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{startShopHours,jdbcType=VARCHAR}, 
+      #{endShopHours,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, 
+      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, 
+      #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, #{salesmanId,jdbcType=VARCHAR}, 
+      #{salesmanName,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR}, #{spGroupId,jdbcType=INTEGER}, 
+      #{spGroupName,jdbcType=VARCHAR}, #{bossName,jdbcType=VARCHAR}, #{bossTel,jdbcType=VARCHAR}, 
+      #{registerTel,jdbcType=VARCHAR}, #{isRegister,jdbcType=CHAR}, #{markLine,jdbcType=VARCHAR}, 
+      #{shopAdderss,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, 
+      #{areaId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.rpc.salesman.model.Shop" >
+    insert into tbl_shop_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="shopId != null" >
+        shopId,
+      </if>
+      <if test="groupId != null" >
+        groupId,
+      </if>
+      <if test="shopNo != null" >
+        shopNo,
+      </if>
+      <if test="shopName != null" >
+        shopName,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+      <if test="shopAddress != null" >
+        shopAddress,
+      </if>
+      <if test="shopLicense != null" >
+        shopLicense,
+      </if>
+      <if test="shopType != null" >
+        shopType,
+      </if>
+      <if test="isMultipleShop != null" >
+        isMultipleShop,
+      </if>
+      <if test="shopArea != null" >
+        shopArea,
+      </if>
+      <if test="sku != null" >
+        sku,
+      </if>
+      <if test="staffNum != null" >
+        staffNum,
+      </if>
+      <if test="distributionNum != null" >
+        DistributionNum,
+      </if>
+      <if test="turnover != null" >
+        turnover,
+      </if>
+      <if test="mainProduct != null" >
+        mainProduct,
+      </if>
+      <if test="saleRatio != null" >
+        saleRatio,
+      </if>
+      <if test="dcShop != null" >
+        dcShop,
+      </if>
+      <if test="baccyLicence != null" >
+        baccyLicence,
+      </if>
+      <if test="isPos != null" >
+        isPos,
+      </if>
+      <if test="isComputer != null" >
+        isComputer,
+      </if>
+      <if test="isWifi != null" >
+        isWifi,
+      </if>
+      <if test="ipay != null" >
+        ipay,
+      </if>
+      <if test="otherPatform != null" >
+        otherPatform,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="userName != null" >
+        userName,
+      </if>
+      <if test="startShopHours != null" >
+        startShopHours,
+      </if>
+      <if test="endShopHours != null" >
+        endShopHours,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="createBy != null" >
+        createBy,
+      </if>
+      <if test="updateBy != null" >
+        updateBy,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="longitude != null" >
+        longitude,
+      </if>
+      <if test="latitude != null" >
+        latitude,
+      </if>
+      <if test="salesmanId != null" >
+        salesmanId,
+      </if>
+      <if test="salesmanName != null" >
+        salesmanName,
+      </if>
+      <if test="picUrl != null" >
+        picUrl,
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId,
+      </if>
+      <if test="spGroupName != null" >
+        spGroupName,
+      </if>
+      <if test="bossName != null" >
+        bossName,
+      </if>
+      <if test="bossTel != null" >
+        bossTel,
+      </if>
+      <if test="registerTel != null" >
+        registerTel,
+      </if>
+      <if test="isRegister != null" >
+        isRegister,
+      </if>
+      <if test="markLine != null" >
+        markLine,
+      </if>
+      <if test="shopAdderss != null" >
+        shopAdderss,
+      </if>
+      <if test="provinceId != null" >
+        provinceId,
+      </if>
+      <if test="cityId != null" >
+        cityId,
+      </if>
+      <if test="areaId != null" >
+        areaId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="shopId != null" >
+        #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopNo != null" >
+        #{shopNo,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="shopAddress != null" >
+        #{shopAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="shopLicense != null" >
+        #{shopLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="shopType != null" >
+        #{shopType,jdbcType=VARCHAR},
+      </if>
+      <if test="isMultipleShop != null" >
+        #{isMultipleShop,jdbcType=INTEGER},
+      </if>
+      <if test="shopArea != null" >
+        #{shopArea,jdbcType=VARCHAR},
+      </if>
+      <if test="sku != null" >
+        #{sku,jdbcType=VARCHAR},
+      </if>
+      <if test="staffNum != null" >
+        #{staffNum,jdbcType=VARCHAR},
+      </if>
+      <if test="distributionNum != null" >
+        #{distributionNum,jdbcType=VARCHAR},
+      </if>
+      <if test="turnover != null" >
+        #{turnover,jdbcType=VARCHAR},
+      </if>
+      <if test="mainProduct != null" >
+        #{mainProduct,jdbcType=VARCHAR},
+      </if>
+      <if test="saleRatio != null" >
+        #{saleRatio,jdbcType=INTEGER},
+      </if>
+      <if test="dcShop != null" >
+        #{dcShop,jdbcType=VARCHAR},
+      </if>
+      <if test="baccyLicence != null" >
+        #{baccyLicence,jdbcType=INTEGER},
+      </if>
+      <if test="isPos != null" >
+        #{isPos,jdbcType=INTEGER},
+      </if>
+      <if test="isComputer != null" >
+        #{isComputer,jdbcType=INTEGER},
+      </if>
+      <if test="isWifi != null" >
+        #{isWifi,jdbcType=INTEGER},
+      </if>
+      <if test="ipay != null" >
+        #{ipay,jdbcType=VARCHAR},
+      </if>
+      <if test="otherPatform != null" >
+        #{otherPatform,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="startShopHours != null" >
+        #{startShopHours,jdbcType=VARCHAR},
+      </if>
+      <if test="endShopHours != null" >
+        #{endShopHours,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="salesmanId != null" >
+        #{salesmanId,jdbcType=VARCHAR},
+      </if>
+      <if test="salesmanName != null" >
+        #{salesmanName,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null" >
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="spGroupId != null" >
+        #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="spGroupName != null" >
+        #{spGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="bossName != null" >
+        #{bossName,jdbcType=VARCHAR},
+      </if>
+      <if test="bossTel != null" >
+        #{bossTel,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTel != null" >
+        #{registerTel,jdbcType=VARCHAR},
+      </if>
+      <if test="isRegister != null" >
+        #{isRegister,jdbcType=CHAR},
+      </if>
+      <if test="markLine != null" >
+        #{markLine,jdbcType=VARCHAR},
+      </if>
+      <if test="shopAdderss != null" >
+        #{shopAdderss,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.rpc.salesman.model.Shop" >
+    update tbl_shop_t
+    <set >
+      <if test="groupId != null" >
+        groupId = #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopNo != null" >
+        shopNo = #{shopNo,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        shopName = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="shopAddress != null" >
+        shopAddress = #{shopAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="shopLicense != null" >
+        shopLicense = #{shopLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="shopType != null" >
+        shopType = #{shopType,jdbcType=VARCHAR},
+      </if>
+      <if test="isMultipleShop != null" >
+        isMultipleShop = #{isMultipleShop,jdbcType=INTEGER},
+      </if>
+      <if test="shopArea != null" >
+        shopArea = #{shopArea,jdbcType=VARCHAR},
+      </if>
+      <if test="sku != null" >
+        sku = #{sku,jdbcType=VARCHAR},
+      </if>
+      <if test="staffNum != null" >
+        staffNum = #{staffNum,jdbcType=VARCHAR},
+      </if>
+      <if test="distributionNum != null" >
+        DistributionNum = #{distributionNum,jdbcType=VARCHAR},
+      </if>
+      <if test="turnover != null" >
+        turnover = #{turnover,jdbcType=VARCHAR},
+      </if>
+      <if test="mainProduct != null" >
+        mainProduct = #{mainProduct,jdbcType=VARCHAR},
+      </if>
+      <if test="saleRatio != null" >
+        saleRatio = #{saleRatio,jdbcType=INTEGER},
+      </if>
+      <if test="dcShop != null" >
+        dcShop = #{dcShop,jdbcType=VARCHAR},
+      </if>
+      <if test="baccyLicence != null" >
+        baccyLicence = #{baccyLicence,jdbcType=INTEGER},
+      </if>
+      <if test="isPos != null" >
+        isPos = #{isPos,jdbcType=INTEGER},
+      </if>
+      <if test="isComputer != null" >
+        isComputer = #{isComputer,jdbcType=INTEGER},
+      </if>
+      <if test="isWifi != null" >
+        isWifi = #{isWifi,jdbcType=INTEGER},
+      </if>
+      <if test="ipay != null" >
+        ipay = #{ipay,jdbcType=VARCHAR},
+      </if>
+      <if test="otherPatform != null" >
+        otherPatform = #{otherPatform,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        userId = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        userName = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="startShopHours != null" >
+        startShopHours = #{startShopHours,jdbcType=VARCHAR},
+      </if>
+      <if test="endShopHours != null" >
+        endShopHours = #{endShopHours,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        createBy = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null" >
+        updateBy = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        longitude = #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null" >
+        latitude = #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="salesmanId != null" >
+        salesmanId = #{salesmanId,jdbcType=VARCHAR},
+      </if>
+      <if test="salesmanName != null" >
+        salesmanName = #{salesmanName,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null" >
+        picUrl = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId = #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="spGroupName != null" >
+        spGroupName = #{spGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="bossName != null" >
+        bossName = #{bossName,jdbcType=VARCHAR},
+      </if>
+      <if test="bossTel != null" >
+        bossTel = #{bossTel,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTel != null" >
+        registerTel = #{registerTel,jdbcType=VARCHAR},
+      </if>
+      <if test="isRegister != null" >
+        isRegister = #{isRegister,jdbcType=CHAR},
+      </if>
+      <if test="markLine != null" >
+        markLine = #{markLine,jdbcType=VARCHAR},
+      </if>
+      <if test="shopAdderss != null" >
+        shopAdderss = #{shopAdderss,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        provinceId = #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        cityId = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        areaId = #{areaId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where shopId = #{shopId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.rpc.salesman.model.Shop" >
+    update tbl_shop_t
+    set groupId = #{groupId,jdbcType=VARCHAR},
+      shopNo = #{shopNo,jdbcType=VARCHAR},
+      shopName = #{shopName,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      shopAddress = #{shopAddress,jdbcType=VARCHAR},
+      shopLicense = #{shopLicense,jdbcType=VARCHAR},
+      shopType = #{shopType,jdbcType=VARCHAR},
+      isMultipleShop = #{isMultipleShop,jdbcType=INTEGER},
+      shopArea = #{shopArea,jdbcType=VARCHAR},
+      sku = #{sku,jdbcType=VARCHAR},
+      staffNum = #{staffNum,jdbcType=VARCHAR},
+      DistributionNum = #{distributionNum,jdbcType=VARCHAR},
+      turnover = #{turnover,jdbcType=VARCHAR},
+      mainProduct = #{mainProduct,jdbcType=VARCHAR},
+      saleRatio = #{saleRatio,jdbcType=INTEGER},
+      dcShop = #{dcShop,jdbcType=VARCHAR},
+      baccyLicence = #{baccyLicence,jdbcType=INTEGER},
+      isPos = #{isPos,jdbcType=INTEGER},
+      isComputer = #{isComputer,jdbcType=INTEGER},
+      isWifi = #{isWifi,jdbcType=INTEGER},
+      ipay = #{ipay,jdbcType=VARCHAR},
+      otherPatform = #{otherPatform,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      userId = #{userId,jdbcType=VARCHAR},
+      userName = #{userName,jdbcType=VARCHAR},
+      startShopHours = #{startShopHours,jdbcType=VARCHAR},
+      endShopHours = #{endShopHours,jdbcType=VARCHAR},
+      isDelete = #{isDelete,jdbcType=INTEGER},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      createBy = #{createBy,jdbcType=VARCHAR},
+      updateBy = #{updateBy,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=DOUBLE},
+      latitude = #{latitude,jdbcType=DOUBLE},
+      salesmanId = #{salesmanId,jdbcType=VARCHAR},
+      salesmanName = #{salesmanName,jdbcType=VARCHAR},
+      picUrl = #{picUrl,jdbcType=VARCHAR},
+      spGroupId = #{spGroupId,jdbcType=INTEGER},
+      spGroupName = #{spGroupName,jdbcType=VARCHAR},
+      bossName = #{bossName,jdbcType=VARCHAR},
+      bossTel = #{bossTel,jdbcType=VARCHAR},
+      registerTel = #{registerTel,jdbcType=VARCHAR},
+      isRegister = #{isRegister,jdbcType=CHAR},
+      markLine = #{markLine,jdbcType=VARCHAR},
+      shopAdderss = #{shopAdderss,jdbcType=VARCHAR},
+      provinceId = #{provinceId,jdbcType=INTEGER},
+      cityId = #{cityId,jdbcType=INTEGER},
+      areaId = #{areaId,jdbcType=INTEGER}
+    where shopId = #{shopId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="bacthBindShop" parameterType="com.corner.rpc.salesman.model.Shop" >
+    update tbl_shop_t
+    set salesmanId = #{salesmanId,jdbcType=VARCHAR},
+    updateBy = #{updateBy,jdbcType=VARCHAR},
+    updateTime = now()
+    where shopNo in(${shopIds})
+  </update>
+  
+  <update id="updateShopCoordinate" parameterType="java.util.HashMap">
+    update tbl_shop_t
+       set latitude = #{latitude},longitude = #{longitude}
+     where (latitude is NULL or longitude is NULL)  
+       and shopNo = #{shopNo}
+  </update>
+  
+	<select id="checkShopIsExist" parameterType="java.lang.String" resultType="int">
+		select count(1) from tbl_shop_t t where t.shopNo = #{shopNo}
+	</select>
+	
+  <select id="findShopListByUserId" resultMap="BaseResultMap">
+	SELECT
+		t.shopName,
+		t.shopAddress,
+		t.salesmanId,
+		t.salesmanName,
+		t.shopId	
+	FROM
+		tbl_shop_t t
+	WHERE
+	 t.salesmanId = #{userId,jdbcType=VARCHAR}
+	 <if test="deptId !=null and deptId!=''">
+	 	 or t.salesmanId in(
+			SELECT ud.userId FROM tbl_user_dept_t ud WHERE ud.deptId = #{deptId,jdbcType=VARCHAR}
+		)
+	 </if>
+	 ORDER BY t.updateTime desc
+  </select>
+  
+  <select id="getSpGroupAndLineName" resultType="java.util.HashMap" parameterType="java.lang.String">
+	SELECT DISTINCT
+		sp.spGroupName,
+		sgl.line AS lineName
+ 		<!-- CONCAT('线路',sgl.line) AS lineName -->
+	FROM
+		tbl_line_shop_mapper_t lsm
+	INNER JOIN tbl_sp_group_line_t sgl ON lsm.lineId = sgl.lineId
+	INNER JOIN tbl_sp_group_t sp ON sp.spGroupId = sgl.spGroupId
+	WHERE
+		lsm.shopNo = #{shopNo,jdbcType=VARCHAR}
+	LIMIT 1
+  </select>
+  
+  <select id="getShopByLineId" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+	SELECT DISTINCT
+		t.shopNo,
+		t.shopName
+	FROM
+		tbl_shop_t t
+	INNER JOIN tbl_line_shop_mapper_t ls ON t.shopNo = ls.shopNo
+	WHERE ls.lineId = #{lineId,jdbcType=VARCHAR}
+	 <if test="salesmanId != null and salesmanId !=''" >
+	 	and t.salesmanId = #{salesmanId,jdbcType=VARCHAR}
+	 </if>
+  </select>
+
+  <select id="queryAddToShopList" resultType="com.corner.rpc.salesman.model.Shop" parameterType="java.util.HashMap">
+	SELECT
+	    id AS storeId,
+		provinceId,
+		cityId,
+		areaId,
+		province,
+		city,
+		area,
+		supplierCode as shopNo,
+		NAME as shopName,
+		contact as bossName,
+		tel as telephone,
+		mobile as bossTel,
+		mobile as registerTel,
+		address as shopAddress,
+		spGroupId,
+		licenseNum as shopLicense,
+		'1' AS isRegister
+	FROM
+		tbl_store_tmp_t t
+	WHERE 1=1
+	<if test="shopNos !=null and shopNos !=''">
+		and t.supplierCode NOT IN (${shopNos})
+	</if>
+  </select>
+  
+  <select id="getAllShopNoList" resultType="java.lang.String">
+	 SELECT
+		t.shopNo
+	FROM
+		tbl_shop_t t
+	WHERE
+		t.isDelete=0
+  </select>
+  
+  <select id="getShopNoList" resultType="java.lang.String" parameterType="java.lang.String">
+	 SELECT
+		t.shopNo
+	FROM
+		tbl_shop_t t
+	WHERE
+		t.salesmanId = #{userId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getShopNoListByDeptId" resultType="java.lang.String" parameterType="java.lang.String">
+	SELECT
+		t.shopNo
+	FROM
+		tbl_shop_t t
+	WHERE
+		t.salesmanId IN (
+			SELECT
+				u.id
+			FROM
+				salesman u
+			INNER JOIN tbl_user_dept_t ud ON u.isDelete = 0
+			AND u.id = ud.userId where ud.deptId=#{deptId}
+		)
+  </select>
+  
+  <select id="getStoreRelationList" resultType="com.corner.rpc.salesman.model.Shop" parameterType="com.corner.rpc.salesman.model.Shop">
+  	 select t.storeId,t.salesmanId from tbl_shop_t t where t.salesmanId IS NOT NULL
+  </select>
+  
+</mapper>

@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.corner.salesman.modules.shop.dao.ShopDao">
+    
+	<sql id="shopColumns">
+		a.shopId AS "shopId",
+		a.groupId AS "groupId",
+		a.shopNo AS "shopNo",
+		a.shopName AS "shopName",
+		a.telephone AS "telephone",
+		a.shopAddress AS "shopAddress",
+		a.shopLicense AS "shopLicense",
+		a.shopType AS "shopType",
+		a.isMultipleShop AS "isMultipleShop",
+		a.shopArea AS "shopArea",
+		a.sku AS "sku",
+		a.staffNum AS "staffNum",
+		a.DistributionNum AS "DistributionNum",
+		a.turnover AS "turnover",
+		a.mainProduct AS "mainProduct",
+		a.saleRatio AS "saleRatio",
+		a.dcShop AS "dcShop",
+		a.baccyLicence AS "baccyLicence",
+		a.isPos AS "isPos",
+		a.isComputer AS "isComputer",
+		a.isWifi AS "isWifi",
+		a.ipay AS "ipay",
+		a.otherPatform AS "otherPatform",
+		a.remarks AS "remarks",
+		a.userId AS "userId",
+		a.userName AS "userName",
+		a.startShopHours AS "startShopHours",
+		a.endShopHours AS "endShopHours",
+		a.isDelete AS "isDelete",
+		a.createTime AS "createTime",
+		a.updateTime AS "updateTime",
+		a.createBy AS "createBy",
+		a.updateBy AS "updateBy",
+		a.province AS "province",
+		a.city AS "city",
+		a.area AS "area",
+		a.longitude AS "longitude",
+		a.latitude AS "latitude",
+		a.salesmanId AS "salesmanId",
+		a.picUrl AS "picUrl",
+		a.spGroupId AS "spGroupId",
+		a.spGroupName AS "spGroupName",
+		a.bossName AS "bossName",
+		a.bossTel AS "bossTel",
+		a.registerTel AS "registerTel",
+		a.isRegister AS "isRegister",
+		a.markLine AS "markLine",
+		a.shopAdderss AS "shopAdderss",
+		a.provinceId AS "provinceId",
+		a.cityId AS "cityId",
+		a.areaId AS "areaId"
+	</sql>
+	
+	<sql id="shopJoins">
+	</sql>
+    
+	<select id="get" resultType="Shop">
+		SELECT 
+			<include refid="shopColumns"/>
+		FROM tbl_shop_t a
+		<include refid="shopJoins"/>
+		WHERE a.shopNo = #{shopNo}
+	</select>
+	
+	<select id="findList" resultType="Shop">
+		SELECT 
+			<include refid="shopColumns"/>,u.userName AS "salesmanName"
+		FROM tbl_shop_t a
+		LEFT JOIN salesman u on a.salesmanId = u.id
+		<where>
+			<if test="salesmanId !=null and salesmanId !=''">
+				AND a.salesmanId = #{salesmanId}
+			</if>
+			<if test="salesmanName !=null and salesmanName !=''">
+				AND u.userName like CONCAT('%', #{salesmanName}, '%')
+			</if>
+			<if test="registerTel !=null and registerTel !=''">
+				AND a.registerTel like CONCAT('%', #{registerTel}, '%')
+			</if>
+			<if test="shopAddress !=null and shopAddress !=''">
+				AND a.shopAddress like CONCAT('%', #{shopAddress}, '%')
+			</if>
+			<if test="shopNo != null and shopNo != ''">
+				AND (a.shopNo like CONCAT('%', #{shopNo}, '%') 
+				or a.shopName like CONCAT('%', #{shopNo}, '%'))
+			</if>
+			<if test="shopIds != null and shopIds != ''">
+				AND a.shopNo not in(${shopIds}) 
+			</if>
+			<if test="shopType != null and shopType != ''">
+				AND a.shopType = #{shopType}
+			</if>
+			<if test="provinceId != null and provinceId != ''">
+				AND a.provinceId = #{provinceId}
+			</if>
+			<if test="cityId != null and cityId != ''">
+				AND a.cityId = #{cityId}
+			</if>
+			<if test="areaId != null and areaId != ''">
+				AND a.areaId = #{areaId}
+			</if>
+			<if test="isAllot =='N'.toString()">
+ 				<!-- AND NOT EXISTS (SELECT 1  FROM tbl_line_shop_mapper_t ls  WHERE  ls.shopNo = a.shopNo ) -->
+				AND a.salesmanId IS NULL
+			</if>
+			<if test="isAllot =='Y'.toString()">
+ 				<!-- AND EXISTS (SELECT 1  FROM tbl_line_shop_mapper_t ls  WHERE  ls.shopNo = a.shopNo ) -->
+				AND a.salesmanId IS NOT NULL
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			    ORDER BY a.updateTime desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Shop">
+		SELECT 
+			<include refid="shopColumns"/>
+		FROM tbl_shop_t a
+		<include refid="shopJoins"/>
+		<where>
+
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tbl_shop_t(
+			shopId,
+			groupId,
+			shopNo,
+			shopName,
+			telephone,
+			shopAddress,
+			shopLicense,
+			shopType,
+			isMultipleShop,
+			shopArea,
+			sku,
+			staffNum,
+			DistributionNum,
+			turnover,
+			mainProduct,
+			saleRatio,
+			dcShop,
+			baccyLicence,
+			isPos,
+			isComputer,
+			isWifi,
+			ipay,
+			otherPatform,
+			remarks,
+			userId,
+			userName,
+			startShopHours,
+			endShopHours,
+			isDelete,
+			createTime,
+			updateTime,
+			createBy,
+			updateBy,
+			province,
+			city,
+			area,
+			longitude,
+			latitude,
+			salesmanId,
+			salesmanName,
+			picUrl,
+			spGroupId,
+			spGroupName,
+			bossName,
+			bossTel,
+			registerTel,
+			isRegister,
+			markLine,
+			shopAdderss,
+			provinceId,
+			cityId,
+			areaId
+		) VALUES (
+			#{shopId},
+			#{groupId},
+			#{shopNo},
+			#{shopName},
+			#{telephone},
+			#{shopAddress},
+			#{shopLicense},
+			#{shopType},
+			#{isMultipleShop},
+			#{shopArea},
+			#{sku},
+			#{staffNum},
+			#{DistributionNum},
+			#{turnover},
+			#{mainProduct},
+			#{saleRatio},
+			#{dcShop},
+			#{baccyLicence},
+			#{isPos},
+			#{isComputer},
+			#{isWifi},
+			#{ipay},
+			#{otherPatform},
+			#{remarks},
+			#{userId},
+			#{userName},
+			#{startShopHours},
+			#{endShopHours},
+			#{isDelete},
+			#{createTime},
+			#{updateTime},
+			#{createBy},
+			#{updateBy},
+			#{province},
+			#{city},
+			#{area},
+			#{longitude},
+			#{latitude},
+			#{salesmanId},
+			#{salesmanName},
+			#{picUrl},
+			#{spGroupId},
+			#{spGroupName},
+			#{bossName},
+			#{bossTel},
+			#{registerTel},
+			#{isRegister},
+			#{markLine},
+			#{shopAdderss},
+			#{provinceId},
+			#{cityId},
+			#{areaId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tbl_shop_t SET 	
+			shopId = #{shopId},
+			groupId = #{groupId},
+			shopNo = #{shopNo},
+			shopName = #{shopName},
+			telephone = #{telephone},
+			shopAddress = #{shopAddress},
+			shopLicense = #{shopLicense},
+			shopType = #{shopType},
+			isMultipleShop = #{isMultipleShop},
+			shopArea = #{shopArea},
+			sku = #{sku},
+			staffNum = #{staffNum},
+			DistributionNum = #{DistributionNum},
+			turnover = #{turnover},
+			mainProduct = #{mainProduct},
+			saleRatio = #{saleRatio},
+			dcShop = #{dcShop},
+			baccyLicence = #{baccyLicence},
+			isPos = #{isPos},
+			isComputer = #{isComputer},
+			isWifi = #{isWifi},
+			ipay = #{ipay},
+			otherPatform = #{otherPatform},
+			remarks = #{remarks},
+			userId = #{userId},
+			userName = #{userName},
+			startShopHours = #{startShopHours},
+			endShopHours = #{endShopHours},
+			isDelete = #{isDelete},
+			createTime = #{createTime},
+			updateTime = #{updateTime},
+			createBy = #{createBy},
+			updateBy = #{updateBy},
+			province = #{province},
+			city = #{city},
+			area = #{area},
+			longitude = #{longitude},
+			latitude = #{latitude},
+			salesmanId = #{salesmanId},
+			salesmanName = #{salesmanName},
+			picUrl = #{picUrl},
+			spGroupId = #{spGroupId},
+			spGroupName = #{spGroupName},
+			bossName = #{bossName},
+			bossTel = #{bossTel},
+			registerTel = #{registerTel},
+			isRegister = #{isRegister},
+			markLine = #{markLine},
+			shopAdderss = #{shopAdderss},
+			provinceId = #{provinceId},
+			cityId = #{cityId},
+			areaId = #{areaId}
+		WHERE shopNo = #{shopNo}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM tbl_shop_t
+		WHERE shopNo = #{shopNo}
+	</update>
+	
+</mapper>

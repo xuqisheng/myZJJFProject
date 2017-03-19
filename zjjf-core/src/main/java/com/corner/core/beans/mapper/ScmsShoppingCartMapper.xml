@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ScmsShoppingCartMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ScmsShoppingCart" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="scmsItemId" property="scmsItemId" jdbcType="VARCHAR" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="barCode" property="barCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="miniumId" property="miniumId" jdbcType="VARCHAR" />
+    <result column="spec" property="spec" jdbcType="VARCHAR" />
+    <result column="smallImg" property="smallImg" jdbcType="VARCHAR" />
+    <result column="num" property="num" jdbcType="SMALLINT" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="totalPrice" property="totalPrice" jdbcType="DECIMAL" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, scmsItemId, supplierId, barCode, name, miniumId, spec, smallImg, num, price, 
+    totalPrice, addTime, updateTime, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ScmsShoppingCart
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ScmsShoppingCart
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ScmsShoppingCart" >
+    insert into ScmsShoppingCart (id, scmsItemId, supplierId, 
+      barCode, name, miniumId, 
+      spec, smallImg, num, 
+      price, totalPrice, addTime, 
+      updateTime, status, isDelete
+      )
+    values (#{id,jdbcType=VARCHAR}, #{scmsItemId,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, 
+      #{barCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{miniumId,jdbcType=VARCHAR}, 
+      #{spec,jdbcType=VARCHAR}, #{smallImg,jdbcType=VARCHAR}, #{num,jdbcType=SMALLINT}, 
+      #{price,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ScmsShoppingCart" >
+    insert into ScmsShoppingCart
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="scmsItemId != null" >
+        scmsItemId,
+      </if>
+      <if test="supplierId != null" >
+        supplierId,
+      </if>
+      <if test="barCode != null" >
+        barCode,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="miniumId != null" >
+        miniumId,
+      </if>
+      <if test="spec != null" >
+        spec,
+      </if>
+      <if test="smallImg != null" >
+        smallImg,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="totalPrice != null" >
+        totalPrice,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="scmsItemId != null" >
+        #{scmsItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="barCode != null" >
+        #{barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="miniumId != null" >
+        #{miniumId,jdbcType=VARCHAR},
+      </if>
+      <if test="spec != null" >
+        #{spec,jdbcType=VARCHAR},
+      </if>
+      <if test="smallImg != null" >
+        #{smallImg,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=SMALLINT},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ScmsShoppingCart" >
+    update ScmsShoppingCart
+    <set >
+      <if test="scmsItemId != null" >
+        scmsItemId = #{scmsItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        supplierId = #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="barCode != null" >
+        barCode = #{barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="miniumId != null" >
+        miniumId = #{miniumId,jdbcType=VARCHAR},
+      </if>
+      <if test="spec != null" >
+        spec = #{spec,jdbcType=VARCHAR},
+      </if>
+      <if test="smallImg != null" >
+        smallImg = #{smallImg,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=SMALLINT},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="totalPrice != null" >
+        totalPrice = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ScmsShoppingCart" >
+    update ScmsShoppingCart
+    set scmsItemId = #{scmsItemId,jdbcType=VARCHAR},
+      supplierId = #{supplierId,jdbcType=VARCHAR},
+      barCode = #{barCode,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      miniumId = #{miniumId,jdbcType=VARCHAR},
+      spec = #{spec,jdbcType=VARCHAR},
+      smallImg = #{smallImg,jdbcType=VARCHAR},
+      num = #{num,jdbcType=SMALLINT},
+      price = #{price,jdbcType=DECIMAL},
+      totalPrice = #{totalPrice,jdbcType=DECIMAL},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectCount" parameterType="com.corner.core.beans.ScmsShoppingCart" resultType="java.lang.Integer">
+  	select count(*) from ScmsShoppingCart where   supplierId=#{supplierId} and isDelete=0
+  </select>
+  
+   <select id="findShopById" parameterType="com.corner.core.beans.ScmsShoppingCart" resultType="com.corner.core.beans.ScmsShoppingCart" >
+  		select * from ScmsShoppingCart where scmsItemId=#{scmsItemId} and supplierId=#{supplierId} and isDelete=0
+  </select>
+  
+</mapper>

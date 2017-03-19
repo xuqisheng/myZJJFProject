@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-kafka="http://www.springframework.org/schema/integration/kafka"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context   
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+       http://www.springframework.org/schema/integration
+       http://www.springframework.org/schema/integration/spring-integration.xsd
+       http://www.springframework.org/schema/integration/kafka
+       http://www.springframework.org/schema/integration/kafka/spring-integration-kafka.xsd
+       ">
+ 	
+ 	<!-- 包扫描 扫描注解 -->
+	<context:component-scan base-package="com.corner.kafka"></context:component-scan>
+
+ 	<!-- 包扫描 扫描注解
+	<context:component-scan base-package="com.corner.kafka"></context:component-scan>
+	-->
+	
+	<!-- 初始化zookeeper連接
+	<int-kafka:zookeeper-connect id="zookeeperConnect" 
+								 zk-connect="${kafka.zookeeper.url}"
+                                 zk-connection-timeout="6000"
+                                 zk-session-timeout="6000"
+                                 zk-sync-time="2000"/> -->
+	
+	<!-- 引入配置文件路径 
+ 	<import resource="spring-kafka-producter.xml"/>
+ 	<import resource="spring-kafka-customer.xml"/>
+ 	-->
+</beans>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.VoucherMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.Voucher" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="billType" property="billType" jdbcType="TINYINT" />
+    <result column="money" property="money" jdbcType="INTEGER" />
+    <result column="billState" property="billState" jdbcType="TINYINT" />
+    <result column="createUsr" property="createUsr" jdbcType="VARCHAR" />
+    <result column="createType" property="createType" jdbcType="TINYINT" />
+    <result column="activeId" property="activeId" jdbcType="INTEGER" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="expiredTime" property="expiredTime" jdbcType="TIMESTAMP" />
+    <result column="scope" property="scope" jdbcType="VARCHAR" />
+    <result column="useType" property="useType" jdbcType="TINYINT" />
+    <result column="userId" property="userId" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, billType, money, billState, createUsr, createType, activeId, createTime, expiredTime, 
+    scope, useType, userId, orderId, isDelete, col1, col2, col3
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from Voucher
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from Voucher
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.Voucher" >
+    insert into Voucher (id, billType, money, 
+      billState, createUsr, createType, 
+      activeId, createTime, expiredTime, 
+      scope, useType, userId, 
+      orderId, isDelete, col1, 
+      col2, col3)
+    values (#{id,jdbcType=VARCHAR}, #{billType,jdbcType=TINYINT}, #{money,jdbcType=INTEGER}, 
+      #{billState,jdbcType=TINYINT}, #{createUsr,jdbcType=VARCHAR}, #{createType,jdbcType=TINYINT}, 
+      #{activeId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{expiredTime,jdbcType=TIMESTAMP}, 
+      #{scope,jdbcType=VARCHAR}, #{useType,jdbcType=TINYINT}, #{userId,jdbcType=VARCHAR}, 
+      #{orderId,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}, #{col1,jdbcType=VARCHAR}, 
+      #{col2,jdbcType=VARCHAR}, #{col3,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.Voucher" >
+    insert into Voucher
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billType != null" >
+        billType,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="billState != null" >
+        billState,
+      </if>
+      <if test="createUsr != null" >
+        createUsr,
+      </if>
+      <if test="createType != null" >
+        createType,
+      </if>
+      <if test="activeId != null" >
+        activeId,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="expiredTime != null" >
+        expiredTime,
+      </if>
+      <if test="scope != null" >
+        scope,
+      </if>
+      <if test="useType != null" >
+        useType,
+      </if>
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="col1 != null" >
+        col1,
+      </if>
+      <if test="col2 != null" >
+        col2,
+      </if>
+      <if test="col3 != null" >
+        col3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="billType != null" >
+        #{billType,jdbcType=TINYINT},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=INTEGER},
+      </if>
+      <if test="billState != null" >
+        #{billState,jdbcType=TINYINT},
+      </if>
+      <if test="createUsr != null" >
+        #{createUsr,jdbcType=VARCHAR},
+      </if>
+      <if test="createType != null" >
+        #{createType,jdbcType=TINYINT},
+      </if>
+      <if test="activeId != null" >
+        #{activeId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expiredTime != null" >
+        #{expiredTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="scope != null" >
+        #{scope,jdbcType=VARCHAR},
+      </if>
+      <if test="useType != null" >
+        #{useType,jdbcType=TINYINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null" >
+        #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        #{col3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.Voucher" >
+    update Voucher
+    <set >
+      <if test="billType != null" >
+        billType = #{billType,jdbcType=TINYINT},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=INTEGER},
+      </if>
+      <if test="billState != null" >
+        billState = #{billState,jdbcType=TINYINT},
+      </if>
+      <if test="createUsr != null" >
+        createUsr = #{createUsr,jdbcType=VARCHAR},
+      </if>
+      <if test="createType != null" >
+        createType = #{createType,jdbcType=TINYINT},
+      </if>
+      <if test="activeId != null" >
+        activeId = #{activeId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expiredTime != null" >
+        expiredTime = #{expiredTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="scope != null" >
+        scope = #{scope,jdbcType=VARCHAR},
+      </if>
+      <if test="useType != null" >
+        useType = #{useType,jdbcType=TINYINT},
+      </if>
+      <if test="userId != null" >
+        userId = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null" >
+        col1 = #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        col2 = #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        col3 = #{col3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.Voucher" >
+    update Voucher
+    set billType = #{billType,jdbcType=TINYINT},
+      money = #{money,jdbcType=INTEGER},
+      billState = #{billState,jdbcType=TINYINT},
+      createUsr = #{createUsr,jdbcType=VARCHAR},
+      createType = #{createType,jdbcType=TINYINT},
+      activeId = #{activeId,jdbcType=INTEGER},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      expiredTime = #{expiredTime,jdbcType=TIMESTAMP},
+      scope = #{scope,jdbcType=VARCHAR},
+      useType = #{useType,jdbcType=TINYINT},
+      userId = #{userId,jdbcType=VARCHAR},
+      orderId = #{orderId,jdbcType=VARCHAR},
+      isDelete = #{isDelete,jdbcType=BIT},
+      col1 = #{col1,jdbcType=VARCHAR},
+      col2 = #{col2,jdbcType=VARCHAR},
+      col3 = #{col3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SKUActiveGoodInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SKUActiveGoodInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="SKUActiveId" property="SKUActiveId" jdbcType="VARCHAR" />
+    <result column="spId" property="spId" jdbcType="VARCHAR" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="goodsType" property="goodsType" jdbcType="TINYINT" />
+    <result column="plantItemId" property="plantItemId" jdbcType="VARCHAR" />
+    <result column="brandId" property="brandId" jdbcType="INTEGER" />
+    <result column="buyLimitNum" property="buyLimitNum" jdbcType="INTEGER" />
+    <result column="totalLimitNum" property="totalLimitNum" jdbcType="INTEGER" />
+    <result column="totalBuyNum" property="totalBuyNum" jdbcType="INTEGER" />
+    <result column="activePrice" property="activePrice" jdbcType="DECIMAL" />
+    <result column="tagId" property="tagId" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="BIT" />
+    <result column="isDelete" property="isDelete" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, SKUActiveId, spId, spGroupId, goodsType, plantItemId, brandId, buyLimitNum, totalLimitNum, 
+    totalBuyNum, activePrice, tagId, addTime, updateTime, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SKUActiveGoodInfo
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SKUActiveGoodInfo
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SKUActiveGoodInfo" >
+    insert into SKUActiveGoodInfo (id, SKUActiveId, spId, 
+      spGroupId, goodsType, plantItemId, 
+      brandId, buyLimitNum, totalLimitNum, 
+      totalBuyNum, activePrice, tagId, 
+      addTime, updateTime, status, 
+      isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{SKUActiveId,jdbcType=VARCHAR}, #{spId,jdbcType=VARCHAR}, 
+      #{spGroupId,jdbcType=INTEGER}, #{goodsType,jdbcType=TINYINT}, #{plantItemId,jdbcType=VARCHAR}, 
+      #{brandId,jdbcType=INTEGER}, #{buyLimitNum,jdbcType=INTEGER}, #{totalLimitNum,jdbcType=INTEGER}, 
+      #{totalBuyNum,jdbcType=INTEGER}, #{activePrice,jdbcType=DECIMAL}, #{tagId,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT}, 
+      #{isDelete,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SKUActiveGoodInfo" >
+    insert into SKUActiveGoodInfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="SKUActiveId != null" >
+        SKUActiveId,
+      </if>
+      <if test="spId != null" >
+        spId,
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId,
+      </if>
+      <if test="goodsType != null" >
+        goodsType,
+      </if>
+      <if test="plantItemId != null" >
+        plantItemId,
+      </if>
+      <if test="brandId != null" >
+        brandId,
+      </if>
+      <if test="buyLimitNum != null" >
+        buyLimitNum,
+      </if>
+      <if test="totalLimitNum != null" >
+        totalLimitNum,
+      </if>
+      <if test="totalBuyNum != null" >
+        totalBuyNum,
+      </if>
+      <if test="activePrice != null" >
+        activePrice,
+      </if>
+      <if test="tagId != null" >
+        tagId,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="SKUActiveId != null" >
+        #{SKUActiveId,jdbcType=VARCHAR},
+      </if>
+      <if test="spId != null" >
+        #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="spGroupId != null" >
+        #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsType != null" >
+        #{goodsType,jdbcType=TINYINT},
+      </if>
+      <if test="plantItemId != null" >
+        #{plantItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="brandId != null" >
+        #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="buyLimitNum != null" >
+        #{buyLimitNum,jdbcType=INTEGER},
+      </if>
+      <if test="totalLimitNum != null" >
+        #{totalLimitNum,jdbcType=INTEGER},
+      </if>
+      <if test="totalBuyNum != null" >
+        #{totalBuyNum,jdbcType=INTEGER},
+      </if>
+      <if test="activePrice != null" >
+        #{activePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="tagId != null" >
+        #{tagId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SKUActiveGoodInfo" >
+    update SKUActiveGoodInfo
+    <set >
+      <if test="SKUActiveId != null" >
+        SKUActiveId = #{SKUActiveId,jdbcType=VARCHAR},
+      </if>
+      <if test="spId != null" >
+        spId = #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId = #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsType != null" >
+        goodsType = #{goodsType,jdbcType=TINYINT},
+      </if>
+      <if test="plantItemId != null" >
+        plantItemId = #{plantItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="brandId != null" >
+        brandId = #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="buyLimitNum != null" >
+        buyLimitNum = #{buyLimitNum,jdbcType=INTEGER},
+      </if>
+      <if test="totalLimitNum != null" >
+        totalLimitNum = #{totalLimitNum,jdbcType=INTEGER},
+      </if>
+      <if test="totalBuyNum != null" >
+        totalBuyNum = #{totalBuyNum,jdbcType=INTEGER},
+      </if>
+      <if test="activePrice != null" >
+        activePrice = #{activePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="tagId != null" >
+        tagId = #{tagId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=BIT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SKUActiveGoodInfo" >
+    update SKUActiveGoodInfo
+    set SKUActiveId = #{SKUActiveId,jdbcType=VARCHAR},
+      spId = #{spId,jdbcType=VARCHAR},
+      spGroupId = #{spGroupId,jdbcType=INTEGER},
+      goodsType = #{goodsType,jdbcType=TINYINT},
+      plantItemId = #{plantItemId,jdbcType=VARCHAR},
+      brandId = #{brandId,jdbcType=INTEGER},
+      buyLimitNum = #{buyLimitNum,jdbcType=INTEGER},
+      totalLimitNum = #{totalLimitNum,jdbcType=INTEGER},
+      totalBuyNum = #{totalBuyNum,jdbcType=INTEGER},
+      activePrice = #{activePrice,jdbcType=DECIMAL},
+      tagId = #{tagId,jdbcType=VARCHAR},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=BIT},
+      isDelete = #{isDelete,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

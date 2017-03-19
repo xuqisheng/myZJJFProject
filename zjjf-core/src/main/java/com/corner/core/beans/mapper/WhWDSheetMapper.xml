@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.WhWDSheetMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.WhWDSheet" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="sheetNum" property="sheetNum" jdbcType="VARCHAR" />
+    <result column="sheetName" property="sheetName" jdbcType="VARCHAR" />
+    <result column="sheetRemark" property="sheetRemark" jdbcType="VARCHAR" />
+    <result column="sheetPath" property="sheetPath" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+    <result column="payBankNum" property="payBankNum" jdbcType="VARCHAR" />
+    <result column="payBankName" property="payBankName" jdbcType="VARCHAR" />
+    <result column="payTime" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="fillTime" property="fillTime" jdbcType="TIMESTAMP" />
+    <result column="fillUserId" property="fillUserId" jdbcType="VARCHAR" />
+    <result column="fillRemark" property="fillRemark" jdbcType="VARCHAR" />
+    <result column="ordId" property="ordId" jdbcType="TINYINT" />
+    <result column="xtype" property="xtype" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, sheetNum, sheetName, sheetRemark, sheetPath, createTime, createUser, payBankNum, 
+    payBankName, payTime, fillTime, fillUserId, fillRemark, ordId, xtype, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from WhWDSheet
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from WhWDSheet
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.WhWDSheet" >
+    insert into WhWDSheet (id, sheetNum, sheetName, 
+      sheetRemark, sheetPath, createTime, 
+      createUser, payBankNum, payBankName, 
+      payTime, fillTime, fillUserId, 
+      fillRemark, ordId, xtype, 
+      status, isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{sheetNum,jdbcType=VARCHAR}, #{sheetName,jdbcType=VARCHAR}, 
+      #{sheetRemark,jdbcType=VARCHAR}, #{sheetPath,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createUser,jdbcType=VARCHAR}, #{payBankNum,jdbcType=VARCHAR}, #{payBankName,jdbcType=VARCHAR}, 
+      #{payTime,jdbcType=TIMESTAMP}, #{fillTime,jdbcType=TIMESTAMP}, #{fillUserId,jdbcType=VARCHAR}, 
+      #{fillRemark,jdbcType=VARCHAR}, #{ordId,jdbcType=TINYINT}, #{xtype,jdbcType=TINYINT}, 
+      #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.WhWDSheet" >
+    insert into WhWDSheet
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sheetNum != null" >
+        sheetNum,
+      </if>
+      <if test="sheetName != null" >
+        sheetName,
+      </if>
+      <if test="sheetRemark != null" >
+        sheetRemark,
+      </if>
+      <if test="sheetPath != null" >
+        sheetPath,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="createUser != null" >
+        createUser,
+      </if>
+      <if test="payBankNum != null" >
+        payBankNum,
+      </if>
+      <if test="payBankName != null" >
+        payBankName,
+      </if>
+      <if test="payTime != null" >
+        payTime,
+      </if>
+      <if test="fillTime != null" >
+        fillTime,
+      </if>
+      <if test="fillUserId != null" >
+        fillUserId,
+      </if>
+      <if test="fillRemark != null" >
+        fillRemark,
+      </if>
+      <if test="ordId != null" >
+        ordId,
+      </if>
+      <if test="xtype != null" >
+        xtype,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sheetNum != null" >
+        #{sheetNum,jdbcType=VARCHAR},
+      </if>
+      <if test="sheetName != null" >
+        #{sheetName,jdbcType=VARCHAR},
+      </if>
+      <if test="sheetRemark != null" >
+        #{sheetRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="sheetPath != null" >
+        #{sheetPath,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="payBankNum != null" >
+        #{payBankNum,jdbcType=VARCHAR},
+      </if>
+      <if test="payBankName != null" >
+        #{payBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null" >
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fillTime != null" >
+        #{fillTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fillUserId != null" >
+        #{fillUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="fillRemark != null" >
+        #{fillRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="ordId != null" >
+        #{ordId,jdbcType=TINYINT},
+      </if>
+      <if test="xtype != null" >
+        #{xtype,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.WhWDSheet" >
+    update WhWDSheet
+    <set >
+      <if test="sheetNum != null" >
+        sheetNum = #{sheetNum,jdbcType=VARCHAR},
+      </if>
+      <if test="sheetName != null" >
+        sheetName = #{sheetName,jdbcType=VARCHAR},
+      </if>
+      <if test="sheetRemark != null" >
+        sheetRemark = #{sheetRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="sheetPath != null" >
+        sheetPath = #{sheetPath,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        createUser = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="payBankNum != null" >
+        payBankNum = #{payBankNum,jdbcType=VARCHAR},
+      </if>
+      <if test="payBankName != null" >
+        payBankName = #{payBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null" >
+        payTime = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fillTime != null" >
+        fillTime = #{fillTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fillUserId != null" >
+        fillUserId = #{fillUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="fillRemark != null" >
+        fillRemark = #{fillRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="ordId != null" >
+        ordId = #{ordId,jdbcType=TINYINT},
+      </if>
+      <if test="xtype != null" >
+        xtype = #{xtype,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.WhWDSheet" >
+    update WhWDSheet
+    set sheetNum = #{sheetNum,jdbcType=VARCHAR},
+      sheetName = #{sheetName,jdbcType=VARCHAR},
+      sheetRemark = #{sheetRemark,jdbcType=VARCHAR},
+      sheetPath = #{sheetPath,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      createUser = #{createUser,jdbcType=VARCHAR},
+      payBankNum = #{payBankNum,jdbcType=VARCHAR},
+      payBankName = #{payBankName,jdbcType=VARCHAR},
+      payTime = #{payTime,jdbcType=TIMESTAMP},
+      fillTime = #{fillTime,jdbcType=TIMESTAMP},
+      fillUserId = #{fillUserId,jdbcType=VARCHAR},
+      fillRemark = #{fillRemark,jdbcType=VARCHAR},
+      ordId = #{ordId,jdbcType=TINYINT},
+      xtype = #{xtype,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

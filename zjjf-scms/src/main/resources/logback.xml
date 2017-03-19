@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd">
+<!-- configuration file for LogBack (slf4J implementation) See here for more 
+	details: http://gordondickens.com/wordpress/2013/03/27/sawing-through-the-java-loggers/ -->
+<configuration scan="true" scanPeriod="30 seconds" debug="false">
+
+	<property name="APP_Name" value="zjjf-scms" />
+	<property name="USER_HOME" value="/home/corner/logs/scms" />
+	<property scope="context" name="FILE_NAME" value="cornerlogback" />
+	<timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss" />
+
+	<contextName>${APP_Name}${bySecond}</contextName>
+
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+		<resetJUL>true</resetJUL>
+	</contextListener>
+
+	<!-- To enable JMX Management -->
+	<jmxConfigurator />
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- 日志管道 System.out 或者 System.err ，默认 System.out -->
+		<target>System.out</target>
+		<!-- 日志格式化 -->
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="pcWarnAndErrorFileLogAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${USER_HOME}/plant/platWarnAndError.log</file>
+		<append>false</append>
+		<prudent>false</prudent>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${USER_HOME}/plant/backofpc.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>60</maxHistory>
+		</rollingPolicy>
+		<!--<triggeringPolicy></triggeringPolicy>-->
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 平台日志 -->
+`	<logger name="com.corner.scms"  level="${logLevel}">
+		<appender-ref ref="pcWarnAndErrorFileLogAppender" />
+	</logger>
+
+	<root level="${logLevel}">
+		<appender-ref ref="console" />
+	</root>
+</configuration>

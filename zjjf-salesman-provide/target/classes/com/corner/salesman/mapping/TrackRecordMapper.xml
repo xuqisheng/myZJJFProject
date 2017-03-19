@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.TrackRecordMapper">
+
+	<sql id="Base_Column_List">
+			id,
+			groupId,
+			deviceId,
+			timePoint,	
+			longitude,
+			latitude,
+			localtimes,
+			type,
+			userId,
+			createTime,
+			positionName,
+			week
+	</sql>
+	<!-- 根据用户ID查询用户足迹记录 -->
+	<select id="findTrackRecordByUserId" resultType="TrackRecord" >
+		SELECT DISTINCT
+			t.timePoint,
+			IFNULL(t.positionName,'获取地理位置名称失败') positionName,
+			t.type,
+			t.latitude,
+			t.longitude,
+			CASE
+		WHEN t.type = 0 THEN
+			''
+		WHEN t.type = 1 THEN
+			'签到'
+		END AS typeName
+		FROM tbl_track_record_history_t t 
+		where t.userId = #{userId,jdbcType=VARCHAR}
+		  and DATE_FORMAT(t.createTime, '%Y-%m-%d') = DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+		order by t.createTime desc,t.localtimes desc
+	</select>
+	
+	<!-- 根据用户ID查询最新足迹表中的记录 -->
+	<select id="findUserEverydayTrackById" resultType="TrackRecord" >
+		SELECT
+			DATE_FORMAT(t.createTime, '%Y-%m-%d') createTime,
+			t.`week`,t.userId
+		FROM
+			tbl_track_record_t t
+		WHERE t.userId = #{userId}
+		order by t.createTime desc,t.localtimes desc
+	</select>
+	
+	<select id="findMyTrackDetailList" resultType="TrackRecord" >
+		SELECT DISTINCT
+			t.userId,
+			IFNULL(t.positionName,'获取地理位置名称失败') positionName,
+			u.userName,
+			DATE_FORMAT(t.createTime, '%Y-%m-%d') createTime,
+			DATE_FORMAT(t.createTime, '%T') timePoint,
+			t.`week`
+		FROM
+			tbl_track_record_t t
+		LEFT JOIN salesman u ON t.userId = u.id
+	   WHERE t.userId = #{userId} 
+			<if test="createTime != null and createTime!=''">
+				and DATE_FORMAT(t.createTime, '%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+			</if>
+		ORDER BY
+			t.createTime desc,t.localtimes DESC
+	</select>
+	
+	<!-- 根据时间查询组员最新轨迹 -->
+	<select id="findGroupNewTrackByTime" resultType="TrackRecord" >
+		SELECT DISTINCT
+		    t.userId,
+			IFNULL(t.positionName,'获取地理位置名称失败') positionName,
+			u.userName,
+    		DATE_FORMAT(t.createTime, '%T') timePoint,
+			DATE_FORMAT(t.createTime, '%Y-%m-%d') createTime,
+			t.week
+		FROM
+			tbl_track_record_t t
+		INNER JOIN salesman u ON t.userId = u.id
+		INNER JOIN tbl_user_dept_t ud ON ud.userId = u.id
+		INNER JOIN tbl_department_t d ON d.deptId = ud.deptId
+		INNER JOIN tbl_dept_manager_t dm ON dm.deptId = d.deptId
+		WHERE t.groupId = #{groupId}
+		  AND dm.leaderId = #{userId}
+		  AND DATE_FORMAT(t.createTime, '%Y-%m-%d') = DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+		ORDER BY t.createTime desc,t.localtimes DESC
+	</select>
+	
+	<insert id="insertTrackRecord">
+		INSERT INTO tbl_track_record_history_t(
+			id,
+			groupId,
+			deviceId,
+			deviceType,
+			timePoint,	
+			longitude,
+			latitude,
+			localtimes,
+			type,
+			userId,
+			createTime,
+			positionName,
+			week
+		) VALUES (
+			#{id},
+			#{groupId},
+			#{deviceId},
+			#{deviceType},
+			#{timePoint},
+			#{longitude},
+			#{latitude},
+			#{localtimes},
+			#{type},
+			#{userId},
+			#{createTime},
+			#{positionName},
+			#{week}
+		)
+	</insert>
+	
+	<insert id="insertTrackRecordNew">
+		INSERT INTO tbl_track_record_t(
+			id,
+			groupId,
+			deviceId,
+			deviceType,
+			timePoint,	
+			longitude,
+			latitude,
+			localtimes,
+			type,
+			userId,
+			createTime,
+			positionName,
+			week
+		) VALUES (
+			#{id},
+			#{groupId},
+			#{deviceId},
+			#{deviceType},
+			#{timePoint},
+			#{longitude},
+			#{latitude},
+			#{localtimes},
+			#{type},
+			#{userId},
+			#{createTime},
+			#{positionName},
+			#{week}
+		)
+	</insert>
+	
+	<delete id="deleteTrackRecordNewByUserId">
+		DELETE
+		FROM
+			tbl_track_record_t
+		WHERE
+			userId = #{userId}
+		AND DATE_FORMAT(createTime, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+	</delete>
+
+	<select id="getTrackMaxDate" resultType="java.lang.String">
+		select DATE_FORMAT(MAX(createTime),'%Y-%m-%d')  from tbl_track_record_t
+	</select>
+	
+	
+	<!-- 根据用户ID查询用户足迹记录 -->
+	<select id="findMyAllDateTrackList" resultType="TrackRecord" >
+		SELECT IFNULL(t.type,0) type,
+			 t.latitude,
+			 t.longitude,
+			 DATE_FORMAT(t.createTime, '%Y-%m-%d %T') createTime
+		FROM tbl_track_record_history_t t 
+		where t.latitude is not null 
+		  and t.longitude is not null 
+		  and t.userId = #{userId,jdbcType=VARCHAR}
+		  and DATE_FORMAT(t.createTime, '%Y-%m-%d') = DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+		order by t.createTime asc
+	</select>
+
+</mapper>

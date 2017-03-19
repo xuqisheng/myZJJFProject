@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.CreditOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.CreditOrder" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="creditNo" property="creditNo" jdbcType="VARCHAR" />
+    <result column="userId" property="userId" jdbcType="VARCHAR" />
+    <result column="consignee" property="consignee" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="userAddressId" property="userAddressId" jdbcType="INTEGER" />
+    <result column="credit" property="credit" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, creditNo, userId, consignee, address, mobile, userAddressId, credit, remark, 
+    addTime, storeId, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from CreditOrder
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from CreditOrder
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.CreditOrder" >
+    insert into CreditOrder (id, creditNo, userId, 
+      consignee, address, mobile, 
+      userAddressId, credit, remark, 
+      addTime, storeId, status, 
+      isDelete)
+    values (#{id,jdbcType=INTEGER}, #{creditNo,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{consignee,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{userAddressId,jdbcType=INTEGER}, #{credit,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{storeId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
+      #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.CreditOrder" >
+    insert into CreditOrder
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="creditNo != null" >
+        creditNo,
+      </if>
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="consignee != null" >
+        consignee,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="userAddressId != null" >
+        userAddressId,
+      </if>
+      <if test="credit != null" >
+        credit,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="creditNo != null" >
+        #{creditNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="consignee != null" >
+        #{consignee,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddressId != null" >
+        #{userAddressId,jdbcType=INTEGER},
+      </if>
+      <if test="credit != null" >
+        #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.CreditOrder" >
+    update CreditOrder
+    <set >
+      <if test="creditNo != null" >
+        creditNo = #{creditNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        userId = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="consignee != null" >
+        consignee = #{consignee,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddressId != null" >
+        userAddressId = #{userAddressId,jdbcType=INTEGER},
+      </if>
+      <if test="credit != null" >
+        credit = #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="storeId != null" >
+        storeId = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.CreditOrder" >
+    update CreditOrder
+    set creditNo = #{creditNo,jdbcType=VARCHAR},
+      userId = #{userId,jdbcType=VARCHAR},
+      consignee = #{consignee,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      userAddressId = #{userAddressId,jdbcType=INTEGER},
+      credit = #{credit,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      storeId = #{storeId,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

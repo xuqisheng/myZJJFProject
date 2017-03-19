@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpVoucherActiveStoreLogMgMapper" >
+
+  <select id="getAccLog" parameterType="com.corner.core.beans.SpVoucherActive" resultType="com.corner.core.beans.SpVoucherActiveStoreLog">
+     SELECT
+          *
+      FROM
+          SpVoucherActiveStoreLog
+      WHERE
+          activeId = #{id}
+  </select>
+
+  
+  <insert id="batchSave" parameterType="java.util.ArrayList">
+    <foreach collection="list" separator=";" item="item">
+      insert into SpVoucherActiveStoreLog
+      <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="item.id != null" >
+          id,
+        </if>
+        <if test="item.activeId != null" >
+          activeId,
+        </if>
+        <if test="item.storeId != null" >
+          storeId,
+        </if>
+        <if test="item.status != null" >
+          status,
+        </if>
+        <if test="item.isDelete != null" >
+          isDelete,
+        </if>
+        <if test="item.totalOrDerPrice != null" >
+          totalOrDerPrice,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="item.id != null" >
+          #{item.id,jdbcType=VARCHAR},
+        </if>
+        <if test="item.activeId != null" >
+          #{item.activeId,jdbcType=INTEGER},
+        </if>
+        <if test="item.storeId != null" >
+          #{item.storeId,jdbcType=INTEGER},
+        </if>
+        <if test="item.status != null" >
+          #{item.status,jdbcType=TINYINT},
+        </if>
+        <if test="item.isDelete != null" >
+          #{item.isDelete,jdbcType=BIT},
+        </if>
+        <if test="item.totalOrDerPrice != null" >
+          #{item.totalOrDerPrice,jdbcType=DECIMAL},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+
+  <select id="getTotalSend" parameterType="java.util.HashMap" resultType="java.math.BigDecimal">
+     SELECT
+          SUM(a.useMoney) AS totalSendPrice
+      FROM
+          SpVoucherActiveStoreLog a
+      WHERE
+          a.activeId = #{active.id}
+      AND a.storeId = #{storeMgVo.id}
+      AND a.`status` = 1
+      AND a.isDelete = 0
+      GROUP BY
+          a.storeId
+  </select>
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.AnalysisErpManagerOrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.erp.AnalysisErpManagerOrderDetail" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="detailId" property="detailId" jdbcType="VARCHAR" />
+    <result column="pkg" property="pkg" jdbcType="VARCHAR" />
+    <result column="barCode" property="barCode" jdbcType="VARCHAR" />
+    <result column="mdseId" property="mdseId" jdbcType="VARCHAR" />
+    <result column="itemCode" property="itemCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="spec" property="spec" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="itemId" property="itemId" jdbcType="VARCHAR" />
+    <result column="dayTime" property="dayTime" jdbcType="VARCHAR" />
+    <result column="managerId" property="managerId" jdbcType="VARCHAR" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="areaPrice" property="areaPrice" jdbcType="DECIMAL" />
+    <result column="taxRate" property="taxRate" jdbcType="DECIMAL" />
+    <result column="quantity" property="quantity" jdbcType="SMALLINT" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+    <result column="operateQuantity" property="operateQuantity" jdbcType="SMALLINT" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, detailId, orderId, pkg, barCode, mdseId, itemCode, name, spec, img, itemId, dayTime, 
+    managerId, supplierId, itemBaseId, areaPrice, taxRate, quantity, addTime, operateQuantity, createTime
+  </sql>
+  
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.analysis.erp.AnalysisErpManagerOrderDetail" >
+    insert into analysis_erpmanagerorderdetail (detailId, orderId, pkg, 
+      barCode, mdseId, itemCode, 
+      name, spec, img, itemId, 
+      dayTime, managerId, supplierId, 
+      itemBaseId, areaPrice, taxRate, 
+      quantity, addTime, operateQuantity, createTime
+      )
+    values (#{detailId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{pkg,jdbcType=VARCHAR}, 
+      #{barCode,jdbcType=VARCHAR}, #{mdseId,jdbcType=VARCHAR}, #{itemCode,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{spec,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, #{itemId,jdbcType=VARCHAR}, 
+      #{dayTime,jdbcType=VARCHAR}, #{managerId,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, 
+      #{itemBaseId,jdbcType=INTEGER}, #{areaPrice,jdbcType=DECIMAL}, #{taxRate,jdbcType=DECIMAL}, 
+      #{quantity,jdbcType=SMALLINT}, #{addTime,jdbcType=TIMESTAMP}, #{operateQuantity,jdbcType=SMALLINT}, #{createTime,jdbcType=INTEGER}
+    )
+  </insert>
+ 
+</mapper>

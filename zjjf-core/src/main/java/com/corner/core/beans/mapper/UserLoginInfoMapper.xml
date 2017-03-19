@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.UserLoginInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.UserLoginInfo" >
+    <id column="uli_id" property="uli_id" jdbcType="VARCHAR" />
+    <result column="uli_device_type" property="uli_device_type" jdbcType="TINYINT" />
+    <result column="uli_device_UUID" property="uli_device_UUID" jdbcType="VARCHAR" />
+    <result column="uli_push_code" property="uli_push_code" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    uli_id, uli_device_type, uli_device_UUID, uli_push_code
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from UserLoginInfo
+    where uli_id = #{uli_id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from UserLoginInfo
+    where uli_id = #{uli_id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.UserLoginInfo" >
+    insert into UserLoginInfo (uli_id, uli_device_type, uli_device_UUID, 
+      uli_push_code)
+    values (#{uli_id,jdbcType=VARCHAR}, #{uli_device_type,jdbcType=TINYINT}, #{uli_device_UUID,jdbcType=VARCHAR}, 
+      #{uli_push_code,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.UserLoginInfo" >
+    insert into UserLoginInfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uli_id != null" >
+        uli_id,
+      </if>
+      <if test="uli_device_type != null" >
+        uli_device_type,
+      </if>
+      <if test="uli_device_UUID != null" >
+        uli_device_UUID,
+      </if>
+      <if test="uli_push_code != null" >
+        uli_push_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uli_id != null" >
+        #{uli_id,jdbcType=VARCHAR},
+      </if>
+      <if test="uli_device_type != null" >
+        #{uli_device_type,jdbcType=TINYINT},
+      </if>
+      <if test="uli_device_UUID != null" >
+        #{uli_device_UUID,jdbcType=VARCHAR},
+      </if>
+      <if test="uli_push_code != null" >
+        #{uli_push_code,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.UserLoginInfo" >
+    update UserLoginInfo
+    <set >
+      <if test="uli_device_type != null" >
+        uli_device_type = #{uli_device_type,jdbcType=TINYINT},
+      </if>
+      <if test="uli_device_UUID != null" >
+        uli_device_UUID = #{uli_device_UUID,jdbcType=VARCHAR},
+      </if>
+      <if test="uli_push_code != null" >
+        uli_push_code = #{uli_push_code,jdbcType=INTEGER},
+      </if>
+    </set>
+    where uli_id = #{uli_id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.UserLoginInfo" >
+    update UserLoginInfo
+    set uli_device_type = #{uli_device_type,jdbcType=TINYINT},
+      uli_device_UUID = #{uli_device_UUID,jdbcType=VARCHAR},
+      uli_push_code = #{uli_push_code,jdbcType=INTEGER}
+    where uli_id = #{uli_id,jdbcType=VARCHAR}
+  </update>
+</mapper>

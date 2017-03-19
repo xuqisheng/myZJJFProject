@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.TempStoreMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.TempStore" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="ruleId" property="ruleId" jdbcType="INTEGER" />
+    <result column="flag" property="flag" jdbcType="VARCHAR" />
+    <result column="storeNm" property="storeNm" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, storeId, ruleId, flag, storeNm, mobile
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from TempStore
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from TempStore
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.TempStore" >
+    insert into TempStore (id, storeId, ruleId, 
+      flag, storeNm, mobile
+      )
+    values (#{id,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER}, #{ruleId,jdbcType=INTEGER}, 
+      #{flag,jdbcType=VARCHAR}, #{storeNm,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.TempStore" >
+    insert into TempStore
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="ruleId != null" >
+        ruleId,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="storeNm != null" >
+        storeNm,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="ruleId != null" >
+        #{ruleId,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="storeNm != null" >
+        #{storeNm,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.TempStore" >
+    update TempStore
+    <set >
+      <if test="storeId != null" >
+        storeId = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="ruleId != null" >
+        ruleId = #{ruleId,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="storeNm != null" >
+        storeNm = #{storeNm,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.TempStore" >
+    update TempStore
+    set storeId = #{storeId,jdbcType=INTEGER},
+      ruleId = #{ruleId,jdbcType=INTEGER},
+      flag = #{flag,jdbcType=VARCHAR},
+      storeNm = #{storeNm,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

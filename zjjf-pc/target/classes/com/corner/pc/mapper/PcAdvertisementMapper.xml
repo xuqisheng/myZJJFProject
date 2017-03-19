@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.pc.dao.PcAdvertisementMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.pc.beans.PcAdvertisement" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="positionId" property="positionId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="adUrl" property="adUrl" jdbcType="VARCHAR" />
+    <result column="backgroud" property="backgroud" jdbcType="VARCHAR" />
+    <result column="menuPage" property="menuPage" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="upTime" property="upTime" jdbcType="TIMESTAMP" />
+    <result column="nextTime" property="nextTime" jdbcType="TIMESTAMP" />
+    <result column="orderId" property="orderId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, positionId, name, adUrl, backgroud, menuPage, content, addTime, upTime, nextTime, 
+    orderId, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from PcAdvertisement
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from PcAdvertisement
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.pc.beans.PcAdvertisement" >
+    insert into PcAdvertisement (id, positionId, name, 
+      adUrl, backgroud, menuPage, 
+      content, addTime, upTime, 
+      nextTime, orderId, status, 
+      isDelete)
+    values (#{id,jdbcType=INTEGER}, #{positionId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{adUrl,jdbcType=VARCHAR}, #{backgroud,jdbcType=VARCHAR}, #{menuPage,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{upTime,jdbcType=TIMESTAMP}, 
+      #{nextTime,jdbcType=TIMESTAMP}, #{orderId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
+      #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.pc.beans.PcAdvertisement" >
+    insert into PcAdvertisement
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="positionId != null" >
+        positionId,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="adUrl != null" >
+        adUrl,
+      </if>
+      <if test="backgroud != null" >
+        backgroud,
+      </if>
+      <if test="menuPage != null" >
+        menuPage,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="upTime != null" >
+        upTime,
+      </if>
+      <if test="nextTime != null" >
+        nextTime,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="positionId != null" >
+        #{positionId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="adUrl != null" >
+        #{adUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="backgroud != null" >
+        #{backgroud,jdbcType=VARCHAR},
+      </if>
+      <if test="menuPage != null" >
+        #{menuPage,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upTime != null" >
+        #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nextTime != null" >
+        #{nextTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.pc.beans.PcAdvertisement" >
+    update PcAdvertisement
+    <set >
+      <if test="positionId != null" >
+        positionId = #{positionId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="adUrl != null" >
+        adUrl = #{adUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="backgroud != null" >
+        backgroud = #{backgroud,jdbcType=VARCHAR},
+      </if>
+      <if test="menuPage != null" >
+        menuPage = #{menuPage,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upTime != null" >
+        upTime = #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nextTime != null" >
+        nextTime = #{nextTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.pc.beans.PcAdvertisement" >
+    update PcAdvertisement
+    set positionId = #{positionId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      adUrl = #{adUrl,jdbcType=VARCHAR},
+      backgroud = #{backgroud,jdbcType=VARCHAR},
+      menuPage = #{menuPage,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      upTime = #{upTime,jdbcType=TIMESTAMP},
+      nextTime = #{nextTime,jdbcType=TIMESTAMP},
+      orderId = #{orderId,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- ********************************************************************************************************************* -->
+  <!-- 广告列表 -->
+  <select id="getAllAdvertisement" parameterType="com.corner.pc.beans.ro.PcAdvertisementRo" resultType="com.corner.pc.beans.PcAdvertisement">
+  	select * from PcAdvertisement order by orderId <!-- limit #{pageIndex},#{pageSize} -->
+  </select>
+  <select id="getAllAdvertisementCount" parameterType="com.corner.pc.beans.ro.PcAdvertisementRo" resultType="java.lang.Integer">
+  	select count(1) from PcAdvertisement
+  </select>
+  <!-- 根据Id查出广告 -->
+  <select id="getAdvertisementById" parameterType="java.util.Map" resultType="com.corner.pc.beans.PcAdvertisement">
+  	select * from PcAdvertisement where id = #{id}
+  </select>
+  
+  <select id="getAdvertisementByPositionId" parameterType="com.corner.pc.beans.ro.PcAdvertisementRo" resultType="com.corner.pc.beans.PcAdvertisement">
+  	select * from PcAdvertisement where status=1 and isDelete=0 and positionId=#{positionId} 
+  	AND NOW() BETWEEN upTime AND nextTime
+  	order by orderId limit #{pageIndex},#{pageSize}
+  </select>
+</mapper>

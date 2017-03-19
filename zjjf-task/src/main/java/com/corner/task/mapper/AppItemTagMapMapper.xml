@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.task.dao.AppItemTagMapMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.task.beans.AppItemTagMap" >
+    <id column="plantItemId" property="plantItemId" jdbcType="VARCHAR" />
+    <id column="tagId" property="tagId" jdbcType="VARCHAR" />
+    <result column="brandId" property="brandId" jdbcType="INTEGER" />
+    <result column="SKUActiveId" property="SKUActiveId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    plantItemId, tagId, brandId, SKUActiveId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.corner.task.beans.AppItemTagMapKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from AppItemTagMap
+    where plantItemId = #{plantItemId,jdbcType=VARCHAR}
+      and tagId = #{tagId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.corner.task.beans.AppItemTagMapKey" >
+    delete from AppItemTagMap
+    where plantItemId = #{plantItemId,jdbcType=VARCHAR}
+      and tagId = #{tagId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.task.beans.AppItemTagMap" >
+    insert into AppItemTagMap (plantItemId, tagId, brandId, 
+      SKUActiveId)
+    values (#{plantItemId,jdbcType=VARCHAR}, #{tagId,jdbcType=VARCHAR}, #{brandId,jdbcType=INTEGER}, 
+      #{SKUActiveId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.task.beans.AppItemTagMap" >
+    insert into AppItemTagMap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="plantItemId != null" >
+        plantItemId,
+      </if>
+      <if test="tagId != null" >
+        tagId,
+      </if>
+      <if test="brandId != null" >
+        brandId,
+      </if>
+      <if test="SKUActiveId != null" >
+        SKUActiveId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="plantItemId != null" >
+        #{plantItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="tagId != null" >
+        #{tagId,jdbcType=VARCHAR},
+      </if>
+      <if test="brandId != null" >
+        #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="SKUActiveId != null" >
+        #{SKUActiveId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.task.beans.AppItemTagMap" >
+    update AppItemTagMap
+    <set >
+      <if test="brandId != null" >
+        brandId = #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="SKUActiveId != null" >
+        SKUActiveId = #{SKUActiveId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where plantItemId = #{plantItemId,jdbcType=VARCHAR}
+      and tagId = #{tagId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.task.beans.AppItemTagMap" >
+    update AppItemTagMap
+    set brandId = #{brandId,jdbcType=INTEGER},
+      SKUActiveId = #{SKUActiveId,jdbcType=VARCHAR}
+    where plantItemId = #{plantItemId,jdbcType=VARCHAR}
+      and tagId = #{tagId,jdbcType=VARCHAR}
+  </update>
+</mapper>

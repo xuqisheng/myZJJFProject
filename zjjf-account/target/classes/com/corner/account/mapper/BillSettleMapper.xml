@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.account.dao.BillSettleMapper" >
+
+	<!-- 获取会计列表条件 -->
+	<sql id="getPageList_condition">
+		<if test="beginTime !=null and endTime !=null">
+			AND b.ackTime BETWEEN #{beginTime} AND #{endTime}
+		</if>
+		WHERE a.isDelete = 0 AND a.`status` = 2
+		<if test="areaId !=null">
+			AND a.areaId=#{areaId}
+		</if>		
+		<if test="spKeyword !=null and spKeyword !=''">
+			AND ( a.supplierCode like CONCAT('%','${spKeyword}','%')
+				OR a.supplierName like CONCAT('%','${spKeyword}','%')
+			)
+		</if>
+		GROUP BY a.supplierCode
+	</sql>
+	
+	<!-- 获取会计列表 -->
+ 	<select id="getPageList" parameterType="com.corner.account.beans.ro.BillSettleCondition"  resultType="com.corner.account.beans.vo.BillSettleVo">
+		SELECT
+		a.id as supplierId,
+		a.areaId,
+		a.supplierCode,
+		a.supplierName,
+		sum(b.orderPrice) AS spOrderPrice,
+		sum(b.zfee) AS spZfee,
+		sum(b.zmaoli) AS spZmaoli,
+		(select count(1) from SpOrderInfo c where c.status=5 and ( c.kfStatus=1 or c.spStatus=1 or c.acStatus = 1 ) and a.id=c.supplierId) as noStatus,
+		(select count(1) from SpOrderInfo c where c.status=5 and ( c.kfStatus=2 and c.spStatus=2 and c.acStatus = 2 ) and a.id=c.supplierId) as yStatus 
+		FROM `Supplier` a
+		LEFT JOIN SpOrderInfo b ON b.supplierId = a.id AND b.isDelete = 0 AND b.`status` = 5
+		<include refid="getPageList_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取会计列表 总记录数-->
+ 	<select id="getPageListSize" parameterType="com.corner.account.beans.ro.BillSettleCondition"  resultType="int">
+		SELECT count(1) FROM (
+		SELECT a.id FROM `Supplier` a
+		LEFT JOIN SpOrderInfo b ON b.supplierId = a.id AND b.isDelete = 0 AND b.`status` = 5
+		<include refid="getPageList_condition" />
+		) as countTb
+	</select>
+	
+	
+	
+	<!-- 获取会计列表条件 -->
+	<sql id="getDetailPageList_condition">
+		<if test="beginTime !=null and endTime !=null">
+			AND b.ackTime BETWEEN #{beginTime} AND #{endTime}
+		</if>
+		<if test="spKeyword !=null and spKeyword !=''">
+			AND ( b.orderId like CONCAT('%','${spKeyword}','%')
+				OR b.storeName like CONCAT('%','${spKeyword}','%')
+			)
+		</if>
+		<if test="acStatus !=null and acStatus > 0">
+			AND b.acStatus=${acStatus}
+		</if>
+		<if test="acStatus == -1 ">
+			AND (b.acStatus = 1 or b.acStatus = 2)
+		</if>
+		WHERE a.isDelete = 0 AND a.`status` = 2	
+		<if test="supplierId !=null and supplierId !=''">
+			AND a.id=#{supplierId}
+		</if>
+	</sql>
+	
+	<!-- 获取会计列表 -->
+ 	<select id="getDetailPageList" parameterType="com.corner.account.beans.ro.BillSettleCondition"  resultType="com.corner.account.beans.vo.BillSettleVo">
+		SELECT
+		a.areaId,
+		a.id as supplierId,
+		a.supplierCode,
+		a.supplierName,
+		b.id as spOrderUUID,
+		b.storeId as storeId,
+		b.storeName as storeName,
+		b.orderId as spOrderId,
+		b.goodsPrice AS spGoodsPrice,
+		b.orderPrice AS spOrderPrice,
+		b.kfStatus as spKFStatus,
+		b.spStatus as spSPStatus,
+		b.acStatus as spAcStatus,
+		b.zfee AS spZfee,
+		b.zmaoli AS spZmaoli
+		FROM `Supplier` a
+		LEFT JOIN SpOrderInfo b ON b.supplierId = a.id AND b.isDelete = 0 AND b.`status` = 5
+		<include refid="getDetailPageList_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取会计列表 总记录数-->
+ 	<select id="getDetailPageListSize" parameterType="com.corner.account.beans.ro.BillSettleCondition"  resultType="int">
+		SELECT count(1) FROM `Supplier` a
+		LEFT JOIN SpOrderInfo b ON b.supplierId = a.id AND b.isDelete = 0 AND b.`status` = 5
+		<include refid="getDetailPageList_condition" />
+	</select>
+
+	
+</mapper>

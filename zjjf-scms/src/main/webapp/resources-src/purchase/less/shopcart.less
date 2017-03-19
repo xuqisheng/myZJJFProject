@@ -1,0 +1,214 @@
+@import 'global-comm';
+@import 'footer-comm';
+@import 'shopcart-comm';
+.empty-shopcart {
+  padding-left: 130px;
+  margin: 200px auto;
+  .size(230px,130px);
+  background: url(../images/empty-shopcart.png) left center no-repeat;
+  .h2 {
+    font-size: 18px;
+    color: #666;
+  }
+  .h3 {
+    line-height: 40px;
+    color: #aaa;
+  }
+  .button {
+    .size(140px,40px);
+    line-height: 40px;
+    display: inline-block;
+    background: @main-color;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    &:hover {
+      background: @main-color-hover;
+    }
+  }
+}
+.goods-list {
+  .checkbox {
+    box-sizing: border-box;
+    .size(12px);
+    border: 1px solid #d0d1d5;
+    display: inline-block;
+    background: #fff;
+    &.active {
+      border: 0 none;
+      background: url(../images/checkbox.png) no-repeat center;
+    }
+  }
+  // width
+  .w-goods-checkbox {
+    float: left;
+    display: block;
+    width: 50px;
+    text-align: center;
+  }
+  .w-goods-pic {
+    float: left;
+    border: 1px solid #eee;
+    width: 80px;
+    display: block;
+  }
+  .w-goods-name {
+    float: left;
+    margin-left: 10px;
+    width: 500px;
+    display: block;
+  }
+  .w-goods-price {
+    float: left;
+    width: 120px;
+    display: block;
+    text-align: center;
+  }
+  .w-goods-number {
+    box-sizing: border-box;
+    float: left;
+    display: block;
+    width: 120px;
+    text-align: center;
+    .box {
+      float: left;
+      padding: 0;
+      margin-right: -1px;
+      border: 1px solid #d0d1d5;
+      .size(26px);
+      line-height: 26px;
+      display: block;
+      vertical-align: middle;
+    }
+    .text {
+      width: 32px;
+      text-align: center;
+    }
+    .reduce {
+      background: #f5f5f5;
+      cursor: pointer;
+      font-size: 20px;
+      color: #333;
+      &.active {
+        color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+    .add {
+      background: #f5f5f5;
+      font-size: 20px;
+      color: #333;
+      cursor: pointer;
+    }
+  }
+
+  .list-head,.list-foot {
+    margin-bottom: 10px;
+    height: 50px;
+    line-height: 50px;
+    background: #f4f5f8;
+    font-size: 12px;
+  }
+  .list-body {
+    .list-box {
+      margin-bottom: 10px;
+      .list-box-title, .list-box-item {
+        margin-top: -1px;
+        border: 1px solid #e7e8eb;
+        font-size: 12px;
+      }
+      .list-box-title {
+        padding: 0 20px;
+        height: 40px;
+        line-height: 40px;
+        background: #f4f5f8;
+      }
+      .list-box-item {
+        padding: 10px 0;
+        &:hover {
+          background: #fff5e8;
+        }
+        .name {
+          position: relative;
+          height: 80px;
+          .text {
+            height: 50px;
+            overflow: hidden;
+          }
+          .info {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            color: #aaa
+          }
+        }
+        .price {
+          line-height: 80px;
+          font-size: 14px;
+          font-weight: bold;
+          color: #333;
+        }
+        .number {
+          padding-top: 26px;
+          padding-left: 20px;
+        }
+        .totleprice {
+          color: @main-color;
+        }
+        .operate {
+          line-height: 80px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .list-foot {
+    height: 60px;
+    line-height: 60px;
+    .info {
+      float: right;
+    }
+    .price {
+      font-size: 18px;
+      color: @main-color;
+    }
+  }
+}
+.del-goods {
+  margin-top: 40px;
+  color: #666;
+  font-size: 12px;
+  .goods {
+    margin-top: 5px;
+    padding: 0 10px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #fbdbd2;
+    background: #fff6f3;
+    .info{
+      width: 520px;
+      display: inline-block;
+      overflow: hidden;
+    }
+    .price{
+      width: 230px;
+      display: inline-block;
+      text-align: center;
+      overflow: hidden;
+    }
+    .number {
+      width: 130px;
+      display: inline-block;
+      text-align: center;
+      overflow: hidden;
+    }
+    .re-buy{
+      float: right;
+      margin-right: 30px;
+      &:hover {
+        color: @main-color;
+        cursor: pointer;
+      }
+    }
+  }
+}

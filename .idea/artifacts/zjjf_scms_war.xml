@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="zjjf-scms:war">
+    <output-path>$PROJECT_DIR$/zjjf-scms/target</output-path>
+    <root id="archive" name="scms.war">
+      <element id="artifact" artifact-name="zjjf-scms:war exploded" />
+    </root>
+  </artifact>
+</component>

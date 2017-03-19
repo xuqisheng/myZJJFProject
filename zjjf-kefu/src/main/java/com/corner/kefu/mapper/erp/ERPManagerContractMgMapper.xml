@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.erp.ERPManagerContractMgMapper" >
+  
+  
+   <sql id="pageSql">
+     limit #{pageIndex},#{pageSize}
+   </sql> 
+  
+  <select id="getContractList" parameterType="com.corner.kefu.beans.ro.erp.ERPManagerContractRo" resultType="com.corner.kefu.beans.vo.erp.ERPManagerContractVo">
+      SELECT
+		a.managerCode,
+		a.managerName,
+		b.`code`,
+		b.addTime,
+		b.id
+	<include refid="getCountContractList_param"/>
+	order by a.addTime desc
+	<include refid="pageSql"/>
+  </select>
+  
+  <select id="getCountContractList" parameterType="com.corner.kefu.beans.ro.erp.ERPManagerContractRo" resultType="java.lang.Integer">
+     SELECT
+		count(1)
+		<include refid="getCountContractList_param"/>
+  </select>
+  <sql id="getCountContractList_param">
+      FROM
+		(
+			SELECT
+				*
+			FROM
+				ERPManager
+			WHERE
+				isDelete = 0
+			<if test="regionLevel!=null and regionLevel==2">
+			  and provinceId = #{regionId}
+			</if>
+			<if test="regionLevel!=null and regionLevel==3">
+			  and cityId = #{regionId}
+			</if>
+			<if test="regionLevel!=null and regionLevel==4">
+			  and areaId = #{regionId}
+			</if>
+			<if test="keyStr!=null and keyStr!=''">
+			  and (
+			     managerCode like "%"#{keyStr}"%"
+			     or
+			     managerName like "%"#{keyStr}"%"
+			  )
+			</if>
+			
+		) a
+	JOIN ERPManagerContract b ON a.id = b.erpManagerId
+	where b.isDelete = 0
+  </sql>
+  
+  <update id="delContract" parameterType="com.corner.kefu.beans.ro.erp.ERPManagerContractRo">
+      UPDATE ERPManagerContract
+		SET isDelete = 1
+		WHERE
+			id = #{id}
+  </update>
+</mapper>

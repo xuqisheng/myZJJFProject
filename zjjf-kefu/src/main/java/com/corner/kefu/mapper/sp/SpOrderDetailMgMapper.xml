@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpOrderDetailMgMapper">
+	<select id="getOrderDetailByOrderId" parameterType="java.lang.String" resultType="com.corner.core.beans.SpOrderDetail">
+		select * from SpOrderDetail WHERE (orderId=#{orderId,jdbcType=VARCHAR} or orderId2=#{orderId,jdbcType=VARCHAR}) and isDelete=0
+	</select>
+
+	
+	
+</mapper>

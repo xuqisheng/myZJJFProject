@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.ReportTemplateMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.salesman.model.ReportTemplate" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="fieldCnName" property="fieldCnName" jdbcType="VARCHAR" />
+    <result column="fieldEnName" property="fieldEnName" jdbcType="VARCHAR" />
+    <result column="fieldType" property="fieldType" jdbcType="INTEGER" />
+    <result column="isDelete" property="isDelete" jdbcType="INTEGER" />
+    <result column="isRequired" property="isRequired" jdbcType="INTEGER" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="length" property="length" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="tmplMap" type="java.util.HashMap">  
+    <result column="fieldEnName" property="key" />  
+    <result column="fieldCnName" property="value" />  
+  </resultMap> 
+  
+  <sql id="Base_Column_List" >
+    id, type, fieldCnName,fieldEnName, fieldType, isDelete, isRequired, createBy, createTime, updateBy, updateTime,length
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_report_template_t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="findReportTemplateByType" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	SELECT
+		type,
+		fieldCnName,fieldEnName,
+		fieldType,
+		isRequired,
+		IFNULL(length,0) AS length
+	FROM
+		tbl_report_template_t
+	WHERE isDelete=0 
+	  and type = #{type}
+	ORDER BY sort asc
+  </select>
+  
+  <select id="findTemplateByType" resultMap="tmplMap" parameterType="java.lang.String" >
+	SELECT
+		fieldCnName,fieldEnName
+	FROM
+		tbl_report_template_t
+	WHERE isDelete=0 
+	  and type = #{type}
+	ORDER BY sort asc
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tbl_report_template_t
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.salesman.model.ReportTemplate" >
+    insert into tbl_report_template_t (id, type, fieldCnName,fieldEnName, 
+      fieldType, isDelete, isRequired, 
+      createBy, createTime, updateBy, 
+      updateTime,length)
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{fieldCnName,jdbcType=VARCHAR}, #{fieldEnName,jdbcType=VARCHAR},
+      #{fieldType,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, #{isRequired,jdbcType=INTEGER}, 
+      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP},#{length,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.salesman.model.ReportTemplate" >
+    insert into tbl_report_template_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="fieldCnName != null" >
+        fieldCnName,
+      </if>
+      <if test="fieldEnName != null" >
+        fieldEnName,
+      </if>
+      <if test="fieldType != null" >
+        fieldType,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="isRequired != null" >
+        isRequired,
+      </if>
+      <if test="createBy != null" >
+        createBy,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="updateBy != null" >
+        updateBy,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="length != null" >
+        length,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldCnName != null" >
+        #{fieldCnName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldEnName != null" >
+        #{fieldEnName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldType != null" >
+        #{fieldType,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="isRequired != null" >
+        #{isRequired,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="length != null" >
+        #{length,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.salesman.model.ReportTemplate" >
+    update tbl_report_template_t
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldCnName != null" >
+        fieldCnName = #{fieldCnName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldEnName != null" >
+        fieldEnName = #{fieldEnName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldType != null" >
+        fieldType = #{fieldType,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="isRequired != null" >
+        isRequired = #{isRequired,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        createBy = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        updateBy = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="length != null" >
+        length = #{length,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.salesman.model.ReportTemplate" >
+    update tbl_report_template_t
+    set type = #{type,jdbcType=VARCHAR},
+      fieldCnName = #{fieldCnName,jdbcType=VARCHAR},
+      fieldEnName = #{fieldEnName,jdbcType=VARCHAR},
+      fieldType = #{fieldType,jdbcType=INTEGER},
+      isDelete = #{isDelete,jdbcType=INTEGER},
+      isRequired = #{isRequired,jdbcType=INTEGER},
+      createBy = #{createBy,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      updateBy = #{updateBy,jdbcType=VARCHAR},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      length = #{length,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

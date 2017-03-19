@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.ScmsPlantProtocolMgMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.PlantProtocol" extends="com.corner.core.dao.PlantProtocolMapper.BaseResultMap">
+  </resultMap>
+  
+  
+  <select id="getLastPlantProtocol" resultMap="BaseResultMap">
+    SELECT
+	*
+	FROM
+		PlantProtocol
+	WHERE
+		`status` = 1
+	AND isDelete = 0
+	ORDER BY
+		id DESC
+	LIMIT 0,1
+  </select>
+</mapper>

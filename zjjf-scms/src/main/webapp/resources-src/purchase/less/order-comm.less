@@ -1,0 +1,35 @@
+header {
+  .w();
+  height: 55px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+.logo {
+  float: left;
+}
+.search-box {
+  float: right;
+}
+.title {
+  line-height: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  a {
+    font-size: 12px;
+    text-decoration: none;
+    font-weight: normal;
+    color: #007fbf;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+.button-ok {
+  border: 0 none;
+  .size(80px,30px);
+  background: @main-color;
+  color: #fff;
+  &:hover {
+    background: @main-color-hover;
+  }
+}

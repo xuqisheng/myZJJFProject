@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SKUActiveMgMapper">
+	<sql id="getAllSKUActiveParam">
+		<where>
+			<if test="beginTime != null">
+				and startTime &gt;= #{beginTime}
+			</if>
+			<if test="endTime != null">
+				and endTime &lt;= #{endTime}
+			</if>
+			<if test="activeName != null and activeName !=''">
+				and activeName like "%"#{activeName}"%"
+			</if>
+		</where>
+	</sql>
+	<select id="getAllSKUActive" parameterType="com.corner.kefu.beans.ro.sp.SKUActiveRo" resultType="com.corner.kefu.beans.vo.sp.SKUActiveVo">
+		SELECT
+		id, goodsType, activeName, if(status = 2 and endTime &lt; now() , 3 , status) as status, activeDesc, startTime,
+		endTime, addTime, upTime, downTime, buyStartTime, buyEndTime,
+		addUser, confirmTime, confirmUser, endUser, publish01, publish02,
+		publish03, publish04, publish05, publish06, effecCount,
+		invalidCount, effecUser, effecTime, invalidUser, invalidTime
+		FROM
+			SKUActive
+		<include refid="getAllSKUActiveParam"/>
+		order by status,addTime desc 
+		limit #{pageIndex},#{pageSize}	
+	</select>
+	<select id="getAllSKUActiveCount" parameterType="com.corner.kefu.beans.ro.sp.SKUActiveRo" resultType="java.lang.Integer">
+		SELECT
+			count(1)
+		FROM
+			SKUActive
+		<include refid="getAllSKUActiveParam"/>
+	</select>
+		
+	<update id="updateSKUActiveStatus" parameterType="java.util.Map" >
+	    <!-- 手动停止 -->
+	    <if test="actype == 2">
+	        update SKUActive skuA
+	          set 
+	            skuA.`status` = 4 
+	            ,skuA.endUser = #{opUser,jdbcType=VARCHAR} 
+	          where skuA.`status` = 2 
+	        and skuA.id = #{id,jdbcType=VARCHAR} 
+	    </if>
+	    <!-- 自动停止 -->
+	    <if test="actype == 3">
+	        update SKUActive skuA 
+	          set 
+	            skuA.`status` = 3
+	            ,skuA.endUser = #{opUser,jdbcType=VARCHAR} 
+	          where skuA.`status` = 2 
+	        and skuA.id = #{id,jdbcType=VARCHAR} 
+	    </if>
+	    <!-- 审批 -->
+	    <if test="actype == 1">
+	        update SKUActive skuA 
+	          set 
+	          skuA.`status` = 1  
+	          ,skuA.confirmTime = NOW()
+	          ,skuA.confirmUser = #{opUser,jdbcType=VARCHAR}
+	         where skuA.`status` = 0 
+	        and skuA.id = #{id,jdbcType=VARCHAR} 
+	    </if>
+	    
+	</update>
+	
+	<select id="getPlatItemByMap" parameterType="java.util.Map" resultType="com.corner.kefu.beans.vo.sp.PlantItemVo">
+		select 
+		  a.*,
+		  a1.`name` AS provinceName,
+		  a2.`name` AS cityName,
+		  a3.`name` AS areaName,
+		  b.id AS spGroupId,
+		  b.`name` AS spGroupName,
+		  c.supplierName,
+		  d.mdseId,
+		  d.`name`
+		from PlantItem a
+		INNER JOIN SpGroup b ON  a.spGroupId = b.id AND b.`status` = 1 AND b.isDelete = 0 
+		<if test="spGroupIds">
+			AND 
+			<foreach collection="spGroupIds" item="item" separator="or" open="(" close=")">
+				b.id = #{item,jdbcType=INTEGER} 
+			</foreach>
+		</if>
+		
+		INNER JOIN Supplier c ON a.spId = c.id AND c.`status` = 2 AND c.isDelete = 0 
+		<if test="spIds">
+		    AND
+			<foreach collection="spIds" index="index" item="item" separator="or" open="(" close=")">
+				c.id = #{item,jdbcType=VARCHAR} 
+			</foreach>
+		</if>
+		
+		INNER JOIN ItemBase d ON a.itemBaseId = d.id  AND d.isDelete = 0 
+		<if test="itemBaseIds">
+		    AND
+			<foreach collection="itemBaseIds" index="index" item="item" separator="or" open="(" close=")">
+				d.id = #{item,jdbcType=INTEGER} 
+			</foreach>
+		</if>
+		
+		LEFT JOIN Region a1 ON a1.id = c.province AND a1.`status` = 1 AND a1.isDelete = 0
+		LEFT JOIN Region a2 ON a2.id = c.city AND a2.`status` = 1 AND a2.isDelete = 0
+		LEFT JOIN Region a3 ON a3.id = c.areaId AND a3.`status` = 1 AND a3.isDelete = 0
+		where a.isDelete = 0 AND a.goodsType = 0
+		<if test="plantItemIds">
+		    AND
+			<foreach collection="plantItemIds" index="index" item="item" separator="or" open="(" close=")">
+				a.id = #{item,jdbcType=VARCHAR} 
+			</foreach>
+		</if>
+		
+		order by c.province,c.city,c.areaId,a.spGroupId,a.spId
+    </select>
+    
+    <!-- 查询详情 -->
+    <select id="getSKUActiveGoodInfoByMap" parameterType="java.util.Map" resultType="com.corner.kefu.beans.vo.sp.SKUActiveGoodInfoVo">
+		select 
+		  e.*,
+		  a.SKUProPrice ,
+		  a.SKUProLimitNum ,
+		  a1.`name` AS provinceName,
+		  a2.`name` AS cityName,
+		  a3.`name` AS areaName,
+		  b.id AS spGroupId,
+		  b.`name` AS spGroupName,
+		  c.supplierName,
+		  d.mdseId,
+		  d.`name` as itemBaseName
+		from 
+		SKUActiveGoodInfo e
+		LEFT JOIN PlantItem a ON a.id = e.plantItemId AND a.isDelete = 0 AND a.goodsType = 0
+		INNER JOIN SpGroup b ON a.spGroupId = b.id AND b.`status` = 1 AND b.isDelete = 0 
+		INNER JOIN Supplier c ON a.spId = c.id AND c.`status` = 2 AND c.isDelete = 0 
+		INNER JOIN ItemBase d ON a.itemBaseId = d.id  AND d.isDelete = 0 
+		LEFT JOIN Region a1 ON a1.id = c.province AND a1.`status` = 1 AND a1.isDelete = 0
+		LEFT JOIN Region a2 ON a2.id = c.city AND a2.`status` = 1 AND a2.isDelete = 0
+		LEFT JOIN Region a3 ON a3.id = c.areaId AND a3.`status` = 1 AND a3.isDelete = 0
+		where e.isDelete = 0  and e.SKUActiveId = #{SKUActiveId,jdbcType=VARCHAR} 
+		<if test="plantItemId">
+		    and e.plantItemId = #{plantItemId,jdbcType=VARCHAR}
+		</if>
+		order by c.province,c.city,c.areaId,a.spGroupId,a.spId
+    </select>
+	
+	
+	<select id="selectSKUActiveGoodInfoByActiveId" parameterType="java.util.Map" resultType="com.corner.core.beans.SKUActiveGoodInfo">
+	   select * from SKUActiveGoodInfo s where s.SKUActiveId = #{SKUActiveId,jdbcType=VARCHAR} AND s.isDelete = 0
+	</select>
+	
+	<update id="deleteSKUActiveGoodInfoById" parameterType="java.util.Map">
+		update SKUActiveGoodInfo set isDelete = 1 , updateTime= NOW() where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="effecSKUActive4PlantItem" parameterType="java.util.Map" >
+	    update PlantItem a 
+	      set 
+	        a.isSKUPromotion = #{isSKUPromotion,jdbcType=INTEGER} ,
+	        a.SKUProStartTime = #{SKUProStartTime,jdbcType=TIMESTAMP} ,
+	        a.SKUProEndTime = #{SKUProEndTime,jdbcType=TIMESTAMP} ,
+	        a.SKUProLimitNum = #{SKUProLimitNum,jdbcType=INTEGER} ,
+	        a.SKUProTotalLimitNum = #{SKUProTotalLimitNum,jdbcType=INTEGER} ,
+	        a.SKUProPrice = #{SKUProPrice,jdbcType=DECIMAL} ,
+	        a.`restrict` =  #{SKUProLimitNum,jdbcType=INTEGER} ,
+	        a.`tagLabelId1` = #{SKUProTagId,jdbcType=VARCHAR} ,
+	        a.`SKUPromotionId` = #{SKUActiveId,jdbcType=VARCHAR} 
+	      where a.id = #{plantItemId,jdbcType=VARCHAR} 
+	</update>
+	
+	<update id="invalidSKUActive4PlantItem" parameterType="java.util.Map" >
+	   update PlantItem a 
+	     set 
+	       a.isSKUPromotion = 0 ,
+	       a.SKUProStartTime = NULL ,
+	       a.SKUProEndTime = NULL ,
+	       a.SKUProLimitNum = 0 ,
+	       a.SKUProTotalLimitNum = 0 ,
+	       a.SKUProPrice = NULL , 
+	       a.isSKUPromotion = 0 , 
+	       a.`restrict` = 0  ,
+	       a.`tagLabelId1` = NULL ,
+	       a.`SKUPromotionId` = NULL
+	   where a.id = #{plantItemId,jdbcType=VARCHAR} 
+	</update>
+	
+	
+	<select id="selectSKUActivePublishTag" parameterType="java.util.Map" resultType="com.corner.kefu.beans.vo.SKUActiveTagVo">
+	   select 
+	       tag.* 
+	       from AppItemTag tag 
+	   where 
+	       tag.canClick = 0 
+	       and tag.isDelete = 0 
+	       and tag.`status` = 1
+	</select>
+	
+	<select id="querySKUActivePublishTagMap" parameterType="java.util.Map" resultType="com.corner.core.beans.SKUActivePublishTagMap">
+	   select 
+	       sptm.* 
+	       from SKUActivePublishTagMap sptm 
+	   where 
+	       sptm.isDelete = 0 
+	       and sptm.`status` = 1 
+	       and sptm.SKUActiveId = #{SKUActiveId,jdbcType=VARCHAR} 
+	</select>
+	
+	<update id="updateSKUActiveGoodInfototalBuyNum" parameterType="java.util.Map" >
+	    update SKUActiveGoodInfo 
+	        set 
+	            totalBuyNum = #{totalBuyNum,jdbcType=VARCHAR}
+	        where 
+	            SKUActiveId = #{SKUActiveId,jdbcType=VARCHAR} 
+	            and plantItemId = #{plantItemId,jdbcType=VARCHAR}
+	            and `status` = 1
+	            and `isDelete` = 0
+	    
+	</update>
+	
+	<select id="getTaskAllSKUActive" parameterType="com.corner.core.beans.SKUActive" resultType="com.corner.core.beans.SKUActive">
+		SELECT
+			*
+		FROM
+			SKUActive
+		where `status` = 2
+		order by status,addTime desc 
+	</select>
+	
+	<select id="queryAppItemTagProductMap" parameterType="java.util.Map" resultType="com.corner.core.beans.AppItemTagProductMapKey">
+		SELECT
+			*
+		FROM
+			AppItemTagProductMap
+		where `tagId` = #{tagId,jdbcType=VARCHAR} and productId = #{productId,jdbcType=VARCHAR}
+	</select>
+	
+	<delete id="delPlantItemProductBySKUActiveId" parameterType="java.util.Map">
+		DELETE from PlantItemProduct where SKUActiveId= #{SKUActiveId,jdbcType=VARCHAR}
+	</delete>
+	
+	<select id="selectPlantItemProductBySKUActiveIdAndPlantItemId" parameterType="java.util.Map" resultType="com.corner.core.beans.PlantItemProduct">
+		select 
+		    pp.* 
+		from PlantItemProduct pp
+	    JOIN PlantItemProductMap ppm on pp.id = ppm.productId
+	        AND ppm.plantItemId = #{plantItemId,jdbcType=VARCHAR}
+	    where 
+	        pp.SKUActiveId = #{SKUActiveId,jdbcType=VARCHAR}
+	        and pp.pkgType = 0
+	</select>
+	
+	<update id="updateProductPrice4PlantItemProductById" parameterType="java.util.Map" >
+	    update 
+            PlantItemProduct 
+            set productPrice = #{productPrice,jdbcType=DECIMAL}
+        where 
+            id = #{productId,jdbcType=VARCHAR}
+        <!--孟星魂添加 2016年10月20日15:03:49-->
+        ;UPDATE PlantItemProductMap set pkgPrice = #{productPrice,jdbcType=DECIMAL} WHERE productId = #{productId,jdbcType=VARCHAR};
+	</update>
+	
+	<update id="invalidPlantItemProductBySKUActiveId" parameterType="java.util.Map" >
+	    update 
+            PlantItemProduct 
+            set `status` = 0 , isDelete = 1
+        where 
+            SKUActiveId = #{SKUActiveId,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="selectPlantItemProductBySKUActiveId" parameterType="java.util.Map" resultType="com.corner.core.beans.PlantItemProduct">
+		select 
+		    pp.* 
+		from PlantItemProduct pp
+	    where 
+	        pp.SKUActiveId = #{SKUActiveId,jdbcType=VARCHAR}
+	</select>
+	
+</mapper>

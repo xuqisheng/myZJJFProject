@@ -1,0 +1,28 @@
+@import "_var";
+
+@mixin size($width: 0, $height: $width) {
+    width: $width;
+    height: $height;
+}
+@mixin triangle($direction: down, $size: 5px, $color: $main-color ) {
+    content:"";
+    height: 0;
+    width: 0;
+    @if $direction == up {
+        border-bottom: $size solid $color;
+        border-left: $size dashed transparent;
+        border-right: $size dashed transparent;
+    } @else if $direction == right {
+        border-left: $size solid $color;
+        border-top: $size dashed transparent;
+        border-bottom: $size dashed transparent;
+    } @else if $direction == down {
+        border-top: $size solid $color;
+        border-left: $size dashed transparent;
+        border-right: $size dashed transparent;
+    } @else if $direction == left {
+        border-right: $size solid $color;
+        border-top: $size dashed transparent;
+        border-bottom: $size dashed transparent;
+    }
+}

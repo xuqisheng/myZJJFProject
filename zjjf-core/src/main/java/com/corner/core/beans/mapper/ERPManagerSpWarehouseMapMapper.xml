@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ERPManagerSpWarehouseMapMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ERPManagerSpWarehouseMap" >
+    <id column="eRPManagerId" property="eRPManagerId" jdbcType="VARCHAR" />
+    <id column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <id column="eRPWarehouseId" property="eRPWarehouseId" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.corner.core.beans.ERPManagerSpWarehouseMap" >
+    delete from ERPManagerSpWarehouseMap
+    where eRPManagerId = #{eRPManagerId,jdbcType=VARCHAR}
+      and supplierId = #{supplierId,jdbcType=VARCHAR}
+      and eRPWarehouseId = #{eRPWarehouseId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ERPManagerSpWarehouseMap" >
+    insert into ERPManagerSpWarehouseMap (eRPManagerId, supplierId, eRPWarehouseId
+      )
+    values (#{eRPManagerId,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, #{eRPWarehouseId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ERPManagerSpWarehouseMap" >
+    insert into ERPManagerSpWarehouseMap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="eRPManagerId != null" >
+        eRPManagerId,
+      </if>
+      <if test="supplierId != null" >
+        supplierId,
+      </if>
+      <if test="eRPWarehouseId != null" >
+        eRPWarehouseId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="eRPManagerId != null" >
+        #{eRPManagerId,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="eRPWarehouseId != null" >
+        #{eRPWarehouseId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

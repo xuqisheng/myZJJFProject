@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SKUActiveMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SKUActive" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="goodsType" property="goodsType" jdbcType="TINYINT" />
+    <result column="activeName" property="activeName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="activeDesc" property="activeDesc" jdbcType="VARCHAR" />
+    <result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="endTime" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="upTime" property="upTime" jdbcType="TIMESTAMP" />
+    <result column="downTime" property="downTime" jdbcType="TIMESTAMP" />
+    <result column="buyStartTime" property="buyStartTime" jdbcType="TIMESTAMP" />
+    <result column="buyEndTime" property="buyEndTime" jdbcType="TIMESTAMP" />
+    <result column="addUser" property="addUser" jdbcType="VARCHAR" />
+    <result column="confirmTime" property="confirmTime" jdbcType="TIMESTAMP" />
+    <result column="confirmUser" property="confirmUser" jdbcType="VARCHAR" />
+    <result column="endUser" property="endUser" jdbcType="VARCHAR" />
+    <result column="publish01" property="publish01" jdbcType="VARCHAR" />
+    <result column="publish02" property="publish02" jdbcType="VARCHAR" />
+    <result column="publish03" property="publish03" jdbcType="VARCHAR" />
+    <result column="publish04" property="publish04" jdbcType="VARCHAR" />
+    <result column="publish05" property="publish05" jdbcType="VARCHAR" />
+    <result column="publish06" property="publish06" jdbcType="VARCHAR" />
+    <result column="effecCount" property="effecCount" jdbcType="INTEGER" />
+    <result column="invalidCount" property="invalidCount" jdbcType="INTEGER" />
+    <result column="effecUser" property="effecUser" jdbcType="VARCHAR" />
+    <result column="effecTime" property="effecTime" jdbcType="TIMESTAMP" />
+    <result column="invalidUser" property="invalidUser" jdbcType="VARCHAR" />
+    <result column="invalidTime" property="invalidTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, goodsType, activeName, status, activeDesc, startTime, endTime, addTime, upTime, 
+    downTime, buyStartTime, buyEndTime, addUser, confirmTime, confirmUser, endUser, publish01, 
+    publish02, publish03, publish04, publish05, publish06, effecCount, invalidCount, 
+    effecUser, effecTime, invalidUser, invalidTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SKUActive
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SKUActive
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SKUActive" >
+    insert into SKUActive (id, goodsType, activeName, 
+      status, activeDesc, startTime, 
+      endTime, addTime, upTime, 
+      downTime, buyStartTime, buyEndTime, 
+      addUser, confirmTime, confirmUser, 
+      endUser, publish01, publish02, 
+      publish03, publish04, publish05, 
+      publish06, effecCount, invalidCount, 
+      effecUser, effecTime, invalidUser, 
+      invalidTime)
+    values (#{id,jdbcType=VARCHAR}, #{goodsType,jdbcType=TINYINT}, #{activeName,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{activeDesc,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP}, #{upTime,jdbcType=TIMESTAMP}, 
+      #{downTime,jdbcType=TIMESTAMP}, #{buyStartTime,jdbcType=TIMESTAMP}, #{buyEndTime,jdbcType=TIMESTAMP}, 
+      #{addUser,jdbcType=VARCHAR}, #{confirmTime,jdbcType=TIMESTAMP}, #{confirmUser,jdbcType=VARCHAR}, 
+      #{endUser,jdbcType=VARCHAR}, #{publish01,jdbcType=VARCHAR}, #{publish02,jdbcType=VARCHAR}, 
+      #{publish03,jdbcType=VARCHAR}, #{publish04,jdbcType=VARCHAR}, #{publish05,jdbcType=VARCHAR}, 
+      #{publish06,jdbcType=VARCHAR}, #{effecCount,jdbcType=INTEGER}, #{invalidCount,jdbcType=INTEGER}, 
+      #{effecUser,jdbcType=VARCHAR}, #{effecTime,jdbcType=TIMESTAMP}, #{invalidUser,jdbcType=VARCHAR}, 
+      #{invalidTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SKUActive" >
+    insert into SKUActive
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="goodsType != null" >
+        goodsType,
+      </if>
+      <if test="activeName != null" >
+        activeName,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="activeDesc != null" >
+        activeDesc,
+      </if>
+      <if test="startTime != null" >
+        startTime,
+      </if>
+      <if test="endTime != null" >
+        endTime,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="upTime != null" >
+        upTime,
+      </if>
+      <if test="downTime != null" >
+        downTime,
+      </if>
+      <if test="buyStartTime != null" >
+        buyStartTime,
+      </if>
+      <if test="buyEndTime != null" >
+        buyEndTime,
+      </if>
+      <if test="addUser != null" >
+        addUser,
+      </if>
+      <if test="confirmTime != null" >
+        confirmTime,
+      </if>
+      <if test="confirmUser != null" >
+        confirmUser,
+      </if>
+      <if test="endUser != null" >
+        endUser,
+      </if>
+      <if test="publish01 != null" >
+        publish01,
+      </if>
+      <if test="publish02 != null" >
+        publish02,
+      </if>
+      <if test="publish03 != null" >
+        publish03,
+      </if>
+      <if test="publish04 != null" >
+        publish04,
+      </if>
+      <if test="publish05 != null" >
+        publish05,
+      </if>
+      <if test="publish06 != null" >
+        publish06,
+      </if>
+      <if test="effecCount != null" >
+        effecCount,
+      </if>
+      <if test="invalidCount != null" >
+        invalidCount,
+      </if>
+      <if test="effecUser != null" >
+        effecUser,
+      </if>
+      <if test="effecTime != null" >
+        effecTime,
+      </if>
+      <if test="invalidUser != null" >
+        invalidUser,
+      </if>
+      <if test="invalidTime != null" >
+        invalidTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsType != null" >
+        #{goodsType,jdbcType=TINYINT},
+      </if>
+      <if test="activeName != null" >
+        #{activeName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="activeDesc != null" >
+        #{activeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upTime != null" >
+        #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="downTime != null" >
+        #{downTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyStartTime != null" >
+        #{buyStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyEndTime != null" >
+        #{buyEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null" >
+        #{addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmTime != null" >
+        #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="confirmUser != null" >
+        #{confirmUser,jdbcType=VARCHAR},
+      </if>
+      <if test="endUser != null" >
+        #{endUser,jdbcType=VARCHAR},
+      </if>
+      <if test="publish01 != null" >
+        #{publish01,jdbcType=VARCHAR},
+      </if>
+      <if test="publish02 != null" >
+        #{publish02,jdbcType=VARCHAR},
+      </if>
+      <if test="publish03 != null" >
+        #{publish03,jdbcType=VARCHAR},
+      </if>
+      <if test="publish04 != null" >
+        #{publish04,jdbcType=VARCHAR},
+      </if>
+      <if test="publish05 != null" >
+        #{publish05,jdbcType=VARCHAR},
+      </if>
+      <if test="publish06 != null" >
+        #{publish06,jdbcType=VARCHAR},
+      </if>
+      <if test="effecCount != null" >
+        #{effecCount,jdbcType=INTEGER},
+      </if>
+      <if test="invalidCount != null" >
+        #{invalidCount,jdbcType=INTEGER},
+      </if>
+      <if test="effecUser != null" >
+        #{effecUser,jdbcType=VARCHAR},
+      </if>
+      <if test="effecTime != null" >
+        #{effecTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalidUser != null" >
+        #{invalidUser,jdbcType=VARCHAR},
+      </if>
+      <if test="invalidTime != null" >
+        #{invalidTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SKUActive" >
+    update SKUActive
+    <set >
+      <if test="goodsType != null" >
+        goodsType = #{goodsType,jdbcType=TINYINT},
+      </if>
+      <if test="activeName != null" >
+        activeName = #{activeName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="activeDesc != null" >
+        activeDesc = #{activeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        startTime = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        endTime = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upTime != null" >
+        upTime = #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="downTime != null" >
+        downTime = #{downTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyStartTime != null" >
+        buyStartTime = #{buyStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyEndTime != null" >
+        buyEndTime = #{buyEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null" >
+        addUser = #{addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmTime != null" >
+        confirmTime = #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="confirmUser != null" >
+        confirmUser = #{confirmUser,jdbcType=VARCHAR},
+      </if>
+      <if test="endUser != null" >
+        endUser = #{endUser,jdbcType=VARCHAR},
+      </if>
+      <if test="publish01 != null" >
+        publish01 = #{publish01,jdbcType=VARCHAR},
+      </if>
+      <if test="publish02 != null" >
+        publish02 = #{publish02,jdbcType=VARCHAR},
+      </if>
+      <if test="publish03 != null" >
+        publish03 = #{publish03,jdbcType=VARCHAR},
+      </if>
+      <if test="publish04 != null" >
+        publish04 = #{publish04,jdbcType=VARCHAR},
+      </if>
+      <if test="publish05 != null" >
+        publish05 = #{publish05,jdbcType=VARCHAR},
+      </if>
+      <if test="publish06 != null" >
+        publish06 = #{publish06,jdbcType=VARCHAR},
+      </if>
+      <if test="effecCount != null" >
+        effecCount = #{effecCount,jdbcType=INTEGER},
+      </if>
+      <if test="invalidCount != null" >
+        invalidCount = #{invalidCount,jdbcType=INTEGER},
+      </if>
+      <if test="effecUser != null" >
+        effecUser = #{effecUser,jdbcType=VARCHAR},
+      </if>
+      <if test="effecTime != null" >
+        effecTime = #{effecTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalidUser != null" >
+        invalidUser = #{invalidUser,jdbcType=VARCHAR},
+      </if>
+      <if test="invalidTime != null" >
+        invalidTime = #{invalidTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SKUActive" >
+    update SKUActive
+    set goodsType = #{goodsType,jdbcType=TINYINT},
+      activeName = #{activeName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      activeDesc = #{activeDesc,jdbcType=VARCHAR},
+      startTime = #{startTime,jdbcType=TIMESTAMP},
+      endTime = #{endTime,jdbcType=TIMESTAMP},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      upTime = #{upTime,jdbcType=TIMESTAMP},
+      downTime = #{downTime,jdbcType=TIMESTAMP},
+      buyStartTime = #{buyStartTime,jdbcType=TIMESTAMP},
+      buyEndTime = #{buyEndTime,jdbcType=TIMESTAMP},
+      addUser = #{addUser,jdbcType=VARCHAR},
+      confirmTime = #{confirmTime,jdbcType=TIMESTAMP},
+      confirmUser = #{confirmUser,jdbcType=VARCHAR},
+      endUser = #{endUser,jdbcType=VARCHAR},
+      publish01 = #{publish01,jdbcType=VARCHAR},
+      publish02 = #{publish02,jdbcType=VARCHAR},
+      publish03 = #{publish03,jdbcType=VARCHAR},
+      publish04 = #{publish04,jdbcType=VARCHAR},
+      publish05 = #{publish05,jdbcType=VARCHAR},
+      publish06 = #{publish06,jdbcType=VARCHAR},
+      effecCount = #{effecCount,jdbcType=INTEGER},
+      invalidCount = #{invalidCount,jdbcType=INTEGER},
+      effecUser = #{effecUser,jdbcType=VARCHAR},
+      effecTime = #{effecTime,jdbcType=TIMESTAMP},
+      invalidUser = #{invalidUser,jdbcType=VARCHAR},
+      invalidTime = #{invalidTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

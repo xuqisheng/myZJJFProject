@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.FinWalletMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.FinWallet" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="rates" property="rates" jdbcType="REAL" />
+    <result column="balance" property="balance" jdbcType="DECIMAL" />
+    <result column="unliquidatedMoney" property="unliquidatedMoney" jdbcType="DECIMAL" />
+    <result column="lastInMoney" property="lastInMoney" jdbcType="DECIMAL" />
+    <result column="lastInVoucher" property="lastInVoucher" jdbcType="VARCHAR" />
+    <result column="lastOutMoney" property="lastOutMoney" jdbcType="DECIMAL" />
+    <result column="lastOutVoucher" property="lastOutVoucher" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="lastOpTime" property="lastOpTime" jdbcType="TIMESTAMP" />
+    <result column="lastInTime" property="lastInTime" jdbcType="TIMESTAMP" />
+    <result column="lastOutTime" property="lastOutTime" jdbcType="TIMESTAMP" />
+    <result column="payPassword" property="payPassword" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="pwdErrorCount" property="pwdErrorCount" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, rates, balance, unliquidatedMoney, lastInMoney, lastInVoucher, lastOutMoney, 
+    lastOutVoucher, addTime, lastOpTime, lastInTime, lastOutTime, payPassword, status, 
+    isDelete, pwdErrorCount
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from FinWallet
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from FinWallet
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.FinWallet" >
+    insert into FinWallet (id, rates, balance, 
+      unliquidatedMoney, lastInMoney, lastInVoucher, 
+      lastOutMoney, lastOutVoucher, addTime, 
+      lastOpTime, lastInTime, lastOutTime, 
+      payPassword, status, isDelete, 
+      pwdErrorCount)
+    values (#{id,jdbcType=VARCHAR}, #{rates,jdbcType=REAL}, #{balance,jdbcType=DECIMAL}, 
+      #{unliquidatedMoney,jdbcType=DECIMAL}, #{lastInMoney,jdbcType=DECIMAL}, #{lastInVoucher,jdbcType=VARCHAR}, 
+      #{lastOutMoney,jdbcType=DECIMAL}, #{lastOutVoucher,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{lastOpTime,jdbcType=TIMESTAMP}, #{lastInTime,jdbcType=TIMESTAMP}, #{lastOutTime,jdbcType=TIMESTAMP}, 
+      #{payPassword,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}, 
+      #{pwdErrorCount,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.FinWallet" >
+    insert into FinWallet
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="rates != null" >
+        rates,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="unliquidatedMoney != null" >
+        unliquidatedMoney,
+      </if>
+      <if test="lastInMoney != null" >
+        lastInMoney,
+      </if>
+      <if test="lastInVoucher != null" >
+        lastInVoucher,
+      </if>
+      <if test="lastOutMoney != null" >
+        lastOutMoney,
+      </if>
+      <if test="lastOutVoucher != null" >
+        lastOutVoucher,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="lastOpTime != null" >
+        lastOpTime,
+      </if>
+      <if test="lastInTime != null" >
+        lastInTime,
+      </if>
+      <if test="lastOutTime != null" >
+        lastOutTime,
+      </if>
+      <if test="payPassword != null" >
+        payPassword,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="pwdErrorCount != null" >
+        pwdErrorCount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="rates != null" >
+        #{rates,jdbcType=REAL},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="unliquidatedMoney != null" >
+        #{unliquidatedMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="lastInMoney != null" >
+        #{lastInMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="lastInVoucher != null" >
+        #{lastInVoucher,jdbcType=VARCHAR},
+      </if>
+      <if test="lastOutMoney != null" >
+        #{lastOutMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="lastOutVoucher != null" >
+        #{lastOutVoucher,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastOpTime != null" >
+        #{lastOpTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastInTime != null" >
+        #{lastInTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastOutTime != null" >
+        #{lastOutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payPassword != null" >
+        #{payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="pwdErrorCount != null" >
+        #{pwdErrorCount,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.FinWallet" >
+    update FinWallet
+    <set >
+      <if test="rates != null" >
+        rates = #{rates,jdbcType=REAL},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="unliquidatedMoney != null" >
+        unliquidatedMoney = #{unliquidatedMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="lastInMoney != null" >
+        lastInMoney = #{lastInMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="lastInVoucher != null" >
+        lastInVoucher = #{lastInVoucher,jdbcType=VARCHAR},
+      </if>
+      <if test="lastOutMoney != null" >
+        lastOutMoney = #{lastOutMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="lastOutVoucher != null" >
+        lastOutVoucher = #{lastOutVoucher,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastOpTime != null" >
+        lastOpTime = #{lastOpTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastInTime != null" >
+        lastInTime = #{lastInTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastOutTime != null" >
+        lastOutTime = #{lastOutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payPassword != null" >
+        payPassword = #{payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="pwdErrorCount != null" >
+        pwdErrorCount = #{pwdErrorCount,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.FinWallet" >
+    update FinWallet
+    set rates = #{rates,jdbcType=REAL},
+      balance = #{balance,jdbcType=DECIMAL},
+      unliquidatedMoney = #{unliquidatedMoney,jdbcType=DECIMAL},
+      lastInMoney = #{lastInMoney,jdbcType=DECIMAL},
+      lastInVoucher = #{lastInVoucher,jdbcType=VARCHAR},
+      lastOutMoney = #{lastOutMoney,jdbcType=DECIMAL},
+      lastOutVoucher = #{lastOutVoucher,jdbcType=VARCHAR},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      lastOpTime = #{lastOpTime,jdbcType=TIMESTAMP},
+      lastInTime = #{lastInTime,jdbcType=TIMESTAMP},
+      lastOutTime = #{lastOutTime,jdbcType=TIMESTAMP},
+      payPassword = #{payPassword,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      pwdErrorCount = #{pwdErrorCount,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

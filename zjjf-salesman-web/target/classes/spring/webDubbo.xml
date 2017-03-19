@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+        http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://code.alibabatech.com/schema/dubbo  
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+ 	
+ 	
+	<!-- consumer application name -->
+	<dubbo:application name="salesman-web-consumer" />
+	<dubbo:consumer timeout="200000" check="false" retries="0" />
+	<dubbo:registry id="salesman" address="${zookeeper.address}"  />
+	
+	<!-- 监控定义接口 -->
+	<dubbo:reference interface="com.corner.rpc.shop.api.service.RegionService"  id="regionService" />
+	<dubbo:reference interface="com.corner.rpc.shop.api.service.SpGroupService" id="spGroupService"/>  
+	<dubbo:reference interface="com.corner.rpc.salesman.api.service.DictService" id="dictService"/>
+	<dubbo:reference interface="com.corner.rpc.salesman.api.service.ShopService" id="shopService"/>
+	<dubbo:reference interface="com.corner.rpc.shop.api.service.StoreService" id="storeService" />
+	<dubbo:reference interface="com.corner.rpc.salesman.api.service.SpGroupLineService" id="spGroupLineService" />
+	<dubbo:reference interface="com.corner.rpc.salesman.api.service.LinePlansService" id="linePlansService" />
+</beans>

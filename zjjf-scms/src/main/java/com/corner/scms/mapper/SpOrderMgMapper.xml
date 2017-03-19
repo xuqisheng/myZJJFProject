@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.SpOrderMgMapper">
+
+	<select id="selectSpOrderInfoSelectivepc" parameterType="com.corner.scms.beans.ro.SpOrderInfoRo"
+		resultType="SpOrderInfo">
+		select
+		s.* from 
+		<include refid="condition"/>
+		<if test="sortName!= null">
+			<include refid="BasePublicMapper.orderSql" />
+		</if>
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<select id="getOrderDetail" resultType="SpOrderDetail"  parameterType="java.lang.String">
+		select * from SpOrderDetail where
+		(orderId=#{orderId} or orderId2=#{orderId}) and isDelete=0
+	</select>
+	
+	<select id="getZjjfOrderDetail" resultType="com.corner.scms.beans.vo.SpOrderDetailVo"  parameterType="java.lang.String">
+		SELECT
+			a.*,
+			c.`name` AS cateName
+		FROM
+			SpOrderDetail a
+		JOIN ItemBase b ON a.itemBaseId = b.id
+		JOIN ItemCatelog c ON b.cateId = c.id
+		WHERE
+			(a.orderId=#{orderId} or a.orderId2=#{orderId})
+		and a.isDelete = 0
+		ORDER BY b.cateId ,b.brandId
+	</select>
+	
+	<select id="selectSpOrderCountOfStatuspc" parameterType="com.corner.scms.beans.ro.SpOrderInfoRo"
+		resultType="int">
+		select
+		count(1) from
+		<include refid="condition"></include>
+
+	</select>
+
+
+	<select id="findByOrId" parameterType="java.lang.String" resultType="com.corner.scms.beans.vo.OrderInfoVo">
+SELECT
+	a.*, CONCAT(
+		IFNULL(
+			(
+				SELECT
+					NAME
+				FROM
+					Region
+				WHERE
+					STATUS = 1
+				AND isDelete = 0
+				AND id = (
+					SELECT
+						provinceId
+					FROM
+						Store
+					WHERE
+						STATUS = 1
+					AND isDelete = 0
+					AND id = a.storeId
+				)
+			),
+			''
+		),
+		IFNULL(
+			(
+				SELECT
+					NAME
+				FROM
+					Region
+				WHERE
+					STATUS = 1
+				AND isDelete = 0
+				AND id = (
+					SELECT
+						cityId
+					FROM
+						Store
+					WHERE
+						STATUS = 1
+					AND isDelete = 0
+					AND id = a.storeId
+				)
+			),
+			''
+		),
+		IFNULL(
+			(
+				SELECT
+					NAME
+				FROM
+					Region
+				WHERE
+					STATUS = 1
+				AND isDelete = 0
+				AND id = (
+					SELECT
+						areaId
+					FROM
+						Store
+					WHERE
+						STATUS = 1
+					AND isDelete = 0
+					AND id = a.storeId
+				)
+			),
+			''
+		),
+		IFNULL(
+			(
+				SELECT
+					NAME
+				FROM
+					Region
+				WHERE
+					STATUS = 1
+				AND isDelete = 0
+				AND id = (
+					SELECT
+						streetId
+					FROM
+						Store
+					WHERE
+						STATUS = 1
+					AND isDelete = 0
+					AND id = a.storeId
+				)
+			),
+			''
+		)
+	) AS ssqName,
+	(
+		SELECT
+			addressRemark
+		FROM
+			Store
+		WHERE
+			STATUS = 1
+		AND isDelete = 0
+		AND id = a.storeId
+	) AS addressRemark
+FROM
+	SpOrderInfo a
+		where a.orderId = #{storeid}
+	</select>
+	
+	<select id="getDgOrderDetail" parameterType="java.lang.String" resultType="com.corner.scms.beans.vo.SpOrderListVo">
+		select * from SpOrderInfo 
+		where pId = #{id,jdbcType=VARCHAR} and isDelete=0
+		ORDER BY `level` ASC
+	</select>
+
+	<sql id="condition">
+		SpOrderInfo s join Store r on s.storeId=r.id 
+		<if test="status == null || status == 10" >
+			join ( 
+				select 
+					orderId,
+					addTime 
+				from Reminder 
+				WHERE `status` = 1
+				AND isDelete = 0
+				AND processStatus = 0
+				<if test="supplierId != null and supplierId != ''">
+					AND spId = #{supplierId}
+				</if> 
+			) e on s.orderId = e.orderId
+		</if>
+		where s.isDelete=0 AND r.isDelete=0
+		<if test="status != null and status != 10 and status != -10 and status != -1">
+			<choose>
+				<when test="status == 40">
+					AND s.logisticsStatus = 4 AND s.status = 4
+				</when>
+				<when test="status == 50">
+					AND s.logisticsStatus = 5 AND s.status = 4
+				</when>
+				<when test="status == 4">
+					AND s.logisticsStatus = 1 AND s.status = 4
+				</when>
+				<when test="status == 5">
+					AND s.status = 5
+				</when>
+				<otherwise>
+					AND s.status = #{status}
+				</otherwise>
+			</choose>
+			<if test="date != null">
+				AND (DATE_FORMAT(s.getOrderTime, '%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d') or DATE_FORMAT(s.addTime, '%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+				    or DATE_FORMAT(s.ackTime, '%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d') or DATE_FORMAT(s.printtime, '%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d'))
+			</if>
+		</if>
+		<if test="status == -10 or status==-1">
+			AND s.status in (2,3,4,5)
+		</if>
+		<if test="supportmetho != null" >
+			AND s.supportmetho=#{supportmetho}
+		</if>
+		<if test="storeid != null and storeid !=''">
+			AND (r.name like CONCAT('%',#{storeid},'%' ) or s.orderId like CONCAT('%',#{storeid},'%' ))
+		</if>
+		<!-- 查询条件：创建开始时间 -->
+        <if test="dateFrom!=null and dateFrom!=''">
+            AND s.addTime &gt;= #{dateFrom}
+        </if>
+        <!-- 查询条件：创建结束时间 -->
+        <if test="dateTo!=null and dateTo!=''">
+            AND s.addTime &lt;= #{dateTo}
+        </if> 
+		<if test="supplierTel != null and supplierTel != ''">
+			AND s.supplierTel=#{supplierTel}
+		</if>
+		<if test="supplierId != null and supplierId != ''">
+			AND s.supplierId=#{supplierId}
+		</if>
+
+	</sql>
+
+	<select id="getOrderDetailMap" resultType="SpOrderDetail"  parameterType="java.lang.String">
+		select * from SpOrderDetail where
+		(orderId=#{orderId} or orderId2=#{orderId}) and isDelete=0
+	</select>
+	
+	<select id="getyewuyuanmobile" parameterType="java.lang.Integer" resultType="java.lang.String">
+		SELECT yewuRenTel FROM StoreInfo WHERE id=#{storeId}
+	</select>
+	
+	<select id="getGoodsSendStockBySpIdAndItemBaseId" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT
+			SUM(quantity)
+		FROM
+			SpOrderDetail a
+		JOIN SpOrderInfo b ON a.orderId2 = b.orderId
+		AND b.`status` = 4
+		AND b.isDelete = 0
+		AND b.supplierId = #{spId}
+		WHERE
+			a.isDelete = 0
+		AND a.itemBaseId = #{itemBaseId}
+		AND a.spId = #{spId}
+	</select>
+	
+	<!-- 获取预警的订单 -->
+	<select id="getCautionOrder" parameterType="java.lang.String" resultType="com.corner.scms.beans.vo.SpOrderListVo">
+		SELECT
+			*
+		FROM
+			(
+			SELECT
+				*, 
+			CASE
+				WHEN supportmetho = 2 THEN
+					TIMESTAMPDIFF(HOUR, addTime, SYSDATE())
+				ELSE
+					TIMESTAMPDIFF(HOUR, supportTime, SYSDATE())
+			END AS timeNum,
+			CASE
+				WHEN supportmetho=1 THEN '快钱支付'
+				WHEN supportmetho=2 THEN '货到付款'
+				WHEN supportmetho=3 THEN '支付宝支付'
+				WHEN supportmetho=4 THEN '微信支付'
+				WHEN supportmetho=5 THEN '转角钱包支付'
+				ELSE '无'
+			END AS supportName,
+			CASE 
+				WHEN `status`=1 THEN '已下单'
+				WHEN `status`=2 THEN '已派单'
+				WHEN `status`=3 THEN '已提单'
+				WHEN `status`=4 THEN '已打印'
+				ELSE '无'
+			END AS statusName
+			FROM
+				SpOrderInfo
+			WHERE
+				isDelete = 0
+			AND supplierId = #{supplierId}
+			AND `status` BETWEEN 2 AND 4
+			AND logisticsStatus &lt; 5
+		) a
+		WHERE
+			a.timeNum >= 12
+		ORDER BY
+			a.addTime
+	</select>
+	
+	<select id="getSpOrDerInfoByOrderId" parameterType="java.lang.String" resultType="com.corner.core.beans.SpOrderInfo">
+	    SELECT * FROM SpOrderInfo where orderId = #{spOrderId} AND isDelete = 0
+	</select>
+	
+	<update id="updateStatusEquals4" parameterType="com.corner.core.beans.SpOrderInfo">
+	  update SpOrderInfo set status = 4,printTime = NOW(),getOrderTime=NOW(),deliveryTime=NOW() 
+	  where id =#{id} <!-- and isOutStock = 1 -->
+	</update>
+	
+	<update id="updateStatusEquals5" parameterType="com.corner.core.beans.SpOrderInfo">
+	  update SpOrderInfo set status = 5,ackTime=NOW() 
+	  where id =#{id} and isOutStock = 1
+	</update>
+	
+	<select id="getAllSendSpOrDerList" parameterType="com.corner.core.beans.SpOrderInfo" resultType="com.corner.core.beans.SpOrderInfo">
+	  SELECT * FROM SpOrderInfo WHERE `level` = 2 AND pId = #{pId} AND `status` not in (4,5)
+	</select>
+	
+	<update id="updateFuOrDderStatusEquals4" parameterType="com.corner.core.beans.SpOrderInfo">
+	  update SpOrderInfo set status = 4 where id = #{pId}
+	</update>
+	
+	<select id="getAllNotSendSpOrDerInfoList" parameterType="com.corner.core.beans.SpOrderInfo" resultType="com.corner.core.beans.SpOrderInfo">
+	  SELECT * FROM SpOrderInfo WHERE `level` = 2 AND pId = #{pId} AND `status` NOT in(5,6) AND `status` = 1
+	</select>
+	
+	<update id="updateFuOrderStatusEquals5" parameterType="com.corner.core.beans.SpOrderInfo">
+	  UPDATE SpOrderInfo SET `status` = 5 where id = #{pId}
+	</update>
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.AppItemLabelMgMapper">
+	<select id="getAllTag" resultType="com.corner.core.beans.AppItemLabel">
+		SELECT * from AppItemLabel WHERE `status`= 1 AND isDelete = 0 Order by addTime asc
+	</select>
+	
+	<!-- 标贴列表 -->
+	<sql id="getAllAppItemLabelSql">
+		<where>
+			<if test="name != null and name != ''">
+				and name=#{name}
+			</if>
+			<if test="status != null">
+				and status=#{status}
+			</if>
+		</where>
+	</sql>
+	<select id="getAllAppItemLabel" parameterType="com.corner.kefu.beans.ro.AppItemLabelRo" resultType="com.corner.kefu.beans.vo.AppItemLabelVo">
+		SELECT * from AppItemLabel
+		<include refid="getAllAppItemLabelSql"/>
+		Order by addTime asc
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<select id="getAllAppItemLabelCount" parameterType="com.corner.kefu.beans.ro.AppItemLabelRo" resultType="java.lang.Integer">
+		SELECT count(1) from AppItemLabel
+		<include refid="getAllAppItemLabelSql"/>
+	</select>
+	
+	<!-- 删除或恢复 -->
+	<update id="delOrReco" parameterType="java.util.Map">
+		update AppItemLabel set 
+		<if test="isDelete != null">
+			isDelete=#{isDelete}
+		</if>
+		<if test="status != null">
+			status=#{status}
+		</if>
+		where id=#{id}
+	</update>
+</mapper>

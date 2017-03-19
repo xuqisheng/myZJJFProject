@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+        http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://code.alibabatech.com/schema/dubbo  
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+ 	
+ 	
+	<!-- consumer application name -->
+	<dubbo:application name="salesman-app-consumer" />
+	<dubbo:consumer timeout="200000" check="false" retries="0" />
+	<dubbo:registry id="salesman" address="${zookeeper.address}"/>
+	
+	<!-- 监控定义接口 -->
+	<dubbo:reference interface="com.corner.rpc.salesman.api.service.SignTimeRecordService" id="signTimeRecordService" />
+	<dubbo:reference interface="com.corner.rpc.salesman.api.service.SpGroupLineService" id="spGroupLineService" />
+	<dubbo:reference interface="com.corner.rpc.shop.api.service.RegionService" id="regionService" />
+	<dubbo:reference interface="com.corner.rpc.salesman.api.service.DictService" id="dictService" />
+	<dubbo:reference interface="com.corner.rpc.shop.api.service.StoreService" id="storeService" />
+	<dubbo:reference interface="com.corner.rpc.salesman.api.service.ShopService" id="shopService"/>
+	<dubbo:reference interface="com.corner.rpc.salesman.api.service.UserService" id="dubboUserService"/>
+	<dubbo:reference interface="com.corner.rpc.salesman.api.service.LinePlansService" id="linePlansService"/>
+    <dubbo:reference interface="com.corner.rpc.salesman.api.service.VisitHisRecordService" id="visitHisRecordService"/>
+	
+    <dubbo:reference interface="com.zjjf.analysis.producer.ajie.ISpGroupTurnoverService" id="spGroupTurnoverService" version="1.0.0" />
+	<dubbo:reference interface="com.zjjf.analysis.producer.ajie.ISpOrderDetailService" id="spOrderDetailService" version="1.0.0" />
+	<dubbo:reference interface="com.zjjf.analysis.producer.ajie.IStoreTurnoverService" id="iStoreTurnoverService" version="1.0.0" />
+	<dubbo:reference interface="com.zjjf.analysis.producer.ajie.ISupplierTurnoverService" id="supplierTurnoverService" version="1.0.0" />
+	
+<!--         <dubbo:annotation/> -->
+<!--     此配置均需要在spring mvc的DispatcherServlet配置中显式配置dubbo consumer的配置.如/WEB-INF/applicationContext-dubbo-consumer.xml 否则在Controller中服务报NullPointException -->
+<!-- 	<context:component-scan base-package="com.corner.salesman.controller"> -->
+<!-- 	    <context:include-filter type="annotation" expression="com.alibaba.dubbo.config.annotation.Reference"/> -->
+<!-- 	</context:component-scan> -->
+</beans>

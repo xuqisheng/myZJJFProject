@@ -1,0 +1,197 @@
+@import 'global-comm';
+@import 'header-comm';
+@import 'footer-comm';
+
+#main {
+  .category-cont {
+    height: 400px;
+    background: #00b46b;
+    overflow: hidden;
+    .banner {
+      float: left;
+      overflow: hidden;
+    }
+  }
+  .goods-title-cont {
+    .goods-title {
+      .w();
+      height: 50px;
+      line-height: 50px;
+      background: #f4f5f8;
+      font-size: 14px;
+      color: #333;
+      .glist {
+        float: left;
+        padding-left: 40px;
+        .size(auto,50px);
+        display: inline-block;
+        background: url(../images/list.png) 20px center no-repeat;
+        text-align: right;
+        font-size: 16px;
+        font-weight: bold;
+        .title {display: inline-block;}
+        .all-category {
+          display: none;
+          cursor: pointer;
+          .down {
+            display: inline-block;
+            .size(30px,12px);
+            background: url(../images/down.png)  center no-repeat;
+          }
+          .up {
+            display: inline-block;
+            .size(30px,12px);
+            background: url(../images/up.png)  center no-repeat;
+          }
+        }
+        .crumb {
+          margin-left: 45px;
+          font-size: 14px;
+          font-weight: normal;
+          display: none;
+        }
+      }
+      .operate-section {
+        float: right;
+        .sort {
+          float: left;
+          .item {
+            margin-left: 22px;
+            cursor: pointer;
+          }
+          .icon {
+            .size(8px,11px);
+            display: inline-block;
+            background: url(../images/sort.png) no-repeat center;
+          }
+          .icon-xl {background-position: 0 -12px}
+          .icon-jg {background-position: -9px -12px}
+          .active {
+            color: @main-color;
+            .icon-xl {background-position: 0 0}
+            .icon-jg {background-position: -9px 0}
+          }
+        }
+        .search {
+          float: left;
+          margin: 10px 0 0 20px;
+          .search-ipt-txt {
+            float: left;
+            display: block;
+            box-sizing: border-box;
+            padding: 0 28px 0 8px;
+            .size(200px,28px);
+            border: 1px solid #e7e8eb;
+            font-size: 12px;
+          }
+          .search-ipt-btn {
+            float: left;
+            display: block;
+            box-sizing: border-box;
+            border: 0 none;
+            margin-left: -30px;
+            .size(28px,28px);
+            background: url(../images/search.png) center no-repeat;
+            opacity: 0.6;
+            &:hover {opacity: 1;}
+          }
+        }
+        .pagination  {
+          float: left;
+          margin: 0 20px 0 30px;
+          .prev {
+            margin-right: 10px;
+            cursor: pointer;
+          }
+          .next {
+            cursor: pointer;
+            margin-left: 10px;
+          }
+          .disable {
+            cursor: not-allowed;
+            color: #ccc
+          }
+        }
+        .shopcart {
+          display: none;
+        }
+      }
+    }
+    &.active {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #f4f5f8;
+      border: 1px solid #e7e8eb;
+      .title {display: none !important;}
+      .all-category, .crumb, .shopcart {
+        display: inline-block !important;
+      }
+    }
+  }
+  .goods-list-cont {
+    .w();
+    height: auto;
+    margin-top: 10px;
+    .no-data {
+      border: 1px solid #eee;
+    }
+    .goods {
+      float: left;
+      padding: 20px;
+      box-sizing: border-box;
+      .size(240px,290px);
+      border: 2px solid #fff;
+      overflow: hidden;
+      &:hover {
+        border: 2px solid #e7e8eb
+      }
+      .img {
+        text-align: center;
+        img {
+          display: inline-block;
+          .size(150px);
+        }
+      }
+      .price{height: 24px;
+        line-height: 24px;
+        font-size: 16px;
+        color: #ed4b1c;
+      }
+      .name{
+        height: 34px;
+        line-height: 16px;
+        overflow: hidden;
+        a {
+          color: #666;
+          font-size: 12px;
+          text-decoration: none;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+      .buy{
+        margin-top: 8px;
+        .number-box {
+          float: left;
+        }
+        .button {
+          float: left;
+          box-sizing: border-box;
+          padding: 0;
+          line-height: 30px;
+          border: 0 none;
+          padding: 0 12px;
+          margin-left: 10px;
+          .size(auto,29px);
+          background: @main-color;
+          color: #fff;
+          &:hover {
+            background: @main-color-hover;
+          }
+        }
+      }
+    }
+  }
+}

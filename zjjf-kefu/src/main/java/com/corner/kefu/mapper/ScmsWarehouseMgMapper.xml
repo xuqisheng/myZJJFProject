@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.ScmsWarehouseMgMapper">
+	<!-- 获取会计列表条件 -->
+
+	<select id="getPageList" parameterType="com.corner.kefu.beans.ro.scms.ScmsWarehouseRo" resultType="com.corner.kefu.beans.vo.ScmsWarehouseVo">
+			select ScmsWarehouse.id,ScmsWarehouse.name,ScmsWarehouse.houseCode,ScmsWarehouse.houseAddress,Region1.name as name1,Region2.name as name2,Region3.name as name3
+          		
+			<include refid="condition" />
+			<include refid="BasePublicMapper.pageSql" />
+	</select>
+	
+	<select id="getPageListSize" parameterType="com.corner.kefu.beans.ro.scms.ScmsWarehouseRo" resultType="java.lang.Integer">
+			SELECT count(1) 
+			<include refid="condition" />
+	</select>
+	
+	<select id="checkName" parameterType="java.lang.String" resultType="com.corner.core.beans.ScmsWarehouse">
+			SELECT * from ScmsWarehouse where userName=#{userName} and isDelete=0
+			
+	</select>
+	
+	<select id="findWareHouseNoPage" resultType="com.corner.core.beans.ScmsWarehouse">
+			SELECT * from ScmsWarehouse where isDelete=0
+	
+	</select>
+	
+	<update id="updateObject">
+			update ScmsWarehouse set isDelete=1 where id=#{id}
+	</update>
+	
+	<sql id="condition">
+			from ScmsWarehouse INNER JOIN Region Region1 on ScmsWarehouse.province=Region1.id
+					INNER JOIN Region  Region2 on ScmsWarehouse.city=Region2.id
+					INNER JOIN Region  Region3 on ScmsWarehouse.county=Region3.id where 1=1 and ScmsWarehouse.isDelete=0
+			<if test="name!=null">
+				and ScmsWarehouse.name like CONCAT('%',#{name},'%' )
+			</if>
+			<if test="province!=null">
+				and ScmsWarehouse.province=#{province}
+			</if>
+			<if test="city!=null">
+				and ScmsWarehouse.city=#{city}
+			</if>
+			<if test="county!=null">
+				and ScmsWarehouse.county=#{county}
+			</if>
+		order by updateTime desc
+	</sql>
+	
+	<select id="checkhouseCode" parameterType="java.lang.String" resultType="com.corner.core.beans.ScmsWarehouse">
+		select * from ScmsWarehouse where houseCode=#{houseCode} and isDelete=0
+	</select>
+	
+	<select id="checkbranderTel"  parameterType="java.lang.String" resultType="com.corner.core.beans.ScmsWarehouse">
+		select * from ScmsWarehouse where branderTel=#{branderTel} and isDelete=0
+	</select>
+	
+	<select id="findwarehouseBytplId" parameterType="java.lang.String" resultType="com.corner.core.beans.ScmsWarehouse">
+		select * from ScmsWarehouse where tplId=#{id} and isDelete=0
+	</select>
+	
+</mapper>

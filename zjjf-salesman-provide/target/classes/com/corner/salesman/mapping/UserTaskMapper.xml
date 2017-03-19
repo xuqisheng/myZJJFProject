@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.UserTaskMapper">
+
+	<sql id="Base_Column_List">
+	</sql>
+	<!-- 分页查询用户信息 -->
+	<select id="findUserTaskList" resultType="UserTask" >
+		SELECT
+			ts.taskTopic,
+			ts.taskType,
+			ts.taskId,
+			ts.assigns,
+			ts.createTime
+		FROM
+			tbl_task_t  ts
+		LEFT JOIN  salesman t ON ts.assigns = t.id
+	   WHERE ts.cycleIds LIKE CONCAT('%',#{cycleIds},'%') 
+		 AND t.id = #{assigns,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 周期列表查询 -->
+	<select id="findTaskCycleList" resultType="com.corner.salesman.model.TaskCycle" >
+		select t.cycleId,t.cycleName from tbl_task_cycle_t t 
+	</select>
+	
+  <insert id="insertTaskInfo">
+    insert into tbl_task_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="taskId != null" >
+        taskId,
+      </if>
+      <if test="taskTopic != null" >
+        taskTopic,
+      </if>
+      <if test="taskType != null" >
+        taskType,
+      </if>
+      <if test="assigns != null" >
+        assigns,
+      </if>
+      <if test="cycleIds != null" >
+        cycleIds,
+      </if>
+      <if test="createBy != null" >
+        createBy,
+      </if>
+		createTime
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="taskId != null" >
+        #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskTopic != null" >
+        #{taskTopic,jdbcType=VARCHAR},
+      </if>
+      <if test="taskType != null" >
+        #{taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="assigns != null" >
+        #{assigns,jdbcType=VARCHAR},
+      </if>
+      <if test="cycleIds != null" >
+        #{cycleIds,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+		now()
+    </trim>
+  </insert>
+	
+</mapper>

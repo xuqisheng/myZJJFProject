@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>数据分析</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link rel="icon" href="../../../resources/images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="../../../resources/css/normalize.css">
+    <link rel="stylesheet" href="../../../resources/css/base.css?v2016">
+    <script src="../../../resources/vendor/angular/1.5.5/angular.min.js"></script>
+    <!--[if lt IE 9 ]>
+    <script src="../../../resources/vendor/lib/html5shiv.js"></script>
+    <script src="../../../resources/vendor/lib/es5-shim.js"></script>
+    <![endif]-->
+    <!--[if lt IE 10 ]>
+    <script src="../../../resources/vendor/lib/placeholders.js"></script>
+    <![endif]-->
+
+    <script src="../../../resources/vendor/My97DatePicker/WdatePicker.js"></script>
+    <script src="../../../resources/js/datepicker.js"></script>
+
+    <link rel="stylesheet" href="../../../resources/vendor/angular/pagination/tm.pagination.css">
+    <script src="../../../resources/vendor/angular/pagination/tm.pagination.js"></script>
+
+    <script src="../../../resources/vendor/lib/echarts.js"></script>
+</head>
+<body ng-controller="bodyCtrl">
+<div class="wrap-bd">
+    <div class="mb-default">
+        <a href="" class="crumb">111</a>
+        <a href="" class="crumb crumb-active">222</a>
+    </div>
+    <div class="op-section clearfix">
+        <div class="fl">
+            时间：
+            <input type="text" ng-model="dateS" class="input input-date" date-picker> -
+            <input type="text" ng-model="dateE" class="input input-date" date-picker>
+            <span class="pills ml-default" ng-class="{'pills-active': isYesdotay}" ng-click="tab(-1)">昨天</span>
+            <span class="pills" ng-class="{'pills-active': isWeek}" ng-click="tab(-7)">最近7天</span>
+            <span class="pills" ng-class="{'pills-active': isMonth}" ng-click="tab(-30)">最近30天</span>
+        </div>
+        <div class="fr">
+            <input type="button" ng-click="query()" value="搜索" class="input input-search-button">
+            <input type="button" value="导出" class="input input-search-button-white">
+        </div>
+    </div>
+    <div class="table-contain">
+        <pre>
+        <table class="table-list">
+            <thead class="table-thead">
+            <tr>
+                <th colspan="2">合作商信息</th>
+                <th colspan="5">合作商信息</th>
+                <th colspan="4">合作商信息</th>
+                <th colspan="5">合作商信息</th>
+                <th colspan="4">合作商信息</th>
+                <th rowspan="2" width="50">合作商信息</th>
+            </tr>
+            <tr>
+                <th>合作商信息</th>
+                <th>合作商信息</th>
+                <th>合作商信息</th>
+                <th>合作商信息</th>
+                <th>合作商信息</th>
+                <th>合作商信息</th>
+                <th>合作商信息</th>
+                <th>合作商信息</th>
+                <th>合作商信息</th>
+                <th>合作商信息</th>
+                <th>合作商信息</th>
+                <th>配送次数</th>
+                <th>销售数量</th>
+                <th>交易额</th>
+                <th>费用金额</th>
+                <th>费用率</th>
+                <th>联合采购交易额</th>
+                <th>利润</th>
+                <th>利润率</th>
+                <th>订单数</th>
+            </tr>
+            </thead>
+            <tbody class="table-tbody">
+            <tr>
+                <td>合作商信息</td>
+                <td>合作商信息</td>
+                <td>合作商信息</td>
+                <td>合作商信息</td>
+                <td>合作商信息</td>
+                <td>800</td>
+                <td>50</td>
+                <td>50</td>
+                <td>2</td>
+                <td>25</td>
+                <td>14</td>
+                <td>250</td>
+                <td>2700</td>
+                <td>160000</td>
+                <td>800</td>
+                <td>0.5%</td>
+                <td>32000</td>
+                <td>160</td>
+                <td>0.5%</td>
+                <td>20</td>
+                <td>
+                    <a href="">查看</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="22" class="data-empty"></td>
+            </tr>
+            <tr>
+                <td colspan="22" class="data-conflict"></td>
+            </tr>
+            </tbody>
+        </table>
+        </pre>
+    </div>
+    <div class="clearfix">
+        <tm-pagination conf="paginationConf"></tm-pagination>
+    </div>
+</div>
+<div class="cover-loading hidden" ng-show="isLoading"></div>
+<script>
+    var app = angular.module('app', ['My97Ext', 'tm.pagination']);
+    app.controller('bodyCtrl', function($scope, $http){
+        $scope.tab = function(addDayCount) {
+            if(-1 == addDayCount) {
+                $scope.isYesdotay = true;
+                $scope.isWeek = false;
+                $scope.isMonth = false;
+            } else if(-7 == addDayCount) {
+                $scope.isYesdotay = false;
+                $scope.isWeek = true;
+                $scope.isMonth = false;
+            } else if(-30 == addDayCount) {
+                $scope.isYesdotay = false;
+                $scope.isWeek = false;
+                $scope.isMonth = true;
+            }
+            var today = new Date();
+            var year = today.getFullYear();
+            var month = today.getMonth() + 1;
+            if(month < 10) {month = '0' + month;}
+            var date = today.getDate();
+            if(date < 10) {date = '0' + date;}
+            $scope.dateE = year + "-" + month + "-" + date;
+            today.setDate(today.getDate() + addDayCount);
+            year = today.getFullYear();
+            month = today.getMonth() + 1;
+            if(month < 10) {month = '0' + month;}
+            date = today.getDate();
+            if(date < 10) {date = '0' + date;}
+            $scope.dateS = year + "-" + month + "-" + date;
+        }
+        $scope.query = function() {
+            $scope.isLoading = true;
+            // $http.get('xxx', function(data) {
+            //    $scope.isLoading = false;
+            // })
+        }
+        $scope.paginationConf = {
+            currentPage: 1,
+            totalItems: 800,
+            itemsPerPage: 15,
+            pagesLength: 15,
+            perPageOptions: [10, 20, 30, 40, 50],
+            onChange: function(){
+//                    $http.get('xxx', function(data) {
+//                        $scope.paginationConf.totalItems = data.totalItems;
+//                    })
+            }
+        }
+
+    });
+</script>
+
+<!-- 图表
+<div id="abc" style="width: 600px;height:400px;"></div>
+<script>
+    var myChart = echarts.init(document.getElementById('abc'));
+    function randomData() {
+        now = new Date(+now + oneDay);
+        value = value + Math.random() * 21 - 10;
+        return {
+            name: now.toString(),
+            value: [
+                [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('-'),
+                Math.round(value)
+            ]
+        }
+    }
+    var data = [];
+    var now = +new Date(1997, 9, 3);
+    var oneDay = 24 * 3600 * 1000;
+    var value = Math.random() * 1000;
+    for (var i = 0; i < 1000; i++) {
+        data.push(randomData());
+    }
+    option = {
+        title: {
+            text: '动态数据'
+        },
+        tooltip: {
+            trigger: 'axis',
+            formatter: function (params) {
+                params = params[0];
+                var date = new Date(params.name);
+                return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+            },
+            axisPointer: {
+                animation: false
+            }
+        },
+        xAxis: {
+            type: 'time',
+            splitLine: {
+                show: false
+            }
+        },
+        yAxis: {
+            type: 'value',
+            boundaryGap: [0, '100%'],
+            splitLine: {
+                show: false
+            }
+        },
+        series: [{
+            name: '模拟数据',
+            type: 'line',
+            showSymbol: false,
+            hoverAnimation: false,
+            data: data
+        }]
+    };
+    app.timeTicket = setInterval(function () {
+
+        for (var i = 0; i < 5; i++) {
+            data.shift();
+            data.push(randomData());
+        }
+        myChart.setOption({
+            series: [{
+                data: data
+            }]
+        });
+    }, 1000);
+    myChart.setOption(option);
+</script>
+ -->
+</body>
+</html>

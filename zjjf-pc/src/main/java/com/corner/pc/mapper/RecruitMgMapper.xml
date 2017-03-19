@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.pc.dao.RecruitMgMapper" >
+	<!-- <cache flushInterval="600000"/> -->
+	<!-- 列表条件 -->
+	<sql id="getPageList_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			b.status=1
+			AND b.isDelete=0
+			<if test="id != null">
+				AND a.id = #{id}
+			</if>
+			<if test="isDelete != null">
+				AND a.isDelete = #{isDelete}
+			</if>
+			<if test="status != null">
+				AND a.status = #{status}
+			</if>
+			<if test="recruitTypeId != null">
+				AND a.recruitTypeId = #{recruitTypeId}
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 获取列表 -->
+ 	<select id="getPageList" parameterType="com.corner.pc.beans.ro.RecruitCondition"  resultType="com.corner.pc.beans.vo.RecruitVo">
+		select a.*,b.typeName from Recruit a join RecruitType b on a.recruitTypeId = b.id
+		<include refid="getPageList_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取列表 总记录数-->
+ 	<select id="getPageListSize" parameterType="com.corner.pc.beans.ro.RecruitCondition"  resultType="int">
+		select count(1) from Recruit a join RecruitType b on a.recruitTypeId = b.id
+		<include refid="getPageList_condition" />
+	</select>
+</mapper>

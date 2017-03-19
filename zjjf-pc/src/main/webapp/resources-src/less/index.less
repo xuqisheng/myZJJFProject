@@ -1,0 +1,101 @@
+﻿@import "__normalize";
+@import "__base";
+@import "__comm";
+@import "../vendor/slick/slick";
+@import "__slick";
+
+header {
+    height: 530px;
+}
+.slide {
+    top: -90px;
+    .slide-item {
+        a {
+            height: 530px;
+            display: block;
+        }
+    }
+}
+.gt {
+    margin-left: 4px;
+    width: 7px;
+    height: 11px;
+    display: inline-block;
+    background: url(../images/gt.png) no-repeat center;
+}
+.content {
+    padding: 40px 0 80px;
+    .box {
+        position: relative;
+        float: left;
+        box-sizing: border-box;
+        margin-right: 75px;
+        padding-top: 20px;
+        padding-left: 23px;
+        border-top: 1px solid #f4f5f8;
+        border-bottom: 3px solid #d3d3d3;
+        width: 350px;
+        height: 170px;
+        color: #999;
+        &.last {
+            margin-right: 0;
+        }
+        &:hover {
+            border-bottom: 3px solid #0096e0;
+            color: #0096e0;
+            h1 {
+                color: #0096e0
+            }
+        }
+        h1 {
+            display: inline-block;
+            font-size: 20px;
+            color: #333;
+        }
+        h2 {
+            display: inline-block;
+            font-size: 12px
+        }
+        .link-btn-group {
+            position: absolute;
+            left: 20px;
+            bottom: 0
+        }
+        .link-btn {
+            border: 1px solid #0096e0;
+            margin-bottom: 8px;
+            padding: 3px 9px 3px 12px;
+            width: 48px;
+            line-height: 12px;
+            display: block;
+            text-decoration: none;
+            border-radius: 12px;
+            text-align: center;
+            background: #0096e0;
+            font-size: 13px;
+            color: #fff;
+            &:hover {
+                border: 1px solid #0e81d1;
+                background: #0e81d1;
+            }
+        }
+        .pic {
+            position: absolute;
+            right: 8px;
+            bottom: -3px;
+            width: 186px;
+            height: 95px;
+            background-position: bottom right;
+            background-repeat: no-repeat;
+        }
+        .pic-shop {
+            background-image: url(../images/index-box-shop.png);
+        }
+        .pic-supplier {
+            background-image: url(../images/index-box-supplier.png);
+        }
+        .pic-dealer {
+            background-image: url(../images/index-box-dealer.png);
+        }
+    }
+}

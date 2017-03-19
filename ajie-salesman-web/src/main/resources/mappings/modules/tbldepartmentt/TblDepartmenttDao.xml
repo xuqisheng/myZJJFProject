@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.corner.salesman.modules.tbldepartmentt.dao.TblDepartmenttDao">
+
+	<sql id="tblDepartmenttColumns">
+		a.id AS "id",
+		a.deptId AS "deptId",
+		a.deptName AS "deptName",
+		a.status AS "status",
+		a.isDelete AS "isDelete",
+		a.pid AS "pid",
+		a.remarks AS "remarks",
+		a.createTime AS "createTime",
+		a.createBy AS
+		"createBy",
+		a.updateTime AS "updateTime",
+		a.updateBy AS "updateBy",
+		a.provinceId AS "provinceId",
+		a.cityId AS "cityId",
+		a.areaId AS "areaId"
+	</sql>
+
+	<sql id="tblDepartmenttJoins">
+	</sql>
+	<!-- 查询所有部门 -->
+	<select id="selpid" resultType="TblDepartmentt">
+		SELECT
+		t.deptId,
+		t.deptName 
+		FROM
+		tbl_department_t t
+	</select>
+	<!-- 查询用户信息 -->
+	<select id="userinfo" resultType="TblDepartmentt">
+		select s.id as sid,s.userName,s.mobile,d.deptName,l.label as parentName from
+		salesman s
+		LEFT JOIN tbl_user_dept_t t on s.id=t.userId
+		LEFT JOIN tbl_dict_t l on type='post_type'
+		LEFT JOIN tbl_department_t d on d.deptId=t.deptId
+		where d.deptId=#{deptId}
+		and s.userType='0' group by s.userName
+	</select>
+	<!--查询部门领导信息 -->
+	<select id="getUserPageList" resultType="TblDepartmentt">
+		<!-- select d.deptId,s.userName,s.mobile,d.deptName,l.label as parentName 
+			from salesman s LEFT JOIN tbl_user_dept_t t on s.id=t.userId LEFT JOIN tbl_dict_t 
+			l on type='post_type' LEFT JOIN tbl_department_t d on d.deptId=t.deptId where 
+			d.deptId=#{deptId} and s.userType='0' group by s.userName -->
+SELECT
+		u.userName,
+		u.mobile,
+		l.label as parentName,
+		d.deptName
+		FROM
+		salesman u
+		INNER JOIN tbl_user_dept_t ud ON ud.userId = u.id
+		LEFT JOIN tbl_dict_t l ON type = 'post_type'
+		LEFT JOIN tbl_department_t d ON d.deptId = ud.deptId
+		WHERE
+		ud.deptId =#{deptId}
+		and l.value=u.postType
+		AND NOT EXISTS (
+		SELECT
+		1
+		FROM
+		tbl_dept_manager_t t
+		WHERE
+		u.id = t.leaderId)
+
+	</select>
+
+	<select id="get" resultType="TblDepartmentt">
+		SELECT
+		<include refid="tblDepartmenttColumns" />
+		FROM tbl_department_t a
+		<include refid="tblDepartmenttJoins" />
+		WHERE a.id = #{id}
+	</select>
+	<!-- 查询部门信息 -->
+	<select id="findList" resultType="TblDepartmentt">
+		SELECT
+		d.id,
+		d.deptId,
+		d.deptName,
+		t2.deptName as parentName,
+		m.userName,
+		d.remarks
+		FROM
+		tbl_department_t d 
+		LEFT JOIN tbl_department_t t2 ON d.pid = t2.deptId
+		LEFT JOIN tbl_user_dept_t s on s.deptId=d.deptId
+		LEFT JOIN salesman m on m.id=s.userId 		
+		<include refid="tblDepartmenttJoins" />
+		<where>
+			<if test="deptId != null and deptId != ''">
+				AND d.deptId LIKE
+				<if test="dbName == 'oracle'">'%'||#{deptId}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{deptId}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{deptId},'%')</if>
+			</if>
+		</where>
+		and  d.isDelete='0'
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="TblDepartmentt">
+		SELECT
+		<include refid="tblDepartmenttColumns" />
+		FROM tbl_department_t a
+		<include refid="tblDepartmenttJoins" />
+		<where>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	<!-- 新增部门信息 -->
+	<insert id="insert">
+		INSERT INTO tbl_department_t(
+		deptId,
+		deptName,
+		pid,
+		remarks
+		) VALUES (
+		#{deptId},
+		#{deptName},
+		#{pid},
+		#{remarks}
+		)
+	</insert>
+	<!-- 修改部门信息 -->
+	<update id="update">
+		UPDATE tbl_department_t SET
+		deptId = #{deptId},
+		deptName = #{deptName},
+		pid = #{pid},
+		remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	<!-- 删除部门信息 -->
+	<update id="delete">
+		update tbl_department_t set
+		isDelete ='1'
+		WHERE id =#{id,jdbcType=VARCHAR}
+	</update>
+	<!-- 删除用户信息 -->
+	<update id="deluser" parameterType="TblDepartmentt">
+		update salesman set
+		userType ='1'
+		WHERE id =#{id}
+	</update>
+</mapper>

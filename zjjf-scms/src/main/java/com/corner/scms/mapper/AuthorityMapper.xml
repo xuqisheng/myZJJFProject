@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.AuthorityMapper" >
+ 	<select id="getRolesByUserId" parameterType="java.lang.String"  resultType="java.lang.String">
+		SELECT
+		r.roleName
+		from Role r,ScManager u,UserRoleMap urm
+		WHERE u.id=#{userId} and urm.userId=u.id AND urm.roleId=r.id
+		and u.`status` =1 and u.isDelete=0
+		and  r.`status` =1 and r.isDelete=0
+	</select>
+ 	<select id="getAuthsByUserId" parameterType="java.lang.String"  resultType="java.lang.String">
+		SELECT
+		a.authString
+		from ScManager u,UserRoleMap urm,Role r,RoleAuthMap ram, Auth a
+		WHERE u.id=#{userId} AND urm.userId=u.id
+		AND urm.roleId=r.id AND ram.roleId = urm.roleId
+		AND ram.authId = a.id
+		and u.`status` =1 and u.isDelete=0
+		and  r.`status` =1 and r.isDelete=0
+		and  a.`status` =1 and a.isDelete=0
+	</select>
+
+ 	<select id="getSubjectRoleses" parameterType="java.lang.String"  resultType="com.corner.core.beans.Role">
+		SELECT 
+		r.*
+		from Role r,ScManager u,UserRoleMap urm
+		WHERE u.id=#{userId} and urm.userId=u.id AND urm.roleId=r.id
+		and u.`status` =1 and u.isDelete=0
+		and  r.`status` =1 and r.isDelete=0
+	</select>
+	
+	<select id="getSubjectAuths" parameterType="java.lang.String"  resultType="com.corner.core.beans.Auth">
+		SELECT 
+		a.*
+		from ScManager u,UserRoleMap urm,Role r,RoleAuthMap ram, Auth a
+		WHERE u.id=#{userId} AND urm.userId=u.id 
+		AND urm.roleId=r.id AND ram.roleId = urm.roleId 
+		AND ram.authId = a.id
+		and u.`status` =1 and u.isDelete=0
+		and  r.`status` =1 and r.isDelete=0
+		and  a.`status` =1 and a.isDelete=0
+	</select>
+
+	<select id="getSupplierUserIdByUserNameAndPassword" parameterType="com.corner.scms.beans.ro.auth.LoginRo" resultType="java.lang.String">
+		select id from Supplier where mobile = #{userName} and password = #{password} and isDelete=0
+	</select>
+	<!-- 找回密码 -->
+	<update id="updateSupplierPasswordByDel" parameterType="java.util.Map" >
+		update User SET password = #{passwd}  WHERE mobile = #{phonenumber} and isDelete=0
+	</update>
+
+	<!-- 根据手机号和类型获取用户条数 -->
+	<select id="getUserByTypeAndMobile" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(1) from 
+		<choose>
+			<when test="type == 1">
+				Supplier where mobile = #{mobile} and isDelete = 0 and `status` = 2
+			</when>
+			<when test="type == 2">
+				ScmsManager where mobile = #{mobile} and isDelete = 0 and `status` = 2
+			</when>
+			<when test="type == 3">
+				ScmsWarehouse where branderTel = #{mobile} and isDelete = 0 and `status` = 2
+			</when>
+		</choose>
+	</select>
+
+	<select id="getERPWarehouseUserUserIdByUserNameAndPassword" parameterType="com.corner.scms.beans.ro.auth.LoginRo" resultType="java.lang.String">
+		select id from ERPWarehouseUser where userName = #{userName} and password = #{password} and isDelete=0
+	</select>
+	<select id="getUserByERPWarehouseUserCredential" parameterType="java.lang.String"  resultType="com.corner.core.beans.ERPWarehouseUser">
+		select * from ERPWarehouseUser u where u.id =  #{credential} and u.isDelete=0
+	</select>
+	<select id="getUserByERPWarehouseCredential" parameterType="java.lang.String"  resultType="com.corner.core.beans.ERPWarehouse">
+		select a.* from ERPWarehouse a JOIN ERPWarehouseUserMap b on a.id = b.whId WHERE b.userId = #{userId}
+	</select>
+	<select id="getSupplierByERPWarehouseUserId" parameterType="java.lang.String"  resultType="com.corner.core.beans.Supplier">
+		SELECT a.* from Supplier a
+		JOIN ERPWarehouse b on a.id = b.supplierId
+		JOIN ERPWarehouseUserMap c on b.id = c.whId
+		WHERE c.userId = #{userId} and a.isDelete = 0 and a.`status` = 2 and b.isDelete = 0 and b.`status` = 1
+	</select>
+</mapper>

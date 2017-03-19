@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.ERPWarehouseMgMapper" >
+  
+  
+  
+  <sql id="pageSql">
+   limit #{pageIndex},#{pageSize}
+  </sql>
+  
+  <select id="getSupplierAllERPWarehouseById" parameterType="java.lang.String" resultType="com.corner.core.beans.ERPWarehouse">
+      SELECT
+		*
+	FROM
+		ERPWarehouse
+	WHERE
+		supplierId = #{id}
+	AND `status` = 1
+	AND isDelete = 0
+	AND whLevel = 1
+	ORDER BY
+		addTime DESC
+  </select>
+  
+  
+  <sql id="getAllJsonErpWareHose_condition">
+    FROM
+			ERPWarehouse a JOIN Supplier b ON a.supplierId = b.id
+		WHERE
+			a.`status` = 1
+		AND a.isDelete = 0
+		AND a.whLevel = 1
+		AND b.supplierType = 2
+		<if test="keyStr!=null and keyStr!=''">
+		   and a.name like "%"#{keyStr}"%"
+		</if>
+  </sql>
+  
+  <select id="getAllJsonErpWareHose" parameterType="com.corner.kefu.beans.ro.erp.ERPWarehouseRo" resultType="com.corner.kefu.beans.vo.erp.ERPWarehouseVo">
+     SELECT
+			a.*,b.supplierName
+		<include refid="getAllJsonErpWareHose_condition"/>
+		<include refid="pageSql"/>
+  </select>
+  
+  
+  <select id="getCountyAllJsonErpWareHose" parameterType="com.corner.kefu.beans.ro.erp.ERPWarehouseRo" resultType="java.lang.Integer">
+      select count(1)
+		<include refid="getAllJsonErpWareHose_condition"/>
+  </select>
+</mapper>

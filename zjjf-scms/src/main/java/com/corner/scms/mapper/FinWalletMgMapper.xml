@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.FinWalletMgMapper">
+	<!-- 供应商收支明细 begin  -->
+	<sql id="finWalletLogPageList_condition">
+		FROM
+		`FinWalletLog` a
+		where (a.payerWalletId =#{walletId,jdbcType=VARCHAR} or a.geterWalletId = #{walletId,jdbcType=VARCHAR}) and a.isDelete = 0
+		and a.subjectType not in (2005 , 2006)
+		<if test="startTime!=null">
+			and a.addTime &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null">
+			and a.addTime &lt;= #{endTime}
+		</if>
+		<if test="orderId!=null and orderId!=''">
+			and (a.voucherSub LIKE concat('%',#{orderId},'%') or a.sort LIKE concat('%',#{orderId},'%'))
+		</if>
+	</sql>
+	<select id="selectFinWalletLogPageList" parameterType="com.corner.scms.beans.ro.FinWalletLogRo" resultType="com.corner.scms.beans.vo.FinWalletLogVo">
+		SELECT *
+		<include refid="finWalletLogPageList_condition"/>
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+	<select id="selectCountFinWalletLog" parameterType="com.corner.scms.beans.ro.FinWalletLogRo" resultType="java.lang.Integer">
+		select count(1)
+		<include refid="finWalletLogPageList_condition"/>
+	</select>
+	<!-- 供应商收支明细 end  -->
+
+	<select id="selectAllIncomeAndOutlay" parameterType="java.util.Map" resultType="java.math.BigDecimal">
+		SELECT SUM(amount) from FinWalletLog WHERE
+			<if test="type == 0" >payerWalletId = #{walletId}</if>
+			<if test="type == 1" >geterWalletId = #{walletId}</if>
+		and subjectType not in (2005 , 2006)
+	</select>
+	<update id="updateByVoucherMain" parameterType="java.lang.String">
+		UPDATE FinWalletLog set isDelete = 0 WHERE voucherMain = #{voucherMain};
+	</update>
+</mapper>
+

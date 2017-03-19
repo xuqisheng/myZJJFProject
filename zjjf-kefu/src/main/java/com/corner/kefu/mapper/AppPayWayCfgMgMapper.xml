@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.AppPayWayCfgMgMapper">
+	<select id="getAllAppPayWayCfg" resultType="com.corner.core.beans.AppPayWayCfg">
+		select * FROM AppPayWayCfg WHERE `status`=1 AND isDelete=0
+	</select>
+</mapper>

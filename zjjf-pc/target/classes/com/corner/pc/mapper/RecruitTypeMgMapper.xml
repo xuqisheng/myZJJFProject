@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.pc.dao.RecruitTypeMgMapper">
+	<resultMap id="BaseResultMapRecruitTypeVo" type="com.corner.pc.beans.vo.RecruitTypeVo" >
+	   <id column="id" property="id" jdbcType="INTEGER" />
+	   <result column="typeName" property="typeName" jdbcType="VARCHAR" />
+	   <result column="status" property="status" jdbcType="TINYINT" />
+	   <result column="isDelete" property="isDelete" jdbcType="BIT" />
+	   <collection property="recruits" ofType="com.corner.pc.beans.Recruit">
+	   		<id column="id1" property="id" jdbcType="INTEGER" />
+		    <result column="recruitTypeId" property="recruitTypeId" jdbcType="INTEGER" />
+		    <result column="postName" property="postName" jdbcType="VARCHAR" />
+		    <result column="picUrl" property="picUrl" jdbcType="VARCHAR" />
+		    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+		    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+		    <result column="auther" property="auther" jdbcType="VARCHAR" />
+		    <result column="ordId" property="ordId" jdbcType="INTEGER" />
+		    <result column="status1" property="status" jdbcType="TINYINT" />
+		    <result column="isDelete1" property="isDelete" jdbcType="BIT" />
+		    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+	   </collection>
+	</resultMap>
+	<select id="getRecruitInfo" resultMap="BaseResultMapRecruitTypeVo">
+		select * from RecruitType a 
+			left join Recruit b 
+			on a.id=b.recruitTypeId 
+			and b.status=1
+			and b.isDelete=0 
+		where a.status=1 and a.isDelete=0 ORDER BY a.id
+	</select>
+	
+	<select id="getAllRecruitType" resultType="com.corner.pc.beans.RecruitType">
+		select * from RecruitType where status=1 and isDelete=0
+	</select>
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.PushMessageReadLogMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.PushMessageReadLog" >
+    <id column="msg_lg_id" property="msg_lg_id" jdbcType="BIGINT" />
+    <result column="msg_lg_msgid" property="msg_lg_msgid" jdbcType="VARCHAR" />
+    <result column="msg_lg_uid" property="msg_lg_uid" jdbcType="VARCHAR" />
+    <result column="msg_lg_flag" property="msg_lg_flag" jdbcType="BIT" />
+    <result column="msg_lg_rdtime" property="msg_lg_rdtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    msg_lg_id, msg_lg_msgid, msg_lg_uid, msg_lg_flag, msg_lg_rdtime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PushMessageReadLog
+    where msg_lg_id = #{msg_lg_id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from PushMessageReadLog
+    where msg_lg_id = #{msg_lg_id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.PushMessageReadLog" >
+    insert into PushMessageReadLog (msg_lg_id, msg_lg_msgid, msg_lg_uid, 
+      msg_lg_flag, msg_lg_rdtime)
+    values (#{msg_lg_id,jdbcType=BIGINT}, #{msg_lg_msgid,jdbcType=VARCHAR}, #{msg_lg_uid,jdbcType=VARCHAR}, 
+      #{msg_lg_flag,jdbcType=BIT}, #{msg_lg_rdtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.PushMessageReadLog" >
+    insert into PushMessageReadLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="msg_lg_id != null" >
+        msg_lg_id,
+      </if>
+      <if test="msg_lg_msgid != null" >
+        msg_lg_msgid,
+      </if>
+      <if test="msg_lg_uid != null" >
+        msg_lg_uid,
+      </if>
+      <if test="msg_lg_flag != null" >
+        msg_lg_flag,
+      </if>
+      <if test="msg_lg_rdtime != null" >
+        msg_lg_rdtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="msg_lg_id != null" >
+        #{msg_lg_id,jdbcType=BIGINT},
+      </if>
+      <if test="msg_lg_msgid != null" >
+        #{msg_lg_msgid,jdbcType=VARCHAR},
+      </if>
+      <if test="msg_lg_uid != null" >
+        #{msg_lg_uid,jdbcType=VARCHAR},
+      </if>
+      <if test="msg_lg_flag != null" >
+        #{msg_lg_flag,jdbcType=BIT},
+      </if>
+      <if test="msg_lg_rdtime != null" >
+        #{msg_lg_rdtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.PushMessageReadLog" >
+    update PushMessageReadLog
+    <set >
+      <if test="msg_lg_msgid != null" >
+        msg_lg_msgid = #{msg_lg_msgid,jdbcType=VARCHAR},
+      </if>
+      <if test="msg_lg_uid != null" >
+        msg_lg_uid = #{msg_lg_uid,jdbcType=VARCHAR},
+      </if>
+      <if test="msg_lg_flag != null" >
+        msg_lg_flag = #{msg_lg_flag,jdbcType=BIT},
+      </if>
+      <if test="msg_lg_rdtime != null" >
+        msg_lg_rdtime = #{msg_lg_rdtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where msg_lg_id = #{msg_lg_id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.PushMessageReadLog" >
+    update PushMessageReadLog
+    set msg_lg_msgid = #{msg_lg_msgid,jdbcType=VARCHAR},
+      msg_lg_uid = #{msg_lg_uid,jdbcType=VARCHAR},
+      msg_lg_flag = #{msg_lg_flag,jdbcType=BIT},
+      msg_lg_rdtime = #{msg_lg_rdtime,jdbcType=TIMESTAMP}
+    where msg_lg_id = #{msg_lg_id,jdbcType=BIGINT}
+  </update>
+</mapper>

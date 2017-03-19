@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.AppModuleMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.AppModule" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="beginTime" property="beginTime" jdbcType="TIMESTAMP" />
+    <result column="stopTime" property="stopTime" jdbcType="TIMESTAMP" />
+    <result column="viewImg" property="viewImg" jdbcType="VARCHAR" />
+    <result column="moduleType" property="moduleType" jdbcType="TINYINT" />
+    <result column="mdWidth" property="mdWidth" jdbcType="INTEGER" />
+    <result column="mdHight" property="mdHight" jdbcType="INTEGER" />
+    <result column="cfgUrl" property="cfgUrl" jdbcType="VARCHAR" />
+    <result column="cfgPageIndex" property="cfgPageIndex" jdbcType="INTEGER" />
+    <result column="cfgPageSize" property="cfgPageSize" jdbcType="INTEGER" />
+    <result column="cfgAdBoardId" property="cfgAdBoardId" jdbcType="INTEGER" />
+    <result column="cfgTagId" property="cfgTagId" jdbcType="VARCHAR" />
+    <result column="seeAble" property="seeAble" jdbcType="BIT" />
+    <result column="orderId" property="orderId" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, name, remark, beginTime, stopTime, viewImg, moduleType, mdWidth, mdHight, 
+    cfgUrl, cfgPageIndex, cfgPageSize, cfgAdBoardId, cfgTagId, seeAble, orderId, addTime, 
+    updateTime, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from AppModule
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from AppModule
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.AppModule" >
+    insert into AppModule (id, code, name, 
+      remark, beginTime, stopTime, 
+      viewImg, moduleType, mdWidth, 
+      mdHight, cfgUrl, cfgPageIndex, 
+      cfgPageSize, cfgAdBoardId, cfgTagId, 
+      seeAble, orderId, addTime, 
+      updateTime, status, isDelete
+      )
+    values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, #{stopTime,jdbcType=TIMESTAMP}, 
+      #{viewImg,jdbcType=VARCHAR}, #{moduleType,jdbcType=TINYINT}, #{mdWidth,jdbcType=INTEGER}, 
+      #{mdHight,jdbcType=INTEGER}, #{cfgUrl,jdbcType=VARCHAR}, #{cfgPageIndex,jdbcType=INTEGER}, 
+      #{cfgPageSize,jdbcType=INTEGER}, #{cfgAdBoardId,jdbcType=INTEGER}, #{cfgTagId,jdbcType=VARCHAR}, 
+      #{seeAble,jdbcType=BIT}, #{orderId,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.AppModule" >
+    insert into AppModule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="beginTime != null" >
+        beginTime,
+      </if>
+      <if test="stopTime != null" >
+        stopTime,
+      </if>
+      <if test="viewImg != null" >
+        viewImg,
+      </if>
+      <if test="moduleType != null" >
+        moduleType,
+      </if>
+      <if test="mdWidth != null" >
+        mdWidth,
+      </if>
+      <if test="mdHight != null" >
+        mdHight,
+      </if>
+      <if test="cfgUrl != null" >
+        cfgUrl,
+      </if>
+      <if test="cfgPageIndex != null" >
+        cfgPageIndex,
+      </if>
+      <if test="cfgPageSize != null" >
+        cfgPageSize,
+      </if>
+      <if test="cfgAdBoardId != null" >
+        cfgAdBoardId,
+      </if>
+      <if test="cfgTagId != null" >
+        cfgTagId,
+      </if>
+      <if test="seeAble != null" >
+        seeAble,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null" >
+        #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stopTime != null" >
+        #{stopTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="viewImg != null" >
+        #{viewImg,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleType != null" >
+        #{moduleType,jdbcType=TINYINT},
+      </if>
+      <if test="mdWidth != null" >
+        #{mdWidth,jdbcType=INTEGER},
+      </if>
+      <if test="mdHight != null" >
+        #{mdHight,jdbcType=INTEGER},
+      </if>
+      <if test="cfgUrl != null" >
+        #{cfgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="cfgPageIndex != null" >
+        #{cfgPageIndex,jdbcType=INTEGER},
+      </if>
+      <if test="cfgPageSize != null" >
+        #{cfgPageSize,jdbcType=INTEGER},
+      </if>
+      <if test="cfgAdBoardId != null" >
+        #{cfgAdBoardId,jdbcType=INTEGER},
+      </if>
+      <if test="cfgTagId != null" >
+        #{cfgTagId,jdbcType=VARCHAR},
+      </if>
+      <if test="seeAble != null" >
+        #{seeAble,jdbcType=BIT},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.AppModule" >
+    update AppModule
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null" >
+        beginTime = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stopTime != null" >
+        stopTime = #{stopTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="viewImg != null" >
+        viewImg = #{viewImg,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleType != null" >
+        moduleType = #{moduleType,jdbcType=TINYINT},
+      </if>
+      <if test="mdWidth != null" >
+        mdWidth = #{mdWidth,jdbcType=INTEGER},
+      </if>
+      <if test="mdHight != null" >
+        mdHight = #{mdHight,jdbcType=INTEGER},
+      </if>
+      <if test="cfgUrl != null" >
+        cfgUrl = #{cfgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="cfgPageIndex != null" >
+        cfgPageIndex = #{cfgPageIndex,jdbcType=INTEGER},
+      </if>
+      <if test="cfgPageSize != null" >
+        cfgPageSize = #{cfgPageSize,jdbcType=INTEGER},
+      </if>
+      <if test="cfgAdBoardId != null" >
+        cfgAdBoardId = #{cfgAdBoardId,jdbcType=INTEGER},
+      </if>
+      <if test="cfgTagId != null" >
+        cfgTagId = #{cfgTagId,jdbcType=VARCHAR},
+      </if>
+      <if test="seeAble != null" >
+        seeAble = #{seeAble,jdbcType=BIT},
+      </if>
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.AppModule" >
+    update AppModule
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      beginTime = #{beginTime,jdbcType=TIMESTAMP},
+      stopTime = #{stopTime,jdbcType=TIMESTAMP},
+      viewImg = #{viewImg,jdbcType=VARCHAR},
+      moduleType = #{moduleType,jdbcType=TINYINT},
+      mdWidth = #{mdWidth,jdbcType=INTEGER},
+      mdHight = #{mdHight,jdbcType=INTEGER},
+      cfgUrl = #{cfgUrl,jdbcType=VARCHAR},
+      cfgPageIndex = #{cfgPageIndex,jdbcType=INTEGER},
+      cfgPageSize = #{cfgPageSize,jdbcType=INTEGER},
+      cfgAdBoardId = #{cfgAdBoardId,jdbcType=INTEGER},
+      cfgTagId = #{cfgTagId,jdbcType=VARCHAR},
+      seeAble = #{seeAble,jdbcType=BIT},
+      orderId = #{orderId,jdbcType=INTEGER},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

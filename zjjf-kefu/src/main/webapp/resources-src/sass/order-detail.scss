@@ -1,0 +1,100 @@
+.wrap-padding {
+    padding: 0 100px;
+}
+.header {
+    height: 60px;
+    line-height: 60px;
+    border-bottom: 1px solid #ccc;
+    background: #fff;
+    font-size: 14px
+}
+.header .info {
+    float: right;
+    position: relative;
+    right: 20px;
+    color: #d3d6df
+}
+.header .username {
+    color: #666;
+}
+.header .close {
+    color: #007fbf;
+    cursor: pointer;
+}
+
+.complete-btn{
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    border: 0;
+    padding: 7px 20px;
+    background: #ed4b1c;
+    color: #fff;
+}
+.info-ct{ background-color: #fff; padding: 10px 1%; font-size: 14px; width:48%;}
+.info-ct .table-list{margin-bottom: 12px;text-align:left;}
+.info-ct .trade-imfor-dt { width: 95px; display: inline-block; *display:inline; *zoom:1; text-align: left;}
+.info-ct .trade-imfor-dd { display: inline-block; zoom: 1; color: #666;text-align: left;}
+.info-ct .trade-imfor-dd p{margin: 0;}
+
+.s-list{
+    background-color: #fff;
+}
+.s-list .list{
+    width: 100%;
+    font-size: 14px;
+}
+.s-list .list th{
+    padding: 18px;
+    background-color: #eef0f6;
+    font-weight: normal
+}
+.s-list .list td{
+    text-align: center;
+    border-top: 1px solid #e3e3e3;
+    padding: 15px;
+}
+.s-list .list .t-footer td{
+    font-weight: bold;
+    text-align: left;
+}
+.s-list .o-prog{
+    position: relative;
+    padding: 10px 20px;
+    font-size: 14px;
+}
+.s-list .o-prog li{
+    padding: 5px 0;
+    color: #aaa;
+}
+.s-list .o-prog .p-n{
+    display: inline-block;
+    width: 160px;
+}
+.s-list .o-prog .curr{
+    color: #333;
+}
+/* 打印*/
+.order-print {
+    font-size: 12px;
+    display: none
+}
+.order-print table th {
+    font-size: 12px;
+    font-weight: normal;
+}
+.order-print .print-order-title {
+    position: relative;
+    line-height: 32px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold
+}
+@media print {
+    .noprint {
+        display: none
+    }
+    .order-print {
+        display: block;
+    }
+}

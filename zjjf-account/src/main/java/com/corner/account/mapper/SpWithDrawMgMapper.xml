@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.account.dao.SpWithDrawMgMapper" >
+	
+	<!-- ==========================供应商提现概况查询======================== -->
+	<sql id="getPageList_condition">
+		WHERE a.isDelete = 0 AND a.status = 2
+		<if test="spKeyword !=null and spKeyword !=''">
+			AND a.supplierName like CONCAT('%','${spKeyword}','%')
+		</if>
+	</sql>
+ 	<select id="getSpWithDrawList" parameterType="com.corner.account.beans.ro.SpWithDrawMgCondition"  resultType="com.corner.account.beans.vo.SupplierWithDrawVo">
+		SELECT
+			a.*, 
+			SUM(IF(b.`status` = 1, 1 , 0)) as inCount,
+			SUM(IF(b.`status` = 2, 1 , 0)) as alreadyCount,
+			SUM(IF(b.`status` = 3, 1 , 0)) as denyCount,
+			SUM(IF(b.`status` = 4, 1 , 0)) as inPay,
+			SUM(IF(b.`status` = 5, 1 , 0)) as payCount
+		FROM
+			Supplier a
+		JOIN SpWithDraw b ON a.id = b.supplierId
+		<include refid="getPageList_condition" />
+		GROUP BY a.id
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+ 	<select id="getSpWithDrawListCount" parameterType="com.corner.account.beans.ro.SpWithDrawMgCondition"  resultType="int">
+		SELECT count(1) FROM Supplier a
+		<include refid="getPageList_condition" />
+	</select>
+	
+	
+	<!-- ==========================具体供应商提现明细列表查询======================== -->
+	<sql id="getDetailPageList_condition">
+		on a.id = b.supplierId AND b.isDelete=0
+		<if test="status !=null">
+			AND b.status=#{status}
+		</if>
+		<if test="beginTime !=null and endTime !=null">
+			AND b.applyTime BETWEEN #{beginTime} AND #{endTime}
+		</if>
+		<if test="withDrawIdsArray !=null">
+			AND b.id IN
+		    <foreach collection="withDrawIdsArray" index="index" item="item" open="(" separator="," close=")">
+				#{item,jdbcType=VARCHAR}
+			</foreach>
+		</if>
+		WHERE a.isDelete = 0
+		<if test="supplierId !=null and supplierId !=''">
+			AND a.id = #{supplierId}
+		</if>
+		<if test="spKeyword !=null and spKeyword !=''">
+			AND a.supplierName like CONCAT('${spKeyword}','%')
+		</if>
+	</sql>
+ 	<select id="getSpWithDrawDetailList" parameterType="com.corner.account.beans.ro.SpWithDrawMgCondition"  resultType="com.corner.account.beans.vo.SpWithDrawVo">
+		SELECT 
+		a.id as spId,
+		a.supplierName as supplierName,
+		a.supplierCode as supplierCode,
+		a.areaId as areaId,
+		a.wallet as wallet,
+		a.walletAddTime as walletAddTime,
+		a.walletUpdateTime as walletUpdateTime,
+		b.* FROM Supplier a JOIN SpWithDraw b
+		<include refid="getDetailPageList_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+ 	<select id="getSpWithDrawDetailListCount" parameterType="com.corner.account.beans.ro.SpWithDrawMgCondition"  resultType="int">
+		SELECT count(1) FROM Supplier a JOIN SpWithDraw b
+		<include refid="getDetailPageList_condition" />
+	</select>
+	
+	<!-- 财务批量审核,状态1到状态2的审核,状态2到状态3的审核,状态2\3到状态1的撤销审核-->
+	<update id="updateSpWithDrawBatch" parameterType="com.corner.account.beans.ro.SpWithDrawMgCondition">
+	    update SpWithDraw
+	    <set >
+	      <if test="status != null" >
+	        status = #{status,jdbcType=TINYINT},
+	      </if>
+	      <if test="checkId != null" >
+	        checkId = #{checkId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="checkTime != null" >
+	        checkTime = #{checkTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="checkRemark != null" >
+	        checkRemark = #{checkRemark,jdbcType=VARCHAR},
+	      </if>
+	      <if test="denyId != null" >
+	        denyId = #{denyId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="denyTime != null" >
+	        denyTime = #{denyTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="denyRemark != null" >
+	        denyRemark = #{denyRemark,jdbcType=VARCHAR},
+	      </if>
+	      <if test="payerId != null" >
+	        payerId = #{payerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="payTime != null" >
+	        payTime = #{payTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="payRemark != null" >
+	        payRemark = #{payRemark,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where status &lt; 4 and id IN
+	    <foreach collection="withDrawIdsArray" index="index" item="item" open="(" separator="," close=")">
+			#{item,jdbcType=VARCHAR}
+		</foreach>
+	</update>
+	<select id="getSpWithDrawCheckList" parameterType="com.corner.account.beans.ro.SpWalletCheckMgCondition"
+		 resultType="com.corner.account.beans.vo.SpWalletCheckVo">
+		SELECT
+			a.id as spId,
+			a.supplierName AS supplierName,
+			SUM(IF(b.optType = 2, b.money, 0)) AS spOrderIn,
+			SUM(IF(b.optType = 3, b.money, 0)) AS spButieIn,
+			SUM(IF(b.optType = 6, b.money, 0)) AS spFreightIn,
+			SUM(IF(b.optType = 7, b.money, 0)) AS spCouponIn,
+			SUM(IF(b.optType = 8, b.money, 0)) AS spWxPoundage,
+			SUM(IF(b.optType = 9, b.money, 0)) AS spWdPoundage,
+			SUM(IF(b.optType = 4, b.money, 0)) AS spWithDraw
+		FROM
+			Supplier a
+		JOIN SpWalletLog b ON a.id = b.spid
+		AND b.actionTime &gt; #{startDay,jdbcType=TIMESTAMP}
+		AND b.actionTime &lt; #{endDay,jdbcType=TIMESTAMP}
+		WHERE a.`status`=2 
+		GROUP BY a.id
+	</select>
+</mapper>

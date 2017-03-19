@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.corner.ErpManagerMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.corner.ErpManager" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="managerName" property="managerName" jdbcType="VARCHAR" />
+    <result column="managerCode" property="managerCode" jdbcType="VARCHAR" />
+    <result column="serialNum" property="serialNum" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="job" property="job" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="whTel" property="whTel" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="fax" property="fax" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="branderName" property="branderName" jdbcType="VARCHAR" />
+    <result column="whAddress" property="whAddress" jdbcType="VARCHAR" />
+    <result column="whMobile" property="whMobile" jdbcType="VARCHAR" />
+    <result column="whBranderName" property="whBranderName" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="cleaningDayStatus" property="cleaningDayStatus" jdbcType="TINYINT" />
+    <result column="cleaningDay" property="cleaningDay" jdbcType="INTEGER" />
+    <result column="bankNum" property="bankNum" jdbcType="VARCHAR" />
+    <result column="bankUserName" property="bankUserName" jdbcType="VARCHAR" />
+    <result column="bankName" property="bankName" jdbcType="VARCHAR" />
+    <result column="taxRate" property="taxRate" jdbcType="DECIMAL" />
+    <result column="taxNumber" property="taxNumber" jdbcType="VARCHAR" />
+    <result column="cooperation" property="cooperation" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, supplierId, managerName, managerCode, serialNum, addTime, updateTime, job, email, 
+    provinceId, cityId, areaId, address, whTel, tel, fax, mobile, branderName, whAddress, 
+    whMobile, whBranderName, remark, cleaningDayStatus, cleaningDay, bankNum, bankUserName, 
+    bankName, taxRate, taxNumber, cooperation, status, isDelete
+  </sql>
+  
+  <select id="getByMap" parameterType="java.util.Map" resultType="com.zjjf.analysis.beans.analysis.corner.ManagerItemVo">
+  	select
+  	<include refid="Base_Column_List" />
+  	from ERPManager
+  	limit #{pageNo},#{offset}
+  	
+  </select>
+  
+  
+  <select id="getById" resultType="com.zjjf.analysis.beans.analysis.corner.ErpManager">
+    select  id, supplierId, managerName, managerCode, serialNum, addTime, updateTime, job, email, 
+    provinceId, cityId, areaId, address, whTel, tel, fax, mobile, branderName, whAddress, 
+    whMobile, whBranderName, remark, cleaningDayStatus, cleaningDay, bankNum, bankUserName, 
+    bankName, taxRate, taxNumber, cooperation, status, isDelete,
+     case
+	    when `status` = 0
+	    then '引进中'
+	    when `status` = 1
+	    then '合作中'
+	    when `status` = 2
+	    then '停止合作'
+	    else '' 
+	  end as "statusName"
+   from ERPManager where id = #{id}
+  </select>
+  
+</mapper>

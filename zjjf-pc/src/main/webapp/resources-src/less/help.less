@@ -1,0 +1,108 @@
+﻿@import "__normalize";
+@import "__base";
+@import "__comm";
+
+.btn-join {
+    width: 200px;
+    height: 60px;
+    line-height: 60px;
+    display: inline-block;
+    background: #eb4207;
+    font-size: 22px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 25px;
+    &:hover {
+        background: #ef4f08;
+    }
+}
+.btn-join-box {
+    position: relative;
+    height:100%;
+    .btn-join {
+        position: absolute;
+        bottom: 50px;
+        left: 500px;
+    }
+}
+.banner {
+    width: 100%;
+    height:320px;
+    background: url(../images/help-banner.png) no-repeat center;
+}
+.content {
+    .info-item {
+        float: left;
+        margin-top: 45px;
+        width: 33.33%;
+        font-size: 18px;
+        color: #666;
+        text-align: center;
+        .item {
+            padding-top: 155px;
+            width: 152px;
+            height: 152px;
+            display: block;
+            margin: 0 auto;
+            background: url(../images/help-icon.png) no-repeat;
+            text-decoration: none;
+            color: #333;
+            &:hover {
+                text-decoration: underline;
+                color: #0096e0;
+            }
+            &.shop {
+                background-position: 0 0;
+            }
+            &.supplier {
+                background-position: -153px 0;
+            }
+            &.dealer {
+                background-position: -306px 0;
+            }
+        }
+    }
+    .info-content {
+        .title {
+            padding-left: 45px;
+            height: 44px;
+            line-height: 44px;
+            color: #666;
+            font-size: 24px;
+            &.one {
+                background: #f7f7f7 url(../images/help-one.png) no-repeat left center;
+            }
+            &.two {
+                background: #f7f7f7 url(../images/help-two.png) no-repeat left center;
+            }
+            &.three {
+                background: #f7f7f7 url(../images/help-three.png) no-repeat left center;
+            }
+        }
+        .cont {
+            margin: 30px 45px 80px;
+            font-size: 14px;
+            line-height: 32px;
+            color: #666;
+            .tit {
+                line-height: 36px;
+                font-size: 16px;
+                color: #000;
+                cursor: pointer;
+                &:hover {
+                    color: #0096e0;
+                }
+                &.active {
+                    color: #0096e0;
+                }
+            }
+            .tit-cont {
+                padding-left: 24px;
+            }
+            .emphasize {
+                color: #d94613;
+            }
+        }
+    }
+}

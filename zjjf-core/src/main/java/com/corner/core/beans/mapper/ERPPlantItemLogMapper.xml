@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ERPPlantItemLogMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ERPPlantItemLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="infoOrderId" property="infoOrderId" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="orderDetailId" property="orderDetailId" jdbcType="VARCHAR" />
+    <result column="goodsStock" property="goodsStock" jdbcType="INTEGER" />
+    <result column="operateQuantity" property="operateQuantity" jdbcType="SMALLINT" />
+    <result column="areaPrice" property="areaPrice" jdbcType="DECIMAL" />
+    <result column="operateStock" property="operateStock" jdbcType="SMALLINT" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="warehouseId" property="warehouseId" jdbcType="VARCHAR" />
+    <result column="typeMg" property="typeMg" jdbcType="TINYINT" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="itemId" property="itemId" jdbcType="VARCHAR" />
+    <result column="actionUserId" property="actionUserId" jdbcType="VARCHAR" />
+    <result column="actionUserName" property="actionUserName" jdbcType="VARCHAR" />
+    <result column="productionDate" property="productionDate" jdbcType="DATE" />
+    <result column="producingArea" property="producingArea" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, addTime, infoOrderId, orderId, orderDetailId, goodsStock, operateQuantity, areaPrice, 
+    operateStock, supplierId, warehouseId, typeMg, itemBaseId, itemId, actionUserId, 
+    actionUserName, productionDate, producingArea, remark, status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ERPPlantItemLog
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ERPPlantItemLog
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ERPPlantItemLog" >
+    insert into ERPPlantItemLog (id, addTime, infoOrderId, 
+      orderId, orderDetailId, goodsStock, 
+      operateQuantity, areaPrice, operateStock, 
+      supplierId, warehouseId, typeMg, 
+      itemBaseId, itemId, actionUserId, 
+      actionUserName, productionDate, producingArea, 
+      remark, status)
+    values (#{id,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{infoOrderId,jdbcType=VARCHAR}, 
+      #{orderId,jdbcType=VARCHAR}, #{orderDetailId,jdbcType=VARCHAR}, #{goodsStock,jdbcType=INTEGER}, 
+      #{operateQuantity,jdbcType=SMALLINT}, #{areaPrice,jdbcType=DECIMAL}, #{operateStock,jdbcType=SMALLINT}, 
+      #{supplierId,jdbcType=VARCHAR}, #{warehouseId,jdbcType=VARCHAR}, #{typeMg,jdbcType=TINYINT}, 
+      #{itemBaseId,jdbcType=INTEGER}, #{itemId,jdbcType=VARCHAR}, #{actionUserId,jdbcType=VARCHAR}, 
+      #{actionUserName,jdbcType=VARCHAR}, #{productionDate,jdbcType=DATE}, #{producingArea,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ERPPlantItemLog" >
+    insert into ERPPlantItemLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="infoOrderId != null" >
+        infoOrderId,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="orderDetailId != null" >
+        orderDetailId,
+      </if>
+      <if test="goodsStock != null" >
+        goodsStock,
+      </if>
+      <if test="operateQuantity != null" >
+        operateQuantity,
+      </if>
+      <if test="areaPrice != null" >
+        areaPrice,
+      </if>
+      <if test="operateStock != null" >
+        operateStock,
+      </if>
+      <if test="supplierId != null" >
+        supplierId,
+      </if>
+      <if test="warehouseId != null" >
+        warehouseId,
+      </if>
+      <if test="typeMg != null" >
+        typeMg,
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId,
+      </if>
+      <if test="itemId != null" >
+        itemId,
+      </if>
+      <if test="actionUserId != null" >
+        actionUserId,
+      </if>
+      <if test="actionUserName != null" >
+        actionUserName,
+      </if>
+      <if test="productionDate != null" >
+        productionDate,
+      </if>
+      <if test="producingArea != null" >
+        producingArea,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="infoOrderId != null" >
+        #{infoOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderDetailId != null" >
+        #{orderDetailId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsStock != null" >
+        #{goodsStock,jdbcType=INTEGER},
+      </if>
+      <if test="operateQuantity != null" >
+        #{operateQuantity,jdbcType=SMALLINT},
+      </if>
+      <if test="areaPrice != null" >
+        #{areaPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="operateStock != null" >
+        #{operateStock,jdbcType=SMALLINT},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseId != null" >
+        #{warehouseId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeMg != null" >
+        #{typeMg,jdbcType=TINYINT},
+      </if>
+      <if test="itemBaseId != null" >
+        #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null" >
+        #{itemId,jdbcType=VARCHAR},
+      </if>
+      <if test="actionUserId != null" >
+        #{actionUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="actionUserName != null" >
+        #{actionUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="productionDate != null" >
+        #{productionDate,jdbcType=DATE},
+      </if>
+      <if test="producingArea != null" >
+        #{producingArea,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ERPPlantItemLog" >
+    update ERPPlantItemLog
+    <set >
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="infoOrderId != null" >
+        infoOrderId = #{infoOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderDetailId != null" >
+        orderDetailId = #{orderDetailId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsStock != null" >
+        goodsStock = #{goodsStock,jdbcType=INTEGER},
+      </if>
+      <if test="operateQuantity != null" >
+        operateQuantity = #{operateQuantity,jdbcType=SMALLINT},
+      </if>
+      <if test="areaPrice != null" >
+        areaPrice = #{areaPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="operateStock != null" >
+        operateStock = #{operateStock,jdbcType=SMALLINT},
+      </if>
+      <if test="supplierId != null" >
+        supplierId = #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseId != null" >
+        warehouseId = #{warehouseId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeMg != null" >
+        typeMg = #{typeMg,jdbcType=TINYINT},
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null" >
+        itemId = #{itemId,jdbcType=VARCHAR},
+      </if>
+      <if test="actionUserId != null" >
+        actionUserId = #{actionUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="actionUserName != null" >
+        actionUserName = #{actionUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="productionDate != null" >
+        productionDate = #{productionDate,jdbcType=DATE},
+      </if>
+      <if test="producingArea != null" >
+        producingArea = #{producingArea,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ERPPlantItemLog" >
+    update ERPPlantItemLog
+    set addTime = #{addTime,jdbcType=TIMESTAMP},
+      infoOrderId = #{infoOrderId,jdbcType=VARCHAR},
+      orderId = #{orderId,jdbcType=VARCHAR},
+      orderDetailId = #{orderDetailId,jdbcType=VARCHAR},
+      goodsStock = #{goodsStock,jdbcType=INTEGER},
+      operateQuantity = #{operateQuantity,jdbcType=SMALLINT},
+      areaPrice = #{areaPrice,jdbcType=DECIMAL},
+      operateStock = #{operateStock,jdbcType=SMALLINT},
+      supplierId = #{supplierId,jdbcType=VARCHAR},
+      warehouseId = #{warehouseId,jdbcType=VARCHAR},
+      typeMg = #{typeMg,jdbcType=TINYINT},
+      itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      itemId = #{itemId,jdbcType=VARCHAR},
+      actionUserId = #{actionUserId,jdbcType=VARCHAR},
+      actionUserName = #{actionUserName,jdbcType=VARCHAR},
+      productionDate = #{productionDate,jdbcType=DATE},
+      producingArea = #{producingArea,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>库区管理</title>
+		<link rel="stylesheet" type="text/css" href="../../resources/css/base.css" />
+		<script src="../../resources/vendor/jquery/jquery-1.12.4.min.js"></script>
+		<script src="../../resources/js/comm.js"></script>
+		<script src="../../resources/vendor/drag/drag.1.0-min.js"></script>
+	</head>
+	<style type="text/css">
+
+	</style>
+
+	<body>
+		<div class="wrap-bd">
+			<div class="mb-small clearfix">
+				<div class="fl title">库区管理</div>
+			</div>
+			<div class="op-section clearfix">
+				<label id="" class="label">
+					关键词：
+				</label>
+				<input type="text" name="" id="" value="" class="mr-default input input-default" placeholder="库区编号/名称" />
+				<input type="button" class="input-search-button ml-default" value="搜索" />
+			</div>
+			<div class="mb-small clearfix mt-default">
+				<span class="button button-operate" id="J_New">新建</span>
+				<span class="button button-operate">修改</span>
+				<span class="button button-operate" id="J_del">删除</span>
+			</div>
+			<table class="table-list table-border" id="stock_info">
+				<thead>
+					<tr>
+						<th>序号</th>
+						<th>库区编号</th>
+						<th>库区名称</th>
+						<th>所属仓库</th>
+						<th>库区面积(平米)</th>
+						<th>创建人</th>
+						<th>创建时间</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody class="table-tbody">
+					<tr>
+						<td>1</td>
+						<td>13423</td>
+						<td>西南仓</td>
+						<td>西仓</td>
+						<td>东莞</td>
+						<td>张三</td>
+						<td>8.10</td>
+						<td>
+							<span class="button button-operate">编辑</span>
+							<span class="button button-operate">删除</span>
+						</td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>13423</td>
+						<td>西南仓</td>
+						<td>西仓</td>
+						<td>东莞</td>
+						<td>张三</td>
+						<td>8.10</td>
+						<td>
+							<span class="button button-operate">编辑</span>
+							<span class="button button-operate">删除</span>
+						</td>
+					</tr>
+					<tr>
+						<td>3</td>
+						<td>13423</td>
+						<td>西南仓</td>
+						<td>西仓</td>
+						<td>东莞</td>
+						<td>张三</td>
+						<td>8.10</td>
+						<td>
+							<span class="button button-operate">编辑</span>
+							<span class="button button-operate">删除</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="dialog hidden" id="J_dialogAddNew">
+				<form action="" method="post" id="">
+					<div class="dialog-head">
+						<div class="dialog-title">新增库区</div>
+						<div class="dialog-close"></div>
+					</div>
+					<div class="dialog-body dialog-padding">
+
+						<div class="clearfix">
+							<p class="fl mr-default">
+								<label >库区编号：</label>
+								<input type="text" value="" name="" id="" class="input" style="width:160px">
+							</p>
+							<p class="fr">
+								<label >库区名称：</label>
+								<input type="text" value="" name="" id="" class="input" style="width:160px">
+							</p>
+						</div>
+						<div class="clearfix">
+							<p class="fl mr-default">
+								<label >所属仓库：</label>
+								<select name="" class="select" style="width: 160px;">
+									<option value="">请选择</option>
+								</select>
+							</p>
+							<p class="fr">
+								<label >最大存放能力：</label>
+								<input type="text" value="" name="" id="" class="input" style="width:160px">
+							</p>
+						</div>
+						<p>
+							<label >库区面积：</label>
+							<input type="text" value="" name="" id="" class="input mr-small" style="width:160px">平方米
+						</p>
+					</div>
+					<div class="dialog-foot">
+						<input type="hidden" name="" value="" id="">
+						<input type="button" class="dialog-button dialog-ok" id="" value="保存">
+						<input type="button" class="dialog-button dialog-cancel ml-default" value="取消">
+						<input type="reset" class="hidden" />
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var oDialog = document.getElementsByClassName("dialog")[0];
+		//		var oDialogHead = document.getElementsByClassName("dialog-head")[0];
+		//		var oDialogbody = document.getElementsByClassName("dialog-body")[0];
+		startDrag(oDialog, oDialog);
+
+		$(function() {
+			dialogPosCenter('#J_dialogAddNew');
+			$('#J_New').on('click', function() {
+				$('#J_dialogAddNew, .cover-all').fadeIn();
+			});
+			$('.dialog').on('click', '.dialog-cancel, .dialog-close', function() {
+				$('.dialog, .cover-all').fadeOut();
+			});
+			$('.table-list td').click(function() {
+				$(this).parent().css('background', '#009dd9').siblings().css('background', '#fff');
+				console.log($('.chosed'))
+			})
+		})
+	</script>
+
+</html>

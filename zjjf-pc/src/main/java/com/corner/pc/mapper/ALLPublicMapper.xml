@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="BasePublicMapper">
+		
+	<!-- 分页后面包装部分  BaseQueryModel-->
+	<sql id="pageSql">
+		<![CDATA[ limit #{recordStart},#{pageSize}  ]]>
+	</sql>
+	
+	<!-- 排序包装  BaseQueryModel -->
+	<sql id="orderSql">
+		ORDER BY
+		<![CDATA[${sortName} ${sortOrder} ]]>
+	</sql>
+
+</mapper>

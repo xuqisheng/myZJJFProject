@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpGroupMgMapper" >
+
+  <resultMap type="com.corner.core.beans.SpGroup" id="BaseResultMap" extends="com.corner.core.dao.SpGroupMapper.BaseResultMap">
+  </resultMap>
+	<select id="selectSpGroupALL" resultType="com.corner.core.beans.SpGroup">
+       select * from SpGroup order by id asc
+	</select>
+	
+	
+    <select id="selectSpGroupList" resultType="com.corner.core.beans.SpGroup">
+       select 
+       <include refid="Base_Column_List"/>
+       from SpGroup 
+       order by id asc
+   </select>
+   
+   <select id="spOrderActiveMapMgMapper" resultType="com.corner.core.beans.SpGroup" parameterType="java.util.Map">
+   	   select 
+       <include refid="Base_Column_List"/>
+       from SpGroup 
+       where status=1 
+       and isDelete=0
+       <if test="name!=null and name != ''">
+       		and name like "%"#{name}"%"
+       </if>
+       order by id asc
+   </select>
+   
+   <sql id="Base_Column_List" >
+    id, name, code, provinceId, cityId, areaId, status, isDelete
+  </sql>
+	<select id="getSpGroupListBySupplierId" parameterType="com.corner.kefu.beans.ro.sp.SupplierMgRo" resultMap="BaseResultMap">
+	select a.* from SpGroup a,SpGroupMap b WHERE a.id = b.groupId AND b.spId=#{id}
+	</select>
+	
+	<sql id="pageSql">
+	 limit #{pageIndex},#{pageSize}
+	</sql>
+	<sql id="getSpGropuWithList_condition">
+	  	FROM SpGroup d ,Region e WHERE d.`areaId` = e.`id` and e.status = 1
+	  	<if test="name != null">
+	        and (d.name LIKE CONCAT('%' , #{name,jdbcType=VARCHAR} , '%')  or d.id LIKE CONCAT('%' , #{name,jdbcType=VARCHAR} , '%'))
+	     </if>
+	     <if test="list!=null">
+	       and e.id in
+	      <foreach collection="list" open="(" separator="," close=")" index="index" item="item">
+	       #{item.id} 
+	      </foreach>
+	     </if>
+	</sql>
+	<select id="getSpGropuWithList"  resultType="com.corner.kefu.beans.vo.sp.SpGroupVo" parameterType="com.corner.kefu.beans.ro.sp.SpGroupMgRo">
+     	SELECT d.*,e.name AS areaName, e.id AS areaId,e.pId AS areaPid, (SELECT COUNT(1) from SpGroupMap where groupId = d.id) as totalSupplier ,
+			(SELECT COUNT(1) FROM Store WHERE isDelete = 0 AND status = 1 and spGroupId = d.id) as totalStore  
+	     <include refid="getSpGropuWithList_condition"/>
+     order by d.id asc
+     <include refid="pageSql" />
+  </select>
+  <select id="getSpGropuWithListCount"  resultType="int" parameterType="com.corner.kefu.beans.ro.sp.SpGroupRo">
+     SELECT count(1)
+     <include refid="getSpGropuWithList_condition"/> 
+  </select>
+  
+  
+  <!--查询定格下有哪些批发商begin  -->
+  <sql id="getSpGroupAndSupplierList_condition">
+  FROM
+		Supplier
+	WHERE
+		id
+		<if test="isIn == 1">
+		 NOT
+		</if>
+		 IN (
+			SELECT
+				spId
+			FROM
+				SpGroupMap
+			WHERE
+				groupId = #{id}
+		)
+	AND `status` = 2
+	AND isDelete = 0
+	<if test="name!=null and name!=''">
+	AND 
+	(supplierName like "%"#{name}"%"
+	 or supplierCode like "%"#{name}"%"
+	 or managerName like "%"#{name}"%"
+	 or mobile like "%"#{name}"%"
+	 or callNum like "%"#{name}"%"
+	)
+	</if>
+  </sql>
+  <select id="getSpGroupAndSupplierList" resultType="com.corner.core.beans.Supplier" parameterType="com.corner.kefu.beans.ro.sp.SpGroupRo">
+     SELECT
+		*
+	<include refid="getSpGroupAndSupplierList_condition"/>
+	ORDER BY regTime DESC
+	<include refid="pageSql"/>
+  </select>
+  <select id="getCountSpGroupAndSupplierList" parameterType="com.corner.kefu.beans.ro.sp.SpGroupRo" resultType="java.lang.Integer">
+  SELECT
+	 count(id)
+	<include refid="getSpGroupAndSupplierList_condition"/>
+  </select>
+  <!--查询定格下有哪些批发商end  -->
+  
+  
+  <select id="getSpGoupVoById" parameterType="com.corner.kefu.beans.ro.sp.SpGroupRo" resultType="com.corner.kefu.beans.vo.sp.SpGroupVo">
+     select * from
+     SpGroup
+     where id = #{id}
+  </select>
+  
+  
+  
+  <select id="isExist" parameterType="java.util.HashMap" resultType="com.corner.core.beans.SpGroup">
+       select  * from SpGroup
+       <where>
+       <if test="spGroup.name != null">
+          and name =#{spGroup.name,jdbcType=VARCHAR}
+       </if>
+       <if test="spGroup.provinceId != null">
+          and provinceId =#{spGroup.provinceId,jdbcType=INTEGER}
+       </if>
+       <if test="spGroup.cityId != null">
+          and cityId =#{spGroup.cityId,jdbcType=INTEGER}
+       </if>
+       <if test="spGroup.areaId != null">
+          and areaId =#{spGroup.areaId,jdbcType=INTEGER}
+       </if>
+      <if test="pageSize!=0">
+         LIMIT #{pageIndex},#{pageSize}
+      </if>
+      </where>  
+   </select>
+   
+   
+   <!--查询定格下店铺集合begin  -->
+   <sql id="getSpGroupAndStoreList_condition">
+       FROM
+			Store
+		WHERE
+		<if test="isIn==0">
+		  	spGroupId = #{id}
+		</if>
+		<if test="isIn==1">
+		  	(spGroupId != #{id} or spGroupId IS null)
+		</if>
+		AND `status` = 1
+		AND isDelete = 0
+		<if test="name!=null and name!=''">
+		AND (
+		 id like "%"#{name}"%"
+		 or
+		 name like "%"#{name}"%"
+		 or
+		 contact like "%"#{name}"%"
+		 or
+		 mobile like "%"#{name}"%"
+		)
+		</if>   
+   </sql>
+   <select id="getSpGroupAndStoreList" parameterType="com.corner.kefu.beans.ro.sp.SpGroupRo" resultType="com.corner.core.beans.Store">
+       SELECT
+			*
+		<include refid="getSpGroupAndStoreList_condition"/>
+		ORDER BY id ASC
+		<include refid="pageSql"/>
+    </select>
+    <select id="getCountSpGroupAndStoreList" parameterType="com.corner.kefu.beans.ro.sp.SpGroupRo" resultType="java.lang.Integer">
+      select COUNT(id)
+     <include refid="getSpGroupAndStoreList_condition"/>
+    </select>
+    <!--查询定格下店铺集合end  -->
+    
+    
+    <!--查询定格及关联的批发商数量和店铺数量  -->
+  <resultMap id="spGroupWithListMap" type="com.corner.kefu.beans.vo.sp.SpGroupVo" extends="com.corner.core.dao.SpGroupMapper.BaseResultMap">
+     <collection property="supplierList" ofType="com.corner.core.beans.Supplier" >
+       <id column="sp_id" property="id" jdbcType="VARCHAR" />
+       <result column="supplierCode" property="supplierCode" jdbcType="VARCHAR" />
+       <result column="supplierName" property="supplierName" jdbcType="VARCHAR" />
+       <result column="managerName" property="managerName" jdbcType="VARCHAR" />
+       <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+       <result column="callNum" property="callNum" jdbcType="VARCHAR" />
+       <result column="bankNum" property="bankNum" jdbcType="VARCHAR" />
+       <result column="bankName" property="bankName" jdbcType="VARCHAR" />
+       <result column="supplierAddress" property="supplierAddress" jdbcType="VARCHAR" />
+     </collection>
+     <collection property="storeList" ofType="com.corner.core.beans.Store">
+       <id column="st_id" property="id" jdbcType="INTEGER" />
+       <result column="st_name" property="name" jdbcType="VARCHAR" />
+       <result column="contact" property="contact" jdbcType="VARCHAR" />
+       <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+       <result column="address" property="address" jdbcType="VARCHAR" /><!--spGroupId  -->
+       <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+     </collection>
+  </resultMap>
+  <!-- 定格及关联批发商列表 -->
+  <insert id="batchAddSupplier" parameterType="java.util.HashMap">
+  <foreach collection="chkList" item="item" index="index" separator=";">
+     <!-- INSERT INTO `SpGroupMap` (`spId`, `groupId`) 
+        VALUES
+      (
+      #{chkList}
+      ,#{spId}      
+      ) -->
+      INSERT INTO `SpGroupMap` (`spId`, `groupId`) 
+        VALUES
+      (
+      #{item}
+      ,#{spGroupId}      
+      )  
+  </foreach>
+  </insert>
+  <insert id="addSupplier" parameterType="java.util.HashMap">
+    INSERT INTO `SpGroupMap` (`spId`, `groupId`) 
+        VALUES
+      (#{supplierId}, #{spGroupId})  
+  </insert>
+  <delete id="batchRemoveSupplier" parameterType="java.util.HashMap">
+   DELETE FROM `SpGroupMap` WHERE groupId = #{spGroupId} AND spId in 
+    <foreach collection="chkList" item="itemId" open="(" separator="," close=")">
+     #{itemId}
+    </foreach>
+  </delete>
+   <delete id="removeSupplier" parameterType="java.util.HashMap">
+    DELETE FROM `SpGroupMap` WHERE groupId = #{spGroupId} AND spId= #{supplierId}
+  </delete>
+ 
+    <update id="batchRemoveStore" parameterType="java.util.HashMap">
+	   UPDATE Store a SET a.`spGroupId` = NULL WHERE a.id IN 
+	   <foreach collection="chkList" item="itemId" open="(" separator="," close=")">
+	      #{itemId}
+	   </foreach>
+  </update>
+     
+      <select id="getMatchConditionSpGroupCount" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+	      select count(1) from SpGroup
+	      <where>
+	      <if test="keyStr != null">
+	        (id like CONCAT ('%','${keyStr}','%') or name like CONCAT ('%','${keyStr}','%'))  
+	      </if>
+	      </where>
+	  </select>
+	  
+	  <select id="getSelectedSpGroupList" parameterType="java.lang.String" resultType="com.corner.kefu.beans.vo.sp.SpGroupVo">
+		  SELECT 
+			  e.id,
+			  e.name,
+			  '1' isSelected 
+			FROM
+			  SpPushMsgMap a 
+			  JOIN Store c 
+			    ON a.storeId = c.id 
+			  JOIN SpGroup e 
+			    ON c.spGroupId = e.id 
+			WHERE a.msgId = #{id} 
+			  AND a.isDelete = '0' 
+			  <if test="keyStr != null">
+			    and (e.id like "%"#{keyStr}"%" or e.name like "%"#{keyStr}"%")
+			  </if>
+			GROUP BY e.id 
+			UNION
+			SELECT 
+			  f.id,
+			  f.name,
+			  '0' isSelected 
+			FROM
+			  SpGroup f 
+			WHERE f.id NOT IN 
+			  (SELECT 
+			    e.id 
+			  FROM
+			    SpPushMsgMap a 
+			    JOIN Store c 
+			      ON a.storeId = c.id 
+			    JOIN SpGroup e 
+			      ON c.spGroupId = e.id 
+			  WHERE a.msgId = #{id} 
+			    AND a.isDelete = '0' 
+			    <if test="keyStr != null">
+			    and (e.id like "%"#{keyStr}"%" or e.name like "%"#{keyStr}"%")
+			    </if>
+			  GROUP BY e.id)
+			  <if test="keyStr != null">
+			    and (f.id like "%"#{keyStr}"%" or f.name like "%"#{keyStr}"%")
+			  </if>
+			  <if test="pageSize!=0">
+			   limit #{pageIndex},#{pageSize}
+			  </if>
+	    </select>
+	    
+	    <select id="getSelectedSpGroupListFromSpPushMsgMap" parameterType="java.lang.String" resultType="com.corner.kefu.beans.vo.sp.SpGroupVo">
+		    SELECT 
+				  e.id 
+				FROM
+				  SpPushMsgMap a 
+				  JOIN Store c 
+				    ON a.storeId = c.id 
+				  JOIN SpGroup e 
+				    ON c.spGroupId = e.id 
+				WHERE a.msgId = #{id} 
+				  AND a.isDelete = '0' 
+				GROUP BY e.id 
+		 </select>
+		 
+		 <select id="getAllSpGroup" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.SpGroupVo">
+		    select
+		    	*
+		    from SpGroup
+		    <where>
+		      <if test="keyStr !=null">
+		        (id like CONCAT ('%','${keyStr}','%') or name like CONCAT ('%','${keyStr}','%'))
+		      </if>
+		    </where>
+		    order by id 
+		    <if test="pageSize !=0">
+		     limit #{pageIndex},#{pageSize}
+		    </if>
+		</select>
+		
+		<select id="getAcTiveSpGroupList" parameterType="com.corner.kefu.beans.vo.RegionVo" resultType="com.corner.kefu.beans.vo.RegionVo">
+		  SELECT
+			id AS spGroupId,
+			name,
+			areaId AS id,
+			cityId AS pId
+		FROM
+			SpGroup
+		WHERE
+			`status` = 1
+		AND isDelete = 0
+		  <if test="spGroupName!=null">
+		  And name like "%"#{spGroupName}"%"
+		  </if>
+		</select>
+		
+		<select id="getActiveAreaList" parameterType="com.corner.kefu.beans.vo.RegionVo" resultType="com.corner.kefu.beans.vo.RegionVo">
+		SELECT
+			b.*
+		FROM
+			SpGroup a
+		JOIN Region b ON a.areaId = b.id
+		WHERE
+			b.isDelete = 0
+		   <if test="spGroupName!=null">
+		  And a.name like "%"#{spGroupName}"%"
+		  </if>
+		GROUP BY
+			a.areaId
+		</select>
+		
+		<select id="getActiveCityList" parameterType="com.corner.kefu.beans.vo.RegionVo" resultType="com.corner.kefu.beans.vo.RegionVo">
+		SELECT
+			c.*
+		FROM
+			SpGroup a
+		JOIN Region b ON a.areaId = b.id
+		JOIN Region c ON b.pId = c.id
+		WHERE
+			b.isDelete = 0
+		AND c.isDelete = 0
+		<if test="spGroupName!=null">
+		  And a.name like "%"#{spGroupName}"%"
+		  </if>
+		GROUP BY
+			b.pId
+		</select>
+		
+		<select id="getActiveProvinList" parameterType="com.corner.kefu.beans.vo.RegionVo" resultType="com.corner.kefu.beans.vo.RegionVo">
+		SELECT
+			d.*
+		FROM
+			SpGroup a
+		JOIN Region b ON a.areaId = b.id
+		JOIN Region c ON b.pId = c.id
+		JOIN Region d ON c.pId = d.id
+		WHERE
+			b.isDelete = 0
+		AND c.isDelete = 0
+		AND d.isDelete = 0
+		<if test="spGroupName!=null">
+		  And a.name like "%"#{spGroupName}"%"
+		  </if>
+		GROUP BY
+			c.pId
+		</select>
+		
+		
+		<select id="getSpGroupListByIds" parameterType="java.lang.String" resultType="com.corner.kefu.beans.vo.sp.SpGroupVo">
+		  SELECT
+				a.*, b.name as areaName
+			FROM
+				(
+					SELECT
+						*
+					FROM
+						SpGroup
+					WHERE
+						id IN
+					<foreach collection="array" open="(" close=")" separator="," item="item" index="index">
+					  #{item}
+					</foreach> 
+				) a
+			JOIN Region b ON a.areaId = b.id
+		</select>
+		
+		<sql id="getVoucherSpGroupList_condition">
+		   FROM
+			  SpGroup a 
+			  LEFT JOIN Region b 
+			    ON a.areaId = b.id
+			    where a.isDelete=0 and a.status=1
+		     <if test="flag != null">
+		       <if test="flag == 0">
+		          <if test="spGroup.name != null">
+		          and a.name like "%"#{spGroup.name}"%"
+		          </if>
+		       </if>
+		       <if test="flag == 1">
+		            <if test="spGroup.name != null">
+		              and b.name like "%"#{spGroup.name}"%"
+		            </if>
+		       </if>
+		     </if>
+   </sql>
+   <select id="getVoucherSpGroupList" resultType="com.corner.kefu.beans.vo.sp.SpGroupVo" parameterType="java.util.HashMap">
+   SELECT 
+	  a.id,
+	  a.name,
+	  b.name AS areaName 
+	<include refid="getVoucherSpGroupList_condition"/>
+	<include refid="pageSql"/>
+   </select>
+   <select id="getCountVoucherSpGroupList" resultType="java.lang.Integer">
+    select count(1)
+    <include refid="getVoucherSpGroupList_condition"/>
+   </select>
+   
+   <select id="getSpGroupAndAreaById" parameterType="java.util.Map" resultType="com.corner.kefu.beans.vo.sp.SpGroupVo">
+   		SELECT
+			a.id,
+			a.`name`,
+			a.areaId,
+			b.`name` AS areaName
+		FROM
+			(
+			SELECT
+				id,
+				`name`,
+				areaId
+			FROM
+				SpGroup
+			WHERE
+				`status` = 1
+			AND isDelete = 0
+			<if test="id != null">
+				AND id = #{id}
+			</if>
+			) a
+		JOIN (
+			SELECT
+				id,
+				`name`
+			FROM
+				Region
+			WHERE
+				`status` = 1
+			AND isDelete = 0
+			AND regionLevel = 4
+		) b ON a.areaId = b.id
+   </select>
+   
+   <!-- 查询参与某个活动的批发商的分组详情 -->
+   <select id="getActiveStoreMember" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.StoreMgVo">
+	 SELECT
+		a.storeId AS id,
+		a.storeNm AS `name`,
+		c.`name` AS storeGroupName,
+		(
+			SELECT
+				count(storeId)
+			FROM
+				SpOrderInfo e
+			WHERE
+				e.storeId = a.storeId
+			AND e.`level` = 1
+			AND e.isDelete = 0
+			AND e.`status` != 6
+		) AS totalOrder
+	FROM
+		(
+			SELECT
+				*
+			FROM
+				SpVoucher
+			WHERE
+				spId = #{supplierId}
+			AND spVoucherActiveId = #{spVoucherActiveId}
+			AND `status` = 3
+			GROUP BY
+				storeId
+		) AS a
+	LEFT JOIN StoreGroupMember b ON a.spId = b.supplierId
+	AND a.storeId = b.storeId
+	LEFT JOIN StoreGroup c ON b.storeGroupID = c.id
+   </select>
+   
+   <!-- 获取所有没被删除的定格id集合 -->
+   <select id="getAllEnableGroupIdList" resultType="java.lang.String">
+     select id from SpGroup where isDelete = 0
+   </select>
+   
+    <select id="getAllSpGroup1" resultType="com.corner.core.beans.SpGroup">
+		select * from SpGroup where isDelete=0
+	</select>
+	
+	<select id="getSupplierIdByGroupId" parameterType="java.lang.Integer" resultType="com.corner.core.beans.Supplier">
+		select * from Supplier where status = 2 and isDelete = 0 and id in (select spId from SpGroupMap where groupId=#{groupId})
+	</select>
+	
+	
+	<resultMap type="com.corner.kefu.beans.vo.RegionVo" id="spGroupTreeMap">
+	   <id column="shen_id" jdbcType="INTEGER" property="id" />
+		<result column="shen_pId" jdbcType="INTEGER" property="pId" />
+		<result column="shen_name" jdbcType="VARCHAR" property="name" />
+		<result column="shen_regionLevel" jdbcType="TINYINT" property="regionLevel" />
+		<collection property="regionList" ofType="com.corner.kefu.beans.vo.RegionVo">
+		  <id column="shi_id" jdbcType="INTEGER" property="id" />
+		  <result column="shi_pId" jdbcType="INTEGER" property="pId" />
+		  <result column="shi_name" jdbcType="VARCHAR" property="name" />
+		  <result column="shi_regionLevel" jdbcType="TINYINT" property="regionLevel" />
+		  <collection property="regionList" ofType="com.corner.kefu.beans.vo.RegionVo">
+		    <id column="area_id" jdbcType="INTEGER" property="id" />
+		    <result column="area_pId" jdbcType="INTEGER" property="pId" />
+		    <result column="area_name" jdbcType="VARCHAR" property="name" />
+		    <result column="area_regionLevel" jdbcType="TINYINT" property="regionLevel" />
+		    <collection property="regionList" ofType="com.corner.kefu.beans.vo.RegionVo">
+		     <id column="group_id" jdbcType="INTEGER" property="id" />
+		    <result column="group_pId" jdbcType="INTEGER" property="pId" />
+		    <result column="group_name" jdbcType="VARCHAR" property="name" />
+		    <!-- <result column="group_regionLevel" jdbcType="TINYINT" property="regionlevel" /> -->
+		    </collection>
+		  </collection>   
+		</collection>
+	</resultMap>
+	
+	<select id="getTreeSpGroupList" resultMap="spGroupTreeMap">
+		   SELECT
+			spGroup.id AS group_id,
+			spGroup.`name` AS group_name,
+			spGroup.areaId AS group_pId,
+			area.id AS area_id,
+			area.`name` AS area_name,
+			area.pId AS area_pId,
+			area.regionLevel AS area_regionLevel,
+			city.id AS shi_id,
+			city.`name` AS shi_name,
+			city.pId AS shi_pId,
+			city.regionLevel AS shi_regionLevel,
+			pro.id AS shen_id,
+			pro.`name` AS shen_name,
+			pro.pId AS shen_pId,
+			pro.regionLevel AS shen_regionLevel
+		FROM
+			(
+				SELECT
+					*
+				FROM
+					SpGroup
+				WHERE
+					isDelete = 0
+			) AS spGroup
+		JOIN Region AS area ON spGroup.areaId = area.id
+		AND area.isDelete = 0
+		AND area.`status` = 1
+		JOIN Region AS city ON area.pId = city.id
+		AND city.isDelete = 0
+		AND city.`status` = 1
+		JOIN Region AS pro ON city.pId = pro.id
+		AND pro.isDelete = 0
+		AND pro.`status` = 1
+		ORDER BY shen_id,
+		shi_id,
+		area_id,
+		group_id
+	</select>
+	
+	<!-- 根据区域id获取对应定格 -->
+	<select id="getSpGroupByAreaId" parameterType="java.util.Map" resultType="com.corner.core.beans.SpGroup">
+		SELECT
+			*
+		FROM
+			SpGroup
+		WHERE
+			STATUS = 1
+		AND isDelete = 0
+		<if test="areaId != null">
+			AND areaId = #{areaId}
+		</if>
+	</select>
+	
+	
+	<!--根据批发商id,查询批发商所属定格,并且将数据封装成PlantItemVo 返回   -->
+	<select id="getSpGroupListRetrunPlantItemVo" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.PlantItemVo">
+		  SELECT
+			id AS spGroupId,
+			`name` AS spGroupName
+		FROM
+			SpGroup
+		WHERE
+			id IN (
+				SELECT
+					groupId
+				FROM
+					SpGroupMap
+				WHERE
+					spId = #{id}
+			)
+	</select>
+	
+	<select id="getSpGroupListByAreaId" parameterType="java.lang.Integer" resultType="com.corner.core.beans.SpGroup">
+	select * from SpGroup where areaId = #{areaId} and `status` = 1 and isDelete = 0
+	</select>
+</mapper>

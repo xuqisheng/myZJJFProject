@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.ReminderMgMapper">
+	<sql id="pageSql">
+		<if test="pageIndex != null">
+			limit #{pageIndex},#{pageSize}
+		</if>
+	</sql>
+
+	<sql id="getAllReminderByParamSql">
+		WHERE
+			isDelete = 0
+		<if test="spGroupId != null">
+			AND storeId IN (
+				SELECT
+					id
+				FROM
+					Store
+				WHERE
+					status = 1
+				AND isDelete = 0
+				AND spGroupId = #{spGroupId}
+			)
+		</if>
+		<if test="supplierNameOrTel != null and supplierNameOrTel != ''">
+			and (spName like "%"#{supplierNameOrTel}"%" or spTel like "%"#{supplierNameOrTel}"%")
+		</if>
+		<if test="storeNameOrTel != null and storeNameOrTel != ''">
+			and (storeName like "%"#{storeNameOrTel}"%" or userTel like "%"#{storeNameOrTel}"%")
+		</if>
+	</sql>
+	
+	<select id="getAllReminderByParam" parameterType="com.corner.kefu.beans.ro.ReminderRo" resultType="com.corner.kefu.beans.vo.ReminderVo">
+		SELECT
+			*
+		FROM
+			Reminder
+		<include refid="getAllReminderByParamSql"/>	
+		order by addTime desc
+		<include refid="pageSql"/>
+	</select>
+	<select id="getAllReminderByParamCount" parameterType="com.corner.kefu.beans.ro.ReminderRo" resultType="java.lang.Integer">
+		select count(1) from Reminder 
+		<include refid="getAllReminderByParamSql"/>
+	</select>
+</mapper>
+

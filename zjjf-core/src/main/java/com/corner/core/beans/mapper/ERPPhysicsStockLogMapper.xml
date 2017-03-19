@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ERPPhysicsStockLogMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ERPPhysicsStockLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="logicStockLogId" property="logicStockLogId" jdbcType="VARCHAR" />
+    <result column="physicsStockId" property="physicsStockId" jdbcType="VARCHAR" />
+    <result column="operationType" property="operationType" jdbcType="TINYINT" />
+    <result column="operationNum" property="operationNum" jdbcType="INTEGER" />
+    <result column="operationTime" property="operationTime" jdbcType="TIMESTAMP" />
+    <result column="stockNum" property="stockNum" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, logicStockLogId, physicsStockId, operationType, operationNum, operationTime, 
+    stockNum, remark, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ERPPhysicsStockLog
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ERPPhysicsStockLog
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ERPPhysicsStockLog" >
+    insert into ERPPhysicsStockLog (id, logicStockLogId, physicsStockId, 
+      operationType, operationNum, operationTime, 
+      stockNum, remark, status, 
+      isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{logicStockLogId,jdbcType=VARCHAR}, #{physicsStockId,jdbcType=VARCHAR}, 
+      #{operationType,jdbcType=TINYINT}, #{operationNum,jdbcType=INTEGER}, #{operationTime,jdbcType=TIMESTAMP}, 
+      #{stockNum,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ERPPhysicsStockLog" >
+    insert into ERPPhysicsStockLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="logicStockLogId != null" >
+        logicStockLogId,
+      </if>
+      <if test="physicsStockId != null" >
+        physicsStockId,
+      </if>
+      <if test="operationType != null" >
+        operationType,
+      </if>
+      <if test="operationNum != null" >
+        operationNum,
+      </if>
+      <if test="operationTime != null" >
+        operationTime,
+      </if>
+      <if test="stockNum != null" >
+        stockNum,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="logicStockLogId != null" >
+        #{logicStockLogId,jdbcType=VARCHAR},
+      </if>
+      <if test="physicsStockId != null" >
+        #{physicsStockId,jdbcType=VARCHAR},
+      </if>
+      <if test="operationType != null" >
+        #{operationType,jdbcType=TINYINT},
+      </if>
+      <if test="operationNum != null" >
+        #{operationNum,jdbcType=INTEGER},
+      </if>
+      <if test="operationTime != null" >
+        #{operationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stockNum != null" >
+        #{stockNum,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ERPPhysicsStockLog" >
+    update ERPPhysicsStockLog
+    <set >
+      <if test="logicStockLogId != null" >
+        logicStockLogId = #{logicStockLogId,jdbcType=VARCHAR},
+      </if>
+      <if test="physicsStockId != null" >
+        physicsStockId = #{physicsStockId,jdbcType=VARCHAR},
+      </if>
+      <if test="operationType != null" >
+        operationType = #{operationType,jdbcType=TINYINT},
+      </if>
+      <if test="operationNum != null" >
+        operationNum = #{operationNum,jdbcType=INTEGER},
+      </if>
+      <if test="operationTime != null" >
+        operationTime = #{operationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stockNum != null" >
+        stockNum = #{stockNum,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ERPPhysicsStockLog" >
+    update ERPPhysicsStockLog
+    set logicStockLogId = #{logicStockLogId,jdbcType=VARCHAR},
+      physicsStockId = #{physicsStockId,jdbcType=VARCHAR},
+      operationType = #{operationType,jdbcType=TINYINT},
+      operationNum = #{operationNum,jdbcType=INTEGER},
+      operationTime = #{operationTime,jdbcType=TIMESTAMP},
+      stockNum = #{stockNum,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

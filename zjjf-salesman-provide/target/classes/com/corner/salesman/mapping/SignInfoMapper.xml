@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.SignInfoMapper">
+
+	<sql id="Base_Column_List">
+	    t.id,
+		t.groupId,
+		t.subject,
+		t.createTime,
+		t.address,
+		t.createBy,
+		t.remarks,
+		t.picUrl,
+		t.signTime,
+		t.type,
+		t.markType,
+		t.week
+	</sql>
+	
+   <select id="findOutWorkSignList" resultType="SignInfo">
+	 SELECT
+	    t.id,
+		t.userId AS createBy,
+		u.userName,
+		t.week,
+		'3' AS type,
+		'外勤签到' AS typeName,
+		DATE_FORMAT(t.startTime, '%Y-%m-%d') AS createTime,
+		DATE_FORMAT(t.outWorkStart, '%T') AS outWorkStart,
+		DATE_FORMAT(IFNULL(t.outWorkEnd,t.outWorkStart), '%T') AS outWorkEnd
+	 FROM
+		tbl_sign_time_record_t t
+	 LEFT JOIN salesman u ON t.userId = u.id
+	 LEFT JOIN tbl_user_dept_t ud ON ud.userId = u.id
+	 LEFT JOIN tbl_department_t d ON d.deptId = ud.deptId
+	 LEFT JOIN tbl_dept_manager_t dm ON dm.deptId = d.deptId
+	 
+	 WHERE DATE_FORMAT(t.startTime, '%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+	  AND t.outWorkStart is not null
+	  AND ud.deptId=#{groupId}
+	  AND dm.leaderId = #{userId}
+	 ORDER BY t.startTime desc
+   </select>
+	
+	<!-- 根据用户组ID查询该组签到的信息列表 -->
+	<select id="findSigntListByGroupId" resultType="SignInfo" >
+		SELECT
+			u.userName,
+			CASE
+		WHEN t.type = 1 THEN
+			'上班签到'
+		WHEN t.type = 2 THEN
+			'下班签到'
+		WHEN t.type = 3 THEN
+			'外勤签到'
+		END AS typeName,t.type,t.markType,
+		 DATE_FORMAT(t.createTime, '%Y-%m-%d') AS createTime,
+		 DATE_FORMAT(t.createTime, '%T') AS signTime,
+		 t.id,t.week,t.createBy
+		FROM
+			tbl_sign_t t
+		INNER JOIN salesman u ON t.createBy = u.id
+		INNER JOIN tbl_user_dept_t ud ON ud.userId = u.id
+		INNER JOIN tbl_department_t d ON d.deptId = ud.deptId
+		INNER JOIN tbl_dept_manager_t dm ON dm.deptId = d.deptId
+		WHERE
+			t.groupId = #{groupId}
+			and dm.leaderId = #{userId}
+			and t.type = #{type}
+			<if test="createTime != null and createTime!=''">
+				and DATE_FORMAT(t.createTime, '%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+			</if>
+		GROUP BY
+			DATE_FORMAT(t.createTime, '%Y-%m-%d'),
+			t.createBy,
+			t.type
+		ORDER BY
+			t.createTime DESC,
+			u.userName ASC
+	</select>
+	
+	<!-- 根据用户ID查询该用户签到信息列表 -->
+	<select id="findMySigntList" resultType="SignInfo" >		
+		SELECT
+			a.userName,
+			a.type,
+			a.typeName,
+			a.createTime,
+			a.signTime,
+			a.id,
+			a.week,
+			a.createBy,
+      		a.outWorkStart,
+	    	a.outWorkEnd
+		FROM
+			(
+				SELECT
+					u.userName,
+					CASE
+				WHEN t.type = 1 THEN
+					'上班签到'
+				WHEN t.type = 2 THEN
+					'下班签到'
+				WHEN t.type = 3 THEN
+					'外勤签到'
+				END AS typeName,
+				t.type,
+				DATE_FORMAT(t.createTime, '%Y-%m-%d') AS createTime,
+				DATE_FORMAT(t.createTime, '%T') AS signTime,
+				t.id,
+				t.week,
+				t.createBy,
+				'' AS outWorkStart,
+	      		'' AS outWorkEnd
+			FROM
+				tbl_sign_t t
+			LEFT JOIN salesman u ON t.createBy = u.id
+			WHERE t.type!=3 and	t.createBy = #{userId}
+			<if test="createTime != null and createTime!=''">
+				and DATE_FORMAT(t.createTime, '%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+			</if>
+			<if test="type != null">
+				and t.type=#{type}
+			</if>
+			
+			UNION ALL
+
+			SELECT
+				u.userName,
+				'外勤签到' AS typeName,
+				'3' AS type,
+				DATE_FORMAT(t.startTime, '%Y-%m-%d') AS createTime,
+				DATE_FORMAT(t.startTime, '%T') AS signTime,
+				t.id,
+				t.week,
+				t.userId AS createBy,
+			    DATE_FORMAT(t.outWorkStart, '%T') AS outWorkStart,
+				DATE_FORMAT(IFNULL(t.outWorkEnd,t.outWorkStart), '%T') AS outWorkEnd
+			FROM
+				tbl_sign_time_record_t t
+			LEFT JOIN salesman u ON t.userId = u.id
+			WHERE t.outWorkStart IS NOT NULL
+			AND t.userId = #{userId}
+			<if test="createTime != null and createTime!=''">
+				and DATE_FORMAT(t.startTime, '%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+			</if>
+			
+		) a ORDER BY
+		a.createTime DESC,
+		a.type ASC
+	</select>
+	
+	<!-- 根据用户ID查询该用户签到信息列表 -->
+	<select id="findMySigntDetailList" resultType="SignInfo" >
+		SELECT
+			CASE
+		WHEN t.type = 1 THEN
+			'上班签到'
+		WHEN t.type = 2 THEN
+			'下班签到'
+		WHEN t.type = 3 THEN
+			'外勤签到'
+		END AS typeName,t.type,
+		
+		CASE
+		WHEN t.markType = '1' THEN
+			'进店'
+		WHEN t.markType = '2' THEN
+			'离店'
+		ELSE ''
+		END AS markType,
+		 DATE_FORMAT(t.createTime, '%Y-%m-%d') as createTime,
+		 DATE_FORMAT(t.createTime, '%T') as signTime,
+		 t.address, t.remarks,
+		 t.picUrl,t.id,t.visitCust,t.visitLine
+		FROM
+			tbl_sign_t t
+		WHERE
+			t.createBy = #{userId}
+			<if test="createTime != null and createTime!=''">
+				and DATE_FORMAT(t.createTime, '%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+			</if>
+			<if test="type != null">
+				and t.type =#{type}
+			</if>
+		ORDER BY
+			t.createTime DESC
+	</select>
+	
+	<insert id="insertSignInfo">
+	  insert into tbl_sign_t
+	  <trim prefix="(" suffix=")" suffixOverrides="," >
+	    <if test="id != null" >
+	      id,
+	    </if>
+	    <if test="groupId != null" >
+	      groupId,
+	    </if>
+	    <if test="subject != null" >
+	      subject,
+	    </if>
+	    <if test="address != null" >
+	      address,
+	    </if>
+	    <if test="remarks != null" >
+	      remarks,
+	    </if>
+	    <if test="createBy != null" >
+	      createBy,
+	    </if>
+	    <if test="createTime != null" >
+		  createTime,
+		</if>
+	    <if test="picUrl != null" >
+	      picUrl,
+	    </if>
+	    <if test="signTime != null" >
+	      signTime,
+	    </if>
+	    <if test="type != null" >
+	      type,
+	    </if> 
+	    <if test="markType != null and markType != ''" >
+	      markType,
+	    </if> 
+	    <if test="week != null and week != ''" >
+	      week,
+	    </if> 
+	    <if test="visitLine != null and visitLine != ''" >
+	      visitLine,
+	    </if> 
+	    <if test="visitCust != null and visitCust != ''" >
+	      visitCust,
+	    </if> 
+	    <if test="shopNo != null and shopNo != ''" >
+	      shopNo,
+	    </if> 
+	  </trim>
+	  <trim prefix="values (" suffix=")" suffixOverrides="," >
+	    <if test="id != null" >
+	      #{id,jdbcType=VARCHAR},
+	    </if>
+	    <if test="groupId != null" >
+	      #{groupId,jdbcType=VARCHAR},
+	    </if>
+	    <if test="subject != null" >
+	      #{subject,jdbcType=VARCHAR},
+	    </if>
+	    <if test="address != null" >
+	      #{address,jdbcType=VARCHAR},
+	    </if>
+	    <if test="remarks != null" >
+	      #{remarks,jdbcType=VARCHAR},
+	    </if>
+	    <if test="createBy != null" >
+	      #{createBy,jdbcType=VARCHAR},
+	    </if>
+	    <if test="createTime != null" >
+		  #{createTime,jdbcType=VARCHAR},
+		</if>
+	    <if test="picUrl != null" >
+	     #{picUrl,jdbcType=VARCHAR},
+	    </if>
+	    <if test="signTime != null" >
+	      #{signTime,jdbcType=VARCHAR},
+	    </if>
+	    <if test="type != null" >
+	      #{type,jdbcType=VARCHAR},
+	    </if>
+	    <if test="markType != null and markType != ''" >
+	      #{markType,jdbcType=VARCHAR},
+	    </if> 
+	    <if test="week != null and week != ''" >
+	       #{week,jdbcType=VARCHAR},
+	    </if> 
+	    <if test="visitLine != null and visitLine != ''" >
+	      #{visitLine,jdbcType=VARCHAR},
+	    </if> 
+	   <if test="visitCust != null and visitCust != ''" >
+	      #{visitCust,jdbcType=VARCHAR},
+	    </if>
+	    <if test="shopNo != null and shopNo != ''" >
+	      #{shopNo,jdbcType=VARCHAR},
+	    </if>
+	  </trim>
+	</insert>
+	
+	<select id="getSigntMaxDate" resultType="java.lang.String">
+		select DATE_FORMAT(MAX(createTime),'%Y-%m-%d')  from tbl_sign_t
+	</select>
+	
+	<select id="checkUserIsSignt" resultType="int" >
+		SELECT
+			count(1)
+		FROM
+			tbl_sign_t t
+		WHERE
+			t.createBy = #{userId}
+            and DATE_FORMAT(t.createTime, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+			and t.type =#{type}
+	</select>
+	
+  <update id="updateShopVisitRecord" parameterType="com.corner.salesman.model.SignInfo" >
+    update tbl_shop_visit_record_t
+    set status = #{markType,jdbcType=VARCHAR}
+    where status !=2 and shopNo = #{shopNo,jdbcType=VARCHAR} 
+    AND DATE_FORMAT(visitDate, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')
+  </update>
+  
+  <insert id="insertShopVisitRecord" parameterType="com.corner.salesman.model.SignInfo" >
+    insert into tbl_shop_visit_record_t (status, shopNo, salesmanId,visitDate)
+    values (#{markType,jdbcType=VARCHAR}, #{shopNo,jdbcType=VARCHAR},
+            #{userId,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR})
+  </insert>
+</mapper>

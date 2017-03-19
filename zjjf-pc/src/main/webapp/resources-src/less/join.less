@@ -1,0 +1,90 @@
+﻿@import "__normalize";
+@import "__base";
+@import "__comm";
+.g-nav {
+    .subnav {
+        border-top: 1px solid #f2f2f2;
+        border-bottom: 1px solid #f2f2f2;
+    }
+}
+.content {
+    width: 1200px;
+    margin: 0 auto 140px;
+    .g-title {
+        padding: 65px 0 25px;
+    }
+    .info-box {
+        border: 1px solid #ebebeb;
+        height: 712px;
+        .info {
+            float: left;
+            padding-left: 136px;
+            padding-top: 72px;
+            width: 1200px - 341px - 2px - 136px;
+            .title {
+                margin-left: -56px;
+                margin-bottom: 25px;
+                width: 152px;
+                height: 42px;
+                background: url(../images/join-info-title.png) no-repeat left top;
+            }
+            .item {
+                margin-bottom: 10px;
+                height: 50px;
+                overflow: hidden;
+                .star, .tips {
+                    color: #ed4b1c;
+                    line-height: 50px;
+                }
+                .tips {
+                    width: 200px;
+                    overflow: hidden;
+                }
+                select, input, textarea {
+                    box-sizing: border-box;
+                    width: 415px;
+                    height: 50px;
+                    border: 1px solid #ebebeb ;
+                    padding: 12px 20px;
+                    &:focus {
+                        border-color: #ed4b1c ;
+                    }
+                }
+                .btn-submit {
+                    background: #ed4b1c;
+                    font-size: 22px;
+                    line-height: 50px - 22px;
+                    color: #fff;
+                    &:hover {
+                        background: #f65b2e;
+                    }
+                }
+                textarea {
+                    height: 120px;
+                    resize: none;
+                }
+                &.textarea {
+                    height: auto;
+                }
+                &.code {
+                    input, img, .star, .tips {
+                        float: left;
+                    }
+                    input {
+                        width: 415px - 120px;
+                    }
+                    img {
+                        width: 120px;
+                        height: 50px;
+                    }
+                }
+            }
+        }
+        .banner {
+            float: left;
+            width: 341px;
+            height: 100%;
+            background: url(../images/join-banner.png) no-repeat center top;
+        }
+    }
+}

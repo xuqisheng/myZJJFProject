@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.task.dao.SKUActivePublishTagMapMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.task.beans.SKUActivePublishTagMap" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="SKUActiveId" property="SKUActiveId" jdbcType="VARCHAR" />
+    <result column="publishTagId" property="publishTagId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="isDelete" property="isDelete" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="addUser" property="addUser" jdbcType="VARCHAR" />
+    <result column="delTime" property="delTime" jdbcType="TIMESTAMP" />
+    <result column="delUser" property="delUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, SKUActiveId, publishTagId, status, isDelete, addTime, addUser, delTime, delUser
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SKUActivePublishTagMap
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SKUActivePublishTagMap
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.task.beans.SKUActivePublishTagMap" >
+    insert into SKUActivePublishTagMap (id, SKUActiveId, publishTagId, 
+      status, isDelete, addTime, 
+      addUser, delTime, delUser
+      )
+    values (#{id,jdbcType=VARCHAR}, #{SKUActiveId,jdbcType=VARCHAR}, #{publishTagId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{addUser,jdbcType=VARCHAR}, #{delTime,jdbcType=TIMESTAMP}, #{delUser,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.task.beans.SKUActivePublishTagMap" >
+    insert into SKUActivePublishTagMap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="SKUActiveId != null" >
+        SKUActiveId,
+      </if>
+      <if test="publishTagId != null" >
+        publishTagId,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="addUser != null" >
+        addUser,
+      </if>
+      <if test="delTime != null" >
+        delTime,
+      </if>
+      <if test="delUser != null" >
+        delUser,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="SKUActiveId != null" >
+        #{SKUActiveId,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTagId != null" >
+        #{publishTagId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null" >
+        #{addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="delTime != null" >
+        #{delTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delUser != null" >
+        #{delUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.task.beans.SKUActivePublishTagMap" >
+    update SKUActivePublishTagMap
+    <set >
+      <if test="SKUActiveId != null" >
+        SKUActiveId = #{SKUActiveId,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTagId != null" >
+        publishTagId = #{publishTagId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null" >
+        addUser = #{addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="delTime != null" >
+        delTime = #{delTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delUser != null" >
+        delUser = #{delUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.task.beans.SKUActivePublishTagMap" >
+    update SKUActivePublishTagMap
+    set SKUActiveId = #{SKUActiveId,jdbcType=VARCHAR},
+      publishTagId = #{publishTagId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      isDelete = #{isDelete,jdbcType=INTEGER},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      addUser = #{addUser,jdbcType=VARCHAR},
+      delTime = #{delTime,jdbcType=TIMESTAMP},
+      delUser = #{delUser,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

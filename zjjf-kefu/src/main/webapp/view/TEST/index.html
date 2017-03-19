@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>测试base.css和js</title>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="../../resources/images/favicon.png" rel="icon" type="image/x-icon" />
+    <link href="../../resources/css/base.css" rel="stylesheet" type="text/css">
+    <script src="../../resources/vendor/jquery/jquery-1.12.4.min.js"></script>
+
+    <script src="../../resources/vendor/My97DatePicker/WdatePicker.js"></script>
+    <script src="../../resources/js/comm.js"></script>
+
+    <link href="../../resources/css/imgupload.css" rel="stylesheet">
+    <script src="../../resources/js/imgupload.js"></script>
+</head>
+<body>
+    <script src="../../resources/es/test.js"></script>
+    <script>
+    </script>
+    <div class="wrap-bd">
+        <h1 class="s"></h1>
+        <h1>测试base.css和js</h1>
+        <h2>crumb</h2>
+        <div class="mb-default">
+            <a class="crumb" href="../index/index.html">inline-block</a>
+            <a class="crumb crumb-active" href="../index/index.html">float: left</a>
+            <br>
+            <a class="crumb" href="../index/index.html">回车</a><a class="crumb crumb-active" href="../index/index.html">空格</a>
+            <br>
+            <a class="crumb" href="../index/index.html">首页</a><a class="crumb crumb-active" href="index.html">base.css测试</a>
+        </div>
+        <div>
+            <h2>按钮</h2>
+            <span class="button button-default">新增</span>
+            <span class="button button-default disabled">新增</span>
+            <span class="button button-white">新增</span>
+            <span class="button button-white disabled">新增</span>
+            <span class="button button-ok">保存</span>
+            <span class="button button-ok disabled">保存</span>
+            <span class="button button-cancel">取消</span>
+            <span class="button button-cancel disabled">取消</span>
+            <span class="button button-operate">操作</span>
+            <span class="button button-operate disabled">操作</span>
+        </div>
+        <div class="mt-default">
+            <h2>pills</h2>
+            <span class="pills pills-active">pills</span>
+            <span class="pills">pills</span>
+            <span class="pills">pills</span>
+            <span class="pills">pills</span>
+            <span class="pills">pills</span>
+        </div>
+        <div class="mt-default">
+            <h2>badge</h2>
+            <span class="badge">1</span>
+            <span class="badge">2</span>
+            <span class="badge">3</span>
+            <span class="badge">4</span>
+            <span class="badge">555555555</span>
+        </div>
+        <div class="mt-default">
+            <h2>输入框，下拉框</h2>
+            <input type="text" data-shortcut="enter" class="input input-default" placeholder="回车试试">
+            <input type="text" data-shortcut="enter" class="input input-search-text" placeholder="回车试试">
+            <input type="text" data-shortcut="enter" class="input input-date" placeholder="回车试试">
+
+            <input type="button" class="input input-search-button disabled" value="搜索">
+            <button class="input input-search-button">搜索</button>
+            <button class="button button-default">搜索</button>
+
+            <select class="select">
+                <option value="">111</option>
+                <option value="">222</option>
+            </select>
+            <textarea name="" rows="2" class="textarea"></textarea>
+            <div class="mt-default" style="width: 600px"><input type="text" class="input input-full"></div>
+
+            <input type="text" class="input input-default" placeholder="哈哈哈"><br>
+            <textarea name="" rows="2" class="textarea textarea-default"></textarea><br>
+            <input type="text" class="input input-full" placeholder="哈哈哈"><br>
+            <textarea name="" rows="2" class="textarea textarea-full" placeholder="ddddd"></textarea><br>
+        </div>
+        <div class="mt-default">
+            <h2>icon</h2>
+            <div><span class="icon-op icon-op-edit"></span> 编辑</div>
+            <div><span class="icon-op icon-op-del"></span> 删除</div>
+        </div>
+        <div class="mt-default">
+            <div class="dialog hidden" id="J_dialog">
+                <div class="dialog-head">标题<div class="dialog-close"></div></div>
+                <div class="dialog-body">
+                    <div class="limit-height">
+                        <p>内容……信息信息信息信息信息……</p>
+                        <p>3内容……信息信息信息信息信息……</p>
+                        <input type="text" id="J_s" class="input">
+                        <input type="text" id="J_e" class="input">
+                    </div>
+                </div>
+                <div class="dialog-foot">
+                    <button class="dialog-button dialog-ok">确认</button>
+                    <button class="dialog-button dialog-cancel">取消</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h2>tab</h2>
+            <span data-groupname="tab" data-tab="item" class="pills">111</span>
+            <span data-groupname="tab" data-tab="item" class="pills">222</span>
+            <span data-groupname="tab" data-tab="item" class="pills pills-active">333</span>
+            <div data-groupname="tab" data-tab="content">
+                tab1111111111内容
+            </div>
+            <div data-groupname="tab" data-tab="content">
+                tab222222222内容
+            </div>
+            <div data-groupname="tab" data-tab="content">
+                tab333333内容
+            </div>
+            <br>
+            <input type="radio" name="r" data-groupname="uuu" data-tab="item" class="radio"> 00
+            <input type="radio" name="r" data-groupname="uuu" data-tab="item" class="radio active" checked> 11
+            <input type="radio" name="r" data-groupname="uuu" data-tab="item"> 22
+            <div data-groupname="uuu" data-tab="content">
+                1111111111内容
+            </div>
+            <div data-groupname="uuu" data-tab="content">
+                22222内容
+            </div>
+            <div data-groupname="uuu" data-tab="content">
+                333333333内容
+            </div>
+
+
+            <select>
+                <option data-groupname="ttt" data-tab="item">111</option>
+                <option data-groupname="ttt" data-tab="item">222</option>
+            </select>
+            <div data-groupname="ttt" data-tab="content">
+                ttt1111111111内容
+            </div>
+            <div data-groupname="ttt" data-tab="content">
+                ttt22222内容
+            </div>
+
+        </div>
+        <div>
+            <h2>全选/全不选</h2>
+            <input type="checkbox" class="checkbox" id="J_selectAll"> 全选
+            <br>
+            <input type="button" value="添加checkbox" id="J_addChk" class="button button-operate">
+            <br>
+            <div id="J_chkContent">
+                <input type="checkbox" class="checkbox J_chk"> 1
+                <input type="checkbox" class="checkbox J_chk"> 1
+                <input type="checkbox" class="checkbox J_chk"> 1
+            </div>
+        </div>
+        <div>
+            <h2>text颜色</h2>
+            <div>default颜色</div>
+            <div class="txt-warn">warn颜色</div>
+            <div class="txt-success">success颜色</div>
+            <div class="txt-info">default颜色</div>
+            <div class="txt-log">log颜色</div>
+        </div>
+        <div>
+            <h2>图片上传</h2>
+            <div id="imguploada"></div>
+            <div id="imguploadb"></div>
+        </div>
+    </div>
+    <script>
+        $(function() {
+            dateRange('#J_s', '#J_e', 1);
+            dialogPosCenter('#J_dialog');
+
+            tab('uuu');
+            tab('tab','mouseover','pills-active');
+
+            tab('ttt');
+            $('[data-groupname="ttt"]').parents('select').on('change', function() {
+                var ii = $(this).get(0).selectedIndex;
+                $(this).find('option:selected').trigger('click');
+            });
+
+            selectAll('#J_selectAll', '.J_chk');
+            $('#J_addChk').on('click', function() {
+                $('#J_chkContent').append('<input type="checkbox" class="checkbox ml-default J_chk"> 0');
+            });
+
+            $('#imguploada').fileupload({
+                complete: function (v) {
+                    console.log(v);
+                }
+            });
+            $('#imguploadb').fileupload({
+                name: 'bb',
+                accept: 'image/*',
+                multiple: true,
+                complete: function (v) {
+                    console.log(v);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

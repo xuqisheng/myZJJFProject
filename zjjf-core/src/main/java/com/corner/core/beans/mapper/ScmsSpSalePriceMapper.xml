@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ScmsSpSalePriceMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ScmsSpSalePrice" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="plantItemId" property="plantItemId" jdbcType="VARCHAR" />
+    <result column="cusType" property="cusType" jdbcType="TINYINT" />
+    <result column="salePrice" property="salePrice" jdbcType="DECIMAL" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="spId" property="spId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, plantItemId, cusType, salePrice, addTime, updateTime, status, isDelete, itemBaseId, 
+    spId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ScmsSpSalePrice
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ScmsSpSalePrice
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ScmsSpSalePrice" >
+    insert into ScmsSpSalePrice (id, plantItemId, cusType, 
+      salePrice, addTime, updateTime, 
+      status, isDelete, itemBaseId, 
+      spId)
+    values (#{id,jdbcType=VARCHAR}, #{plantItemId,jdbcType=VARCHAR}, #{cusType,jdbcType=TINYINT}, 
+      #{salePrice,jdbcType=DECIMAL}, #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}, #{itemBaseId,jdbcType=INTEGER}, 
+      #{spId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ScmsSpSalePrice" >
+    insert into ScmsSpSalePrice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="plantItemId != null" >
+        plantItemId,
+      </if>
+      <if test="cusType != null" >
+        cusType,
+      </if>
+      <if test="salePrice != null" >
+        salePrice,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId,
+      </if>
+      <if test="spId != null" >
+        spId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="plantItemId != null" >
+        #{plantItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="cusType != null" >
+        #{cusType,jdbcType=TINYINT},
+      </if>
+      <if test="salePrice != null" >
+        #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="itemBaseId != null" >
+        #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="spId != null" >
+        #{spId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ScmsSpSalePrice" >
+    update ScmsSpSalePrice
+    <set >
+      <if test="plantItemId != null" >
+        plantItemId = #{plantItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="cusType != null" >
+        cusType = #{cusType,jdbcType=TINYINT},
+      </if>
+      <if test="salePrice != null" >
+        salePrice = #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="spId != null" >
+        spId = #{spId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ScmsSpSalePrice" >
+    update ScmsSpSalePrice
+    set plantItemId = #{plantItemId,jdbcType=VARCHAR},
+      cusType = #{cusType,jdbcType=TINYINT},
+      salePrice = #{salePrice,jdbcType=DECIMAL},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      spId = #{spId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

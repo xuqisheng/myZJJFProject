@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpFeedbackMgMapper" >
+
+ 	 <select id="getStoreSpFeedbackVoList" parameterType="com.corner.kefu.beans.ro.sp.SpFeedbackRo"
+  	resultType="com.corner.kefu.beans.vo.sp.SpFeedbackVo">
+  	SELECT * FROM `SpFeedback` WHERE storeId=#{storeId,jdbcType=INTEGER} AND `status`=1 AND isDelete=0 ORDER BY addTime DESC
+  	<include refid="BasePublicMapper.pageSql" />
+  </select>
+	
+	
+	<!-- 根据条件查出所有的反馈 -->
+  <select id="getAllSpFeedbackByParam" parameterType="com.corner.kefu.beans.ro.sp.SpFeedbackRo" resultType="com.corner.kefu.beans.vo.sp.SpFeedbackVo">
+  	SELECT
+		a.*,
+		b.mobile AS storeMobile
+	FROM
+		SpFeedback a
+	JOIN (
+		SELECT
+			*
+		FROM
+			Store
+		WHERE
+			isDelete = 0
+	) b ON a.storeId = b.id
+	WHERE
+		a.sendUser = 0
+		<if test="beginTime != null">
+			and a.addTime &gt; #{beginTime}
+		</if>
+		<if test="endTime != null">
+			and a.addTime &lt; #{endTime}
+		</if>
+		<if test="appVersion != null and appVersion != ''">
+			and a.appVersion like "%"#{appVersion}"%"
+		</if>
+	ORDER BY a.addTime desc 
+	limit #{pageIndex},#{pageSize}
+  </select>
+  
+  <select id="countSpFeedback" parameterType="com.corner.kefu.beans.ro.sp.SpFeedbackRo" resultType="java.lang.Integer">
+  	select 
+  		count(1) 
+  	from (
+	  	SELECT
+		a.*,
+		b.mobile AS storeMobile
+	FROM
+		SpFeedback a
+	JOIN (
+		SELECT
+			*
+		FROM
+			Store
+		WHERE
+			isDelete = 0
+	) b ON a.storeId = b.id
+	WHERE
+		a.sendUser = 0
+		<if test="beginTime != null">
+			and a.addTime &gt; #{beginTime}
+		</if>
+		<if test="endTime != null">
+			and a.addTime &lt; #{endTime}
+		</if>
+		<if test="appVersion != null and appVersion != ''">
+			and a.appVersion like "%"#{appVersion}"%"
+		</if>
+	)a
+  </select>
+  
+  
+	 <select id="checkSendLimit" parameterType="com.corner.kefu.beans.ro.sp.SpFeedbackRo" resultType="int">
+  	SELECT count(*) FROM `SpFeedback` 
+  	WHERE storeId=#{storeId,jdbcType=INTEGER} 
+  	AND addTime > #{today,jdbcType=TIMESTAMP}
+  	AND `status`=1 AND isDelete=0
+  </select>
+	
+	<!-- <insert id="insertSelective" parameterType="com.corner.core.beans.SpFeedback" >
+    insert into SpFeedback
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="sendUser != null" >
+        sendUser,
+      </if>
+      <if test="checkerId != null" >
+        checkerId,
+      </if>
+      <if test="checkerNm != null" >
+        checkerNm,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendUser != null" >
+        #{sendUser,jdbcType=TINYINT},
+      </if>
+      <if test="checkerId != null" >
+        #{checkerId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkerNm != null" >
+        #{checkerNm,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert> -->
+  
+   <select id="getAllFeedbackByStoreIdCount" parameterType="com.corner.kefu.beans.ro.sp.SpFeedbackRo" resultType="java.lang.Integer">
+  	select 
+  		count(1) 
+  	from (
+	  	SELECT
+		a.*,
+		b.NAME AS storeName
+		FROM
+			SpFeedback a
+		JOIN (
+			SELECT
+				*
+			FROM
+				Store
+			WHERE
+				isDelete = 0
+		) b ON a.storeId = b.id
+		WHERE
+			a.isDelete = 0
+		AND
+			a.storeId = #{storeId}
+  	) a
+  </select>
+  
+  
+  
+  <!-- 根据批发商id查出所有的反馈内容和客服回复内容 -->
+ <!--  <select id="getAllFeedbackByStoreId" parameterType="com.corner.kefu.beans.ro.sp.SpFeedbackRo" resultType="com.corner.kefu.beans.vo.sp.SpFeedbackVo">
+  	SELECT
+	a.*,
+	b.NAME AS storeName
+	FROM
+		SpFeedback a
+	JOIN (
+		SELECT
+			*
+		FROM
+			Store
+		WHERE
+			isDelete = 0
+	) b ON a.storeId = b.id
+	WHERE
+		a.isDelete = 0
+	AND
+		a.storeId = #{storeId}
+	ORDER BY a.addTime DESC
+	LIMIT #{pageIndex},#{pageSize}
+  </select> -->
+  
+  
+  
+	<select id="getFeedbackById" parameterType="java.util.Map" resultType="com.corner.kefu.beans.vo.sp.SpFeedbackVo">
+		SELECT
+			a.*,
+			b.mobile AS storeMobile
+		FROM
+			SpFeedback a
+		JOIN (
+			SELECT
+				*
+			FROM
+				Store
+			WHERE
+				isDelete = 0
+		) b ON a.storeId = b.id
+		WHERE
+			a.sendUser = 0
+		and a.isDelete = 0 
+		and a.`status`=1 
+		and a.id = #{id}
+	</select>
+</mapper>

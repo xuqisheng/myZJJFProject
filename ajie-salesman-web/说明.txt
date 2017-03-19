@@ -1,0 +1,16 @@
+jeesite����ƽ̨�����
+
+��飺
+����gem��jeesite mybatis�汾��ֻ����sys��gen��testģ�飬�Ƴ�cms��act��oaģ�顣
+
+ʹ��˵����
+1����mysql�²��á�source xxx.sql���ķ�ʽ���롰jeesite_lite.sql����ʼ����ݿ⡣
+	ע�⣬���ű����ȸɵ�jeesite��ݿ⣬Ȼ���½�����ע�ⱸ����Ҫ��ݣ�������
+
+2������Ŀ����myeclipse���ɡ�
+
+3������ʹ�ô�����ɹ��ܣ����ڡ�jeesite.properties�����޸ġ�srcPath��Ϊ��ȷ��·����
+
+userName: thinkgem
+password: admin
+

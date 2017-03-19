@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.task.dao.SpWalletLogMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.task.beans.SpWalletLog" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="payer" property="payer" jdbcType="TINYINT" />
+    <result column="geter" property="geter" jdbcType="TINYINT" />
+    <result column="spId" property="spId" jdbcType="VARCHAR" />
+    <result column="actionType" property="actionType" jdbcType="TINYINT" />
+    <result column="optType" property="optType" jdbcType="TINYINT" />
+    <result column="actionTime" property="actionTime" jdbcType="TIMESTAMP" />
+    <result column="tradeWay" property="tradeWay" jdbcType="TINYINT" />
+    <result column="tradeNo" property="tradeNo" jdbcType="VARCHAR" />
+    <result column="bankCode" property="bankCode" jdbcType="VARCHAR" />
+    <result column="bankNo" property="bankNo" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="spWithDrawId" property="spWithDrawId" jdbcType="BIGINT" />
+    <result column="sheetId" property="sheetId" jdbcType="VARCHAR" />
+    <result column="couponId" property="couponId" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="balance" property="balance" jdbcType="DECIMAL" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, payer, geter, spId, actionType, optType, actionTime, tradeWay, tradeNo, bankCode, 
+    bankNo, orderId, spWithDrawId, sheetId, couponId, remark, money, balance, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from SpWalletLog
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from SpWalletLog
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.corner.task.beans.SpWalletLog" >
+    insert into SpWalletLog (id, payer, geter, 
+      spId, actionType, optType, 
+      actionTime, tradeWay, tradeNo, 
+      bankCode, bankNo, orderId, 
+      spWithDrawId, sheetId, couponId, 
+      remark, money, balance, 
+      isDelete)
+    values (#{id,jdbcType=BIGINT}, #{payer,jdbcType=TINYINT}, #{geter,jdbcType=TINYINT}, 
+      #{spId,jdbcType=VARCHAR}, #{actionType,jdbcType=TINYINT}, #{optType,jdbcType=TINYINT}, 
+      #{actionTime,jdbcType=TIMESTAMP}, #{tradeWay,jdbcType=TINYINT}, #{tradeNo,jdbcType=VARCHAR}, 
+      #{bankCode,jdbcType=VARCHAR}, #{bankNo,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+      #{spWithDrawId,jdbcType=BIGINT}, #{sheetId,jdbcType=VARCHAR}, #{couponId,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, #{balance,jdbcType=DECIMAL}, 
+      #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.task.beans.SpWalletLog" >
+    insert into SpWalletLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="payer != null" >
+        payer,
+      </if>
+      <if test="geter != null" >
+        geter,
+      </if>
+      <if test="spId != null" >
+        spId,
+      </if>
+      <if test="actionType != null" >
+        actionType,
+      </if>
+      <if test="optType != null" >
+        optType,
+      </if>
+      <if test="actionTime != null" >
+        actionTime,
+      </if>
+      <if test="tradeWay != null" >
+        tradeWay,
+      </if>
+      <if test="tradeNo != null" >
+        tradeNo,
+      </if>
+      <if test="bankCode != null" >
+        bankCode,
+      </if>
+      <if test="bankNo != null" >
+        bankNo,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="spWithDrawId != null" >
+        spWithDrawId,
+      </if>
+      <if test="sheetId != null" >
+        sheetId,
+      </if>
+      <if test="couponId != null" >
+        couponId,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="payer != null" >
+        #{payer,jdbcType=TINYINT},
+      </if>
+      <if test="geter != null" >
+        #{geter,jdbcType=TINYINT},
+      </if>
+      <if test="spId != null" >
+        #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="actionType != null" >
+        #{actionType,jdbcType=TINYINT},
+      </if>
+      <if test="optType != null" >
+        #{optType,jdbcType=TINYINT},
+      </if>
+      <if test="actionTime != null" >
+        #{actionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeWay != null" >
+        #{tradeWay,jdbcType=TINYINT},
+      </if>
+      <if test="tradeNo != null" >
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null" >
+        #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNo != null" >
+        #{bankNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="spWithDrawId != null" >
+        #{spWithDrawId,jdbcType=BIGINT},
+      </if>
+      <if test="sheetId != null" >
+        #{sheetId,jdbcType=VARCHAR},
+      </if>
+      <if test="couponId != null" >
+        #{couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.task.beans.SpWalletLog" >
+    update SpWalletLog
+    <set >
+      <if test="payer != null" >
+        payer = #{payer,jdbcType=TINYINT},
+      </if>
+      <if test="geter != null" >
+        geter = #{geter,jdbcType=TINYINT},
+      </if>
+      <if test="spId != null" >
+        spId = #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="actionType != null" >
+        actionType = #{actionType,jdbcType=TINYINT},
+      </if>
+      <if test="optType != null" >
+        optType = #{optType,jdbcType=TINYINT},
+      </if>
+      <if test="actionTime != null" >
+        actionTime = #{actionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeWay != null" >
+        tradeWay = #{tradeWay,jdbcType=TINYINT},
+      </if>
+      <if test="tradeNo != null" >
+        tradeNo = #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null" >
+        bankCode = #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNo != null" >
+        bankNo = #{bankNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="spWithDrawId != null" >
+        spWithDrawId = #{spWithDrawId,jdbcType=BIGINT},
+      </if>
+      <if test="sheetId != null" >
+        sheetId = #{sheetId,jdbcType=VARCHAR},
+      </if>
+      <if test="couponId != null" >
+        couponId = #{couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.task.beans.SpWalletLog" >
+    update SpWalletLog
+    set payer = #{payer,jdbcType=TINYINT},
+      geter = #{geter,jdbcType=TINYINT},
+      spId = #{spId,jdbcType=VARCHAR},
+      actionType = #{actionType,jdbcType=TINYINT},
+      optType = #{optType,jdbcType=TINYINT},
+      actionTime = #{actionTime,jdbcType=TIMESTAMP},
+      tradeWay = #{tradeWay,jdbcType=TINYINT},
+      tradeNo = #{tradeNo,jdbcType=VARCHAR},
+      bankCode = #{bankCode,jdbcType=VARCHAR},
+      bankNo = #{bankNo,jdbcType=VARCHAR},
+      orderId = #{orderId,jdbcType=VARCHAR},
+      spWithDrawId = #{spWithDrawId,jdbcType=BIGINT},
+      sheetId = #{sheetId,jdbcType=VARCHAR},
+      couponId = #{couponId,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DECIMAL},
+      balance = #{balance,jdbcType=DECIMAL},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

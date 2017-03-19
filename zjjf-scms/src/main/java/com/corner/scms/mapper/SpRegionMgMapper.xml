@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.SpRegionMgMapper" >
+  <resultMap id="regionRegistMap" type="com.corner.scms.beans.vo.RegionRegistVo" >
+    <id column="shen_id" property="id" jdbcType="INTEGER" />
+    <result column="shen_name" property="name" jdbcType="VARCHAR" />
+      <collection property="sub" ofType="com.corner.scms.beans.vo.RegionRegistVo">
+        <id column="shi_id" property="id" jdbcType="INTEGER" />
+        <result column="shi_name" property="name" jdbcType="VARCHAR" />
+          <collection property="sub" ofType="com.corner.scms.beans.vo.RegionRegistVo">
+               <id column="qu_id" property="id" jdbcType="INTEGER" />
+		       <result column="qu_name" property="name" jdbcType="VARCHAR" />
+          </collection>  
+      </collection>
+  </resultMap>
+ 
+ <select id="getAllEnableRegionList" resultMap="regionRegistMap">
+    SELECT
+		shen.id AS shen_id,
+		shen.`name` AS shen_name,
+		shi.id AS shi_id,
+		shi.`name` AS shi_name,
+		qu.id AS qu_id,
+		qu.`name` AS qu_name
+	FROM
+		Region AS qu
+	JOIN Region AS shi ON qu.pId = shi.id
+	AND qu.`status` = 1
+	AND qu.isDelete = 0
+	AND shi.`status` = 1
+	AND shi.isDelete = 0
+	JOIN Region AS shen ON shi.pId = shen.id
+	AND shen.`status` = 1
+	AND shen.isDelete = 0
+	WHERE
+		shen.pId != 0
+	ORDER BY
+		shen.id,
+		shi.id,
+		qu.id
+ </select>
+ 
+ <select id="getRetionByPid" parameterType="java.util.Map" resultType="com.corner.core.beans.Region" >
+ 	SELECT
+		*
+	FROM
+		Region
+	WHERE
+		isDelete = 0
+	AND `status` = 1
+	<if test="pId != null">
+		AND pId = #{pId}
+	</if>
+ </select>
+ 
+  <select id="getAllRetionByPid" parameterType="java.util.Map" resultType="com.corner.core.beans.Region" >
+ 	SELECT
+		*
+	FROM
+		Region
+	WHERE
+		isDelete = 0
+	<if test="pId != null">
+		AND pId = #{pId,jdbcType=INTEGER}
+	</if>
+ </select>
+ 
+ <!-- 组装区域和定格******************************************************************************************************** -->
+	<!-- <resultMap id="resultMap" type="com.corner.scms.beans.vo.RegionRegistVo" >
+	    <id column="id1" property="id" jdbcType="INTEGER" />
+	    <result column="pId1" property="pId" jdbcType="INTEGER" />
+	    <result column="name1" property="name" jdbcType="VARCHAR" />
+	     <collection property="sub" ofType="com.corner.scms.beans.vo.RegionRegistVo">
+	    	<id column="id2" property="id" jdbcType="INTEGER" />
+		    <result column="pId2" property="pId" jdbcType="INTEGER" />
+		    <result column="name2" property="name" jdbcType="VARCHAR" />
+    		 <collection property="sub" ofType="com.corner.scms.beans.vo.RegionRegistVo">
+		    	<id column="id3" property="id" jdbcType="INTEGER" />
+			    <result column="pId3" property="pId" jdbcType="INTEGER" />
+			    <result column="name3" property="name" jdbcType="VARCHAR" />
+			     <collection property="sub" ofType="com.corner.scms.beans.vo.RegionRegistVo">
+		    		<id column="id4" property="id" jdbcType="INTEGER" />
+				    <result column="pId4" property="pId" jdbcType="INTEGER" />
+				    <result column="name4" property="name" jdbcType="VARCHAR" />
+				     <collection property="sub" ofType="com.corner.scms.beans.vo.RegionRegistVo">
+			    		<id column="id5" property="id" jdbcType="INTEGER" />
+					    <result column="pId5" property="pId" jdbcType="INTEGER" />
+					    <result column="name5" property="name" jdbcType="VARCHAR" />
+					     <collection property="sub" ofType="com.corner.scms.beans.vo.RegionRegistVo">
+				    	</collection>
+			    	</collection>
+		    	</collection>
+    		</collection>
+	    </collection>
+  	</resultMap>
+	<select id="getAllAreaAndSpGroup" resultMap="resultMap">
+		SELECT
+			*
+		FROM
+			(
+			SELECT
+				id as id1,
+				`name` as name1,
+				pId as pId1
+			FROM
+				Region
+			WHERE
+			regionLevel = 1
+			) a
+		JOIN (
+			SELECT
+				id as id2,
+				`name` as name2,
+				pId as pId2
+			FROM
+				Region
+			WHERE
+				`status` = 1
+			AND isDelete = 0
+			AND regionLevel = 2
+		) b ON a.id1 = b.pId2
+		JOIN (
+			SELECT
+				id as id3,
+				`name` as name3,
+				pId as pId3
+			FROM
+				Region
+			WHERE
+				`status` = 1
+			AND isDelete = 0
+			AND regionLevel = 3
+		) c ON b.id2 = c.pId3
+		JOIN (
+			SELECT
+				id as id4,
+				`name` as name4,
+				pId as pId4
+			FROM
+				Region
+			WHERE
+				`status` = 1
+			AND isDelete = 0
+			AND regionLevel = 4
+		) d ON c.id3 = d.pId4
+		JOIN (
+			SELECT
+				id as id5,
+				`name` as name5,
+				areaid as pId5
+			FROM
+				SpGroup
+			WHERE
+				`status` = 1
+			AND isDelete = 0
+		) e ON d.id4 = e.pId5
+			
+	</select> -->
+	<!-- 组装区域和定格******************************************************************************************************** -->
+</mapper>

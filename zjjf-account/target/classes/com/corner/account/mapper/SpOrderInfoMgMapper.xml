@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.account.dao.SpOrderInfoMgMapper" >
+
+ 	<select id="getSpOrderInfoByOrderId" parameterType="com.corner.account.beans.ro.SpOrderMgCondition"  resultType="SpOrderInfo">
+		SELECT * FROM SpOrderInfo 
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id != null and id !=''">
+				id = #{id}
+			</if>
+			<if test="isDelete != null">
+				AND isDelete = #{isDelete}
+			</if>
+			<if test="status != null">
+				AND status = #{status}
+			</if>
+			<if test="orderId != null and orderId !=''">
+				AND orderId = #{orderId}
+			</if>
+		</trim>
+	</select>
+
+	<select id="getSpOrderDetailByOrderId" parameterType="com.corner.account.beans.ro.SpOrderMgCondition"  resultType="SpOrderDetail">
+		SELECT * FROM SpOrderDetail 
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id != null and id !=''">
+				id = #{id}
+			</if>
+			<if test="isDelete != null">
+				AND isDelete = #{isDelete}
+			</if>
+			<if test="orderId != null and orderId !=''">
+				AND orderId = #{orderId}
+			</if>
+		</trim>
+	</select>
+	
+	<!-- 财务批量审核,仅限于由到状态1到状态2的审核 -->
+	<update id="updateSpOrderInfoBatch" parameterType="com.corner.account.beans.ro.SpOrderMgCondition">
+		update SpOrderInfo
+		 <set >
+		  <if test="acId != null and acId !=''" >
+	        acId = #{acId},
+	      </if>
+	      <if test="acStatus != null" >
+	        acStatus = #{acStatus},
+	      </if>
+	      <if test="acRemark != null and acRemark !=''" >
+	        acRemark = #{acRemark},
+	      </if>
+	      <if test="acCheckTime != null " >
+	        acCheckTime = #{acCheckTime},
+	      </if>
+	      <if test="acSettleTime != null " >
+	        acSettleTime = #{acSettleTime},
+	      </if>
+	      <if test="acPayTime != null " >
+	        acPayTime = #{acPayTime},
+	      </if>
+	    </set>
+	    where acStatus &lt; 3 and id IN
+	    <foreach collection="spOrderIdArray" index="index" item="item" open="(" separator="," close=")">
+			#{item,jdbcType=VARCHAR}
+		</foreach>
+	</update>
+	
+	<!-- ==========================会计系统订单通用查询======================== -->
+	<sql id="getPageList_condition">
+		WHERE isDelete = 0 AND status = 5
+		<if test="acStatus !=null">
+			AND acStatus=#{acStatus}
+		</if>
+		<if test="kfStatus !=null">
+			AND kfStatus=#{kfStatus}
+		</if>
+		<if test="spStatus !=null">
+			AND spStatus=#{spStatus}
+		</if>		
+		<if test="spOrderIdArray !=null">
+			AND id in
+			<foreach collection="spOrderIdArray" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>		
+		<if test="orderId !=null and orderId !=''">
+			AND orderId=#{orderId}
+		</if>
+	</sql>
+ 	<select id="getSpOrderInfoByCondition" parameterType="com.corner.account.beans.ro.SpOrderMgCondition"  resultType="SpOrderInfo">
+		SELECT * FROM SpOrderInfo 
+		<include refid="getPageList_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+ 	<select id="getSpOrderInfoByConditionCount" parameterType="com.corner.account.beans.ro.SpOrderMgCondition"  resultType="int">
+		SELECT count(1) FROM SpOrderInfo 
+		<include refid="getPageList_condition" />
+	</select>
+	<update id="updateSpOrderInfoBatchWithAcSheet" parameterType="string">
+		UPDATE SpOrderInfo set acStatus=4,acPayTime=now() where id IN(
+			SELECT orderId FROM AcSheetOrderMap where sheetId = #{acSheetId}
+		)
+	</update>
+	<select id="getSpOrderInfoByAcSheetId" parameterType="string"  resultType="SpOrderInfo">
+		SELECT
+			b.*
+		FROM
+			AcSheetOrderMap a
+		JOIN SpOrderInfo b ON a.orderId = b.id 
+		where 
+		a.sheetId = #{acSheetId}
+		AND	b.isDelete = 0
+		AND b.`status` = 5
+		AND b.acStatus = 4
+		AND b.kfStatus = 2
+		AND b.spStatus = 2
+	</select>
+	<select id="alertSpWallet" parameterType="map" resultType="java.lang.Integer" statementType="CALLABLE">
+		<![CDATA[ {call alertSpWallet(#{optType,jdbcType=INTEGER},#{orderId,jdbcType=VARCHAR},#{spId,jdbcType=VARCHAR},#{wdMoney,jdbcType=DECIMAL},#{wdRemark,jdbcType=VARCHAR},#{wdId,jdbcType=BIGINT})} ]]>
+ 	</select>
+
+
+
+
+	<!--	查询联合采购订单	-->
+	<sql id="getScmsSpOrderInfo_condition">
+		WHERE isDelete = 0 AND status = 5
+		<if test="status == 1">and (col1 is null or col1 = '')</if>
+		<if test="status == 2">and (col1 is not null or col1 != '')</if>
+		<if test="orderId != '' and orderId != null">and (orderId LIKE CONCAT('%',#{orderId},'%') or supplierNam LIKE CONCAT('%',#{orderId},'%') or supplierTel LIKE CONCAT('%',#{orderId},'%'))</if>
+	</sql>
+	<select id="getScmsSpOrderInfoByCondition" parameterType="com.corner.account.beans.ro.SpOrderMgCondition"  resultType="SpOrderInfo">
+		SELECT * FROM SpOrderInfo
+		<include refid="getScmsSpOrderInfo_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+	<select id="getScmsSpOrderInfoByConditionCount" parameterType="com.corner.account.beans.ro.SpOrderMgCondition"  resultType="int">
+		SELECT count(1) FROM SpOrderInfo
+		<include refid="getScmsSpOrderInfo_condition" />
+	</select>
+</mapper>

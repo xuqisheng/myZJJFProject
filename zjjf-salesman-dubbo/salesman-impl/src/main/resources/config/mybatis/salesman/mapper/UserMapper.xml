@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.rpc.salesman.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.rpc.salesman.model.User" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="nickName" property="nickName" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="INTEGER" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="province" property="province" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="area" property="area" jdbcType="INTEGER" />
+    <result column="credit" property="credit" jdbcType="INTEGER" />
+    <result column="regTime" property="regTime" jdbcType="TIMESTAMP" />
+    <result column="lastTime" property="lastTime" jdbcType="TIMESTAMP" />
+    <result column="regIP" property="regIP" jdbcType="VARCHAR" />
+    <result column="lastIP" property="lastIP" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="isDelete" property="isDelete" jdbcType="INTEGER" />
+    <result column="registration" property="registration" jdbcType="TIMESTAMP" />
+    <result column="regDays" property="regDays" jdbcType="INTEGER" />
+    <result column="monthCredit" property="monthCredit" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="intensity" property="intensity" jdbcType="INTEGER" />
+    <result column="isManager" property="isManager" jdbcType="BIT" />
+    <result column="isModify" property="isModify" jdbcType="TINYINT" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+    <result column="col4" property="col4" jdbcType="VARCHAR" />
+    <result column="col5" property="col5" jdbcType="VARCHAR" />
+    <result column="col6" property="col6" jdbcType="VARCHAR" />
+    <result column="identitycard" property="identitycard" jdbcType="VARCHAR" />
+    <result column="positiveidentitycard" property="positiveidentitycard" jdbcType="VARCHAR" />
+    <result column="negativeidentitycard" property="negativeidentitycard" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="deviceUUID" property="deviceUUID" jdbcType="VARCHAR" />
+    <result column="deviceName" property="deviceName" jdbcType="VARCHAR" />
+    <result column="userType" property="userType" jdbcType="CHAR" />
+    <result column="postType" property="postType" jdbcType="VARCHAR" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userName, nickName, gender, password, mobile, email, birthday, province, city, 
+    area, credit, regTime, lastTime, regIP, lastIP, status, token, url, isDelete, registration, 
+    regDays, monthCredit, updateTime, intensity, isManager, isModify, col1, col2, col3, 
+    col4, col5, col6, identitycard, positiveidentitycard, negativeidentitycard, address, 
+    deviceUUID, deviceName, userType, postType, createBy, updateBy, createTime, version
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from salesman
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <select id="getUserList" resultType="com.corner.rpc.salesman.model.User" parameterType="com.corner.rpc.salesman.model.User" >
+	SELECT
+		t.id AS userId,
+		t.userName,
+		t.deviceName,
+		t.deviceUUID,
+		t.email,
+		t.gender,
+		t.lastTime,
+		t.mobile,
+		t.address,
+		t.nickName,
+		t.postType,
+		t.userType,
+		t.version,
+		d.deptId,
+		d.deptName
+	FROM
+		salesman t
+	INNER JOIN tbl_user_dept_t ud ON ud.userId = t.id
+	INNER JOIN tbl_department_t d ON d.deptId = ud.deptId
+	WHERE 1 = 1
+	    <if test="userName !=null and userName!=''">
+	    	AND (t.userName like CONCAT('%',#{userName},'%') or t.mobile like CONCAT('%',#{userName},'%'))
+	    </if>
+	    <if test="deptId !=null and deptId!=''">
+	    	AND d.deptId = #{deptId}
+	    </if>
+	    <if test="userId !=null and userId!=''">
+	    	AND t.userId = #{userId}
+	    </if>
+	    <if test="isDelete !=null">
+	    	AND t.isDelete = #{isDelete}
+	    </if>
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from salesman
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.rpc.salesman.model.User" >
+    insert into salesman (id, userName, nickName, 
+      gender, password, mobile, 
+      email, birthday, province, 
+      city, area, credit, 
+      regTime, lastTime, regIP, 
+      lastIP, status, token, 
+      url, isDelete, registration, 
+      regDays, monthCredit, updateTime, 
+      intensity, isManager, isModify, 
+      col1, col2, col3, col4, 
+      col5, col6, identitycard, 
+      positiveidentitycard, negativeidentitycard, 
+      address, deviceUUID, deviceName, 
+      userType, postType, createBy, 
+      updateBy, createTime, version
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{province,jdbcType=INTEGER}, 
+      #{city,jdbcType=INTEGER}, #{area,jdbcType=INTEGER}, #{credit,jdbcType=INTEGER}, 
+      #{regTime,jdbcType=TIMESTAMP}, #{lastTime,jdbcType=TIMESTAMP}, #{regIP,jdbcType=VARCHAR}, 
+      #{lastIP,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{token,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, #{registration,jdbcType=TIMESTAMP}, 
+      #{regDays,jdbcType=INTEGER}, #{monthCredit,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{intensity,jdbcType=INTEGER}, #{isManager,jdbcType=BIT}, #{isModify,jdbcType=TINYINT}, 
+      #{col1,jdbcType=VARCHAR}, #{col2,jdbcType=VARCHAR}, #{col3,jdbcType=VARCHAR}, #{col4,jdbcType=VARCHAR}, 
+      #{col5,jdbcType=VARCHAR}, #{col6,jdbcType=VARCHAR}, #{identitycard,jdbcType=VARCHAR}, 
+      #{positiveidentitycard,jdbcType=VARCHAR}, #{negativeidentitycard,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{deviceUUID,jdbcType=VARCHAR}, #{deviceName,jdbcType=VARCHAR}, 
+      #{userType,jdbcType=CHAR}, #{postType,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{updateBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.rpc.salesman.model.User" >
+    insert into salesman
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userName != null" >
+        userName,
+      </if>
+      <if test="nickName != null" >
+        nickName,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="credit != null" >
+        credit,
+      </if>
+      <if test="regTime != null" >
+        regTime,
+      </if>
+      <if test="lastTime != null" >
+        lastTime,
+      </if>
+      <if test="regIP != null" >
+        regIP,
+      </if>
+      <if test="lastIP != null" >
+        lastIP,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="token != null" >
+        token,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="registration != null" >
+        registration,
+      </if>
+      <if test="regDays != null" >
+        regDays,
+      </if>
+      <if test="monthCredit != null" >
+        monthCredit,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="intensity != null" >
+        intensity,
+      </if>
+      <if test="isManager != null" >
+        isManager,
+      </if>
+      <if test="isModify != null" >
+        isModify,
+      </if>
+      <if test="col1 != null" >
+        col1,
+      </if>
+      <if test="col2 != null" >
+        col2,
+      </if>
+      <if test="col3 != null" >
+        col3,
+      </if>
+      <if test="col4 != null" >
+        col4,
+      </if>
+      <if test="col5 != null" >
+        col5,
+      </if>
+      <if test="col6 != null" >
+        col6,
+      </if>
+      <if test="identitycard != null" >
+        identitycard,
+      </if>
+      <if test="positiveidentitycard != null" >
+        positiveidentitycard,
+      </if>
+      <if test="negativeidentitycard != null" >
+        negativeidentitycard,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="deviceUUID != null" >
+        deviceUUID,
+      </if>
+      <if test="deviceName != null" >
+        deviceName,
+      </if>
+      <if test="userType != null" >
+        userType,
+      </if>
+      <if test="postType != null" >
+        postType,
+      </if>
+      <if test="createBy != null" >
+        createBy,
+      </if>
+      <if test="updateBy != null" >
+        updateBy,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=INTEGER},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=INTEGER},
+      </if>
+      <if test="credit != null" >
+        #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="regTime != null" >
+        #{regTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastTime != null" >
+        #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regIP != null" >
+        #{regIP,jdbcType=VARCHAR},
+      </if>
+      <if test="lastIP != null" >
+        #{lastIP,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="token != null" >
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="registration != null" >
+        #{registration,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regDays != null" >
+        #{regDays,jdbcType=INTEGER},
+      </if>
+      <if test="monthCredit != null" >
+        #{monthCredit,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="intensity != null" >
+        #{intensity,jdbcType=INTEGER},
+      </if>
+      <if test="isManager != null" >
+        #{isManager,jdbcType=BIT},
+      </if>
+      <if test="isModify != null" >
+        #{isModify,jdbcType=TINYINT},
+      </if>
+      <if test="col1 != null" >
+        #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        #{col3,jdbcType=VARCHAR},
+      </if>
+      <if test="col4 != null" >
+        #{col4,jdbcType=VARCHAR},
+      </if>
+      <if test="col5 != null" >
+        #{col5,jdbcType=VARCHAR},
+      </if>
+      <if test="col6 != null" >
+        #{col6,jdbcType=VARCHAR},
+      </if>
+      <if test="identitycard != null" >
+        #{identitycard,jdbcType=VARCHAR},
+      </if>
+      <if test="positiveidentitycard != null" >
+        #{positiveidentitycard,jdbcType=VARCHAR},
+      </if>
+      <if test="negativeidentitycard != null" >
+        #{negativeidentitycard,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceUUID != null" >
+        #{deviceUUID,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceName != null" >
+        #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=CHAR},
+      </if>
+      <if test="postType != null" >
+        #{postType,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.rpc.salesman.model.User" >
+    update salesman
+    <set >
+      <if test="userName != null" >
+        userName = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        nickName = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=INTEGER},
+      </if>
+      <if test="credit != null" >
+        credit = #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="regTime != null" >
+        regTime = #{regTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastTime != null" >
+        lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regIP != null" >
+        regIP = #{regIP,jdbcType=VARCHAR},
+      </if>
+      <if test="lastIP != null" >
+        lastIP = #{lastIP,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="token != null" >
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="registration != null" >
+        registration = #{registration,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regDays != null" >
+        regDays = #{regDays,jdbcType=INTEGER},
+      </if>
+      <if test="monthCredit != null" >
+        monthCredit = #{monthCredit,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="intensity != null" >
+        intensity = #{intensity,jdbcType=INTEGER},
+      </if>
+      <if test="isManager != null" >
+        isManager = #{isManager,jdbcType=BIT},
+      </if>
+      <if test="isModify != null" >
+        isModify = #{isModify,jdbcType=TINYINT},
+      </if>
+      <if test="col1 != null" >
+        col1 = #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        col2 = #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        col3 = #{col3,jdbcType=VARCHAR},
+      </if>
+      <if test="col4 != null" >
+        col4 = #{col4,jdbcType=VARCHAR},
+      </if>
+      <if test="col5 != null" >
+        col5 = #{col5,jdbcType=VARCHAR},
+      </if>
+      <if test="col6 != null" >
+        col6 = #{col6,jdbcType=VARCHAR},
+      </if>
+      <if test="identitycard != null" >
+        identitycard = #{identitycard,jdbcType=VARCHAR},
+      </if>
+      <if test="positiveidentitycard != null" >
+        positiveidentitycard = #{positiveidentitycard,jdbcType=VARCHAR},
+      </if>
+      <if test="negativeidentitycard != null" >
+        negativeidentitycard = #{negativeidentitycard,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceUUID != null" >
+        deviceUUID = #{deviceUUID,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceName != null" >
+        deviceName = #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        userType = #{userType,jdbcType=CHAR},
+      </if>
+      <if test="postType != null" >
+        postType = #{postType,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        createBy = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null" >
+        updateBy = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.rpc.salesman.model.User" >
+    update salesman
+    set userName = #{userName,jdbcType=VARCHAR},
+      nickName = #{nickName,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=INTEGER},
+      password = #{password,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      province = #{province,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      area = #{area,jdbcType=INTEGER},
+      credit = #{credit,jdbcType=INTEGER},
+      regTime = #{regTime,jdbcType=TIMESTAMP},
+      lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      regIP = #{regIP,jdbcType=VARCHAR},
+      lastIP = #{lastIP,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      token = #{token,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      isDelete = #{isDelete,jdbcType=INTEGER},
+      registration = #{registration,jdbcType=TIMESTAMP},
+      regDays = #{regDays,jdbcType=INTEGER},
+      monthCredit = #{monthCredit,jdbcType=INTEGER},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      intensity = #{intensity,jdbcType=INTEGER},
+      isManager = #{isManager,jdbcType=BIT},
+      isModify = #{isModify,jdbcType=TINYINT},
+      col1 = #{col1,jdbcType=VARCHAR},
+      col2 = #{col2,jdbcType=VARCHAR},
+      col3 = #{col3,jdbcType=VARCHAR},
+      col4 = #{col4,jdbcType=VARCHAR},
+      col5 = #{col5,jdbcType=VARCHAR},
+      col6 = #{col6,jdbcType=VARCHAR},
+      identitycard = #{identitycard,jdbcType=VARCHAR},
+      positiveidentitycard = #{positiveidentitycard,jdbcType=VARCHAR},
+      negativeidentitycard = #{negativeidentitycard,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      deviceUUID = #{deviceUUID,jdbcType=VARCHAR},
+      deviceName = #{deviceName,jdbcType=VARCHAR},
+      userType = #{userType,jdbcType=CHAR},
+      postType = #{postType,jdbcType=VARCHAR},
+      createBy = #{createBy,jdbcType=VARCHAR},
+      updateBy = #{updateBy,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="queryUserIdByName" resultType="java.lang.String" parameterType="java.lang.String" >
+    select id from salesman where isDelete = 0 and userName = #{userName,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getUserListHashMap" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+    SELECT 'ALL' userId,'全部' userName from dual
+      UNION
+	SELECT
+		t.id AS userId, t.userName
+	FROM
+		salesman t
+	INNER JOIN tbl_user_dept_t ud ON ud.userId = t.id
+	INNER JOIN tbl_department_t d ON d.deptId = ud.deptId
+	WHERE t.isDelete = 0
+	    <if test="deptId !=null and deptId!=''">
+	    	AND d.deptId = #{deptId}
+	    </if>
+	    <if test="userId !=null and userId!=''">
+	    	AND t.id = #{userId}
+	    </if>
+  </select>
+  
+  <select id="getDeptLeaderIdList" resultType="java.lang.String" parameterType="java.lang.String">
+	SELECT
+		dm.leaderId
+	FROM
+		tbl_department_t d
+	INNER JOIN tbl_dept_manager_t dm ON d.deptId = dm.deptId
+	WHERE dm.deptId=#{deptId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="checkIsLeader" resultType="int" parameterType="java.lang.String">
+	SELECT
+		count(1)
+	FROM
+		tbl_dept_manager_t t
+	where t.leaderId=#{userId,jdbcType=VARCHAR}
+  </select>
+	
+  <select id="getReportWarnUserList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		SELECT
+			u.id AS userId,
+			u.userName,
+			d.deptId,
+			d.deptName
+		FROM
+			salesman u
+		INNER JOIN tbl_user_dept_t ud ON ud.userId = u.id
+		INNER JOIN tbl_department_t d ON d.deptId = ud.deptId
+		WHERE
+			d.deptId NOT IN (
+				SELECT
+					dic.`value`
+				FROM
+					sys_dict dic
+				WHERE
+					dic.type = 'aj_push_filter_dept_type'
+				AND dic.del_flag = 0
+			)
+		AND NOT EXISTS (
+			SELECT
+				1
+			FROM
+				tbl_report_info_t rp
+			WHERE
+				rp.createBy = u.id
+			AND DATE_FORMAT(rp.createTime, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')
+		)
+		ORDER BY d.deptId ASC
+  </select>
+  
+  <select id="getSignWarnUserList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		SELECT
+			u.id AS userId,
+			u.userName,
+			d.deptId,
+			d.deptName
+		FROM
+			salesman u
+		INNER JOIN tbl_user_dept_t ud ON ud.userId = u.id
+		INNER JOIN tbl_department_t d ON d.deptId = ud.deptId
+		WHERE
+			d.deptId NOT IN (
+				SELECT
+					dic.`value`
+				FROM
+					sys_dict dic
+				WHERE
+					dic.type = 'aj_sign_filter_dept_type'
+				AND dic.del_flag = 0
+			)
+		AND NOT EXISTS (
+			SELECT
+				1
+			FROM
+				tbl_sign_t s
+			WHERE
+				s.type = #{type} and s.createBy=u.id
+			AND DATE_FORMAT(s.createTime, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')
+		)
+		ORDER BY d.deptId ASC
+  </select>
+  
+  <select id="getUserMobileList" resultType="java.lang.String" parameterType="java.lang.String" >
+    SELECT
+		mobile
+	FROM
+		salesman t
+	INNER JOIN tbl_user_dept_t ud ON t.id = ud.userId
+	WHERE t.isDelete = 0
+	  AND ud.deptId = #{deptId,jdbcType=VARCHAR}
+  </select>
+  
+</mapper>

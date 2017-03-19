@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.MaWDSheetMapMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.MaWDSheetMapKey" >
+    <id column="sheetId" property="sheetId" jdbcType="VARCHAR" />
+    <id column="wdId" property="wdId" jdbcType="BIGINT" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.corner.core.beans.MaWDSheetMapKey" >
+    delete from MaWDSheetMap
+    where sheetId = #{sheetId,jdbcType=VARCHAR}
+      and wdId = #{wdId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.MaWDSheetMapKey" >
+    insert into MaWDSheetMap (sheetId, wdId)
+    values (#{sheetId,jdbcType=VARCHAR}, #{wdId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.MaWDSheetMapKey" >
+    insert into MaWDSheetMap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sheetId != null" >
+        sheetId,
+      </if>
+      <if test="wdId != null" >
+        wdId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sheetId != null" >
+        #{sheetId,jdbcType=VARCHAR},
+      </if>
+      <if test="wdId != null" >
+        #{wdId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+</mapper>

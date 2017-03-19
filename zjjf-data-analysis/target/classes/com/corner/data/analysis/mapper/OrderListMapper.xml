@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.data.analysis.dao.OrderListMapper" >
+ 
+     <select id="getOrderList" parameterType ="com.corner.data.analysis.beans.vo.OrderListVo" resultType="com.corner.data.analysis.beans.vo.OrderListVo">
+		SELECT
+			rr.`name` AS areaName,
+			DATE_FORMAT(si.addTime, '%Y-%m-%d') AS addTime,
+			sd.orderId,
+			sd.orderId2,
+			si.storeName,
+			si.consignee,
+			si.mobile,
+			si.address,
+			si.goodsPrice,
+			si.orderPrice,
+			sd.barCode,
+			ib.brand,
+			ib.id AS productId,
+			sd. NAME AS productName,
+			sd.spec,
+			sd.price,
+			sd.quantity,
+			sd.totalPrice,
+			IFNULL(si.zmaoli, 0.00) zmaoli,
+			sp.id AS supplierId,
+			sg. NAME AS spGroupName,
+			sg.id AS spGroupId,
+			itc. NAME AS smCategory,
+			itc2. NAME AS bgCategory,
+			si. STATUS,
+			si.supportmetho,
+			si.coupon,
+			si.rebate
+		FROM
+			SpOrderDetail AS sd
+		JOIN SpOrderInfo AS si ON sd.orderId2 = si.orderId
+		JOIN ItemBase AS ib ON ib.mdseId = sd.barCode
+		JOIN Supplier AS sp ON sp.id = si.supplierId
+		JOIN SpGroupMap AS sgm ON sp.id = sgm.spId
+		JOIN SpGroup sg ON sgm.groupId = sg.id
+		JOIN ItemCatelog itc ON ib.cateId = itc.id
+		JOIN ItemCatelog itc2 ON itc.pid = itc2.id
+		LEFT JOIN Store SS ON SS.ID = si.storeId
+		LEFT JOIN Region rr ON rr.id = SS.areaId
+		WHERE si.`status` != 1 AND si.`status` != 6
+		<if test="startTime !=null and startTime != ''">
+			and sd.addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d')
+		</if>
+		<if test="endTime !=null and endTime != ''">
+			 AND sd.addTime <![CDATA[<=]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d')
+		</if>
+   		<include refid="BasePublicMapper.pageSql" />
+     </select>
+     
+     <select id="getOrderListSize" parameterType ="com.corner.data.analysis.beans.vo.OrderListVo" resultType="int">
+		SELECT
+			count(1)
+		FROM
+			SpOrderDetail AS sd
+		JOIN SpOrderInfo AS si ON sd.orderId2 = si.orderId
+		JOIN ItemBase AS ib ON ib.mdseId = sd.barCode
+		JOIN Supplier AS sp ON sp.id = si.supplierId
+		JOIN SpGroupMap AS sgm ON sp.id = sgm.spId
+		JOIN SpGroup sg ON sgm.groupId = sg.id
+		JOIN ItemCatelog itc ON ib.cateId = itc.id
+		JOIN ItemCatelog itc2 ON itc.pid = itc2.id
+		LEFT JOIN Store SS ON SS.ID = si.storeId
+		LEFT JOIN Region rr ON rr.id = SS.areaId
+		WHERE si.`status` != 1 AND si.`status` != 6
+		<if test="startTime !=null and startTime != ''">
+			and sd.addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d')
+		</if>
+		<if test="endTime !=null and endTime != ''">
+			 AND sd.addTime <![CDATA[<=]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d')
+		</if>
+     </select>
+     
+     
+</mapper>

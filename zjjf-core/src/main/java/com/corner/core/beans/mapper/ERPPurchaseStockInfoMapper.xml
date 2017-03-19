@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ERPPurchaseStockInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ERPPurchaseStockInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="pId" property="pId" jdbcType="VARCHAR" />
+    <result column="pOrderId" property="pOrderId" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="itemPrice" property="itemPrice" jdbcType="DECIMAL" />
+    <result column="itemQuantity" property="itemQuantity" jdbcType="SMALLINT" />
+    <result column="whId" property="whId" jdbcType="VARCHAR" />
+    <result column="whName" property="whName" jdbcType="VARCHAR" />
+    <result column="addUser" property="addUser" jdbcType="VARCHAR" />
+    <result column="addUserName" property="addUserName" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="taskTime" property="taskTime" jdbcType="TIMESTAMP" />
+    <result column="managerId" property="managerId" jdbcType="VARCHAR" />
+    <result column="managerName" property="managerName" jdbcType="VARCHAR" />
+    <result column="managerCode" property="managerCode" jdbcType="VARCHAR" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="supplierName" property="supplierName" jdbcType="VARCHAR" />
+    <result column="checkUser" property="checkUser" jdbcType="VARCHAR" />
+    <result column="checkUserName" property="checkUserName" jdbcType="VARCHAR" />
+    <result column="checkTime" property="checkTime" jdbcType="TIMESTAMP" />
+    <result column="checkStatus" property="checkStatus" jdbcType="TINYINT" />
+    <result column="level" property="level" jdbcType="TINYINT" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="settleStatus" property="settleStatus" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, pId, pOrderId, orderId, itemPrice, itemQuantity, whId, whName, addUser, addUserName, 
+    addTime, taskTime, managerId, managerName, managerCode, supplierId, supplierName, 
+    checkUser, checkUserName, checkTime, checkStatus, level, remark, settleStatus, status, 
+    isDelete
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.corner.core.beans.ERPPurchaseStockInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ERPPurchaseStockInfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ERPPurchaseStockInfo
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ERPPurchaseStockInfo
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.corner.core.beans.ERPPurchaseStockInfoExample" >
+    delete from ERPPurchaseStockInfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ERPPurchaseStockInfo" >
+    insert into ERPPurchaseStockInfo (id, pId, pOrderId, 
+      orderId, itemPrice, itemQuantity, 
+      whId, whName, addUser, 
+      addUserName, addTime, taskTime, 
+      managerId, managerName, managerCode, 
+      supplierId, supplierName, checkUser, 
+      checkUserName, checkTime, checkStatus, 
+      level, remark, settleStatus, 
+      status, isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{pId,jdbcType=VARCHAR}, #{pOrderId,jdbcType=VARCHAR}, 
+      #{orderId,jdbcType=VARCHAR}, #{itemPrice,jdbcType=DECIMAL}, #{itemQuantity,jdbcType=SMALLINT}, 
+      #{whId,jdbcType=VARCHAR}, #{whName,jdbcType=VARCHAR}, #{addUser,jdbcType=VARCHAR}, 
+      #{addUserName,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{taskTime,jdbcType=TIMESTAMP}, 
+      #{managerId,jdbcType=VARCHAR}, #{managerName,jdbcType=VARCHAR}, #{managerCode,jdbcType=VARCHAR}, 
+      #{supplierId,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, #{checkUser,jdbcType=VARCHAR}, 
+      #{checkUserName,jdbcType=VARCHAR}, #{checkTime,jdbcType=TIMESTAMP}, #{checkStatus,jdbcType=TINYINT}, 
+      #{level,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{settleStatus,jdbcType=TINYINT}, 
+      #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ERPPurchaseStockInfo" >
+    insert into ERPPurchaseStockInfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pId != null" >
+        pId,
+      </if>
+      <if test="pOrderId != null" >
+        pOrderId,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="itemPrice != null" >
+        itemPrice,
+      </if>
+      <if test="itemQuantity != null" >
+        itemQuantity,
+      </if>
+      <if test="whId != null" >
+        whId,
+      </if>
+      <if test="whName != null" >
+        whName,
+      </if>
+      <if test="addUser != null" >
+        addUser,
+      </if>
+      <if test="addUserName != null" >
+        addUserName,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="taskTime != null" >
+        taskTime,
+      </if>
+      <if test="managerId != null" >
+        managerId,
+      </if>
+      <if test="managerName != null" >
+        managerName,
+      </if>
+      <if test="managerCode != null" >
+        managerCode,
+      </if>
+      <if test="supplierId != null" >
+        supplierId,
+      </if>
+      <if test="supplierName != null" >
+        supplierName,
+      </if>
+      <if test="checkUser != null" >
+        checkUser,
+      </if>
+      <if test="checkUserName != null" >
+        checkUserName,
+      </if>
+      <if test="checkTime != null" >
+        checkTime,
+      </if>
+      <if test="checkStatus != null" >
+        checkStatus,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="settleStatus != null" >
+        settleStatus,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="pId != null" >
+        #{pId,jdbcType=VARCHAR},
+      </if>
+      <if test="pOrderId != null" >
+        #{pOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemPrice != null" >
+        #{itemPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="itemQuantity != null" >
+        #{itemQuantity,jdbcType=SMALLINT},
+      </if>
+      <if test="whId != null" >
+        #{whId,jdbcType=VARCHAR},
+      </if>
+      <if test="whName != null" >
+        #{whName,jdbcType=VARCHAR},
+      </if>
+      <if test="addUser != null" >
+        #{addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="addUserName != null" >
+        #{addUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskTime != null" >
+        #{taskTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="managerId != null" >
+        #{managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="managerName != null" >
+        #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerCode != null" >
+        #{managerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierName != null" >
+        #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkUser != null" >
+        #{checkUser,jdbcType=VARCHAR},
+      </if>
+      <if test="checkUserName != null" >
+        #{checkUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTime != null" >
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkStatus != null" >
+        #{checkStatus,jdbcType=TINYINT},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="settleStatus != null" >
+        #{settleStatus,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.corner.core.beans.ERPPurchaseStockInfoExample" resultType="java.lang.Integer" >
+    select count(*) from ERPPurchaseStockInfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ERPPurchaseStockInfo
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pId != null" >
+        pId = #{record.pId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pOrderId != null" >
+        pOrderId = #{record.pOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderId != null" >
+        orderId = #{record.orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemPrice != null" >
+        itemPrice = #{record.itemPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.itemQuantity != null" >
+        itemQuantity = #{record.itemQuantity,jdbcType=SMALLINT},
+      </if>
+      <if test="record.whId != null" >
+        whId = #{record.whId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.whName != null" >
+        whName = #{record.whName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addUser != null" >
+        addUser = #{record.addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addUserName != null" >
+        addUserName = #{record.addUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null" >
+        addTime = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskTime != null" >
+        taskTime = #{record.taskTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.managerId != null" >
+        managerId = #{record.managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.managerName != null" >
+        managerName = #{record.managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.managerCode != null" >
+        managerCode = #{record.managerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplierId != null" >
+        supplierId = #{record.supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplierName != null" >
+        supplierName = #{record.supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkUser != null" >
+        checkUser = #{record.checkUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkUserName != null" >
+        checkUserName = #{record.checkUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkTime != null" >
+        checkTime = #{record.checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.checkStatus != null" >
+        checkStatus = #{record.checkStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.level != null" >
+        level = #{record.level,jdbcType=TINYINT},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.settleStatus != null" >
+        settleStatus = #{record.settleStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.isDelete != null" >
+        isDelete = #{record.isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ERPPurchaseStockInfo
+    set id = #{record.id,jdbcType=VARCHAR},
+      pId = #{record.pId,jdbcType=VARCHAR},
+      pOrderId = #{record.pOrderId,jdbcType=VARCHAR},
+      orderId = #{record.orderId,jdbcType=VARCHAR},
+      itemPrice = #{record.itemPrice,jdbcType=DECIMAL},
+      itemQuantity = #{record.itemQuantity,jdbcType=SMALLINT},
+      whId = #{record.whId,jdbcType=VARCHAR},
+      whName = #{record.whName,jdbcType=VARCHAR},
+      addUser = #{record.addUser,jdbcType=VARCHAR},
+      addUserName = #{record.addUserName,jdbcType=VARCHAR},
+      addTime = #{record.addTime,jdbcType=TIMESTAMP},
+      taskTime = #{record.taskTime,jdbcType=TIMESTAMP},
+      managerId = #{record.managerId,jdbcType=VARCHAR},
+      managerName = #{record.managerName,jdbcType=VARCHAR},
+      managerCode = #{record.managerCode,jdbcType=VARCHAR},
+      supplierId = #{record.supplierId,jdbcType=VARCHAR},
+      supplierName = #{record.supplierName,jdbcType=VARCHAR},
+      checkUser = #{record.checkUser,jdbcType=VARCHAR},
+      checkUserName = #{record.checkUserName,jdbcType=VARCHAR},
+      checkTime = #{record.checkTime,jdbcType=TIMESTAMP},
+      checkStatus = #{record.checkStatus,jdbcType=TINYINT},
+      level = #{record.level,jdbcType=TINYINT},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      settleStatus = #{record.settleStatus,jdbcType=TINYINT},
+      status = #{record.status,jdbcType=TINYINT},
+      isDelete = #{record.isDelete,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ERPPurchaseStockInfo" >
+    update ERPPurchaseStockInfo
+    <set >
+      <if test="pId != null" >
+        pId = #{pId,jdbcType=VARCHAR},
+      </if>
+      <if test="pOrderId != null" >
+        pOrderId = #{pOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemPrice != null" >
+        itemPrice = #{itemPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="itemQuantity != null" >
+        itemQuantity = #{itemQuantity,jdbcType=SMALLINT},
+      </if>
+      <if test="whId != null" >
+        whId = #{whId,jdbcType=VARCHAR},
+      </if>
+      <if test="whName != null" >
+        whName = #{whName,jdbcType=VARCHAR},
+      </if>
+      <if test="addUser != null" >
+        addUser = #{addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="addUserName != null" >
+        addUserName = #{addUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskTime != null" >
+        taskTime = #{taskTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="managerId != null" >
+        managerId = #{managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="managerName != null" >
+        managerName = #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerCode != null" >
+        managerCode = #{managerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        supplierId = #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierName != null" >
+        supplierName = #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkUser != null" >
+        checkUser = #{checkUser,jdbcType=VARCHAR},
+      </if>
+      <if test="checkUserName != null" >
+        checkUserName = #{checkUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTime != null" >
+        checkTime = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkStatus != null" >
+        checkStatus = #{checkStatus,jdbcType=TINYINT},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="settleStatus != null" >
+        settleStatus = #{settleStatus,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ERPPurchaseStockInfo" >
+    update ERPPurchaseStockInfo
+    set pId = #{pId,jdbcType=VARCHAR},
+      pOrderId = #{pOrderId,jdbcType=VARCHAR},
+      orderId = #{orderId,jdbcType=VARCHAR},
+      itemPrice = #{itemPrice,jdbcType=DECIMAL},
+      itemQuantity = #{itemQuantity,jdbcType=SMALLINT},
+      whId = #{whId,jdbcType=VARCHAR},
+      whName = #{whName,jdbcType=VARCHAR},
+      addUser = #{addUser,jdbcType=VARCHAR},
+      addUserName = #{addUserName,jdbcType=VARCHAR},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      taskTime = #{taskTime,jdbcType=TIMESTAMP},
+      managerId = #{managerId,jdbcType=VARCHAR},
+      managerName = #{managerName,jdbcType=VARCHAR},
+      managerCode = #{managerCode,jdbcType=VARCHAR},
+      supplierId = #{supplierId,jdbcType=VARCHAR},
+      supplierName = #{supplierName,jdbcType=VARCHAR},
+      checkUser = #{checkUser,jdbcType=VARCHAR},
+      checkUserName = #{checkUserName,jdbcType=VARCHAR},
+      checkTime = #{checkTime,jdbcType=TIMESTAMP},
+      checkStatus = #{checkStatus,jdbcType=TINYINT},
+      level = #{level,jdbcType=TINYINT},
+      remark = #{remark,jdbcType=VARCHAR},
+      settleStatus = #{settleStatus,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

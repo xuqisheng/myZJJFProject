@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.ScmsSpWalletMgMapper" >
+  <sql id="pageSql">
+       LIMIT #{pageIndex},#{pageSize}
+  </sql>
+  <!-- 供应商提现 begin -->
+  <sql id="spWithDrawPageList_condition">
+     from SpWithDraw
+     where supplierId = #{supplierId,jdbcType=VARCHAR} and isDelete = 0
+     <if test="startDate !=null">
+       and applyTime &gt;= #{startDate,jdbcType=TIMESTAMP}
+     </if>
+     <if test="endDate !=null">
+       and applyTime &lt;= #{endDate,jdbcType=TIMESTAMP}
+     </if>
+     <if test="thisMonth !=null and thisMonth !=''">
+       and strcmp(date_format(NOW(), '%Y-%m'), date_format(applyTime, '%Y-%m')) = 0
+     </if>
+     <if test="thisDay !=null and thisDay !=''">
+       and strcmp(date_format(NOW(), '%Y-%m-%d'), date_format(applyTime, '%Y-%m-%d')) = 0
+     </if>
+     <!--  where strcmp(date_format(NOW(), '%Y-%m-%d'), date_format(applyTime, '%Y-%m-%d')) = 0  -->
+  </sql>
+   <select id="selectSpWithDrawPageList" parameterType="com.corner.scms.beans.ro.SpWithDrawRo" resultType="com.corner.scms.beans.vo.SpWithDrawVo">
+   select 
+     <include refid="com.corner.core.dao.SpWithDrawMapper.Base_Column_List" />
+     <include refid="spWithDrawPageList_condition"/>
+     ORDER BY applyTime DESC
+     <include refid="pageSql"/>
+   </select>
+   <select id="selectCountSpWithDraw" resultType="java.lang.Integer" parameterType="com.corner.scms.beans.ro.SpWithDrawRo">
+     select count(1)
+     <include refid="spWithDrawPageList_condition"/>
+   </select>
+   <select id="alertSpWallet" parameterType="map" resultType="java.lang.Long" statementType="CALLABLE">
+    <![CDATA[ {call alertSpWallet(#{optType,jdbcType=INTEGER},#{orderId,jdbcType=VARCHAR},#{spId,jdbcType=VARCHAR},#{wdMoney,jdbcType=DECIMAL},#{wdRemark,jdbcType=VARCHAR},#{wdId,jdbcType=BIGINT})} ]]>
+   </select>
+
+
+
+    <!--结算并生成流水-->
+    <select id="checkoutAndLog" statementType="CALLABLE" resultType="string" parameterType="com.corner.scms.beans.CheckoutAndLogParam">
+        <![CDATA[
+            {call checkoutAndLog(
+              #{systemCode,mode=IN,jdbcType=INTEGER},
+              #{businessType,mode=IN,jdbcType=INTEGER},
+              #{voucherMain,mode=IN,jdbcType=VARCHAR},
+              #{purpose,mode=IN,jdbcType=INTEGER},
+              #{amount,mode=IN,jdbcType=DECIMAL},
+              #{result,mode=OUT,jdbcType=VARCHAR}
+            )}
+        ]]>
+    </select>
+
+   <select id="selectByPrimaryKey" resultType="com.corner.core.beans.SpWithDraw" parameterType="java.lang.Long">
+    select * from SpWithDraw
+    where id = #{id,jdbcType=BIGINT}
+   </select>
+  <!-- 供应商提现  end -->
+  
+  <!-- 供应商收支明细 begin  -->
+  <sql id="spWalletLogPageList_condition">
+  FROM
+		`SpWalletLog` a
+	LEFT JOIN `SpOrderInfo` b ON a.orderId = b.id
+	LEFT JOIN ScOrderInfo c ON a.orderId = c.id
+  where a.spId =#{spId,jdbcType=VARCHAR} and a.isDelete = 0
+  <if test="startTime!=null">
+     and a.actionTime &gt;= #{startTime}
+  </if>
+  <if test="endTime!=null">
+     and a.actionTime &lt;= #{endTime}
+  </if>
+  <if test="orderId!=null and orderId!=''">
+     and (b.orderId like concat('%',#{orderId},'%') or a.id like concat('%',#{orderId},'%') or c.orderId like concat('%',#{orderId},'%'))
+  </if>
+  </sql>
+  <select id="selectSpWalletLogPageList" parameterType="com.corner.scms.beans.ro.SpWalletLogRo" resultType="com.corner.scms.beans.vo.SpWalletLogVo">
+    SELECT a.*, b.supportmetho,
+	b.orderId AS orderInfoId,
+	c.orderId AS orderInfoId2,
+	c.supportmetho AS supportmetho2
+  <include refid="spWalletLogPageList_condition"/> 
+  ORDER BY a.id DESC
+  <include refid="pageSql"/>
+  </select>
+  <select id="selectCountSpWalletLog" parameterType="com.corner.scms.beans.ro.SpWalletLogRo" resultType="java.lang.Integer">
+    select count(1)
+    <include refid="spWalletLogPageList_condition"/>
+  </select>
+  <!-- 供应商收支明细 end  -->
+</mapper>

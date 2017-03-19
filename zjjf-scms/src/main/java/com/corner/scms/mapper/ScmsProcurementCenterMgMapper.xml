@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.ScmsProcurementCenterMgMapper" >
+
+	<select id="findAllItems"  parameterType="java.lang.Integer" resultType="java.util.Map">
+		SELECT 
+			cateId,
+			col3,
+			cateName,
+			GROUP_CONCAT(CAST(cateId2 as char)) as cateId2,
+			GROUP_CONCAT(cateName2) as cateName2
+			 from (
+			SELECT
+				b.id AS cateId,
+				b.col3 AS col3,
+				b.`name` AS cateName,
+				a.id AS cateId2,
+				a.`name` AS cateName2
+			FROM ItemCatelog a
+			JOIN ItemCatelog b ON a.pid = b.id
+			JOIN ItemBase c ON c.cateId = a.id
+			JOIN ScmsItem d ON c.id = d.itemBaseId 
+			where d.groupId = #{groupId} AND d.isDelete = 0 and d.`status` = 1
+			GROUP BY a.id) tmp 
+			GROUP BY cateId
+	</select>
+	
+	<select id="findSonItem" resultType="com.corner.core.beans.ItemCatelog" parameterType="java.lang.Integer">
+		SELECT * FROM ItemCatelog WHERE ItemCatelog.pid=#{id}
+	</select>
+	<!-- 获取商品的条件-->
+	<sql id="getPageList_condition">
+		ItemBase INNER JOIN ScmsItem on ScmsItem.itemBaseId=ItemBase.id WHERE 1=1  and ItemBase.isDelete=0 and ScmsItem.isDelete=0  and ScmsItem.status=1
+			 <if test="cateID != null">
+				and ItemBase.cateId =#{cateID}
+			</if>
+			<if test="cateIDs != null">
+				and ItemBase.cateId in
+					 <foreach item="item" index="index" collection="cateIDs" 
+                         open="(" separator="," close=")">
+                        #{item}
+                	</foreach>
+			</if>
+			 <if test="bscirdedId != null">
+				and ScmsItem.groupId =#{bscirdedId}
+			</if>
+			<if test="bscirdedId == null">
+				and ScmsItem.groupId is null
+			</if>
+			 <if test="name != null">
+				and ScmsItem.goodName like CONCAT('%','${name}','%')  
+			</if>
+			<if test="orderNum ==1">
+				order by ScmsItem.sales desc
+			</if>
+			<if test="orderNum ==2">
+				order by ScmsItem.zjjfPrice asc
+			</if>
+			<if test="orderNum ==3">
+				order by ScmsItem.zjjfPrice desc
+			</if>
+			
+	</sql>
+
+	<!-- 获取商品-->
+	<select id="getPageList" parameterType="com.corner.scms.beans.ro.sc.ScmsProcurementCenterRo" resultType="com.corner.scms.beans.vo.ScmsItemBaseVo">
+		SELECT ItemBase.*,ScmsItem.zjjfPrice,ScmsItem.id as scmsid,ScmsItem.goodName FROM		
+		<include refid="getPageList_condition" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+
+	<!-- 获取商品总记录数 -->
+	<select id="getPageListSize" parameterType="com.corner.scms.beans.ro.sc.ScmsProcurementCenterRo" resultType="int">
+		select count(1) from
+		<include refid="getPageList_condition" />
+	</select>	
+	
+	<select id="findItemVoById" resultType="com.corner.scms.beans.vo.ScmsItemBaseVo" parameterType="java.lang.String">
+		SELECT ItemBase.*,ScmsItem.mark,ScmsItem.zjjfPrice,ScmsItem.id as scmsid ,ScmsItem. year,ScmsItem.month,ScmsWarehouse.houseAddress,ScmsItem.goodName from 
+			ItemBase inner join ScmsItem on ScmsItem.itemBaseId=ItemBase.id inner join ScmsGroup on ScmsItem.groupId=ScmsGroup.id
+			inner join ScmsWarehouse on  ScmsGroup.warehouseId=ScmsWarehouse.id where ScmsItem.id=#{id}
+	</select>
+</mapper>

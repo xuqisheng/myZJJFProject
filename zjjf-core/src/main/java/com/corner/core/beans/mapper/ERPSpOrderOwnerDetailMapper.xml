@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ERPSpOrderOwnerDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ERPSpOrderOwnerDetail" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="orderInfoId" property="orderInfoId" jdbcType="VARCHAR" />
+    <result column="orderInfoPid" property="orderInfoPid" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="barCode" property="barCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="spec" property="spec" jdbcType="VARCHAR" />
+    <result column="pkg" property="pkg" jdbcType="VARCHAR" />
+    <result column="quantity" property="quantity" jdbcType="SMALLINT" />
+    <result column="cashQuantity" property="cashQuantity" jdbcType="SMALLINT" />
+    <result column="cashPrice" property="cashPrice" jdbcType="DECIMAL" />
+    <result column="backQuantity" property="backQuantity" jdbcType="SMALLINT" />
+    <result column="sureQuantity" property="sureQuantity" jdbcType="SMALLINT" />
+    <result column="surePrice" property="surePrice" jdbcType="DECIMAL" />
+    <result column="outStockNum" property="outStockNum" jdbcType="SMALLINT" />
+    <result column="wh3Id" property="wh3Id" jdbcType="VARCHAR" />
+    <result column="wh3Name" property="wh3Name" jdbcType="VARCHAR" />
+    <result column="wh2Name" property="wh2Name" jdbcType="VARCHAR" />
+    <result column="wh1Id" property="wh1Id" jdbcType="VARCHAR" />
+    <result column="wh1Name" property="wh1Name" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="cash" property="cash" jdbcType="TINYINT" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, orderInfoId, orderInfoPid, orderId, itemBaseId, barCode, name, spec, pkg, quantity, 
+    cashQuantity, cashPrice, backQuantity, sureQuantity, surePrice, outStockNum, wh3Id, 
+    wh3Name, wh2Name, wh1Id, wh1Name, remark, type, cash, addTime, isDelete
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.corner.core.beans.ERPSpOrderOwnerDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ERPSpOrderOwnerDetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ERPSpOrderOwnerDetail
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ERPSpOrderOwnerDetail
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.corner.core.beans.ERPSpOrderOwnerDetailExample" >
+    delete from ERPSpOrderOwnerDetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ERPSpOrderOwnerDetail" >
+    insert into ERPSpOrderOwnerDetail (id, orderInfoId, orderInfoPid, 
+      orderId, itemBaseId, barCode, 
+      name, spec, pkg, quantity, 
+      cashQuantity, cashPrice, backQuantity, 
+      sureQuantity, surePrice, outStockNum, 
+      wh3Id, wh3Name, wh2Name, 
+      wh1Id, wh1Name, remark, 
+      type, cash, addTime, 
+      isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{orderInfoId,jdbcType=VARCHAR}, #{orderInfoPid,jdbcType=VARCHAR}, 
+      #{orderId,jdbcType=VARCHAR}, #{itemBaseId,jdbcType=INTEGER}, #{barCode,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{spec,jdbcType=VARCHAR}, #{pkg,jdbcType=VARCHAR}, #{quantity,jdbcType=SMALLINT}, 
+      #{cashQuantity,jdbcType=SMALLINT}, #{cashPrice,jdbcType=DECIMAL}, #{backQuantity,jdbcType=SMALLINT}, 
+      #{sureQuantity,jdbcType=SMALLINT}, #{surePrice,jdbcType=DECIMAL}, #{outStockNum,jdbcType=SMALLINT}, 
+      #{wh3Id,jdbcType=VARCHAR}, #{wh3Name,jdbcType=VARCHAR}, #{wh2Name,jdbcType=VARCHAR}, 
+      #{wh1Id,jdbcType=VARCHAR}, #{wh1Name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{type,jdbcType=TINYINT}, #{cash,jdbcType=TINYINT}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ERPSpOrderOwnerDetail" >
+    insert into ERPSpOrderOwnerDetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderInfoId != null" >
+        orderInfoId,
+      </if>
+      <if test="orderInfoPid != null" >
+        orderInfoPid,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId,
+      </if>
+      <if test="barCode != null" >
+        barCode,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="spec != null" >
+        spec,
+      </if>
+      <if test="pkg != null" >
+        pkg,
+      </if>
+      <if test="quantity != null" >
+        quantity,
+      </if>
+      <if test="cashQuantity != null" >
+        cashQuantity,
+      </if>
+      <if test="cashPrice != null" >
+        cashPrice,
+      </if>
+      <if test="backQuantity != null" >
+        backQuantity,
+      </if>
+      <if test="sureQuantity != null" >
+        sureQuantity,
+      </if>
+      <if test="surePrice != null" >
+        surePrice,
+      </if>
+      <if test="outStockNum != null" >
+        outStockNum,
+      </if>
+      <if test="wh3Id != null" >
+        wh3Id,
+      </if>
+      <if test="wh3Name != null" >
+        wh3Name,
+      </if>
+      <if test="wh2Name != null" >
+        wh2Name,
+      </if>
+      <if test="wh1Id != null" >
+        wh1Id,
+      </if>
+      <if test="wh1Name != null" >
+        wh1Name,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="cash != null" >
+        cash,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orderInfoId != null" >
+        #{orderInfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderInfoPid != null" >
+        #{orderInfoPid,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemBaseId != null" >
+        #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="barCode != null" >
+        #{barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="spec != null" >
+        #{spec,jdbcType=VARCHAR},
+      </if>
+      <if test="pkg != null" >
+        #{pkg,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=SMALLINT},
+      </if>
+      <if test="cashQuantity != null" >
+        #{cashQuantity,jdbcType=SMALLINT},
+      </if>
+      <if test="cashPrice != null" >
+        #{cashPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="backQuantity != null" >
+        #{backQuantity,jdbcType=SMALLINT},
+      </if>
+      <if test="sureQuantity != null" >
+        #{sureQuantity,jdbcType=SMALLINT},
+      </if>
+      <if test="surePrice != null" >
+        #{surePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="outStockNum != null" >
+        #{outStockNum,jdbcType=SMALLINT},
+      </if>
+      <if test="wh3Id != null" >
+        #{wh3Id,jdbcType=VARCHAR},
+      </if>
+      <if test="wh3Name != null" >
+        #{wh3Name,jdbcType=VARCHAR},
+      </if>
+      <if test="wh2Name != null" >
+        #{wh2Name,jdbcType=VARCHAR},
+      </if>
+      <if test="wh1Id != null" >
+        #{wh1Id,jdbcType=VARCHAR},
+      </if>
+      <if test="wh1Name != null" >
+        #{wh1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="cash != null" >
+        #{cash,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.corner.core.beans.ERPSpOrderOwnerDetailExample" resultType="java.lang.Integer" >
+    select count(*) from ERPSpOrderOwnerDetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ERPSpOrderOwnerDetail
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderInfoId != null" >
+        orderInfoId = #{record.orderInfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderInfoPid != null" >
+        orderInfoPid = #{record.orderInfoPid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderId != null" >
+        orderId = #{record.orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemBaseId != null" >
+        itemBaseId = #{record.itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.barCode != null" >
+        barCode = #{record.barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.spec != null" >
+        spec = #{record.spec,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pkg != null" >
+        pkg = #{record.pkg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.quantity != null" >
+        quantity = #{record.quantity,jdbcType=SMALLINT},
+      </if>
+      <if test="record.cashQuantity != null" >
+        cashQuantity = #{record.cashQuantity,jdbcType=SMALLINT},
+      </if>
+      <if test="record.cashPrice != null" >
+        cashPrice = #{record.cashPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.backQuantity != null" >
+        backQuantity = #{record.backQuantity,jdbcType=SMALLINT},
+      </if>
+      <if test="record.sureQuantity != null" >
+        sureQuantity = #{record.sureQuantity,jdbcType=SMALLINT},
+      </if>
+      <if test="record.surePrice != null" >
+        surePrice = #{record.surePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.outStockNum != null" >
+        outStockNum = #{record.outStockNum,jdbcType=SMALLINT},
+      </if>
+      <if test="record.wh3Id != null" >
+        wh3Id = #{record.wh3Id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wh3Name != null" >
+        wh3Name = #{record.wh3Name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wh2Name != null" >
+        wh2Name = #{record.wh2Name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wh1Id != null" >
+        wh1Id = #{record.wh1Id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wh1Name != null" >
+        wh1Name = #{record.wh1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=TINYINT},
+      </if>
+      <if test="record.cash != null" >
+        cash = #{record.cash,jdbcType=TINYINT},
+      </if>
+      <if test="record.addTime != null" >
+        addTime = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDelete != null" >
+        isDelete = #{record.isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ERPSpOrderOwnerDetail
+    set id = #{record.id,jdbcType=VARCHAR},
+      orderInfoId = #{record.orderInfoId,jdbcType=VARCHAR},
+      orderInfoPid = #{record.orderInfoPid,jdbcType=VARCHAR},
+      orderId = #{record.orderId,jdbcType=VARCHAR},
+      itemBaseId = #{record.itemBaseId,jdbcType=INTEGER},
+      barCode = #{record.barCode,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      spec = #{record.spec,jdbcType=VARCHAR},
+      pkg = #{record.pkg,jdbcType=VARCHAR},
+      quantity = #{record.quantity,jdbcType=SMALLINT},
+      cashQuantity = #{record.cashQuantity,jdbcType=SMALLINT},
+      cashPrice = #{record.cashPrice,jdbcType=DECIMAL},
+      backQuantity = #{record.backQuantity,jdbcType=SMALLINT},
+      sureQuantity = #{record.sureQuantity,jdbcType=SMALLINT},
+      surePrice = #{record.surePrice,jdbcType=DECIMAL},
+      outStockNum = #{record.outStockNum,jdbcType=SMALLINT},
+      wh3Id = #{record.wh3Id,jdbcType=VARCHAR},
+      wh3Name = #{record.wh3Name,jdbcType=VARCHAR},
+      wh2Name = #{record.wh2Name,jdbcType=VARCHAR},
+      wh1Id = #{record.wh1Id,jdbcType=VARCHAR},
+      wh1Name = #{record.wh1Name,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=TINYINT},
+      cash = #{record.cash,jdbcType=TINYINT},
+      addTime = #{record.addTime,jdbcType=TIMESTAMP},
+      isDelete = #{record.isDelete,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ERPSpOrderOwnerDetail" >
+    update ERPSpOrderOwnerDetail
+    <set >
+      <if test="orderInfoId != null" >
+        orderInfoId = #{orderInfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderInfoPid != null" >
+        orderInfoPid = #{orderInfoPid,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemBaseId != null" >
+        itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="barCode != null" >
+        barCode = #{barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="spec != null" >
+        spec = #{spec,jdbcType=VARCHAR},
+      </if>
+      <if test="pkg != null" >
+        pkg = #{pkg,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=SMALLINT},
+      </if>
+      <if test="cashQuantity != null" >
+        cashQuantity = #{cashQuantity,jdbcType=SMALLINT},
+      </if>
+      <if test="cashPrice != null" >
+        cashPrice = #{cashPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="backQuantity != null" >
+        backQuantity = #{backQuantity,jdbcType=SMALLINT},
+      </if>
+      <if test="sureQuantity != null" >
+        sureQuantity = #{sureQuantity,jdbcType=SMALLINT},
+      </if>
+      <if test="surePrice != null" >
+        surePrice = #{surePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="outStockNum != null" >
+        outStockNum = #{outStockNum,jdbcType=SMALLINT},
+      </if>
+      <if test="wh3Id != null" >
+        wh3Id = #{wh3Id,jdbcType=VARCHAR},
+      </if>
+      <if test="wh3Name != null" >
+        wh3Name = #{wh3Name,jdbcType=VARCHAR},
+      </if>
+      <if test="wh2Name != null" >
+        wh2Name = #{wh2Name,jdbcType=VARCHAR},
+      </if>
+      <if test="wh1Id != null" >
+        wh1Id = #{wh1Id,jdbcType=VARCHAR},
+      </if>
+      <if test="wh1Name != null" >
+        wh1Name = #{wh1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="cash != null" >
+        cash = #{cash,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ERPSpOrderOwnerDetail" >
+    update ERPSpOrderOwnerDetail
+    set orderInfoId = #{orderInfoId,jdbcType=VARCHAR},
+      orderInfoPid = #{orderInfoPid,jdbcType=VARCHAR},
+      orderId = #{orderId,jdbcType=VARCHAR},
+      itemBaseId = #{itemBaseId,jdbcType=INTEGER},
+      barCode = #{barCode,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      spec = #{spec,jdbcType=VARCHAR},
+      pkg = #{pkg,jdbcType=VARCHAR},
+      quantity = #{quantity,jdbcType=SMALLINT},
+      cashQuantity = #{cashQuantity,jdbcType=SMALLINT},
+      cashPrice = #{cashPrice,jdbcType=DECIMAL},
+      backQuantity = #{backQuantity,jdbcType=SMALLINT},
+      sureQuantity = #{sureQuantity,jdbcType=SMALLINT},
+      surePrice = #{surePrice,jdbcType=DECIMAL},
+      outStockNum = #{outStockNum,jdbcType=SMALLINT},
+      wh3Id = #{wh3Id,jdbcType=VARCHAR},
+      wh3Name = #{wh3Name,jdbcType=VARCHAR},
+      wh2Name = #{wh2Name,jdbcType=VARCHAR},
+      wh1Id = #{wh1Id,jdbcType=VARCHAR},
+      wh1Name = #{wh1Name,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT},
+      cash = #{cash,jdbcType=TINYINT},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

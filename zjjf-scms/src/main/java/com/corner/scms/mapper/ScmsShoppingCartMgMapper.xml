@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.ScmsShoppingCartMgMapper" >
+   
+   <resultMap id="BaseResultMap" type="com.corner.core.beans.ScmsShoppingCart" extends="com.corner.core.dao.ScmsShoppingCartMapper.BaseResultMap">
+   </resultMap>
+   
+   
+   
+   <resultMap id="scmsItemResultMap" type="com.corner.scms.beans.vo.ScmsMinimumVo">
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="brandId" property="brandId" jdbcType="INTEGER" />
+    <result column="brandName" property="brandName" jdbcType="VARCHAR" />
+    <result column="managerId" property="managerId" jdbcType="VARCHAR" />
+    <result column="minimum" property="minimum" jdbcType="SMALLINT" />
+    <collection property="list" ofType="com.corner.scms.beans.vo.ScmsItemVo">
+      <id column="item_id" property="id" jdbcType="VARCHAR" />
+      <result column="num" property="num" jdbcType="SMALLINT" />
+      <result column="zjjfPrice" property="zjjfPrice" jdbcType="DECIMAL" />
+      <result column="totalPrice" property="totalPrice" jdbcType="DECIMAL" />
+      <result column="cart_id" property="cart_id" jdbcType="VARCHAR" />
+      <result column="imgS" jdbcType="VARCHAR" property="imgS" />
+      <result column="spec" jdbcType="VARCHAR" property="spec" />
+      <result column="measure" property="measure" jdbcType="VARCHAR" />
+      <result column="itemBaseName" property="itemBaseName" jdbcType="VARCHAR" />
+      <result column="pkg" property="pkg" jdbcType="VARCHAR" />
+      <result column="pkgNum" property="pkgNum" jdbcType="VARCHAR" />
+      <result column="status" property="status" jdbcType="TINYINT" />
+    </collection>
+   </resultMap>
+   
+   
+   <select id="getCartList" parameterType="com.corner.core.beans.Supplier" resultMap="scmsItemResultMap">
+          SELECT
+			b.id,
+			b.brandId,
+			b.brandName,
+			b.managerId,
+			b.minimum,
+			c.id AS item_id,
+			CART.num,
+			c.zjjfPrice,
+			c.zjjfPrice*CART.num AS totalPrice,
+			c.goodName As itemBaseName,
+			CART.id AS cart_id,
+			CART.`status`,
+			d.imgS,
+			d.pkg,
+			d.pkgNum,
+			d.spec
+		FROM
+			(
+				SELECT
+				    a.id,
+					a.miniumId,
+					a.scmsItemId,
+					a.smallImg,
+					a.num,
+					a.price,
+					a.totalPrice,
+					a.`status`
+				FROM
+					ScmsShoppingCart a
+				WHERE
+					a.supplierId = #{id}
+				AND a.isDelete = 0
+			) AS CART
+		JOIN ScmsItem c ON CART.scmsItemId = c.id
+		JOIN ScmsMinimum b ON c.miniumId = b.id
+		JOIN ItemBase d ON c.itemBaseId = d.id
+		order by b.id
+   </select>
+
+   <update id="checkCartListBySupplierId" parameterType="java.util.HashMap">
+     UPDATE ScmsShoppingCart
+        <if test="type=='check'.toString()">
+		SET `status` = 1
+        </if>
+        <if test="type=='uncheck'.toString()">
+		SET `status` = 0
+        </if>
+		WHERE
+		    supplierId = #{supplier.id}
+		    AND
+		    isDelete=0
+		    AND
+			id IN 
+			<foreach collection="cartIdList" open="(" close=")" separator="," item="item">
+			  #{item}
+			</foreach>
+   </update>
+   
+   <select id="getCheckedCartListBySupplierId" parameterType="com.corner.core.beans.Supplier" resultMap="BaseResultMap">
+     SELECT
+		a.id,
+		a.scmsItemId,
+		a.supplierId,
+		a.num,
+		b.zjjfPrice AS price,
+		a.num * b.zjjfPrice AS totalPrice
+	FROM
+		(
+			SELECT
+				id,
+				scmsItemId,
+				supplierId,
+				num
+			FROM
+				ScmsShoppingCart
+			WHERE
+				supplierId = #{id}
+			AND `status` = 1
+			AND isDelete = 0
+		) a
+	JOIN ScmsItem b ON a.scmsItemId = b.id
+	WHERE
+		b.`status` = 1
+	AND b.isDelete = 0
+   </select>
+   
+   <delete id="deleteShoppingCartBySupplierId" parameterType="java.util.HashMap">
+     UPDATE ScmsShoppingCart
+		SET isDelete = 1
+		WHERE
+		 supplierId = #{supplier.id}
+		 AND
+		 id IN 
+		 <foreach collection="cartIdList" open="(" separator="," close=")" item="item">
+		  #{item}
+		 </foreach>
+   </delete>
+   
+   <!-- <select id="getConfirmedCartList" parameterType="com.corner.core.beans.Supplier" resultMap="scmsItemResultMap">
+    
+   </select> -->
+   
+   <select id="getCheckedScmsShoppingCartVoListBySupplierId" parameterType="com.corner.core.beans.Supplier" resultType="com.corner.scms.beans.vo.ScmsShoppingCartVo">
+   SELECT
+		a.*,b.managerId
+	FROM
+		ScmsShoppingCart a JOIN ScmsItem b
+  ON a.scmsItemId=b.id
+	WHERE
+		supplierId = #{id}
+	AND `status` = 1
+	AND isDelete = 0
+   </select>
+   
+   
+   <delete id="deleteBuyedShoppingCartBySullieper" parameterType="com.corner.core.beans.Supplier">
+      <!-- DELETE
+		FROM
+			ScmsShoppingCart
+		WHERE
+			supplierId = #{id}
+		AND `status` = 1 -->
+		update ScmsShoppingCart set isDelete=1 where supplierId = #{id} and  `status` = 1  
+   </delete>
+   
+   <select id="selectShoppingCartById" parameterType="java.lang.String" resultMap="BaseResultMap">
+       SELECT
+		a.id,
+		a.scmsItemId,
+		a.supplierId,
+		a.num,
+		b.zjjfPrice AS price,
+		a.num * b.zjjfPrice AS totalPrice
+	FROM
+		(
+			SELECT
+				*
+			FROM
+				ScmsShoppingCart
+			WHERE
+				id = #{id,jdbcType=VARCHAR}
+			AND isDelete = 0
+		) a
+	JOIN ScmsItem b ON a.scmsItemId = b.id WHERE b.isDelete=0 AND b.`status`=1
+   </select>
+   
+   
+   <select id="getScmsMinimumVoList" parameterType="java.lang.String" resultMap="scmsItemResultMap">
+      SELECT
+			b.id,
+			b.brandId,
+			b.brandName,
+			b.managerId,
+			b.minimum,
+			c.id AS item_id,
+			CART.num,
+			<!-- CART.price As zjjfPrice, -->
+			c.zjjfPrice,
+			<!-- CART.totalPrice, -->
+			c.zjjfPrice*CART.num AS totalPrice,
+			CART.id AS cart_id,
+			CART.`status`,
+			d.imgS,
+			d.pkg,
+			d.pkgNum,
+			d.spec,
+			d.name As itemBaseName
+		FROM
+			(
+				SELECT
+				    a.id,
+					a.miniumId,
+					a.scmsItemId,
+					a.smallImg,
+					a.num,
+					a.price,
+					a.totalPrice,
+					a.`status`
+				FROM
+					ScmsShoppingCart a
+				WHERE
+					a.id = #{cartId,jdbcType=VARCHAR}
+				AND a.isDelete = 0
+			) AS CART
+		JOIN ScmsItem c ON CART.scmsItemId = c.id
+		JOIN ScmsMinimum b ON c.miniumId = b.id
+		JOIN ItemBase d ON c.itemBaseId = d.id
+   </select>
+   
+   
+   <select id="getThirdFee" resultType="com.corner.core.beans.SystemInfo">
+     select * from SystemInfo where id = 'fac_WX_Deal_Fee'
+   </select>
+   
+   <insert id="save" parameterType="com.corner.core.beans.ScmsShoppingCart" >
+   		replace INTO ScmsShoppingCart (id, scmsItemId, supplierId, num, price, totalPrice, addTime, updateTime )
+		SELECT
+			IF(COUNT(1) = 0,#{id},a.id),
+			#{scmsItemId},
+			#{supplierId},
+			IF (COUNT(1) = 0 , #{num}, IF((a.num + #{num})> 9999 , a.num , a.num + #{num})),
+			IF (COUNT(1) = 0 ,s.zjjfPrice , a.price ),
+			IF (COUNT(1) = 0, #{num} * s.zjjfPrice, a.totalPrice + (#{num} * a.price)),
+			IF(COUNT(1) = 0,NOW(), a.addTime),
+			NOW()
+		FROM
+			ScmsShoppingCart a
+			JOIN ScmsItem s ON s.id =  #{scmsItemId}
+		WHERE
+			a.scmsItemId = #{scmsItemId}
+			AND a.supplierId = #{supplierId}
+			AND a.isDelete = 0
+  </insert>
+   
+</mapper>

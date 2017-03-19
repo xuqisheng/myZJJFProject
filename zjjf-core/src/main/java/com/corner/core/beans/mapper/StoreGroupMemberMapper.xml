@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.StoreGroupMemberMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.StoreGroupMember" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="storeGroupID" property="storeGroupID" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, storeGroupID, type, storeId, supplierId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from StoreGroupMember
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from StoreGroupMember
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  
+  <insert id="insert" parameterType="com.corner.core.beans.StoreGroupMember" >
+    insert into StoreGroupMember (id, storeGroupID, type, 
+      storeId, supplierId)
+    values (#{id,jdbcType=VARCHAR}, #{storeGroupID,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{storeId,jdbcType=INTEGER}, #{supplierId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.StoreGroupMember" >
+    insert into StoreGroupMember
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="storeGroupID != null" >
+        storeGroupID,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="supplierId != null" >
+        supplierId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="storeGroupID != null" >
+        #{storeGroupID,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.StoreGroupMember" >
+    update StoreGroupMember
+    <set >
+      <if test="storeGroupID != null" >
+        storeGroupID = #{storeGroupID,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        storeId = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierId != null" >
+        supplierId = #{supplierId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.StoreGroupMember" >
+    update StoreGroupMember
+    set storeGroupID = #{storeGroupID,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      storeId = #{storeId,jdbcType=INTEGER},
+      supplierId = #{supplierId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+</mapper>

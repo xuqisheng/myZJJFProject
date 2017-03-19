@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.AuthorityMapper" >
+
+ 	<select id="getUserByScManagerCredential" parameterType="java.lang.String"  resultType="ScManager">
+		select u.id,u.supplierName,u.supplierCode,u.mobile,u.`password`,u.`status`,u.isDelete
+		from scmanager u where u.mobile =  #{credential}
+		and u.`status` = 2 and u.isDelete=0
+	</select>
+ 	<select id="getUserBySupplierCredential" parameterType="java.lang.String"  resultType="Supplier">
+		<!-- select u.id,u.supplierName,u.supplierCode,u.mobile,u.`password`,u.`status`,u.isDelete
+		from supplier u where u.mobile =  #{credential}
+		and u.`status` = 2 and u.isDelete=0 -->
+		select u.*
+		from supplier u where u.mobile =  #{credential}
+		and u.`status` = 2 and u.isDelete=0
+	</select>
+ 	<select id="getUserByCustomerServiceCredential" parameterType="java.lang.String"  resultType="com.corner.scms.beans.CustomerService">
+		select u.id,u.userName,u.nickName,u.mobile,u.`password`,u.`status`,u.isDelete
+		from customerservice u where u.userName = #{credential}
+		and u.`status` = 2 and u.isDelete=0
+	</select>
+ 	<select id="getRolesByUserId" parameterType="java.lang.String"  resultType="java.lang.String">
+		SELECT 
+		r.roleName
+		from role r,scmanager u,userrolemap urm
+		WHERE u.id=#{userId} and urm.userId=u.id AND urm.roleId=r.id
+		and u.`status` =1 and u.isDelete=0
+		and  r.`status` =1 and r.isDelete=0
+	</select>
+ 	<select id="getAuthsByUserId" parameterType="java.lang.String"  resultType="java.lang.String">
+		SELECT 
+		a.authString
+		from scmanager u,userrolemap urm,role r,roleauthmap ram, auth a
+		WHERE u.id=#{userId} AND urm.userId=u.id 
+		AND urm.roleId=r.id AND ram.roleId = urm.roleId 
+		AND ram.authId = a.id
+		and u.`status` =1 and u.isDelete=0
+		and  r.`status` =1 and r.isDelete=0
+		and  a.`status` =1 and a.isDelete=0
+	</select>
+	
+ 	<select id="getSubjectRoleses" parameterType="java.lang.String"  resultType="com.corner.core.beans.Role">
+		SELECT 
+		r.*
+		from role r,scmanager u,userrolemap urm
+		WHERE u.id=#{userId} and urm.userId=u.id AND urm.roleId=r.id
+		and u.`status` =1 and u.isDelete=0
+		and  r.`status` =1 and r.isDelete=0
+	</select>
+	
+	<select id="getSubjectAuths" parameterType="java.lang.String"  resultType="com.corner.core.beans.Auth">
+		SELECT 
+		a.*
+		from scmanager u,userrolemap urm,role r,roleauthmap ram, auth a
+		WHERE u.id=#{userId} AND urm.userId=u.id 
+		AND urm.roleId=r.id AND ram.roleId = urm.roleId 
+		AND ram.authId = a.id
+		and u.`status` =1 and u.isDelete=0
+		and  r.`status` =1 and r.isDelete=0
+		and  a.`status` =1 and a.isDelete=0
+	</select>
+	
+	
+	  <!-- 根据id获取用户的登录密码 -->
+  <select id="selectPasswordById" parameterType="java.lang.String" resultType="java.lang.String">
+  	select password from supplier where id=#{id}
+  </select>
+	
+	<!-- 修改供应商登陆密码 -->
+	<update id="updateLoginPassword" parameterType="java.util.Map">
+		UPDATE supplier SET password = #{password},updateTime=#{updateTime} WHERE id = #{id} AND isDelete = 0
+	</update>
+	
+</mapper>

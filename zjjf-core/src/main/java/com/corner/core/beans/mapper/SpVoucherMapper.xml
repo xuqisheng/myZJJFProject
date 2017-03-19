@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SpVoucherMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpVoucher" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="storeNm" property="storeNm" jdbcType="VARCHAR" />
+    <result column="ruleId" property="ruleId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="money" property="money" jdbcType="INTEGER" />
+    <result column="spId" property="spId" jdbcType="VARCHAR" />
+    <result column="plantHalve" property="plantHalve" jdbcType="DOUBLE" />
+    <result column="billType" property="billType" jdbcType="TINYINT" />
+    <result column="startPrice" property="startPrice" jdbcType="DECIMAL" />
+    <result column="transportTimeType" property="transportTimeType" jdbcType="TINYINT" />
+    <result column="payType" property="payType" jdbcType="TINYINT" />
+    <result column="payStr" property="payStr" jdbcType="VARCHAR" />
+    <result column="goodsType" property="goodsType" jdbcType="TINYINT" />
+    <result column="useType" property="useType" jdbcType="TINYINT" />
+    <result column="preOrderId" property="preOrderId" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="scope" property="scope" jdbcType="VARCHAR" />
+    <result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="expiredTime" property="expiredTime" jdbcType="TIMESTAMP" />
+    <result column="createrId" property="createrId" jdbcType="VARCHAR" />
+    <result column="createrName" property="createrName" jdbcType="VARCHAR" />
+    <result column="createType" property="createType" jdbcType="TINYINT" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="secKey" property="secKey" jdbcType="VARCHAR" />
+    <result column="pubStatus" property="pubStatus" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="acStatus" property="acStatus" jdbcType="TINYINT" />
+    <result column="acTime" property="acTime" jdbcType="TIMESTAMP" />
+    <result column="acId" property="acId" jdbcType="VARCHAR" />
+    <result column="spVoucherActiveId" property="spVoucherActiveId" jdbcType="INTEGER" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.corner.core.beans.SpVoucher" extends="BaseResultMap" >
+    <result column="goodsStr" property="goodsStr" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, storeId, storeNm, ruleId, name, remark, money, spId, plantHalve, billType, startPrice, 
+    transportTimeType, payType, payStr, goodsType, useType, preOrderId, orderId, scope, 
+    startTime, expiredTime, createrId, createrName, createType, createTime, updateTime, 
+    secKey, pubStatus, status, acStatus, acTime, acId, spVoucherActiveId, isDelete
+  </sql>
+  <sql id="Blob_Column_List" >
+    goodsStr
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from SpVoucher
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SpVoucher
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SpVoucher" >
+    insert into SpVoucher (id, storeId, storeNm, 
+      ruleId, name, remark, 
+      money, spId, plantHalve, 
+      billType, startPrice, transportTimeType, 
+      payType, payStr, goodsType, 
+      useType, preOrderId, orderId, 
+      scope, startTime, expiredTime, 
+      createrId, createrName, createType, 
+      createTime, updateTime, secKey, 
+      pubStatus, status, acStatus, 
+      acTime, acId, spVoucherActiveId, 
+      isDelete, goodsStr)
+    values (#{id,jdbcType=VARCHAR}, #{storeId,jdbcType=INTEGER}, #{storeNm,jdbcType=VARCHAR}, 
+      #{ruleId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{money,jdbcType=INTEGER}, #{spId,jdbcType=VARCHAR}, #{plantHalve,jdbcType=DOUBLE}, 
+      #{billType,jdbcType=TINYINT}, #{startPrice,jdbcType=DECIMAL}, #{transportTimeType,jdbcType=TINYINT}, 
+      #{payType,jdbcType=TINYINT}, #{payStr,jdbcType=VARCHAR}, #{goodsType,jdbcType=TINYINT}, 
+      #{useType,jdbcType=TINYINT}, #{preOrderId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+      #{scope,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{expiredTime,jdbcType=TIMESTAMP}, 
+      #{createrId,jdbcType=VARCHAR}, #{createrName,jdbcType=VARCHAR}, #{createType,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{secKey,jdbcType=VARCHAR}, 
+      #{pubStatus,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{acStatus,jdbcType=TINYINT}, 
+      #{acTime,jdbcType=TIMESTAMP}, #{acId,jdbcType=VARCHAR}, #{spVoucherActiveId,jdbcType=INTEGER}, 
+      #{isDelete,jdbcType=BIT}, #{goodsStr,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SpVoucher" >
+    insert into SpVoucher
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="storeNm != null" >
+        storeNm,
+      </if>
+      <if test="ruleId != null" >
+        ruleId,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="spId != null" >
+        spId,
+      </if>
+      <if test="plantHalve != null" >
+        plantHalve,
+      </if>
+      <if test="billType != null" >
+        billType,
+      </if>
+      <if test="startPrice != null" >
+        startPrice,
+      </if>
+      <if test="transportTimeType != null" >
+        transportTimeType,
+      </if>
+      <if test="payType != null" >
+        payType,
+      </if>
+      <if test="payStr != null" >
+        payStr,
+      </if>
+      <if test="goodsType != null" >
+        goodsType,
+      </if>
+      <if test="useType != null" >
+        useType,
+      </if>
+      <if test="preOrderId != null" >
+        preOrderId,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="scope != null" >
+        scope,
+      </if>
+      <if test="startTime != null" >
+        startTime,
+      </if>
+      <if test="expiredTime != null" >
+        expiredTime,
+      </if>
+      <if test="createrId != null" >
+        createrId,
+      </if>
+      <if test="createrName != null" >
+        createrName,
+      </if>
+      <if test="createType != null" >
+        createType,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="secKey != null" >
+        secKey,
+      </if>
+      <if test="pubStatus != null" >
+        pubStatus,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="acStatus != null" >
+        acStatus,
+      </if>
+      <if test="acTime != null" >
+        acTime,
+      </if>
+      <if test="acId != null" >
+        acId,
+      </if>
+      <if test="spVoucherActiveId != null" >
+        spVoucherActiveId,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="goodsStr != null" >
+        goodsStr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="storeNm != null" >
+        #{storeNm,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleId != null" >
+        #{ruleId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=INTEGER},
+      </if>
+      <if test="spId != null" >
+        #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="plantHalve != null" >
+        #{plantHalve,jdbcType=DOUBLE},
+      </if>
+      <if test="billType != null" >
+        #{billType,jdbcType=TINYINT},
+      </if>
+      <if test="startPrice != null" >
+        #{startPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="transportTimeType != null" >
+        #{transportTimeType,jdbcType=TINYINT},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=TINYINT},
+      </if>
+      <if test="payStr != null" >
+        #{payStr,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsType != null" >
+        #{goodsType,jdbcType=TINYINT},
+      </if>
+      <if test="useType != null" >
+        #{useType,jdbcType=TINYINT},
+      </if>
+      <if test="preOrderId != null" >
+        #{preOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="scope != null" >
+        #{scope,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expiredTime != null" >
+        #{expiredTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createrId != null" >
+        #{createrId,jdbcType=VARCHAR},
+      </if>
+      <if test="createrName != null" >
+        #{createrName,jdbcType=VARCHAR},
+      </if>
+      <if test="createType != null" >
+        #{createType,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="secKey != null" >
+        #{secKey,jdbcType=VARCHAR},
+      </if>
+      <if test="pubStatus != null" >
+        #{pubStatus,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="acStatus != null" >
+        #{acStatus,jdbcType=TINYINT},
+      </if>
+      <if test="acTime != null" >
+        #{acTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acId != null" >
+        #{acId,jdbcType=VARCHAR},
+      </if>
+      <if test="spVoucherActiveId != null" >
+        #{spVoucherActiveId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="goodsStr != null" >
+        #{goodsStr,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SpVoucher" >
+    update SpVoucher
+    <set >
+      <if test="storeId != null" >
+        storeId = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="storeNm != null" >
+        storeNm = #{storeNm,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleId != null" >
+        ruleId = #{ruleId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=INTEGER},
+      </if>
+      <if test="spId != null" >
+        spId = #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="plantHalve != null" >
+        plantHalve = #{plantHalve,jdbcType=DOUBLE},
+      </if>
+      <if test="billType != null" >
+        billType = #{billType,jdbcType=TINYINT},
+      </if>
+      <if test="startPrice != null" >
+        startPrice = #{startPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="transportTimeType != null" >
+        transportTimeType = #{transportTimeType,jdbcType=TINYINT},
+      </if>
+      <if test="payType != null" >
+        payType = #{payType,jdbcType=TINYINT},
+      </if>
+      <if test="payStr != null" >
+        payStr = #{payStr,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsType != null" >
+        goodsType = #{goodsType,jdbcType=TINYINT},
+      </if>
+      <if test="useType != null" >
+        useType = #{useType,jdbcType=TINYINT},
+      </if>
+      <if test="preOrderId != null" >
+        preOrderId = #{preOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="scope != null" >
+        scope = #{scope,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        startTime = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expiredTime != null" >
+        expiredTime = #{expiredTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createrId != null" >
+        createrId = #{createrId,jdbcType=VARCHAR},
+      </if>
+      <if test="createrName != null" >
+        createrName = #{createrName,jdbcType=VARCHAR},
+      </if>
+      <if test="createType != null" >
+        createType = #{createType,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="secKey != null" >
+        secKey = #{secKey,jdbcType=VARCHAR},
+      </if>
+      <if test="pubStatus != null" >
+        pubStatus = #{pubStatus,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="acStatus != null" >
+        acStatus = #{acStatus,jdbcType=TINYINT},
+      </if>
+      <if test="acTime != null" >
+        acTime = #{acTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acId != null" >
+        acId = #{acId,jdbcType=VARCHAR},
+      </if>
+      <if test="spVoucherActiveId != null" >
+        spVoucherActiveId = #{spVoucherActiveId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="goodsStr != null" >
+        goodsStr = #{goodsStr,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.corner.core.beans.SpVoucher" >
+    update SpVoucher
+    set storeId = #{storeId,jdbcType=INTEGER},
+      storeNm = #{storeNm,jdbcType=VARCHAR},
+      ruleId = #{ruleId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      money = #{money,jdbcType=INTEGER},
+      spId = #{spId,jdbcType=VARCHAR},
+      plantHalve = #{plantHalve,jdbcType=DOUBLE},
+      billType = #{billType,jdbcType=TINYINT},
+      startPrice = #{startPrice,jdbcType=DECIMAL},
+      transportTimeType = #{transportTimeType,jdbcType=TINYINT},
+      payType = #{payType,jdbcType=TINYINT},
+      payStr = #{payStr,jdbcType=VARCHAR},
+      goodsType = #{goodsType,jdbcType=TINYINT},
+      useType = #{useType,jdbcType=TINYINT},
+      preOrderId = #{preOrderId,jdbcType=VARCHAR},
+      orderId = #{orderId,jdbcType=VARCHAR},
+      scope = #{scope,jdbcType=VARCHAR},
+      startTime = #{startTime,jdbcType=TIMESTAMP},
+      expiredTime = #{expiredTime,jdbcType=TIMESTAMP},
+      createrId = #{createrId,jdbcType=VARCHAR},
+      createrName = #{createrName,jdbcType=VARCHAR},
+      createType = #{createType,jdbcType=TINYINT},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      secKey = #{secKey,jdbcType=VARCHAR},
+      pubStatus = #{pubStatus,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      acStatus = #{acStatus,jdbcType=TINYINT},
+      acTime = #{acTime,jdbcType=TIMESTAMP},
+      acId = #{acId,jdbcType=VARCHAR},
+      spVoucherActiveId = #{spVoucherActiveId,jdbcType=INTEGER},
+      isDelete = #{isDelete,jdbcType=BIT},
+      goodsStr = #{goodsStr,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SpVoucher" >
+    update SpVoucher
+    set storeId = #{storeId,jdbcType=INTEGER},
+      storeNm = #{storeNm,jdbcType=VARCHAR},
+      ruleId = #{ruleId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      money = #{money,jdbcType=INTEGER},
+      spId = #{spId,jdbcType=VARCHAR},
+      plantHalve = #{plantHalve,jdbcType=DOUBLE},
+      billType = #{billType,jdbcType=TINYINT},
+      startPrice = #{startPrice,jdbcType=DECIMAL},
+      transportTimeType = #{transportTimeType,jdbcType=TINYINT},
+      payType = #{payType,jdbcType=TINYINT},
+      payStr = #{payStr,jdbcType=VARCHAR},
+      goodsType = #{goodsType,jdbcType=TINYINT},
+      useType = #{useType,jdbcType=TINYINT},
+      preOrderId = #{preOrderId,jdbcType=VARCHAR},
+      orderId = #{orderId,jdbcType=VARCHAR},
+      scope = #{scope,jdbcType=VARCHAR},
+      startTime = #{startTime,jdbcType=TIMESTAMP},
+      expiredTime = #{expiredTime,jdbcType=TIMESTAMP},
+      createrId = #{createrId,jdbcType=VARCHAR},
+      createrName = #{createrName,jdbcType=VARCHAR},
+      createType = #{createType,jdbcType=TINYINT},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      secKey = #{secKey,jdbcType=VARCHAR},
+      pubStatus = #{pubStatus,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      acStatus = #{acStatus,jdbcType=TINYINT},
+      acTime = #{acTime,jdbcType=TIMESTAMP},
+      acId = #{acId,jdbcType=VARCHAR},
+      spVoucherActiveId = #{spVoucherActiveId,jdbcType=INTEGER},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

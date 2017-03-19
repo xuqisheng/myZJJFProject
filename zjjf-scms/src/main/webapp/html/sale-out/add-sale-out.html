@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>新增商品出库</title>
+		<link rel="stylesheet" type="text/css" href="../../resources/css/base.css" />
+		<link rel="stylesheet" type="text/css" href="../../resources/css/order-detail.css" />
+		<script src="../../resources/vendor/jquery/jquery-1.12.4.min.js"></script>
+		<script src="../../resources/js/comm.js"></script>
+		<script src="../../resources/vendor/drag/drag.1.0-min.js"></script>
+	</head>
+	<style type="text/css">
+
+	</style>
+
+	<body>
+		<div class="wrap-bd">
+			<div class="mb-small clearfix">
+				<div class="fl title">新增商品出库</div>
+			</div>
+			<div class="op-section clearfix">
+				<div class="mb-default">
+					<label id="" class="mr-small">
+					销售订单：
+					</label>
+					<span class="button button-default" id="add_sale">选择销售订单</span>
+				</div>
+				<b>订单编号：20160701163324004863&nbsp;&nbsp;&nbsp;客户订单号：20160701163324004663
+	    		</b>
+			</div>
+
+			<h3>收获信息</h3>
+			<div class="op-section clearfix">
+				<div>
+					<ul class="info-ct fl">
+						<li class="table-list">
+							<span class="trade-imfor-dt">配送店主：</span>
+							<span class="trade-imfor-dd"><p>深圳南山测试供应商夏芸</p></span></li>
+						<li class="table-list"><span class="trade-imfor-dt">手机号：</span>
+							<span class="trade-imfor-dd"><p>13620912939</p></span>
+						</li>
+						<li class="table-list">
+							<span class="trade-imfor-dt">店名：</span>
+							<span class="trade-imfor-dd"><p>转角便利店</p></span>
+						</li>
+						<li class="table-list">
+							<span class="trade-imfor-dt">店面地址：</span>
+							<span class="trade-imfor-dd">广东省深圳南山区白石洲商业步行街</span> &nbsp;&nbsp;&nbsp;
+						</li>
+					</ul>
+					<ul class="info-ct fl">
+						<li class="table-list">
+							<span class="trade-imfor-dt">配送时间：</span>
+							<span class="trade-imfor-dd"><p>2016-7-27</p></span>
+						</li>
+						<li class="table-list noprint">
+							<span class="trade-imfor-dt">支付方式：</span>
+							<span class="trade-imfor-dd">货到付款</span>
+						</li>
+						<li class="table-list">
+							<span class="trade-imfor-dt">固定电话：</span>
+							<span class="trade-imfor-dd"><p></p></span>
+						</li>
+						<li class="table-list">
+							<span class="trade-imfor-dt">备注：</span>
+							<span class="trade-imfor-dd"><p></p></span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<table class="table-list table-border mt-default">
+				<thead>
+					<tr>
+						<th>序号</th>
+						<th>商品条形码</th>
+						<th>商品名称</th>
+						<th>规格</th>
+						<th>单价</th>
+						<th>销售数量</th>
+						<th>金额</th>
+						<th>出库数量</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody class="table-tbody">
+					<tr>
+						<td>1</td>
+						<td>243432432</td>
+						<td>可口可乐</td>
+						<td>300ml</td>
+						<td>36</td>
+						<td>30</td>
+						<td>02154</td>
+						<td>
+							<input type="text" class="input-search-date" />
+						</td>
+						<td>
+							<span class="button button-operate">删除</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="dialog hidden" id="J_dialogAddNew">
+				<form action="" method="post" id="">
+					<div class="dialog-head" style="cursor: move;">
+						<div class="dialog-title">选择销售订单</div>
+						<div class="dialog-close"></div>
+					</div>
+					<div class="dialog-body dialog-padding">
+						<p>
+							<input type="text" value="" name="" id="" class="input" style="width:360px">
+							<input type="button" name="" id="" value="搜索" class="input-search-button" />
+						</p>
+						<table class="table-list table-border mt-default">
+							<thead>
+								<tr>
+									<th>序号</th>
+									<th>1</th>
+									<th>1</th>
+									<th>1</th>
+								</tr>
+							</thead>
+							<tbody class="table-tbody">
+								<tr>
+									<td>1</td>
+									<td>2</td>
+									<td>2</td>
+									<td>3</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="dialog-foot">
+						<input type="hidden" name="" value="" id="">
+						<input type="button" class="dialog-button dialog-ok" id="" value="确认">
+						<input type="button" class="dialog-button dialog-cancel ml-default" value="取消">
+						<input type="reset" class="hidden" />
+					</div>
+
+				</form>
+			</div>
+			<div class="mt-default">
+				<input type="button" name="" id="" value="保存并打印" class="button-save" />
+				<input type="button" name="" id="" value="取消" class="button-cancel" />
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var oDialog = document.getElementsByClassName("dialog")[0];
+		//		var oDialogHead = document.getElementsByClassName("dialog-head")[0];
+		startDrag(oDialog, oDialog);
+		$(function() {
+			dialogPosCenter('#J_dialogAddNew');
+			$('#add_sale').on('click', function() {
+				$('#J_dialogAddNew, .cover-all').fadeIn();
+			});
+			$('.dialog').on('click', '.dialog-cancel, .dialog-close', function() {
+				$('.dialog, .cover-all').fadeOut();
+			});
+			$('.table-list td').click(function() {
+				$(this).parent().css('background', '#009dd9').siblings().css('background', '#fff')
+
+			})
+		})
+	</script>
+
+</html>

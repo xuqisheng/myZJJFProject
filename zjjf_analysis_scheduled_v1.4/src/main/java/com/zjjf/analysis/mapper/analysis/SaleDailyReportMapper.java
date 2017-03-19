@@ -1,0 +1,13 @@
+package com.zjjf.analysis.mapper.analysis;
+
+import com.zjjf.analysis.beans.analysis.supplier.SaleDailyReport;
+import org.apache.ibatis.annotations.Param;
+
+public interface SaleDailyReportMapper {
+
+    int insert(SaleDailyReport record);
+
+    void update(SaleDailyReport record);
+    
+    SaleDailyReport getExitRecord(@Param("supplierId") String supplierId, @Param("spGroupId") Integer spGroupId, @Param("dayTime") String dayTime);
+}

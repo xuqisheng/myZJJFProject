@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.corner.ERPManagerItemMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.corner.ERPManagerItem" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="itemCode" property="itemCode" jdbcType="VARCHAR" />
+    <result column="serialNum" property="serialNum" jdbcType="INTEGER" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="managerId" property="managerId" jdbcType="VARCHAR" />
+    <result column="areaPrice" property="areaPrice" jdbcType="DECIMAL" />
+    <result column="taxRate" property="taxRate" jdbcType="DECIMAL" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, itemCode, serialNum, itemBaseId, supplierId, managerId, areaPrice, taxRate, addTime, 
+    updateTime, status, isDelete
+  </sql>
+  
+  <select id="getAll" resultType="com.zjjf.analysis.beans.corner.ERPManagerItemVo" parameterType="java.util.Map">
+  	SELECT
+  	<include refid="Base_Column_List"></include>
+  	FROM ERPManagerItem
+  	<where>
+  		<if test="addTimeBegin != null">
+  			and DATE_FORMAT(ADDTIME,'%Y%m%d') &gt;= #{addTimeBegin}
+  		</if>
+  		<if test="addTimeEnd != null">
+  			DATE_FORMAT(ADDTIME,'%Y%m%d') &lt;= #{addTimeEnd}
+  		</if>
+  	</where>
+  	limit #{offset}, 1000
+  </select>
+  
+  <select id="getByItemId" resultType="com.zjjf.analysis.beans.corner.ERPManagerItem" >
+  	select * from ERPManagerItem where id =#{id}
+  </select>
+  
+  <select id="getRecentAreaPriceAndTaxRate" resultType="com.zjjf.analysis.beans.corner.ERPManagerItemVo" parameterType="java.util.Map">
+  	select 
+  	areaPrice,taxRate
+  	from ERPManagerItem
+  	<where>
+  		<if test="managerId != null">and managerId = #{managerId}</if>
+  		<if test="supplierId != null">and supplierId = #{supplierId}</if>
+  		<if test="itemBaseId != null">and itemBaseId = #{itemBaseId}</if>
+  	</where>
+  	order by addTime DESC limit 1
+  </select>
+
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.corner.ERPManagerItem" >
+    insert into ERPManagerItem (id, itemCode, serialNum, 
+      itemBaseId, supplierId, managerId, 
+      areaPrice, taxRate, addTime, 
+      updateTime, status, isDelete
+      )
+    values (#{id,jdbcType=VARCHAR}, #{itemCode,jdbcType=VARCHAR}, #{serialNum,jdbcType=INTEGER}, 
+      #{itemBaseId,jdbcType=INTEGER}, #{supplierId,jdbcType=VARCHAR}, #{managerId,jdbcType=VARCHAR}, 
+      #{areaPrice,jdbcType=DECIMAL}, #{taxRate,jdbcType=DECIMAL}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}
+      )
+  </insert>
+</mapper>

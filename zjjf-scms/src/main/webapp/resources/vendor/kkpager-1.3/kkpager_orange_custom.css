@@ -1,0 +1,101 @@
+#kkpager{
+	clear:both;
+	color:#666;
+	margin-top:10px;
+	font-size:14px;
+	float:right
+}
+#kkpager a{
+	float: left;
+	border: 1px solid #ddd;
+	display: inline;
+	padding: 6px 12px;
+	height: 18px;
+	line-height:18px;
+	margin-right: -1px;
+	cursor: pointer;
+	background: #fff;
+	text-decoration:none;
+	color:#666;
+}
+
+#kkpager span.disabled{
+	float: left;
+	display: inline;
+    padding: 6px 12px;
+    height: 18px;
+    line-height:18px;
+	margin-right: -1px;
+	border:1px solid #ddd;
+	background:#fff;
+	color: #aaa;
+}
+#kkpager span.curr{
+	float: left;
+	border: 1px solid #ed4b1c;
+	display: inline;
+    padding: 6px 12px;
+    height: 18px;
+    line-height:18px;
+	margin-right: -1px;
+	background: #ed4b1c;
+	color: #fff;
+}
+#kkpager a:hover{
+	border:1px solid #ddd; 
+	background: #eee;
+}
+#kkpager span.normalsize{
+}
+#kkpager_gopage_wrap{
+	position:relative;
+	left:0px;
+	top:0px;
+}
+#kkpager_btn_go {
+	width:44px;
+	height:20px;
+	border:0px;
+	overflow:hidden;
+	line-height:140%;
+	padding:0px;
+	margin:0px;
+	text-align:center;
+	cursor:pointer;
+	background:#ed4b1c;
+	color:#FFF;
+	position:absolute;
+	left:0px;
+	top:-2px;
+	display:none;
+}
+#kkpager_btn_go_input{
+	width:36px;
+	color:#999;
+	text-align:center;
+	margin-left:1px;
+	margin-right:1px;
+	border:1px solid #ddd;
+	position:relative;
+	left:0px;
+	top:0px;
+	outline:none;
+}
+#kkpager_btn_go_input.focus{
+	border-color:#ed4b1c;
+}
+#kkpager .pageBtnWrap{
+	float:left;
+}
+#kkpager .infoTextAndGoPageBtnWrap{
+    float:left;
+    margin-top: 5px;
+    margin-left: 12px;
+}
+#kkpager .spanDot{
+	float:left;
+	margin:0 2px;
+}
+#kkpager .currPageNum{
+	color:#ed4b1c;
+}

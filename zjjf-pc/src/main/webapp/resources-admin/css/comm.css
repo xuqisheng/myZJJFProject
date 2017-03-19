@@ -1,0 +1,153 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #646464;
+}
+.clearfix{
+    display: block;
+    zoom: 1;
+}
+.clearfix:after{
+    display: block;
+    font-size: 0;
+    height: 0;
+    visibility: hidden;
+    content: "";
+    clear: both;
+}
+.w {
+    position: relative;
+    width: 86%;
+    min-width: 720px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.wrap-bd {
+	padding: 20px;
+}
+.wrap {
+    border: 6px solid #eee;
+}
+.g-logo{
+    height: 76px;
+    background: url(../img/logo.png) left center no-repeat;
+}
+.g-nav {
+    height: 36px;
+}
+.g-nav ul{
+    margin: 0;
+    padding: 0;
+    height: 36px;
+    background: #f6f6f6;
+}
+.g-nav li {
+    float: left;
+    height: 37px;
+    list-style: none;
+    border-right: 1px solid #ddd;
+}
+.g-nav li a {
+    display: block;
+    float: left;
+    height: 37px;
+    font-weight: bold;
+    line-height: 37px;
+    text-decoration: none;
+    color: #646464;
+    padding: 0 20px;
+}
+.g-nav li.logout {
+    float: right;
+    border-left: 1px solid #ddd;
+    border-right: none;
+}
+.g-nav li a:hover {
+    background: #fdfcf6;
+}
+.g-nav li a.active, .main-nav li a.active {
+    background: #f0f0f0 url(../img/top-menu-item-bg.gif) repeat-x left top;
+    color: #454545;
+}
+.g-footer {
+    margin: 10px auto;
+    color: #9B9B9B;
+    text-align: center;
+}
+.g-footer a {
+    text-decoration: none;
+}
+.g-breadcrumb {
+    margin: 12px auto;
+    font-weight: bold;
+}
+.g-breadcrumb a {
+    color: #646464;
+    text-decoration: none;
+}
+.g-breadcrumb a.active {
+    color: #c66653;
+}
+.g-contain {
+    background: #fff;
+    border: 1px solid #ddd;
+}
+.g-title {
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: bold;
+    color: #5494af;
+    padding: 0 0 0 10px;
+}
+.table {
+    width: 100%;
+}
+.table tr th{
+    background:#e7e7e7;
+    padding: 0px 20px;
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 1px solid #ddd;
+}
+.table tr td {
+    background: #f6f6f6;
+    padding: 0px 20px;
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 1px solid #ddd;
+}
+.table tr.odd td {
+    background: #fbfbfb;
+}
+.table tr:hover td {
+    background: #fdfcf6;
+}
+.table .action {
+    text-align: right;
+    padding: 0 20px 0 10px;
+}
+.table tr .action a {
+    margin: 0 0 0 10px;
+    text-decoration: none;
+    color: #9b9b9b;
+}
+.table tr:hover .action .edit {
+    color: #c5a059;
+}
+.table tr:hover .action .delete {
+    color: #a02b2b;
+}
+.table tr:hover .action .view {
+    color: #55a34a;
+}
+.table tr:hover .action a:hover {
+    text-decoration: underline;
+}
+.button-submit {
+    color: #646464;
+    width: 94px;
+    height: 29px;
+    cursor: pointer;
+    border: none;
+    background: url(../img/button-submit.gif) no-repeat left top;
+}

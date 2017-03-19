@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ERPWarehouseUserMapMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ERPWarehouseUserMapKey" >
+    <id column="userId" property="userId" jdbcType="VARCHAR" />
+    <id column="whId" property="whId" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.corner.core.beans.ERPWarehouseUserMapKey" >
+    delete from ERPWarehouseUserMap
+    where userId = #{userId,jdbcType=VARCHAR}
+      and whId = #{whId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ERPWarehouseUserMapKey" >
+    insert into ERPWarehouseUserMap (userId, whId)
+    values (#{userId,jdbcType=VARCHAR}, #{whId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ERPWarehouseUserMapKey" >
+    insert into ERPWarehouseUserMap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="whId != null" >
+        whId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="whId != null" >
+        #{whId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

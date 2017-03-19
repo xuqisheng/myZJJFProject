@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.salesman.dao.AppMonitorLogsMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.salesman.model.AppMonitorLogs" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="keepAlive" property="keepAlive" jdbcType="VARCHAR" />
+    <result column="uploadState" property="uploadState" jdbcType="VARCHAR" />
+    <result column="network" property="network" jdbcType="VARCHAR" />
+    <result column="gps" property="gps" jdbcType="VARCHAR" />
+    <result column="appTime" property="appTime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="deviceType" property="deviceType" jdbcType="VARCHAR" />
+    <result column="deviceName" property="deviceName" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.corner.salesman.model.AppMonitorLogs" extends="BaseResultMap" >
+    <result column="dataInfo" property="dataInfo" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, keepAlive, uploadState, network, gps, appTime, remark, createBy, createTime, 
+    deviceType
+  </sql>
+  <sql id="Blob_Column_List" >
+    dataInfo
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tbl_app_monitor_logs_t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tbl_app_monitor_logs_t
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.salesman.model.AppMonitorLogs" >
+    insert into tbl_app_monitor_logs_t (id, keepAlive, uploadState, 
+      network, gps, appTime, 
+      remark, createBy, createTime, 
+      deviceType, dataInfo)
+    values (#{id,jdbcType=INTEGER}, #{keepAlive,jdbcType=INTEGER}, #{uploadState,jdbcType=INTEGER}, 
+      #{network,jdbcType=INTEGER}, #{gps,jdbcType=INTEGER}, #{appTime,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{deviceType,jdbcType=INTEGER}, #{dataInfo,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.salesman.model.AppMonitorLogs" >
+    insert into tbl_app_monitor_logs_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="keepAlive != null" >
+        keepAlive,
+      </if>
+      <if test="uploadState != null" >
+        uploadState,
+      </if>
+      <if test="network != null" >
+        network,
+      </if>
+      <if test="gps != null" >
+        gps,
+      </if>
+      <if test="appTime != null" >
+        appTime,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="createBy != null" >
+        createBy,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="deviceType != null" >
+        deviceType,
+      </if>
+      <if test="dataInfo != null" >
+        dataInfo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="keepAlive != null" >
+        #{keepAlive,jdbcType=INTEGER},
+      </if>
+      <if test="uploadState != null" >
+        #{uploadState,jdbcType=INTEGER},
+      </if>
+      <if test="network != null" >
+        #{network,jdbcType=INTEGER},
+      </if>
+      <if test="gps != null" >
+        #{gps,jdbcType=INTEGER},
+      </if>
+      <if test="appTime != null" >
+        #{appTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deviceType != null" >
+        #{deviceType,jdbcType=INTEGER},
+      </if>
+      <if test="dataInfo != null" >
+        #{dataInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.salesman.model.AppMonitorLogs" >
+    update tbl_app_monitor_logs_t
+    <set >
+      <if test="keepAlive != null" >
+        keepAlive = #{keepAlive,jdbcType=INTEGER},
+      </if>
+      <if test="uploadState != null" >
+        uploadState = #{uploadState,jdbcType=INTEGER},
+      </if>
+      <if test="network != null" >
+        network = #{network,jdbcType=INTEGER},
+      </if>
+      <if test="gps != null" >
+        gps = #{gps,jdbcType=INTEGER},
+      </if>
+      <if test="appTime != null" >
+        appTime = #{appTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        createBy = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deviceType != null" >
+        deviceType = #{deviceType,jdbcType=INTEGER},
+      </if>
+      <if test="dataInfo != null" >
+        dataInfo = #{dataInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.corner.salesman.model.AppMonitorLogs" >
+    update tbl_app_monitor_logs_t
+    set keepAlive = #{keepAlive,jdbcType=INTEGER},
+      uploadState = #{uploadState,jdbcType=INTEGER},
+      network = #{network,jdbcType=INTEGER},
+      gps = #{gps,jdbcType=INTEGER},
+      appTime = #{appTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      createBy = #{createBy,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      deviceType = #{deviceType,jdbcType=INTEGER},
+      dataInfo = #{dataInfo,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.salesman.model.AppMonitorLogs" >
+    update tbl_app_monitor_logs_t
+    set keepAlive = #{keepAlive,jdbcType=INTEGER},
+      uploadState = #{uploadState,jdbcType=INTEGER},
+      network = #{network,jdbcType=INTEGER},
+      gps = #{gps,jdbcType=INTEGER},
+      appTime = #{appTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      createBy = #{createBy,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      deviceType = #{deviceType,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+	<select id="getAppLogPageList" parameterType="com.corner.salesman.model.AppMonitorLogs" resultType="com.corner.salesman.model.AppMonitorLogs">
+		SELECT
+			CASE
+		    WHEN t.keepAlive = 1 THEN '活着'
+		    WHEN t.keepAlive = 2 THEN '杀死'
+		    ELSE '其它'
+		  END keepAlive,
+		  CASE
+		    WHEN t.uploadState = 1 THEN '上传成功'
+		    WHEN t.uploadState = 2 THEN '上传失败'
+		    WHEN t.uploadState = 3 THEN '批量上传成功'
+		    WHEN t.uploadState = 4 THEN '批量上传失败'
+		    WHEN t.uploadState = 5 THEN '不上传'
+		    ELSE '其它'
+		  END uploadState,
+		  CASE
+		    WHEN t.network = 1 THEN '无网络'
+		    WHEN t.network = 2 THEN '手机网络'
+		    WHEN t.network = 3 THEN '无线网络'
+		    ELSE '其它'
+		  END network,
+		  CASE
+		    WHEN t.gps = 1 THEN '打开'
+		    WHEN t.gps = 2 THEN '手机网络'
+		    ELSE '其它'
+		  END gps,
+		  CASE
+		    WHEN t.deviceType = 1 THEN 'Android'
+		    WHEN t.deviceType = 2 THEN 'IOS'
+		    ELSE '其它'
+		  END deviceType,
+		  CONCAT(left(t.dataInfo,100),'...') dataInfo,
+		  t.createTime,t.appTime,
+		  u.userName as createBy,u.deviceName
+		FROM
+			tbl_app_monitor_logs_t t
+	    LEFT JOIN salesman u on t.createBy=u.id
+		WHERE 1 = 1
+	    <if test="userName !=null and userName!=''">
+	    	AND u.userName like CONCAT('%',#{userName},'%')
+	    </if>
+	    <if test="createTime != null and createTime!=''">
+			AND DATE_FORMAT(t.createTime, '%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+		</if>
+	    <if test="deviceType != null and deviceType!=''">
+			AND deviceType = #{deviceType}
+		</if>
+	    order by t.createTime desc
+	   <include refid="BasePublicMapper.pageSql" />
+	</select>
+	
+	<select id="getAppLogPageSize" parameterType="com.corner.salesman.model.AppMonitorLogs" resultType="int">
+		SELECT count(1) FROM tbl_app_monitor_logs_t t LEFT JOIN salesman u ON t.createBy = u.id
+		 WHERE 1 = 1
+	    <if test="userName !=null and userName!=''">
+	    	AND u.userName like CONCAT('%',#{userName},'%') 
+	    </if>
+	    <if test="createTime != null and createTime!=''">
+			AND DATE_FORMAT(t.createTime, '%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+		</if>
+	    <if test="deviceType != null and deviceType!=''">
+			AND deviceType = #{deviceType}
+		</if>
+	</select>
+	
+	<select id="findAppLogList" parameterType="com.corner.salesman.model.AppMonitorLogs" resultType="com.corner.salesman.model.AppMonitorLogs">
+		SELECT
+			CASE
+		    WHEN t.keepAlive = 1 THEN '活着'
+		    WHEN t.keepAlive = 2 THEN '杀死'
+		    ELSE '其它'
+		  END keepAlive,
+		  CASE
+		    WHEN t.uploadState = 1 THEN '上传成功'
+		    WHEN t.uploadState = 2 THEN '上传失败'
+		    WHEN t.uploadState = 3 THEN '批量上传成功'
+		    WHEN t.uploadState = 4 THEN '批量上传失败'
+		    ELSE '其它'
+		  END uploadState,
+		  CASE
+		    WHEN t.network = 1 THEN '无网络'
+		    WHEN t.network = 2 THEN '手机网络'
+		    WHEN t.network = 3 THEN '无线网络'
+		    ELSE '其它'
+		  END network,
+		  CASE
+		    WHEN t.gps = 1 THEN '打开'
+		    WHEN t.gps = 2 THEN '手机网络'
+		    ELSE '其它'
+		  END gps,
+		  CASE
+		    WHEN t.deviceType = 1 THEN 'Android'
+		    WHEN t.deviceType = 2 THEN 'IOS'
+		    ELSE '其它'
+		  END deviceType,
+		  t.dataInfo,t.createTime,t.appTime,
+		  u.userName as createBy,u.deviceName
+		FROM
+			tbl_app_monitor_logs_t t
+	    LEFT JOIN salesman u on t.createBy=u.id
+		WHERE 1 = 1
+	    <if test="userName !=null and userName!=''">
+	    	AND u.userName like CONCAT('%',#{userName},'%')
+	    </if>
+	    <if test="createTime != null and createTime!=''">
+			AND DATE_FORMAT(t.createTime, '%Y-%m-%d')=DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+		</if>
+	    <if test="deviceType != null and deviceType!=''">
+			AND deviceType = #{deviceType}
+		</if>
+	    order by t.createTime desc
+	</select>
+</mapper>

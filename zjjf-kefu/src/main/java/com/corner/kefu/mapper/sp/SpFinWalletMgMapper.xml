@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpFinWalletMgMapper" >
+  
+  <sql id="pageSql">
+   limit #{pageIndex},#{pageSize}
+  </sql>
+  
+  <sql id="getStoreWalletList_condition">
+   FROM
+	(
+		SELECT
+			b.id,
+			b.`status`,
+			b.balance,
+			b.addTime,
+			c.`name` AS userName,
+			c.mobile
+		FROM
+			`User` a
+		JOIN FinWallet b ON a.walletId = b.id
+		JOIN Store c ON a.storeId = c.id
+		WHERE
+			a.isDelete = 0
+		AND c.isDelete = 0
+		UNION
+			SELECT
+				e.id,
+				e.`status`,
+				e.balance,
+				e.addTime,
+				f.supplierName AS userName,
+				f.mobile
+			FROM
+				`User` d
+			JOIN FinWallet e ON d.walletId = e.id
+			JOIN Supplier f ON d.supplierId = f.id
+			WHERE
+				d.isDelete = 0
+			AND f.isDelete = 0
+	) AS finwallet
+	where 1=1
+	<if test="searchKey!=null and searchKey!=''">
+	  and (finwallet.mobile like "%"#{searchKey}"%"
+	       or finwallet.userName like "%"#{searchKey}"%"
+	      )
+	</if>
+  </sql>
+  
+  <select id="getStoreWalletList" parameterType="com.corner.kefu.beans.ro.sp.FinWalletRo" resultType="com.corner.kefu.beans.vo.sp.FinWalletVo">
+   SELECT
+	finwallet.id,
+	finwallet.`status`,
+	finwallet.balance,
+	finwallet.userName,
+	finwallet.mobile,
+	finwallet.addTime
+  <include refid="getStoreWalletList_condition"/>
+  ORDER BY
+	finwallet.addTime DESC
+	<include refid="pageSql"/>
+  </select>
+  
+  <select id="getCountStoreWalletList" parameterType="com.corner.kefu.beans.ro.sp.FinWalletRo" resultType="java.lang.Integer">
+    SELECT
+		count(1)
+	<include refid="getStoreWalletList_condition"/>
+  </select>
+  
+   <insert id="addRechargeGrade" parameterType="com.corner.core.beans.RechargeGrade" useGeneratedKeys="true" keyProperty="id">
+    insert into RechargeGrade
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="gradeMoney != null" >
+        gradeMoney,
+      </if>
+      <if test="spVoucherId != null" >
+        spVoucherId,
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gradeMoney != null" >
+        #{gradeMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="spVoucherId != null" >
+        #{spVoucherId,jdbcType=INTEGER},
+      </if>
+      <if test="spGroupId != null" >
+        #{spGroupId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

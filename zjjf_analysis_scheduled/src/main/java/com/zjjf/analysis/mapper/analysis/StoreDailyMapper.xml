@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.StoreDailyMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.store.StoreDaily" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="storeCode" property="storeCode" jdbcType="VARCHAR" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="turnover" property="turnover" jdbcType="DECIMAL" />
+    <result column="totalRebate" property="totalRebate" jdbcType="DECIMAL" />
+    <result column="totalCoupon" property="totalCoupon" jdbcType="DECIMAL" />
+    <result column="totalFreight" property="totalFreight" jdbcType="DECIMAL" />
+    <result column="orderCount" property="orderCount" jdbcType="INTEGER" />
+    <result column="sku" property="sku" jdbcType="INTEGER" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="isVisit" property="isVisit" jdbcType="INTEGER" />
+    <result column="isZj" property="isZj" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="cityName" property="cityName" jdbcType="VARCHAR" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="areaName" property="areaName" jdbcType="VARCHAR" />
+    <result column="spGroupName" property="spGroupName" jdbcType="VARCHAR" />
+    <result column="storeName" property="storeName" jdbcType="VARCHAR" />
+    <result column="registerTime" property="registerTime" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, storeId, spGroupId, storeCode, dayTime, turnover, totalRebate, totalCoupon, totalFreight, 
+    orderCount, sku, quantity, isVisit, cityId, cityName, areaId, areaName, spGroupName, storeName, registerTime, updateTime, createTime
+  </sql>
+  
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.analysis.store.StoreDaily" >
+    insert into store_daily (storeId, spGroupId, storeCode,
+      dayTime, turnover, totalRebate, 
+      totalCoupon, totalFreight, orderCount, isVisit, isZj, 
+      cityId, cityName, areaId, areaName, spGroupName, storeName, registerTime,
+      sku, quantity, createTime)
+    values (#{storeId,jdbcType=INTEGER}, #{spGroupId,jdbcType=INTEGER},  #{storeCode,jdbcType=VARCHAR}, 
+      #{dayTime,jdbcType=INTEGER}, #{turnover,jdbcType=DECIMAL}, #{totalRebate,jdbcType=DECIMAL}, 
+      #{totalCoupon,jdbcType=DECIMAL}, #{totalFreight,jdbcType=DECIMAL}, #{orderCount,jdbcType=INTEGER}, #{isVisit,jdbcType=INTEGER}, #{isZj,jdbcType=INTEGER}, 
+      #{cityId,jdbcType=INTEGER}, #{cityName,jdbcType=VARCHAR}, #{areaId,jdbcType=INTEGER}, #{areaName,jdbcType=VARCHAR}, #{spGroupName,jdbcType=VARCHAR}, #{storeName,jdbcType=VARCHAR}, #{registerTime,jdbcType=VARCHAR},
+      #{sku,jdbcType=INTEGER}, #{quantity,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER})
+  </insert>
+  
+  <select id="getExitRecord" resultType="com.zjjf.analysis.beans.analysis.store.StoreDaily">
+    select  
+	    t1.id, 
+	    t1.storeId, 
+	    t1.dayTime, 
+	    IFNULL(t1.turnover, 0)  as turnover,
+		IFNULL(t1.totalRebate, 0)  as totalRebate,
+		IFNULL(t1.totalCoupon, 0)  as totalCoupon,
+		IFNULL(t1.totalFreight, 0)  as totalFreight,
+	    t1.orderCount, 
+	    t1.sku, 
+	    t1.quantity, 
+	    t1.isZj
+    from `store_daily` t1 where t1.`dayTime`= #{dayTime} and t1.storeId = #{storeId} and t1.spGroupId = #{spGroupId} and t1.isZj = #{isZj} limit 1
+  </select>
+  
+  <update id="update_daily" parameterType="com.zjjf.analysis.beans.analysis.store.StoreDaily" >
+    update store_daily
+    <set >
+      <if test="turnover != null" >
+        turnover = #{turnover},
+      </if>
+      <if test="totalRebate != null" >
+        totalRebate = #{totalRebate},
+      </if>
+      <if test="totalCoupon != null" >
+        totalCoupon = #{totalCoupon},
+      </if>
+      <if test="totalFreight != null" >
+        totalFreight = #{totalFreight},
+      </if>
+      <if test="orderCount != null" >
+        orderCount = #{orderCount},
+      </if>
+      <if test="sku != null" >
+        sku = #{sku},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  
+  <select id="getSumStoresInfo" resultType="com.zjjf.analysis.beans.analysis.saleman.SalemanDaily" parameterType="java.util.Map">
+  	SELECT SUM(s.`turnover`) AS 'turnover', SUM(orderCount) AS 'orderCount', 
+  	SUM(s.`turnover`) AS 'zjturnover', COUNT(DISTINCT storeId) AS 'activeStore'
+  	FROM `store_daily` s 
+  	<where>
+  		<if test="storeIds != null">and storeId IN ${storeIds}</if>
+  		<if test="dayTime != null">and dayTime = #{dayTime}</if>
+  		<if test="isZj != null">and isZj = #{isZj}</if>
+  	</where>
+  </select>
+  
+  <select id="getStoreList" resultType="com.zjjf.analysis.beans.analysis.store.StoreDaily">
+     select id, storeId, isZj, spGroupId from store_daily where dayTime = #{dayTime} limit #{offset}, 1000 
+  </select>
+  
+  <update id="updateTurnover">
+    update store_daily set turnover = #{turnover} where id=#{id}
+  </update>
+  
+</mapper>

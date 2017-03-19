@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.SalemanDailysMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.saleman.SalemanDaily" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="salemanId" property="salemanId" jdbcType="VARCHAR" />
+    <result column="salemanName" property="salemanName" jdbcType="VARCHAR" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+    <result column="isEffect" property="isEffect" jdbcType="INTEGER" />
+    <result column="turnover" property="turnover" jdbcType="DECIMAL" />
+    <result column="zjturnover" property="zjturnover" jdbcType="DECIMAL" />
+    <result column="orderCount" property="orderCount" jdbcType="INTEGER" />
+    <result column="activeStore" property="activeStore" jdbcType="INTEGER" />
+    <result column="newRegStore" property="newRegStore" jdbcType="INTEGER" />
+    <result column="kpiTurnover" property="kpiTurnover" jdbcType="DECIMAL" />
+    <result column="zjKpiTurnover" property="zjKpiTurnover" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, salemanId, salemanName, DATE_FORMAT(dayTime,'%Y-%m-%d') as dayTime, updateTime, createTime, isEffect, turnover, zjturnover, orderCount, 
+    activeStore, newRegStore as regStore, kpiTurnover, zjKpiTurnover
+  </sql>
+  
+  <select id="getTopList" parameterType="java.util.Map" resultType="java.util.Map">
+  	
+  	<if test="salesmanId != null and salesmanId != ''">
+  	(select c.* from
+  	(select @rownum1 := CAST(@rownum1 AS SIGNED)+1 AS 'seqNo',a.*
+ 	from
+ 	(select salemanId, salemanName, dayTime, SUM(turnover) AS 'turnover'
+ 	from saleman_daily
+	<where>
+		<if test="dayTime != null">
+			and dayTime = #{dayTime} 
+		</if>
+		<if test="dayTimeBegin != null">
+			and dayTime &gt;= #{dayTimeBegin} 
+		</if>
+		<if test="dayTimeEnd != null">
+			and dayTime &lt;= #{dayTimeEnd} 
+		</if>
+ 	</where>
+ 	group by salemanId order by turnover desc,salemanId) as a, (select @rownum1 := 0)b)AS c
+	where c.salemanId = #{salesmanId})
+ 	UNION ALL(
+  	</if>
+  	
+ 	select @rownum := CAST(@rownum AS SIGNED)+1 AS 'seqNo',a.*
+ 	from
+ 	(select salemanId, salemanName, dayTime, SUM(turnover) AS 'turnover'
+ 	from saleman_daily
+ 	<where>
+		<if test="dayTime != null">
+			and dayTime = #{dayTime} 
+		</if>
+		<if test="dayTimeBegin != null">
+			and dayTime &gt;= #{dayTimeBegin} 
+		</if>
+		<if test="dayTimeEnd != null">
+			and dayTime &lt;= #{dayTimeEnd} 
+		</if>
+ 	</where>
+ 	group by salemanId order by turnover desc,salemanId LIMIT #{pageNo}, #{pageSize}) as a, (select @rownum := #{pageNo})b
+ 	<if test="salesmanId != null and salesmanId != ''">)</if>
+  </select>
+  
+  <select id="getLastTopList" resultType="java.util.Map" parameterType="java.util.Map">
+ 
+ 	select c.seqNo, c.salemanId from
+ 	(select  @rownum := CAST(@rownum AS SIGNED)+1 AS 'seqNo',a.salemanId from
+ 	(select salemanId, salemanName, dayTime, SUM(turnover) AS 'turnover'
+ 	from saleman_daily
+	<where>
+		<if test="dayTime != null">
+			and dayTime = #{dayTime} 
+		</if>
+		<if test="dayTimeBegin != null">
+			and dayTime &gt;= #{dayTimeBegin} 
+		</if>
+		<if test="dayTimeEnd != null">
+			and dayTime &lt;= #{dayTimeEnd} 
+		</if>
+	</where> 
+ 	group by salemanId order by turnover desc,salemanId )a,(select @rownum := 0)b)c
+ 	<where>
+		<if test="salemanIds != null">and c.salemanId in ${salemanIds}</if>
+ 	</where>
+
+  </select>
+  
+  <select id="getDailyList" parameterType="java.util.Map" resultType="java.util.Map">
+  	select
+  	<if test="isSum == 0">
+  	salemanId, salemanName, DATE_FORMAT(dayTime,'%Y-%m-%d') as dayTime, updateTime, turnover,
+  	zjturnover, orderCount, activeStore, newRegStore as 'regStore', kpiTurnover, zjKpiTurnover 
+  	</if>
+  	<if test="isSum == 1">
+  	null as salemanId, #{areaName} as salemanName,
+  	DATE_FORMAT(dayTime,'%Y-%m-%d') as dayTime, updateTime, SUM(turnover) as 'turnover',
+  	SUM(zjturnover) as 'zjturnover', SUM(orderCount) as 'orderCount', 
+    SUM(activeStore) as 'activeStore', SUM(newRegStore) as 'regStore', SUM(kpiTurnover) as 'kpiTurnover', SUM(zjKpiTurnover) as 'zjKpiTurnover' 
+  	</if>
+  	from saleman_daily
+  	<where>
+		<if test="dayTime != null">
+			and dayTime = #{dayTime} 
+		</if>
+		<if test="dayTimeBegin != null">
+			and dayTime &gt;= #{dayTimeBegin} 
+		</if>
+		<if test="dayTimeEnd != null">
+			and dayTime &lt;= #{dayTimeEnd} 
+		</if>
+		<if test="salemanIds != null or salemanIds !=''">
+			and salemanId in ${salemanIds}
+		</if>
+ 	</where>
+ 	group by dayTime
+ 	order by dayTime desc LIMIT #{pageNo}, #{pageSize}
+  </select>
+  
+  <select id="getSummrization" parameterType="java.util.Map" resultType="java.util.Map">
+  	select
+  	salemanId, salemanName, dayTime, SUM(turnover) AS 'turnover',SUM(zjturnover) AS 'zjturnover', SUM(orderCount) AS 'orderCount',
+	SUM(newRegStore) AS 'regStore', SUM(activeStore) as 'activeStore', SUM(kpiTurnover) AS 'kpiTurnover', SUM(zjKpiTurnover) AS 'zjKpiTurnover'
+  	from saleman_daily
+  	<where>
+		<if test="dayTime != null">
+			and dayTime = #{dayTime} 
+		</if>
+		<if test="dayTimeBegin != null">
+			and dayTime &gt;= #{dayTimeBegin} 
+		</if>
+		<if test="dayTimeEnd != null">
+			and dayTime &lt;= #{dayTimeEnd} 
+		</if>
+		<if test="salemanIds != null or salemanIds !=''">
+			and salemanId in ${salemanIds}
+		</if>
+ 	</where>
+  </select>
+  
+</mapper>

@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.account.dao.MaOrderInfoMgMapper" >
+	<sql id="getMaOrderInfoPageList_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			isDelete = 0
+			AND kfStatus = 3
+			<choose>
+				<when test="queryStatus == 1">
+					AND warehouseStatus in (1,2,3,4)
+				</when>
+				<when test="queryStatus == 2">
+					AND whPayStatus = 0
+				</when>
+				<when test="queryStatus == 3">
+					AND whPayStatus = 1
+					AND warehouseStatus = 1
+				</when>
+				<when test="queryStatus == 4">
+					AND whPayStatus = 1
+					AND warehouseStatus in (2,3,4)
+				</when>
+			</choose>
+			<if test="orderId != null">
+				AND (warehouseName LIKE CONCAT('%',#{orderId},'%') or orderId LIKE CONCAT('%',#{orderId},'%'))
+			</if>	
+		</trim>
+	</sql>
+	<!-- 获取经销商订单列表 -->
+	<select id="getMaOrderInfoPageList" parameterType="com.corner.account.beans.ro.MaOrderMgCondition"
+		resultType="com.corner.account.beans.vo.MaOrderInfoMgVo">
+		SELECT *,(SELECT SUM(quantity) from ScOrderDetail where maOrderInfoId = MaOrderInfo.id) as totQuantity from  MaOrderInfo
+		<include refid="getMaOrderInfoPageList_condition" />
+			order by kfSubmitTime desc
+		<include refid="BasePublicMapper.pageSql"/>
+	</select>
+
+	<!-- 获取列表 总记录数 -->
+	<select id="getMaOrderInfoPageListSize" parameterType="com.corner.account.beans.ro.MaOrderMgCondition"
+		resultType="int">
+		select count(1) from MaOrderInfo
+		<include refid="getMaOrderInfoPageList_condition" />
+	</select>
+	
+	<select id="findOrderDetailList"  parameterType="java.util.Map" resultType="com.corner.core.beans.ScOrderDetail">
+			SELECT 
+			<choose>
+				<when test="total == 1">
+					id, orderId, orderId2, maOrderInfoId, itemId, wayCode, barCode, brand, name, spec, 
+				    img, pkg, 
+				    sum(quantity) as quantity,
+				    price,
+				    sum(totalPrice) as totalPrice, areaId,
+				    sum(areaTotalPrice) as areaTotalPrice,
+				    sum(freight) as freight,
+				    areaPrice, areaName, 
+				    zjjfPrice,
+				    sum(marketTotalPrice) as marketTotalPrice,
+				    marketPrice,spId, scmsGroupId, managerId, addTime, status
+				</when>
+				<otherwise>
+				*
+				</otherwise>
+			</choose>
+			 from ScOrderDetail
+			<trim prefix="WHERE" prefixOverrides="AND |OR ">
+				1=1
+				<if test="orderId != null and orderId != ''">
+					and orderId = #{orderId}
+				</if>
+				<if test="isDelete != null and isDelete != ''">
+					and isDelete = #{isDelete}
+				</if>
+				<if test="status != null and status != ''">
+					and status = #{status}
+				</if>
+				<if test="orderId2 != null and orderId2 != ''">
+					and orderId2 = #{orderId2}
+				</if>
+				<if test="maOrderInfoId != null and maOrderInfoId != ''">
+					and maOrderInfoId = #{maOrderInfoId}
+				</if>
+			</trim>
+			<if test="total == 1">group by itemId</if>
+	</select>
+	
+	
+	<update id="updatePlantWalletByLog" parameterType="com.corner.core.beans.PlantWalletLog">
+  	UPDATE PlantWallet set wallet = wallet + #{money} ,walletUpdateTime = NOW()
+  	where id = #{plantWalletId};
+  	insert into PlantWalletLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="payer != null" >
+        payer,
+      </if>
+      <if test="geter != null" >
+        geter,
+      </if>
+        plantWalletId,
+        actionType,
+      <if test="optType != null" >
+        optType,
+      </if>
+      <if test="actionTime != null" >
+        actionTime,
+      </if>
+      <if test="tradeWay != null" >
+        tradeWay,
+      </if>
+      <if test="tradeNo != null" >
+        tradeNo,
+      </if>
+      <if test="bankCode != null" >
+        bankCode,
+      </if>
+      <if test="bankNo != null" >
+        bankNo,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="spWithDrawId != null" >
+        spWithDrawId,
+      </if>
+      <if test="sheetId != null" >
+        sheetId,
+      </if>
+      <if test="couponId != null" >
+        couponId,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="orderPId != null" >
+        orderPId,
+      </if>
+        money,
+      	balance
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="payer != null" >
+        #{payer,jdbcType=TINYINT},
+      </if>
+      <if test="geter != null" >
+        #{geter,jdbcType=TINYINT},
+      </if>
+        #{plantWalletId,jdbcType=VARCHAR},
+        #{actionType,jdbcType=TINYINT},
+      <if test="optType != null" >
+        #{optType,jdbcType=TINYINT},
+      </if>
+      <if test="actionTime != null" >
+        #{actionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeWay != null" >
+        #{tradeWay,jdbcType=TINYINT},
+      </if>
+      <if test="tradeNo != null" >
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null" >
+        #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNo != null" >
+        #{bankNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="spWithDrawId != null" >
+        #{spWithDrawId,jdbcType=BIGINT},
+      </if>
+      <if test="sheetId != null" >
+        #{sheetId,jdbcType=VARCHAR},
+      </if>
+      <if test="couponId != null" >
+        #{couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPId != null" >
+        #{orderPId,jdbcType=VARCHAR},
+      </if>
+        #{money,jdbcType=DECIMAL},
+        (SELECT wallet from PlantWallet where id = #{plantWalletId,jdbcType=VARCHAR})
+    </trim>
+  </update>
+  
+  <update id="updateWhWalletByLog" parameterType="com.corner.core.beans.WhWalletLog">
+  	UPDATE WhWallet set wallet = wallet + #{money} ,walletUpdateTime = NOW() where id = #{warehouseId};
+  	insert into WhWalletLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="payer != null" >
+        payer,
+      </if>
+      <if test="geter != null" >
+        geter,
+      </if>
+      <if test="warehouseId != null" >
+        warehouseId,
+      </if>
+      <if test="actionType != null" >
+        actionType,
+      </if>
+      <if test="optType != null" >
+        optType,
+      </if>
+      <if test="actionTime != null" >
+        actionTime,
+      </if>
+      <if test="tradeWay != null" >
+        tradeWay,
+      </if>
+      <if test="tradeNo != null" >
+        tradeNo,
+      </if>
+      <if test="bankCode != null" >
+        bankCode,
+      </if>
+      <if test="bankNo != null" >
+        bankNo,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="orderNo != null" >
+        orderNo,
+      </if>
+      <if test="whWithDrawId != null" >
+        whWithDrawId,
+      </if>
+      <if test="sheetId != null" >
+        sheetId,
+      </if>
+      <if test="couponId != null" >
+        couponId,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="orderPId != null" >
+        orderPId,
+      </if>
+        balance
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="payer != null" >
+        #{payer,jdbcType=TINYINT},
+      </if>
+      <if test="geter != null" >
+        #{geter,jdbcType=TINYINT},
+      </if>
+      <if test="warehouseId != null" >
+        #{warehouseId,jdbcType=VARCHAR},
+      </if>
+      <if test="actionType != null" >
+        #{actionType,jdbcType=TINYINT},
+      </if>
+      <if test="optType != null" >
+        #{optType,jdbcType=TINYINT},
+      </if>
+      <if test="actionTime != null" >
+        #{actionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeWay != null" >
+        #{tradeWay,jdbcType=TINYINT},
+      </if>
+      <if test="tradeNo != null" >
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null" >
+        #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNo != null" >
+        #{bankNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="whWithDrawId != null" >
+        #{whWithDrawId,jdbcType=BIGINT},
+      </if>
+      <if test="sheetId != null" >
+        #{sheetId,jdbcType=VARCHAR},
+      </if>
+      <if test="couponId != null" >
+        #{couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="orderPId != null" >
+        #{orderPId,jdbcType=VARCHAR},
+      </if>
+      (SELECT wallet from WhWallet where id = #{warehouseId})
+    </trim>
+  </update>
+</mapper>

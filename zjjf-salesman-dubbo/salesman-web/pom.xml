@@ -1,0 +1,216 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.corner.salesman</groupId>
+		<artifactId>salesman</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<groupId>com.corner.salesman</groupId>
+	<artifactId>salesman-web</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>salesman-web Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<jdk.version>1.8</jdk.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<commons-net.version>3.3</commons-net.version>
+		<commons-compress.version>1.7</commons-compress.version>
+	</properties>
+	
+	
+	<dependencies>
+
+		<dependency>
+			<groupId>com.corner.salesman</groupId>
+			<artifactId>salesman-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.corner.salesman</groupId>
+			<artifactId>salesman-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.corner.shop</groupId>
+		    <artifactId>shop-api</artifactId>
+		    <version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>zjjf.analysis</groupId>
+			<artifactId>zjjf_analysis_ajie</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<version>2.5.3</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<mavenDir>dev</mavenDir>
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<mavenDir>test</mavenDir>
+			</properties>
+		</profile>
+		<profile>
+			<id>per</id>
+			<properties>
+				<mavenDir>performance</mavenDir>
+			</properties>
+		</profile>
+		<profile>
+			<id>product</id>
+			<properties>
+				<mavenDir>product</mavenDir>
+			</properties>
+		</profile>
+		<profile>
+			<id>uat</id>
+			<properties>
+				<mavenDir>uat</mavenDir>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<mavenDir>prod</mavenDir>
+			</properties>
+		</profile>
+	</profiles>
+	<build>
+		<finalName>salesman-web</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+					<exclude>**/.svn/*</exclude>
+					<exclude>**/.git/*</exclude>
+				</excludes>
+			</resource>
+
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+				<excludes>
+					<exclude>
+                        **/app.properties
+                    </exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+				<excludes>
+					<exclude>
+                        config/properties/dev/*
+                    </exclude>
+					<exclude>
+                        config/properties/product/*
+                    </exclude>
+					<exclude>
+                        config/properties/test/*
+                    </exclude>
+					<exclude>
+						config/properties/performance/*
+					</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<plugins>
+
+			<!--maven-war-plugin -->
+			 <!-- <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1-alpha-1</version>
+				<configuration>
+					<webResources>
+ 						对需要修改参数的配置文件进行配置 filtering
+						<resource>
+							<directory>src/main/resources/config/properties/${mavenDir}</directory>
+							<targetPath>WEB-INF/classes/config/properties</targetPath>
+							<filtering>true</filtering>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>  -->
+			<!---->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<!--<plugin> -->
+			<!--<artifactId>maven-assembly-plugin</artifactId> -->
+			<!--<executions> &lt;!&ndash;执行器 mvn assembly:assembly &ndash;&gt; -->
+			<!--<execution> -->
+			<!--<id>make-zip</id> -->
+			<!--&lt;!&ndash;名字任意 &ndash;&gt; -->
+			<!--<phase>package</phase> -->
+			<!--&lt;!&ndash; 绑定到package生命周期阶段上 &ndash;&gt; -->
+			<!--<goals> -->
+			<!--<goal>single</goal> -->
+			<!--&lt;!&ndash; 只运行一次 &ndash;&gt; -->
+			<!--</goals> -->
+			<!--<configuration> -->
+			<!--<descriptors> &lt;!&ndash;描述文件路径 &ndash;&gt; -->
+			<!--<descriptor>src/main/resources/assemble/descriptor.xml</descriptor> -->
+			<!--</descriptors> -->
+			<!--</configuration> -->
+			<!--</execution> -->
+			<!--</executions> -->
+			<!--</plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<excludes>
+						<exclude> **/spring/**</exclude>
+						<exclude> **/assemble/** </exclude>
+						<exclude> **/logback.xml </exclude>
+						<exclude> **/script/**</exclude>
+						<exclude> **/config/**</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>-XX:-UseSplitVerifier</argLine>
+					<excludes>
+						<exclude>**/Dubbo*Test.java</exclude>
+					</excludes>
+					<skip>false</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+</project>

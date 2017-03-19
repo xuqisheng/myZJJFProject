@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.ScOrderInfoMgMapper">
+	<select id="getSupplerOrderDetailCount" parameterType="com.corner.kefu.beans.ro.scms.ScOrderInfoMgRo" resultType="java.lang.Integer">
+		SELECT count(1) from (SELECT count(1) from ScOrderDetail sod JOIN ScOrderInfo si on sod.orderId = si.orderId where sod.maOrderInfoId = #{maOrderInfoId} and si.level = 1  GROUP BY si.orderId) a
+	</select>
+	<select id="getSupplerOrderDetail" parameterType="com.corner.kefu.beans.ro.scms.ScOrderInfoMgRo" resultType="com.corner.kefu.beans.vo.sc.ScOrderInfoMgVo">
+		SELECT si.* from ScOrderDetail sod JOIN ScOrderInfo si on sod.orderId = si.orderId where sod.maOrderInfoId = #{maOrderInfoId} and si.level = 1 GROUP BY si.orderId
+		<if test="sortName != null and sortName != ''">
+			<if test="sortOrder != null and sortOrder != ''">
+				<include refid="BasePublicMapper.orderSql" />
+			</if>
+		</if>
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取会计列表条件 -->
+	<sql id="getDetailPageList_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			sod.isDelete = '0' 
+			<if test="orderId != null and orderId != ''">
+				and sod.orderId2 = #{orderId}
+			</if>
+			<if test="itemBaseId != null and itemBaseId != ''">
+				and sod.itemId = #{itemBaseId}
+			</if>
+			<if test="maOrderInfoId != null and maOrderInfoId != ''">
+				and sod.maOrderInfoId = #{maOrderInfoId}
+			</if>
+		</trim>
+	</sql>
+	<!-- 获取列表 -->
+	<select id="getDetailPageList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+				soi.id as id,
+				ib.imgS AS imgS,
+				soi.managerName AS managerName,
+				soi.warehouseName AS warehouseName,
+				soi.groupName AS groupName,
+				soi.supplierName AS supplierName,
+				sod.itemId AS itemBaseId,
+				ib.spec AS spec,
+				ib.measure AS measure,
+				ib.pkgNum AS pkgNum,
+				ib.name AS name,
+				ib.pkg AS pkg,
+				sod.orderId AS orderId,
+				soi.addTime AS addTime,
+				sod.price AS price,
+				sod.zjjfPrice AS zjjfPrice,
+				sod.areaPrice AS areaPrice,
+				sod.marketPrice AS marketPrice,
+				sod.areaTotalPrice AS areaTotalPrice,
+				sod.quantity AS quantity,
+				sod.totalPrice AS totalPrice,
+				soi.ordertype as ordertype
+			FROM
+				ScOrderDetail sod
+			JOIN ScOrderInfo soi ON sod.orderId = soi.orderId
+			JOIN ScmsItem si ON sod.itemId = si.id
+			JOIN ItemBase ib ON si.itemBaseId = ib.id
+		<include refid="getDetailPageList_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取列表 总记录数 -->
+	<select id="getDetailPageListSize" parameterType="java.util.Map"
+		resultType="int">
+		select count(1) FROM ScOrderDetail sod JOIN ScOrderInfo soi ON sod.orderId = soi.orderId
+		<include refid="getDetailPageList_condition" />
+	</select>
+	<!-- 查询单个商品合单详情信息 -->
+	<select id="findOrderDetailSumByItemIdAndOrderId2" parameterType="java.util.Map" resultType="java.util.Map">
+			SELECT 
+				a.managerId AS managerId,
+				a.warehouseName AS warehouseName,
+				a.groupName AS groupName,
+				a.managerName AS managerName,
+				a.ordertype,
+				a.spec AS spec,
+				a.name AS name,
+				a.itemBaseId AS itemBaseId,
+				a.orderId2 AS orderId2,
+				a.orderId AS orderId,
+				a.price AS price,
+				a.imgS AS imgS,
+				a.pkg AS pkg,
+				SUM(a.totQuantity) as totQuantity,
+				SUM(a.ordertype0) as ordertype0,
+				SUM(a.ordertype2) as ordertype2,
+				SUM(a.totalPrice) AS totalPrice
+			from (
+			SELECT 
+				moi.managerId AS managerId,
+				soi.warehouseName AS warehouseName,
+				soi.groupName AS groupName,
+				moi.managerName AS managerName,
+				soi.ordertype,
+				sod.spec AS spec,
+				sod.name AS name,
+				sod.itemId AS itemBaseId,
+				sod.orderId2 AS orderId2,
+				moi.orderId AS orderId,
+				sod.price AS price,
+				sod.img AS imgS,
+				sod.pkg AS pkg,
+				SUM(sod.quantity) as totQuantity,
+				CASE
+					WHEN soi.ordertype = 0 THEN SUM(sod.quantity) 
+				END as ordertype0,
+					CASE
+				WHEN soi.ordertype = 2 THEN SUM(sod.quantity) 
+					END as ordertype2,
+				SUM(sod.totalPrice) AS totalPrice
+			 from ScOrderDetail sod
+			JOIN ScOrderInfo soi on soi.orderId = sod.orderId
+			JOIN MaOrderInfo moi on moi.id = sod.maOrderInfoId
+			<include refid="getDetailPageList_condition" />
+			GROUP BY
+				soi.ordertype
+			ORDER BY soi.ordertype
+			) a
+ 	</select>
+	<select id="getList" parameterType="com.corner.kefu.beans.ro.scms.ScmsPurchaseRo" resultType="com.corner.kefu.beans.vo.ScOrderInfoVo">
+			SELECT ScOrderInfo.orderId,ScOrderInfo.ordertype,ScOrderInfo.orderPrice,ScOrderInfo.status,ScOrderInfo.addTime ,ScOrderInfo.consignee,ScOrderInfo.supportStatus,
+			       ScOrderInfo.supplierName,ScOrderInfo.mobile   
+			<include refid="condition" />
+			<include refid="BasePublicMapper.pageSql" />
+	</select>
+	
+	<select id="getSize" parameterType="com.corner.kefu.beans.ro.scms.ScmsPurchaseRo" resultType="java.lang.Integer">
+			SELECT count(1) 
+			<include refid="condition" />
+	</select>
+	
+	<select id="findOrderByOid"  parameterType="java.lang.String" resultType="com.corner.kefu.beans.vo.ScOrderInfoVo">
+		SELECT ScOrderInfo.orderId,ScOrderInfo.ordertype,ScOrderInfo.outOfPrice as orderPrice,ScOrderInfo.status,ScOrderInfo.addTime , ScOrderInfo.supplierName,ScOrderInfo.supportStatus,
+			      ScOrderInfo.consignee,ScOrderInfo.mobile ,ScOrderInfo.address
+			       from ScOrderInfo where  
+			      ScOrderInfo.orderId=#{orderId}
+	</select>
+	
+	<select id="findOrderDetail"  parameterType="java.lang.String" resultType="com.corner.kefu.beans.vo.ScOrderDetailVo">
+			SELECT img as imgS,name,wayCode as mdseId,spec ,pkg,zjjfPrice as price,quantity,totalPrice from 
+   				ScOrderDetail
+           		WHERE ScOrderDetail.orderId=#{orderId}
+	</select>
+	
+	<sql id="condition">
+			from ScOrderInfo  WHERE level=1 
+			<if test="name != null">
+				and (orderId  like CONCAT('%' , #{name} , '%') or supplierName like CONCAT('%' , #{name} , '%') )
+			</if>
+			<if test="ordertype==0">
+				and  ScOrderInfo.ordertype=0
+			</if>
+			<if test="ordertype==1">
+				and  ScOrderInfo.ordertype=1
+			</if>
+			<if test="ordertype==2">
+				and  ScOrderInfo.ordertype=2
+			</if>
+			<if test="check==1">
+				and  ScOrderInfo.status=2
+			</if>
+			<if test="check==2">
+				and ScOrderInfo.status=3 
+			</if>
+			<if test="check==3">
+				and ScOrderInfo.status=4
+			</if>
+			<if test="check==4">
+				and ScOrderInfo.supportStatus=0
+			</if>
+			<if test="check==5">
+				and ScOrderInfo.status=5
+			</if>
+			order by addTime desc
+	</sql>
+	
+	<select id="selectScOrderInfoList" parameterType="java.util.Map" resultType="com.corner.core.beans.ScOrderInfo">
+		SELECT * from ScOrderInfo
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			1=1
+			<if test="upId != null and upId != ''">
+				and upId = #{upId}
+			</if>
+			<if test="maOrderInfoId != null and maOrderInfoId != ''">
+				and maOrderInfoId = #{maOrderInfoId}
+			</if>
+			<if test="isDelete != null and isDelete != ''">
+				and isDelete = #{isDelete}
+			</if>
+		</trim>
+	</select>
+</mapper>

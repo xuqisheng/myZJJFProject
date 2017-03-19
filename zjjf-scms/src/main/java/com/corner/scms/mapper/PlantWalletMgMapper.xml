@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.PlantWalletMgMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.PlantWallet" extends="com.corner.core.dao.PlantWalletMapper.BaseResultMap">
+  </resultMap>
+  
+  
+  <update id="addPlantWallet" parameterType="java.util.HashMap">
+   update PlantWallet set wallet = wallet+#{operateMoney} where id = #{plantWalletId}
+  </update>
+</mapper>

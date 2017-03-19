@@ -1,0 +1,1303 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.rpc.shop.dao.StoreMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.rpc.shop.model.Store" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="ordId" property="ordId" jdbcType="TINYINT" />
+    <result column="supplierCode" property="supplierCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="contact" property="contact" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="lng" property="lng" jdbcType="VARCHAR" />
+    <result column="lat" property="lat" jdbcType="VARCHAR" />
+    <result column="contactUser" property="contactUser" jdbcType="VARCHAR" />
+    <result column="contactPwd" property="contactPwd" jdbcType="VARCHAR" />
+    <result column="shoperName" property="shoperName" jdbcType="VARCHAR" />
+    <result column="shoperTel" property="shoperTel" jdbcType="VARCHAR" />
+    <result column="shoperQQ" property="shoperQQ" jdbcType="VARCHAR" />
+    <result column="bankAccount" property="bankAccount" jdbcType="VARCHAR" />
+    <result column="bankName" property="bankName" jdbcType="VARCHAR" />
+    <result column="bankCard" property="bankCard" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="sales" property="sales" jdbcType="INTEGER" />
+    <result column="lastTime" property="lastTime" jdbcType="TIMESTAMP" />
+    <result column="lastIP" property="lastIP" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="editTime" property="editTime" jdbcType="TIMESTAMP" />
+    <result column="sendTimeBegin" property="sendTimeBegin" jdbcType="TIME" />
+    <result column="sendTimeEnd" property="sendTimeEnd" jdbcType="TIME" />
+    <result column="sendess" property="sendess" jdbcType="DECIMAL" />
+    <result column="serviceFee" property="serviceFee" jdbcType="DECIMAL" />
+    <result column="rates" property="rates" jdbcType="REAL" />
+    <result column="agreementPeriod" property="agreementPeriod" jdbcType="TINYINT" />
+    <result column="totalPeriod" property="totalPeriod" jdbcType="INTEGER" />
+    <result column="signTime" property="signTime" jdbcType="DATE" />
+    <result column="iosCid" property="iosCid" jdbcType="VARCHAR" />
+    <result column="androidCid" property="androidCid" jdbcType="VARCHAR" />
+    <result column="totalComment" property="totalComment" jdbcType="SMALLINT" />
+    <result column="avgComment" property="avgComment" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDrawC" property="isDrawC" jdbcType="BIT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+    <result column="col4" property="col4" jdbcType="VARCHAR" />
+    <result column="col5" property="col5" jdbcType="VARCHAR" />
+    <result column="col6" property="col6" jdbcType="VARCHAR" />
+    <result column="col7" property="col7" jdbcType="VARCHAR" />
+    <result column="col8" property="col8" jdbcType="VARCHAR" />
+    <result column="col9" property="col9" jdbcType="VARCHAR" />
+    <result column="col10" property="col10" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="qrcodeurl" property="qrcodeurl" jdbcType="VARCHAR" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="acGroupId" property="acGroupId" jdbcType="VARCHAR" />
+    <result column="isFirstOrd" property="isFirstOrd" jdbcType="BIT" />
+    <result column="fromWho" property="fromWho" jdbcType="INTEGER" />
+    <result column="inviteId" property="inviteId" jdbcType="VARCHAR" />
+    <result column="sequenceNum" property="sequenceNum" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.corner.rpc.shop.model.Store" extends="BaseResultMap" >
+    <result column="explain" property="explain" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, ordId, supplierCode, name, contact, tel, mobile, provinceId, cityId, areaId, 
+    address, lng, lat, contactUser, contactPwd, shoperName, shoperTel, shoperQQ, bankAccount, 
+    bankName, bankCard, img, sales, lastTime, lastIP, addTime, editTime, sendTimeBegin, 
+    sendTimeEnd, sendess, serviceFee, rates, agreementPeriod, totalPeriod, signTime, 
+    iosCid, androidCid, totalComment, avgComment, status, isDrawC, isDelete, col1, col2, 
+    col3, col4, col5, col6, col7, col8, col9, col10, amount, type, qrcodeurl, spGroupId, 
+    acGroupId, isFirstOrd, fromWho, inviteId, sequenceNum
+  </sql>
+  <sql id="Blob_Column_List" >
+    'explain'
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from Store
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  
+  <select id="querySyncStoreList" resultType="com.corner.rpc.shop.model.Store" parameterType="com.corner.rpc.shop.model.Store" >
+	SELECT
+	    t.id,t.supplierCode,t.NAME,t.contact,t.tel,t.mobile,t.provinceId,t.cityId,t.areaId,t.address,t.spGroupId,
+		r1.`name` AS province,
+		r2.`name` AS city,
+		r3.`name` AS area,
+		tt.licenseNum
+	FROM
+		Store t
+	LEFT JOIN Region r1 ON r1.id = t.provinceId
+	LEFT JOIN Region r2 ON r2.id = t.cityId
+	LEFT JOIN Region r3 ON r3.id = t.areaId
+	LEFT JOIN StoreInfo tt ON tt.id = t.id
+	WHERE t.isDelete=0
+      AND t.spGroupId is not NULL 
+<!-- 	and t.status =1 -->
+<!-- 	<if test="queryType != 'ALL'"> -->
+<!-- 		AND DATE_FORMAT(t.addTime, '%Y%m%d') >= DATE_FORMAT( -->
+<!-- 			date_add(NOW(), INTERVAL - 3 MONTH),'%Y%m%d') -->
+<!-- 		AND DATE_FORMAT(t.addTime, '%Y%m%d') <![CDATA[<=]]> DATE_FORMAT(NOW(), '%Y%m%d') -->
+<!-- 	</if> -->
+	<if test="queryType == 'CURDATE'">
+		AND DATE_FORMAT(t.addTime, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d')
+	</if>
+	
+  </select>
+  
+  <select id="getMaxSequenceNum" parameterType="com.corner.rpc.shop.model.Store" resultType="java.lang.Integer">
+  	SELECT
+		MAX(sequenceNum)
+	FROM
+		`Store`
+	WHERE
+		`status` = 1
+	AND isDelete = 0
+	<if test="areaId != null">
+		AND areaId = #{areaId};
+	</if>
+  </select>
+  
+  <select id="checkShopNoIsExist" parameterType="java.lang.String" resultType="java.lang.Integer">
+	SELECT COUNT(1) FROM Store s WHERE s.supplierCode=#{suppliercode} and isDelete=0 and status=1
+	</select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from Store
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.rpc.shop.model.Store" >
+    insert into Store (id, ordId, supplierCode, 
+      name, contact, tel, 
+      mobile, provinceId, cityId, 
+      areaId, address, lng, 
+      lat, contactUser, contactPwd, 
+      shoperName, shoperTel, shoperQQ, 
+      bankAccount, bankName, bankCard, 
+      img, sales, lastTime, 
+      lastIP, addTime, editTime, 
+      sendTimeBegin, sendTimeEnd, sendess, 
+      serviceFee, rates, agreementPeriod, 
+      totalPeriod, signTime, iosCid, 
+      androidCid, totalComment, avgComment, 
+      status, isDrawC, isDelete, 
+      col1, col2, col3, col4, 
+      col5, col6, col7, col8, 
+      col9, col10, amount, 
+      type, qrcodeurl, spGroupId, 
+      acGroupId, isFirstOrd, fromWho, 
+      inviteId, sequenceNum, explain
+      )
+    values (#{id,jdbcType=INTEGER}, #{ordId,jdbcType=TINYINT}, #{supplierCode,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, 
+      #{areaId,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{lng,jdbcType=VARCHAR}, 
+      #{lat,jdbcType=VARCHAR}, #{contactUser,jdbcType=VARCHAR}, #{contactPwd,jdbcType=VARCHAR}, 
+      #{shoperName,jdbcType=VARCHAR}, #{shoperTel,jdbcType=VARCHAR}, #{shoperQQ,jdbcType=VARCHAR}, 
+      #{bankAccount,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, #{bankCard,jdbcType=VARCHAR}, 
+      #{img,jdbcType=VARCHAR}, #{sales,jdbcType=INTEGER}, #{lastTime,jdbcType=TIMESTAMP}, 
+      #{lastIP,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{editTime,jdbcType=TIMESTAMP}, 
+      #{sendTimeBegin,jdbcType=TIME}, #{sendTimeEnd,jdbcType=TIME}, #{sendess,jdbcType=DECIMAL}, 
+      #{serviceFee,jdbcType=DECIMAL}, #{rates,jdbcType=REAL}, #{agreementPeriod,jdbcType=TINYINT}, 
+      #{totalPeriod,jdbcType=INTEGER}, #{signTime,jdbcType=DATE}, #{iosCid,jdbcType=VARCHAR}, 
+      #{androidCid,jdbcType=VARCHAR}, #{totalComment,jdbcType=SMALLINT}, #{avgComment,jdbcType=DECIMAL}, 
+      #{status,jdbcType=TINYINT}, #{isDrawC,jdbcType=BIT}, #{isDelete,jdbcType=BIT}, 
+      #{col1,jdbcType=VARCHAR}, #{col2,jdbcType=VARCHAR}, #{col3,jdbcType=VARCHAR}, #{col4,jdbcType=VARCHAR}, 
+      #{col5,jdbcType=VARCHAR}, #{col6,jdbcType=VARCHAR}, #{col7,jdbcType=VARCHAR}, #{col8,jdbcType=VARCHAR}, 
+      #{col9,jdbcType=VARCHAR}, #{col10,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
+      #{type,jdbcType=TINYINT}, #{qrcodeurl,jdbcType=VARCHAR}, #{spGroupId,jdbcType=INTEGER}, 
+      #{acGroupId,jdbcType=VARCHAR}, #{isFirstOrd,jdbcType=BIT}, #{fromWho,jdbcType=INTEGER}, 
+      #{inviteId,jdbcType=VARCHAR}, #{sequenceNum,jdbcType=INTEGER}, #{explain,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.rpc.shop.model.Store" >
+    insert into Store
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="ordId != null" >
+        ordId,
+      </if>
+      <if test="supplierCode != null" >
+        supplierCode,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="contact != null" >
+        contact,
+      </if>
+      <if test="tel != null" >
+        tel,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="provinceId != null" >
+        provinceId,
+      </if>
+      <if test="cityId != null" >
+        cityId,
+      </if>
+      <if test="areaId != null" >
+        areaId,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="lng != null" >
+        lng,
+      </if>
+      <if test="lat != null" >
+        lat,
+      </if>
+      <if test="contactUser != null" >
+        contactUser,
+      </if>
+      <if test="contactPwd != null" >
+        contactPwd,
+      </if>
+      <if test="shoperName != null" >
+        shoperName,
+      </if>
+      <if test="shoperTel != null" >
+        shoperTel,
+      </if>
+      <if test="shoperQQ != null" >
+        shoperQQ,
+      </if>
+      <if test="bankAccount != null" >
+        bankAccount,
+      </if>
+      <if test="bankName != null" >
+        bankName,
+      </if>
+      <if test="bankCard != null" >
+        bankCard,
+      </if>
+      <if test="img != null" >
+        img,
+      </if>
+      <if test="sales != null" >
+        sales,
+      </if>
+      <if test="lastTime != null" >
+        lastTime,
+      </if>
+      <if test="lastIP != null" >
+        lastIP,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="editTime != null" >
+        editTime,
+      </if>
+      <if test="sendTimeBegin != null" >
+        sendTimeBegin,
+      </if>
+      <if test="sendTimeEnd != null" >
+        sendTimeEnd,
+      </if>
+      <if test="sendess != null" >
+        sendess,
+      </if>
+      <if test="serviceFee != null" >
+        serviceFee,
+      </if>
+      <if test="rates != null" >
+        rates,
+      </if>
+      <if test="agreementPeriod != null" >
+        agreementPeriod,
+      </if>
+      <if test="totalPeriod != null" >
+        totalPeriod,
+      </if>
+      <if test="signTime != null" >
+        signTime,
+      </if>
+      <if test="iosCid != null" >
+        iosCid,
+      </if>
+      <if test="androidCid != null" >
+        androidCid,
+      </if>
+      <if test="totalComment != null" >
+        totalComment,
+      </if>
+      <if test="avgComment != null" >
+        avgComment,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDrawC != null" >
+        isDrawC,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="col1 != null" >
+        col1,
+      </if>
+      <if test="col2 != null" >
+        col2,
+      </if>
+      <if test="col3 != null" >
+        col3,
+      </if>
+      <if test="col4 != null" >
+        col4,
+      </if>
+      <if test="col5 != null" >
+        col5,
+      </if>
+      <if test="col6 != null" >
+        col6,
+      </if>
+      <if test="col7 != null" >
+        col7,
+      </if>
+      <if test="col8 != null" >
+        col8,
+      </if>
+      <if test="col9 != null" >
+        col9,
+      </if>
+      <if test="col10 != null" >
+        col10,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="qrcodeurl != null" >
+        qrcodeurl,
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId,
+      </if>
+      <if test="acGroupId != null" >
+        acGroupId,
+      </if>
+      <if test="isFirstOrd != null" >
+        isFirstOrd,
+      </if>
+      <if test="fromWho != null" >
+        fromWho,
+      </if>
+      <if test="inviteId != null" >
+        inviteId,
+      </if>
+      <if test="sequenceNum != null" >
+        sequenceNum,
+      </if>
+      <if test="explain != null" >
+        explain,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="ordId != null" >
+        #{ordId,jdbcType=TINYINT},
+      </if>
+      <if test="supplierCode != null" >
+        #{supplierCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null" >
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="lng != null" >
+        #{lng,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null" >
+        #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="contactUser != null" >
+        #{contactUser,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPwd != null" >
+        #{contactPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="shoperName != null" >
+        #{shoperName,jdbcType=VARCHAR},
+      </if>
+      <if test="shoperTel != null" >
+        #{shoperTel,jdbcType=VARCHAR},
+      </if>
+      <if test="shoperQQ != null" >
+        #{shoperQQ,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccount != null" >
+        #{bankAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null" >
+        #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="sales != null" >
+        #{sales,jdbcType=INTEGER},
+      </if>
+      <if test="lastTime != null" >
+        #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastIP != null" >
+        #{lastIP,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editTime != null" >
+        #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendTimeBegin != null" >
+        #{sendTimeBegin,jdbcType=TIME},
+      </if>
+      <if test="sendTimeEnd != null" >
+        #{sendTimeEnd,jdbcType=TIME},
+      </if>
+      <if test="sendess != null" >
+        #{sendess,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceFee != null" >
+        #{serviceFee,jdbcType=DECIMAL},
+      </if>
+      <if test="rates != null" >
+        #{rates,jdbcType=REAL},
+      </if>
+      <if test="agreementPeriod != null" >
+        #{agreementPeriod,jdbcType=TINYINT},
+      </if>
+      <if test="totalPeriod != null" >
+        #{totalPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="signTime != null" >
+        #{signTime,jdbcType=DATE},
+      </if>
+      <if test="iosCid != null" >
+        #{iosCid,jdbcType=VARCHAR},
+      </if>
+      <if test="androidCid != null" >
+        #{androidCid,jdbcType=VARCHAR},
+      </if>
+      <if test="totalComment != null" >
+        #{totalComment,jdbcType=SMALLINT},
+      </if>
+      <if test="avgComment != null" >
+        #{avgComment,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDrawC != null" >
+        #{isDrawC,jdbcType=BIT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null" >
+        #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        #{col3,jdbcType=VARCHAR},
+      </if>
+      <if test="col4 != null" >
+        #{col4,jdbcType=VARCHAR},
+      </if>
+      <if test="col5 != null" >
+        #{col5,jdbcType=VARCHAR},
+      </if>
+      <if test="col6 != null" >
+        #{col6,jdbcType=VARCHAR},
+      </if>
+      <if test="col7 != null" >
+        #{col7,jdbcType=VARCHAR},
+      </if>
+      <if test="col8 != null" >
+        #{col8,jdbcType=VARCHAR},
+      </if>
+      <if test="col9 != null" >
+        #{col9,jdbcType=VARCHAR},
+      </if>
+      <if test="col10 != null" >
+        #{col10,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="qrcodeurl != null" >
+        #{qrcodeurl,jdbcType=VARCHAR},
+      </if>
+      <if test="spGroupId != null" >
+        #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="acGroupId != null" >
+        #{acGroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="isFirstOrd != null" >
+        #{isFirstOrd,jdbcType=BIT},
+      </if>
+      <if test="fromWho != null" >
+        #{fromWho,jdbcType=INTEGER},
+      </if>
+      <if test="inviteId != null" >
+        #{inviteId,jdbcType=VARCHAR},
+      </if>
+      <if test="sequenceNum != null" >
+        #{sequenceNum,jdbcType=INTEGER},
+      </if>
+      <if test="explain != null" >
+        #{explain,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.rpc.shop.model.Store" >
+    update Store
+    <set >
+      <if test="ordId != null" >
+        ordId = #{ordId,jdbcType=TINYINT},
+      </if>
+      <if test="supplierCode != null" >
+        supplierCode = #{supplierCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null" >
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        provinceId = #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        cityId = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        areaId = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="lng != null" >
+        lng = #{lng,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null" >
+        lat = #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="contactUser != null" >
+        contactUser = #{contactUser,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPwd != null" >
+        contactPwd = #{contactPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="shoperName != null" >
+        shoperName = #{shoperName,jdbcType=VARCHAR},
+      </if>
+      <if test="shoperTel != null" >
+        shoperTel = #{shoperTel,jdbcType=VARCHAR},
+      </if>
+      <if test="shoperQQ != null" >
+        shoperQQ = #{shoperQQ,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccount != null" >
+        bankAccount = #{bankAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        bankName = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null" >
+        bankCard = #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="sales != null" >
+        sales = #{sales,jdbcType=INTEGER},
+      </if>
+      <if test="lastTime != null" >
+        lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastIP != null" >
+        lastIP = #{lastIP,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editTime != null" >
+        editTime = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendTimeBegin != null" >
+        sendTimeBegin = #{sendTimeBegin,jdbcType=TIME},
+      </if>
+      <if test="sendTimeEnd != null" >
+        sendTimeEnd = #{sendTimeEnd,jdbcType=TIME},
+      </if>
+      <if test="sendess != null" >
+        sendess = #{sendess,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceFee != null" >
+        serviceFee = #{serviceFee,jdbcType=DECIMAL},
+      </if>
+      <if test="rates != null" >
+        rates = #{rates,jdbcType=REAL},
+      </if>
+      <if test="agreementPeriod != null" >
+        agreementPeriod = #{agreementPeriod,jdbcType=TINYINT},
+      </if>
+      <if test="totalPeriod != null" >
+        totalPeriod = #{totalPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="signTime != null" >
+        signTime = #{signTime,jdbcType=DATE},
+      </if>
+      <if test="iosCid != null" >
+        iosCid = #{iosCid,jdbcType=VARCHAR},
+      </if>
+      <if test="androidCid != null" >
+        androidCid = #{androidCid,jdbcType=VARCHAR},
+      </if>
+      <if test="totalComment != null" >
+        totalComment = #{totalComment,jdbcType=SMALLINT},
+      </if>
+      <if test="avgComment != null" >
+        avgComment = #{avgComment,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDrawC != null" >
+        isDrawC = #{isDrawC,jdbcType=BIT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null" >
+        col1 = #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        col2 = #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        col3 = #{col3,jdbcType=VARCHAR},
+      </if>
+      <if test="col4 != null" >
+        col4 = #{col4,jdbcType=VARCHAR},
+      </if>
+      <if test="col5 != null" >
+        col5 = #{col5,jdbcType=VARCHAR},
+      </if>
+      <if test="col6 != null" >
+        col6 = #{col6,jdbcType=VARCHAR},
+      </if>
+      <if test="col7 != null" >
+        col7 = #{col7,jdbcType=VARCHAR},
+      </if>
+      <if test="col8 != null" >
+        col8 = #{col8,jdbcType=VARCHAR},
+      </if>
+      <if test="col9 != null" >
+        col9 = #{col9,jdbcType=VARCHAR},
+      </if>
+      <if test="col10 != null" >
+        col10 = #{col10,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="qrcodeurl != null" >
+        qrcodeurl = #{qrcodeurl,jdbcType=VARCHAR},
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId = #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="acGroupId != null" >
+        acGroupId = #{acGroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="isFirstOrd != null" >
+        isFirstOrd = #{isFirstOrd,jdbcType=BIT},
+      </if>
+      <if test="fromWho != null" >
+        fromWho = #{fromWho,jdbcType=INTEGER},
+      </if>
+      <if test="inviteId != null" >
+        inviteId = #{inviteId,jdbcType=VARCHAR},
+      </if>
+      <if test="sequenceNum != null" >
+        sequenceNum = #{sequenceNum,jdbcType=INTEGER},
+      </if>
+      <if test="explain != null" >
+        explain = #{explain,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.corner.rpc.shop.model.Store" >
+    update Store
+    set ordId = #{ordId,jdbcType=TINYINT},
+      supplierCode = #{supplierCode,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      provinceId = #{provinceId,jdbcType=INTEGER},
+      cityId = #{cityId,jdbcType=INTEGER},
+      areaId = #{areaId,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      lng = #{lng,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=VARCHAR},
+      contactUser = #{contactUser,jdbcType=VARCHAR},
+      contactPwd = #{contactPwd,jdbcType=VARCHAR},
+      shoperName = #{shoperName,jdbcType=VARCHAR},
+      shoperTel = #{shoperTel,jdbcType=VARCHAR},
+      shoperQQ = #{shoperQQ,jdbcType=VARCHAR},
+      bankAccount = #{bankAccount,jdbcType=VARCHAR},
+      bankName = #{bankName,jdbcType=VARCHAR},
+      bankCard = #{bankCard,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR},
+      sales = #{sales,jdbcType=INTEGER},
+      lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      lastIP = #{lastIP,jdbcType=VARCHAR},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      editTime = #{editTime,jdbcType=TIMESTAMP},
+      sendTimeBegin = #{sendTimeBegin,jdbcType=TIME},
+      sendTimeEnd = #{sendTimeEnd,jdbcType=TIME},
+      sendess = #{sendess,jdbcType=DECIMAL},
+      serviceFee = #{serviceFee,jdbcType=DECIMAL},
+      rates = #{rates,jdbcType=REAL},
+      agreementPeriod = #{agreementPeriod,jdbcType=TINYINT},
+      totalPeriod = #{totalPeriod,jdbcType=INTEGER},
+      signTime = #{signTime,jdbcType=DATE},
+      iosCid = #{iosCid,jdbcType=VARCHAR},
+      androidCid = #{androidCid,jdbcType=VARCHAR},
+      totalComment = #{totalComment,jdbcType=SMALLINT},
+      avgComment = #{avgComment,jdbcType=DECIMAL},
+      status = #{status,jdbcType=TINYINT},
+      isDrawC = #{isDrawC,jdbcType=BIT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      col1 = #{col1,jdbcType=VARCHAR},
+      col2 = #{col2,jdbcType=VARCHAR},
+      col3 = #{col3,jdbcType=VARCHAR},
+      col4 = #{col4,jdbcType=VARCHAR},
+      col5 = #{col5,jdbcType=VARCHAR},
+      col6 = #{col6,jdbcType=VARCHAR},
+      col7 = #{col7,jdbcType=VARCHAR},
+      col8 = #{col8,jdbcType=VARCHAR},
+      col9 = #{col9,jdbcType=VARCHAR},
+      col10 = #{col10,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      type = #{type,jdbcType=TINYINT},
+      qrcodeurl = #{qrcodeurl,jdbcType=VARCHAR},
+      spGroupId = #{spGroupId,jdbcType=INTEGER},
+      acGroupId = #{acGroupId,jdbcType=VARCHAR},
+      isFirstOrd = #{isFirstOrd,jdbcType=BIT},
+      fromWho = #{fromWho,jdbcType=INTEGER},
+      inviteId = #{inviteId,jdbcType=VARCHAR},
+      sequenceNum = #{sequenceNum,jdbcType=INTEGER},
+      explain = #{explain,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.rpc.shop.model.Store" >
+    update Store
+    set ordId = #{ordId,jdbcType=TINYINT},
+      supplierCode = #{supplierCode,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      provinceId = #{provinceId,jdbcType=INTEGER},
+      cityId = #{cityId,jdbcType=INTEGER},
+      areaId = #{areaId,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      lng = #{lng,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=VARCHAR},
+      contactUser = #{contactUser,jdbcType=VARCHAR},
+      contactPwd = #{contactPwd,jdbcType=VARCHAR},
+      shoperName = #{shoperName,jdbcType=VARCHAR},
+      shoperTel = #{shoperTel,jdbcType=VARCHAR},
+      shoperQQ = #{shoperQQ,jdbcType=VARCHAR},
+      bankAccount = #{bankAccount,jdbcType=VARCHAR},
+      bankName = #{bankName,jdbcType=VARCHAR},
+      bankCard = #{bankCard,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR},
+      sales = #{sales,jdbcType=INTEGER},
+      lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      lastIP = #{lastIP,jdbcType=VARCHAR},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      editTime = #{editTime,jdbcType=TIMESTAMP},
+      sendTimeBegin = #{sendTimeBegin,jdbcType=TIME},
+      sendTimeEnd = #{sendTimeEnd,jdbcType=TIME},
+      sendess = #{sendess,jdbcType=DECIMAL},
+      serviceFee = #{serviceFee,jdbcType=DECIMAL},
+      rates = #{rates,jdbcType=REAL},
+      agreementPeriod = #{agreementPeriod,jdbcType=TINYINT},
+      totalPeriod = #{totalPeriod,jdbcType=INTEGER},
+      signTime = #{signTime,jdbcType=DATE},
+      iosCid = #{iosCid,jdbcType=VARCHAR},
+      androidCid = #{androidCid,jdbcType=VARCHAR},
+      totalComment = #{totalComment,jdbcType=SMALLINT},
+      avgComment = #{avgComment,jdbcType=DECIMAL},
+      status = #{status,jdbcType=TINYINT},
+      isDrawC = #{isDrawC,jdbcType=BIT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      col1 = #{col1,jdbcType=VARCHAR},
+      col2 = #{col2,jdbcType=VARCHAR},
+      col3 = #{col3,jdbcType=VARCHAR},
+      col4 = #{col4,jdbcType=VARCHAR},
+      col5 = #{col5,jdbcType=VARCHAR},
+      col6 = #{col6,jdbcType=VARCHAR},
+      col7 = #{col7,jdbcType=VARCHAR},
+      col8 = #{col8,jdbcType=VARCHAR},
+      col9 = #{col9,jdbcType=VARCHAR},
+      col10 = #{col10,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      type = #{type,jdbcType=TINYINT},
+      qrcodeurl = #{qrcodeurl,jdbcType=VARCHAR},
+      spGroupId = #{spGroupId,jdbcType=INTEGER},
+      acGroupId = #{acGroupId,jdbcType=VARCHAR},
+      isFirstOrd = #{isFirstOrd,jdbcType=BIT},
+      fromWho = #{fromWho,jdbcType=INTEGER},
+      inviteId = #{inviteId,jdbcType=VARCHAR},
+      sequenceNum = #{sequenceNum,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+  <!-- 阿街审核店铺begin  -->
+  <select id="getStoreList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+     SELECT a.id as storeId,a.`name` as storeName,a.address FROM Store a WHERE 
+     a.status = #{status} and
+     a.id IN(
+		  SELECT id FROM StoreInfo WHERE yewuRenTel IN
+		  <foreach collection="saleManMobiles" open="(" separator="," close=")" item="item">
+		      #{item}
+		  </foreach>		
+		)
+  </select>
+  
+  
+  <update id="updateStoreStatus" parameterType="java.util.HashMap">
+     update Store set editTime = NOW(),status = #{status}
+     <if test="spGroupId!=null ">
+        ,spGroupId=#{spGroupId} 
+     </if>
+     where id = #{storeId}
+  </update>
+  
+  <select id="getStoreDetail" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+		SELECT
+			a.`name`,
+			a.mobile,
+			a.address,
+			a.areaId,
+			a.contact,
+			(
+				SELECT
+					`name`
+				FROM
+					Region
+				WHERE
+					id = a.provinceId
+			) AS provinceStr,
+			(
+				SELECT
+					`name`
+				FROM
+					Region
+				WHERE
+					id = a.cityId
+			) AS cityStr,
+			(
+				SELECT
+					`name`
+				FROM
+					Region
+				WHERE
+					id = a.areaId
+			) AS areaStr,
+			b.idCardUpPic,
+			b.idCardDownPic,
+			b.backCardPic,
+			b.tobaccoPic,
+			b.licensePic,
+			b.licenseNum
+		FROM
+			Store a
+		JOIN StoreInfo b ON a.id = b.id
+		WHERE
+			a.id = #{storeId}
+  </select>
+  
+  <select id="getSpGroupsByAraeId" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+     SELECT
+		a.id,
+		a.`name`
+	FROM
+		SpGroup a
+	WHERE
+		areaId = #{areaId}
+	AND `status` = 1
+	AND isDelete = 0
+  </select>
+  
+  <select id="getSaleManByMobile" parameterType="java.lang.String" resultType="java.util.HashMap">
+    SELECT id,userName FROM Salesman where mobile = #{mobile}
+  </select>
+  
+  <insert id="insertCheck" parameterType="java.util.HashMap">
+    insert into SpAdminVerifyRecord (VerifyadminId, VerifyAdminNm, 
+      VerifyObjIntId, VerifyObjectId,
+      ActionNm, ActionTime)
+    values (#{verifyadminId,jdbcType=VARCHAR}, #{verifyAdminNm,jdbcType=VARCHAR}, 
+      #{verifyObjIntId,jdbcType=INTEGER}, #{verifyObjectId,jdbcType=VARCHAR}, 
+      #{actionNm,jdbcType=VARCHAR}, NOW())
+  </insert>
+  
+  <update id="updateSupplierCodeAndSequenceNumById" parameterType="com.corner.rpc.shop.model.Store">
+   update Store set sequenceNum = #{sequenceNum},supplierCode=#{supplierCode} where id =#{id}
+  </update>
+  
+  <select id="getConfigShare" parameterType="java.util.HashMap" resultType="com.corner.rpc.shop.model.ConfigShareVo">
+      SELECT
+			a.*,
+			b.id as ruleId,
+		    b.ruleName,
+			b.useMoney,
+			b.useDay,
+			b.startPrice,
+			b.ruleRemark,
+			b.billType,
+			b.payType,
+			b.payStr,
+			b.useItemFlag,
+			b.useItemIds
+		FROM
+			(
+			SELECT
+				*
+			FROM
+				ConfigShare
+			WHERE
+				STATUS = 1
+			AND isDelete = 0
+			<if test="configId != null">
+				AND configId = #{configId}
+			</if>
+			<if test="awardType != null">
+				AND awardType = #{awardType}
+			</if>
+			) a
+		LEFT JOIN (
+			SELECT
+				id,
+				ruleName,
+				useMoney,
+				useDay,
+				startPrice,
+				ruleRemark,
+				billType,
+				payType,
+				payStr,
+				useItemFlag,
+				useItemIds
+			FROM
+				SpVoucherTemp
+			WHERE
+				STATUS = 1
+			AND isDelete = 0
+			<!-- AND billType = 1 默认是现金卷-->
+			AND creatStatus = 1
+			AND creatPub = 1
+		) b ON a.couponId = b.id
+  </select>
+  
+  
+  <select id="getAllRegisterActive"  resultType="java.util.HashMap">
+     SELECT
+		*
+	FROM
+		SpVoucherActive
+	WHERE
+		ruleType = 1
+	AND `status` = 1
+	AND ruleScopFlag = 0
+	AND NOW() BETWEEN ruleStart
+	AND ruleEnd
+	ORDER BY addTime DESC
+	LIMIT 1
+  </select>
+  
+  
+  <select id="getSpVoucherTempById" parameterType="java.lang.String" resultType="com.corner.rpc.shop.model.SpVoucherTemp">
+   select * from SpVoucherTemp where id = #{id}
+  </select>
+  
+  
+  <insert id="insertSelectiveSpVoucher" parameterType="com.corner.rpc.shop.model.SpVoucher">
+     insert into SpVoucher
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="storeNm != null" >
+        storeNm,
+      </if>
+      <if test="ruleId != null" >
+        ruleId,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="spId != null" >
+        spId,
+      </if>
+      <if test="plantHalve != null" >
+        plantHalve,
+      </if>
+      <if test="billType != null" >
+        billType,
+      </if>
+      <if test="startPrice != null" >
+        startPrice,
+      </if>
+      <if test="payType != null" >
+        payType,
+      </if>
+      <if test="payStr != null" >
+        payStr,
+      </if>
+      <if test="goodsType != null" >
+        goodsType,
+      </if>
+      <if test="useType != null" >
+        useType,
+      </if>
+      <if test="preOrderId != null" >
+        preOrderId,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="scope != null" >
+        scope,
+      </if>
+      <if test="startTime != null" >
+        startTime,
+      </if>
+      <if test="expiredTime != null" >
+        expiredTime,
+      </if>
+      <if test="createrId != null" >
+        createrId,
+      </if>
+      <if test="createrName != null" >
+        createrName,
+      </if>
+      <if test="createType != null" >
+        createType,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="secKey != null" >
+        secKey,
+      </if>
+      <if test="pubStatus != null" >
+        pubStatus,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="acStatus != null" >
+        acStatus,
+      </if>
+      <if test="acTime != null" >
+        acTime,
+      </if>
+      <if test="acId != null" >
+        acId,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="spVoucherActiveId != null" >
+        spVoucherActiveId,
+      </if>
+      <if test="goodsStr != null" >
+        goodsStr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="storeNm != null" >
+        #{storeNm,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleId != null" >
+        #{ruleId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=INTEGER},
+      </if>
+      <if test="spId != null" >
+        #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="plantHalve != null" >
+        #{plantHalve,jdbcType=DOUBLE},
+      </if>
+      <if test="billType != null" >
+        #{billType,jdbcType=TINYINT},
+      </if>
+      <if test="startPrice != null" >
+        #{startPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=TINYINT},
+      </if>
+      <if test="payStr != null" >
+        #{payStr,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsType != null" >
+        #{goodsType,jdbcType=TINYINT},
+      </if>
+      <if test="useType != null" >
+        #{useType,jdbcType=TINYINT},
+      </if>
+      <if test="preOrderId != null" >
+        #{preOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="scope != null" >
+        #{scope,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expiredTime != null" >
+        #{expiredTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createrId != null" >
+        #{createrId,jdbcType=VARCHAR},
+      </if>
+      <if test="createrName != null" >
+        #{createrName,jdbcType=VARCHAR},
+      </if>
+      <if test="createType != null" >
+        #{createType,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="secKey != null" >
+        #{secKey,jdbcType=VARCHAR},
+      </if>
+      <if test="pubStatus != null" >
+        #{pubStatus,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="acStatus != null" >
+        #{acStatus,jdbcType=TINYINT},
+      </if>
+      <if test="acTime != null" >
+        #{acTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acId != null" >
+        #{acId,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="spVoucherActiveId != null" >
+        #{spVoucherActiveId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsStr != null" >
+        #{goodsStr,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  
+  <update id="updateLogByStoreId" parameterType="com.corner.rpc.shop.model.ShareDisseminateLog">
+    update ShareDisseminateLog
+	    <set >
+	      <if test="sendType != null" >
+	        sendType = #{sendType,jdbcType=INTEGER},
+	      </if>
+	      <if test="sendUserId != null" >
+	        sendUserId = #{sendUserId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="encourageType != null" >
+	        encourageType = #{encourageType,jdbcType=TINYINT},
+	      </if>
+	      <if test="encourageVoucher != null" >
+	        encourageVoucher = #{encourageVoucher,jdbcType=VARCHAR},
+	      </if>
+	      <if test="acceptPlaceName != null" >
+	        acceptPlaceName = #{acceptPlaceName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="acceptTel != null" >
+	        acceptTel = #{acceptTel,jdbcType=VARCHAR},
+	      </if>
+	      <if test="regTime != null" >
+	        regTime = #{regTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="confirmTime != null" >
+	        confirmTime = #{confirmTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="isDelete != null" >
+	        isDelete = #{isDelete,jdbcType=BIT},
+	      </if>
+	    </set>
+	    where acceptUserId = #{acceptUserId,jdbcType=VARCHAR}
+  </update>
+  <!-- 阿街审核店铺end  -->
+</mapper>

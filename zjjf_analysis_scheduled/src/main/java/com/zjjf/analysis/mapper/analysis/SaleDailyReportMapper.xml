@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.SaleDailyReportMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.supplier.SaleDailyReport" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="yesTodayturnover" property="yesTodayturnover" jdbcType="DECIMAL" />
+    <result column="turnover" property="turnover" jdbcType="DECIMAL" />
+    <result column="todayGoal" property="todayGoal" jdbcType="DECIMAL" />
+    <result column="rateDailyComp" property="rateDailyComp" jdbcType="DECIMAL" />
+    <result column="fee" property="fee" jdbcType="DECIMAL" />
+    <result column="rateFee" property="rateFee" jdbcType="DECIMAL" />
+    <result column="sumMonth" property="sumMonth" jdbcType="DECIMAL" />
+    <result column="goalMonth" property="goalMonth" jdbcType="DECIMAL" />
+    <result column="rateMonthComp" property="rateMonthComp" jdbcType="DECIMAL" />
+    <result column="totalFee" property="totalFee" jdbcType="DECIMAL" />
+    <result column="rateFeeMonth" property="rateFeeMonth" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, cityId, areaId, spGroupId, supplierId, dayTime, yesTodayturnover, turnover, todayGoal, 
+    rateDailyComp, fee, rateFee, sumMonth, goalMonth, rateMonthComp, totalFee, rateFeeMonth, 
+    updateTime, createTime
+  </sql>
+
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.analysis.supplier.SaleDailyReport" >
+    insert into sale_daily_report (id, cityId, areaId, 
+      spGroupId, supplierId, dayTime, 
+      yesTodayturnover, turnover, todayGoal, 
+      rateDailyComp, fee, rateFee, 
+      sumMonth, goalMonth, rateMonthComp, 
+      totalFee, rateFeeMonth, updateTime, 
+      createTime)
+    values (#{id,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, 
+      #{spGroupId,jdbcType=INTEGER}, #{supplierId,jdbcType=VARCHAR}, #{dayTime,jdbcType=INTEGER}, 
+      #{yesTodayturnover,jdbcType=DECIMAL}, #{turnover,jdbcType=DECIMAL}, #{todayGoal,jdbcType=DECIMAL}, 
+      #{rateDailyComp,jdbcType=DECIMAL}, #{fee,jdbcType=DECIMAL}, #{rateFee,jdbcType=DECIMAL}, 
+      #{sumMonth,jdbcType=DECIMAL}, #{goalMonth,jdbcType=DECIMAL}, #{rateMonthComp,jdbcType=DECIMAL}, 
+      #{totalFee,jdbcType=DECIMAL}, #{rateFeeMonth,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=INTEGER})
+  </insert>
+		
+  <update id="update" parameterType="com.zjjf.analysis.beans.analysis.supplier.SaleDailyReport" >
+    update sale_daily_report
+    <set >
+      <if test="turnover != null" >
+        turnover = #{turnover,jdbcType=DECIMAL},
+      </if>
+      <if test="fee != null" >
+        fee = #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="todayGoal != null" >
+        todayGoal = #{todayGoal,jdbcType=DECIMAL},
+      </if>
+      <if test="goalMonth != null" >
+        goalMonth = #{goalMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="sumMonth != null" >
+        sumMonth = #{sumMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="totalFee != null" >
+        totalFee = #{totalFee,jdbcType=DECIMAL},
+      </if>
+      <if test="rateFeeMonth != null" >
+        rateFeeMonth = #{rateFeeMonth,jdbcType=INTEGER},
+      </if>
+      <if test="rateFee != null" >
+        rateFee = #{rateFee,jdbcType=DECIMAL},
+      </if>
+      <if test="rateDailyComp != null" >
+        rateDailyComp = #{rateDailyComp,jdbcType=DECIMAL},
+      </if>
+      <if test="rateMonthComp != null" >
+        rateMonthComp = #{rateMonthComp,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getExitRecord" resultType="com.zjjf.analysis.beans.analysis.supplier.SaleDailyReport">
+    select  
+	    t1.id, 
+	    t1.spGroupId, 
+	    t1.dayTime
+    from `sale_daily_report` t1 where t1.`dayTime`= #{dayTime} and t1.spGroupId = #{spGroupId} and t1.supplierId =#{supplierId} limit 1
+  </select>
+</mapper>

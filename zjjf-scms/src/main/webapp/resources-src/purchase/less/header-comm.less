@@ -1,0 +1,92 @@
+.shopcart {
+    .size(96px,100);
+    display: inline-block;
+    background: @main-color;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    &:hover {
+        background: @main-color-hover;
+    }
+    .icon {
+        position: relative;
+        vertical-align: middle;
+        .size(19px,16px);
+        display: inline-block;
+        background: url(../images/shopcart.png) no-repeat center;
+        i{
+            position: absolute;
+            top: -14px;
+            left: 10px;
+            padding: 3px;
+            .size(auto,12px);
+            min-width: 12px;
+            line-height: 12px;
+            display: inline-block;
+            border-radius: 20px;
+            background: #fff;
+            font-style: normal;
+            font-size: 10px;
+            color: #ed4b1c
+        }
+    }
+}
+#header {
+    .w();
+    height: 110px;
+    overflow: hidden;
+    .logo {
+        float: left;
+        width: 200px;
+        height: 110px;
+        display: inline-block;
+        background: @main-color url(../images/logo-index.png) no-repeat center;
+    }
+    .search {
+        float: left;
+        padding-top: 30px;
+        padding-left: 125px;
+        box-sizing: border-box;
+        width: 1000px - 172px;
+        .keyword {
+            margin-top: 6px;
+            height: 16px;
+            line-height: 16px;
+            font-size: 14px;
+            overflow: hidden;
+            a {
+                text-decoration: none;
+                color: #999;
+                &:after {
+                    margin: 0 3px 0 6px;
+                    content: '|';
+                    color: #ccc;
+                }
+            }
+            .last:after {content: '';}
+            .spec {color: @main-color;}
+        }
+    }
+    .order {
+        float: left;
+        margin-top: 30px;
+        width: 172px;
+        height: 45px;
+        line-height: 45px;
+        overflow: hidden;
+        a {
+            float: left;
+            text-decoration: none;
+            text-align: center;
+        }
+        .order-track {
+            box-sizing: border-box;
+            .size(76px,100%);
+            line-height: 60px;
+            border: 1px solid @main-color;
+            background: #fff url(../images/order-track.png) no-repeat center 6px;
+            color: #666;
+            font-size: 12px;
+        }
+    }
+}

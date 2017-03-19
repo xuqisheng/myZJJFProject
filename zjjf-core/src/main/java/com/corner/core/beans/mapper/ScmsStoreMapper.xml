@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ScmsStoreMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ScmsStore" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="spId" property="spId" jdbcType="VARCHAR" />
+    <result column="ordId" property="ordId" jdbcType="TINYINT" />
+    <result column="scode" property="scode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="contact" property="contact" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="lng" property="lng" jdbcType="VARCHAR" />
+    <result column="lat" property="lat" jdbcType="VARCHAR" />
+    <result column="contactUser" property="contactUser" jdbcType="VARCHAR" />
+    <result column="contactPwd" property="contactPwd" jdbcType="VARCHAR" />
+    <result column="shoperName" property="shoperName" jdbcType="VARCHAR" />
+    <result column="shoperTel" property="shoperTel" jdbcType="VARCHAR" />
+    <result column="shoperQQ" property="shoperQQ" jdbcType="VARCHAR" />
+    <result column="bankAccount" property="bankAccount" jdbcType="VARCHAR" />
+    <result column="bankName" property="bankName" jdbcType="VARCHAR" />
+    <result column="bankCard" property="bankCard" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="sales" property="sales" jdbcType="INTEGER" />
+    <result column="lastTime" property="lastTime" jdbcType="TIMESTAMP" />
+    <result column="lastIP" property="lastIP" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="editTime" property="editTime" jdbcType="TIMESTAMP" />
+    <result column="sendTimeBegin" property="sendTimeBegin" jdbcType="TIME" />
+    <result column="sendTimeEnd" property="sendTimeEnd" jdbcType="TIME" />
+    <result column="sendess" property="sendess" jdbcType="DECIMAL" />
+    <result column="serviceFee" property="serviceFee" jdbcType="DECIMAL" />
+    <result column="rates" property="rates" jdbcType="REAL" />
+    <result column="agreementPeriod" property="agreementPeriod" jdbcType="TINYINT" />
+    <result column="totalPeriod" property="totalPeriod" jdbcType="INTEGER" />
+    <result column="signTime" property="signTime" jdbcType="DATE" />
+    <result column="iosCid" property="iosCid" jdbcType="VARCHAR" />
+    <result column="androidCid" property="androidCid" jdbcType="VARCHAR" />
+    <result column="totalComment" property="totalComment" jdbcType="SMALLINT" />
+    <result column="avgComment" property="avgComment" jdbcType="DECIMAL" />
+    <result column="isDrawC" property="isDrawC" jdbcType="BIT" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="qrcodeurl" property="qrcodeurl" jdbcType="VARCHAR" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="isFirstOrd" property="isFirstOrd" jdbcType="BIT" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="suType" property="suType" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.corner.core.beans.ScmsStore" extends="BaseResultMap" >
+    <result column="explain" property="explain" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, spId, ordId, scode, name, remark, contact, tel, mobile, provinceId, cityId, areaId, 
+    address, lng, lat, contactUser, contactPwd, shoperName, shoperTel, shoperQQ, bankAccount, 
+    bankName, bankCard, img, sales, lastTime, lastIP, addTime, editTime, sendTimeBegin, 
+    sendTimeEnd, sendess, serviceFee, rates, agreementPeriod, totalPeriod, signTime, 
+    iosCid, androidCid, totalComment, avgComment, isDrawC, amount, qrcodeurl, spGroupId, 
+    isFirstOrd, type, suType, status, isDelete
+  </sql>
+  <sql id="Blob_Column_List" >
+    explain
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ScmsStore
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ScmsStore
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ScmsStore" >
+    insert into ScmsStore (id, spId, ordId, 
+      scode, name, remark, 
+      contact, tel, mobile, 
+      provinceId, cityId, areaId, 
+      address, lng, lat, 
+      contactUser, contactPwd, shoperName, 
+      shoperTel, shoperQQ, bankAccount, 
+      bankName, bankCard, img, 
+      sales, lastTime, lastIP, 
+      addTime, editTime, sendTimeBegin, 
+      sendTimeEnd, sendess, serviceFee, 
+      rates, agreementPeriod, totalPeriod, 
+      signTime, iosCid, androidCid, 
+      totalComment, avgComment, isDrawC, 
+      amount, qrcodeurl, spGroupId, 
+      isFirstOrd, type, suType, 
+      status, isDelete, explain
+      )
+    values (#{id,jdbcType=INTEGER}, #{spId,jdbcType=VARCHAR}, #{ordId,jdbcType=TINYINT}, 
+      #{scode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{contact,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, 
+      #{address,jdbcType=VARCHAR}, #{lng,jdbcType=VARCHAR}, #{lat,jdbcType=VARCHAR}, 
+      #{contactUser,jdbcType=VARCHAR}, #{contactPwd,jdbcType=VARCHAR}, #{shoperName,jdbcType=VARCHAR}, 
+      #{shoperTel,jdbcType=VARCHAR}, #{shoperQQ,jdbcType=VARCHAR}, #{bankAccount,jdbcType=VARCHAR}, 
+      #{bankName,jdbcType=VARCHAR}, #{bankCard,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, 
+      #{sales,jdbcType=INTEGER}, #{lastTime,jdbcType=TIMESTAMP}, #{lastIP,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{editTime,jdbcType=TIMESTAMP}, #{sendTimeBegin,jdbcType=TIME}, 
+      #{sendTimeEnd,jdbcType=TIME}, #{sendess,jdbcType=DECIMAL}, #{serviceFee,jdbcType=DECIMAL}, 
+      #{rates,jdbcType=REAL}, #{agreementPeriod,jdbcType=TINYINT}, #{totalPeriod,jdbcType=INTEGER}, 
+      #{signTime,jdbcType=DATE}, #{iosCid,jdbcType=VARCHAR}, #{androidCid,jdbcType=VARCHAR}, 
+      #{totalComment,jdbcType=SMALLINT}, #{avgComment,jdbcType=DECIMAL}, #{isDrawC,jdbcType=BIT}, 
+      #{amount,jdbcType=DECIMAL}, #{qrcodeurl,jdbcType=VARCHAR}, #{spGroupId,jdbcType=INTEGER}, 
+      #{isFirstOrd,jdbcType=BIT}, #{type,jdbcType=TINYINT}, #{suType,jdbcType=TINYINT}, 
+      #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}, #{explain,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ScmsStore" >
+    insert into ScmsStore
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="spId != null" >
+        spId,
+      </if>
+      <if test="ordId != null" >
+        ordId,
+      </if>
+      <if test="scode != null" >
+        scode,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="contact != null" >
+        contact,
+      </if>
+      <if test="tel != null" >
+        tel,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="provinceId != null" >
+        provinceId,
+      </if>
+      <if test="cityId != null" >
+        cityId,
+      </if>
+      <if test="areaId != null" >
+        areaId,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="lng != null" >
+        lng,
+      </if>
+      <if test="lat != null" >
+        lat,
+      </if>
+      <if test="contactUser != null" >
+        contactUser,
+      </if>
+      <if test="contactPwd != null" >
+        contactPwd,
+      </if>
+      <if test="shoperName != null" >
+        shoperName,
+      </if>
+      <if test="shoperTel != null" >
+        shoperTel,
+      </if>
+      <if test="shoperQQ != null" >
+        shoperQQ,
+      </if>
+      <if test="bankAccount != null" >
+        bankAccount,
+      </if>
+      <if test="bankName != null" >
+        bankName,
+      </if>
+      <if test="bankCard != null" >
+        bankCard,
+      </if>
+      <if test="img != null" >
+        img,
+      </if>
+      <if test="sales != null" >
+        sales,
+      </if>
+      <if test="lastTime != null" >
+        lastTime,
+      </if>
+      <if test="lastIP != null" >
+        lastIP,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="editTime != null" >
+        editTime,
+      </if>
+      <if test="sendTimeBegin != null" >
+        sendTimeBegin,
+      </if>
+      <if test="sendTimeEnd != null" >
+        sendTimeEnd,
+      </if>
+      <if test="sendess != null" >
+        sendess,
+      </if>
+      <if test="serviceFee != null" >
+        serviceFee,
+      </if>
+      <if test="rates != null" >
+        rates,
+      </if>
+      <if test="agreementPeriod != null" >
+        agreementPeriod,
+      </if>
+      <if test="totalPeriod != null" >
+        totalPeriod,
+      </if>
+      <if test="signTime != null" >
+        signTime,
+      </if>
+      <if test="iosCid != null" >
+        iosCid,
+      </if>
+      <if test="androidCid != null" >
+        androidCid,
+      </if>
+      <if test="totalComment != null" >
+        totalComment,
+      </if>
+      <if test="avgComment != null" >
+        avgComment,
+      </if>
+      <if test="isDrawC != null" >
+        isDrawC,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="qrcodeurl != null" >
+        qrcodeurl,
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId,
+      </if>
+      <if test="isFirstOrd != null" >
+        isFirstOrd,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="suType != null" >
+        suType,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="explain != null" >
+        explain,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="spId != null" >
+        #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="ordId != null" >
+        #{ordId,jdbcType=TINYINT},
+      </if>
+      <if test="scode != null" >
+        #{scode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null" >
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="lng != null" >
+        #{lng,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null" >
+        #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="contactUser != null" >
+        #{contactUser,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPwd != null" >
+        #{contactPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="shoperName != null" >
+        #{shoperName,jdbcType=VARCHAR},
+      </if>
+      <if test="shoperTel != null" >
+        #{shoperTel,jdbcType=VARCHAR},
+      </if>
+      <if test="shoperQQ != null" >
+        #{shoperQQ,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccount != null" >
+        #{bankAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null" >
+        #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="sales != null" >
+        #{sales,jdbcType=INTEGER},
+      </if>
+      <if test="lastTime != null" >
+        #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastIP != null" >
+        #{lastIP,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editTime != null" >
+        #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendTimeBegin != null" >
+        #{sendTimeBegin,jdbcType=TIME},
+      </if>
+      <if test="sendTimeEnd != null" >
+        #{sendTimeEnd,jdbcType=TIME},
+      </if>
+      <if test="sendess != null" >
+        #{sendess,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceFee != null" >
+        #{serviceFee,jdbcType=DECIMAL},
+      </if>
+      <if test="rates != null" >
+        #{rates,jdbcType=REAL},
+      </if>
+      <if test="agreementPeriod != null" >
+        #{agreementPeriod,jdbcType=TINYINT},
+      </if>
+      <if test="totalPeriod != null" >
+        #{totalPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="signTime != null" >
+        #{signTime,jdbcType=DATE},
+      </if>
+      <if test="iosCid != null" >
+        #{iosCid,jdbcType=VARCHAR},
+      </if>
+      <if test="androidCid != null" >
+        #{androidCid,jdbcType=VARCHAR},
+      </if>
+      <if test="totalComment != null" >
+        #{totalComment,jdbcType=SMALLINT},
+      </if>
+      <if test="avgComment != null" >
+        #{avgComment,jdbcType=DECIMAL},
+      </if>
+      <if test="isDrawC != null" >
+        #{isDrawC,jdbcType=BIT},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="qrcodeurl != null" >
+        #{qrcodeurl,jdbcType=VARCHAR},
+      </if>
+      <if test="spGroupId != null" >
+        #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="isFirstOrd != null" >
+        #{isFirstOrd,jdbcType=BIT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="suType != null" >
+        #{suType,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="explain != null" >
+        #{explain,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ScmsStore" >
+    update ScmsStore
+    <set >
+      <if test="spId != null" >
+        spId = #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="ordId != null" >
+        ordId = #{ordId,jdbcType=TINYINT},
+      </if>
+      <if test="scode != null" >
+        scode = #{scode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null" >
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        provinceId = #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        cityId = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        areaId = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="lng != null" >
+        lng = #{lng,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null" >
+        lat = #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="contactUser != null" >
+        contactUser = #{contactUser,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPwd != null" >
+        contactPwd = #{contactPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="shoperName != null" >
+        shoperName = #{shoperName,jdbcType=VARCHAR},
+      </if>
+      <if test="shoperTel != null" >
+        shoperTel = #{shoperTel,jdbcType=VARCHAR},
+      </if>
+      <if test="shoperQQ != null" >
+        shoperQQ = #{shoperQQ,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccount != null" >
+        bankAccount = #{bankAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        bankName = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null" >
+        bankCard = #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="sales != null" >
+        sales = #{sales,jdbcType=INTEGER},
+      </if>
+      <if test="lastTime != null" >
+        lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastIP != null" >
+        lastIP = #{lastIP,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editTime != null" >
+        editTime = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendTimeBegin != null" >
+        sendTimeBegin = #{sendTimeBegin,jdbcType=TIME},
+      </if>
+      <if test="sendTimeEnd != null" >
+        sendTimeEnd = #{sendTimeEnd,jdbcType=TIME},
+      </if>
+      <if test="sendess != null" >
+        sendess = #{sendess,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceFee != null" >
+        serviceFee = #{serviceFee,jdbcType=DECIMAL},
+      </if>
+      <if test="rates != null" >
+        rates = #{rates,jdbcType=REAL},
+      </if>
+      <if test="agreementPeriod != null" >
+        agreementPeriod = #{agreementPeriod,jdbcType=TINYINT},
+      </if>
+      <if test="totalPeriod != null" >
+        totalPeriod = #{totalPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="signTime != null" >
+        signTime = #{signTime,jdbcType=DATE},
+      </if>
+      <if test="iosCid != null" >
+        iosCid = #{iosCid,jdbcType=VARCHAR},
+      </if>
+      <if test="androidCid != null" >
+        androidCid = #{androidCid,jdbcType=VARCHAR},
+      </if>
+      <if test="totalComment != null" >
+        totalComment = #{totalComment,jdbcType=SMALLINT},
+      </if>
+      <if test="avgComment != null" >
+        avgComment = #{avgComment,jdbcType=DECIMAL},
+      </if>
+      <if test="isDrawC != null" >
+        isDrawC = #{isDrawC,jdbcType=BIT},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="qrcodeurl != null" >
+        qrcodeurl = #{qrcodeurl,jdbcType=VARCHAR},
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId = #{spGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="isFirstOrd != null" >
+        isFirstOrd = #{isFirstOrd,jdbcType=BIT},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="suType != null" >
+        suType = #{suType,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="explain != null" >
+        explain = #{explain,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.corner.core.beans.ScmsStore" >
+    update ScmsStore
+    set spId = #{spId,jdbcType=VARCHAR},
+      ordId = #{ordId,jdbcType=TINYINT},
+      scode = #{scode,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      provinceId = #{provinceId,jdbcType=INTEGER},
+      cityId = #{cityId,jdbcType=INTEGER},
+      areaId = #{areaId,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      lng = #{lng,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=VARCHAR},
+      contactUser = #{contactUser,jdbcType=VARCHAR},
+      contactPwd = #{contactPwd,jdbcType=VARCHAR},
+      shoperName = #{shoperName,jdbcType=VARCHAR},
+      shoperTel = #{shoperTel,jdbcType=VARCHAR},
+      shoperQQ = #{shoperQQ,jdbcType=VARCHAR},
+      bankAccount = #{bankAccount,jdbcType=VARCHAR},
+      bankName = #{bankName,jdbcType=VARCHAR},
+      bankCard = #{bankCard,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR},
+      sales = #{sales,jdbcType=INTEGER},
+      lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      lastIP = #{lastIP,jdbcType=VARCHAR},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      editTime = #{editTime,jdbcType=TIMESTAMP},
+      sendTimeBegin = #{sendTimeBegin,jdbcType=TIME},
+      sendTimeEnd = #{sendTimeEnd,jdbcType=TIME},
+      sendess = #{sendess,jdbcType=DECIMAL},
+      serviceFee = #{serviceFee,jdbcType=DECIMAL},
+      rates = #{rates,jdbcType=REAL},
+      agreementPeriod = #{agreementPeriod,jdbcType=TINYINT},
+      totalPeriod = #{totalPeriod,jdbcType=INTEGER},
+      signTime = #{signTime,jdbcType=DATE},
+      iosCid = #{iosCid,jdbcType=VARCHAR},
+      androidCid = #{androidCid,jdbcType=VARCHAR},
+      totalComment = #{totalComment,jdbcType=SMALLINT},
+      avgComment = #{avgComment,jdbcType=DECIMAL},
+      isDrawC = #{isDrawC,jdbcType=BIT},
+      amount = #{amount,jdbcType=DECIMAL},
+      qrcodeurl = #{qrcodeurl,jdbcType=VARCHAR},
+      spGroupId = #{spGroupId,jdbcType=INTEGER},
+      isFirstOrd = #{isFirstOrd,jdbcType=BIT},
+      type = #{type,jdbcType=TINYINT},
+      suType = #{suType,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      explain = #{explain,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ScmsStore" >
+    update ScmsStore
+    set spId = #{spId,jdbcType=VARCHAR},
+      ordId = #{ordId,jdbcType=TINYINT},
+      scode = #{scode,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      provinceId = #{provinceId,jdbcType=INTEGER},
+      cityId = #{cityId,jdbcType=INTEGER},
+      areaId = #{areaId,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      lng = #{lng,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=VARCHAR},
+      contactUser = #{contactUser,jdbcType=VARCHAR},
+      contactPwd = #{contactPwd,jdbcType=VARCHAR},
+      shoperName = #{shoperName,jdbcType=VARCHAR},
+      shoperTel = #{shoperTel,jdbcType=VARCHAR},
+      shoperQQ = #{shoperQQ,jdbcType=VARCHAR},
+      bankAccount = #{bankAccount,jdbcType=VARCHAR},
+      bankName = #{bankName,jdbcType=VARCHAR},
+      bankCard = #{bankCard,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR},
+      sales = #{sales,jdbcType=INTEGER},
+      lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      lastIP = #{lastIP,jdbcType=VARCHAR},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      editTime = #{editTime,jdbcType=TIMESTAMP},
+      sendTimeBegin = #{sendTimeBegin,jdbcType=TIME},
+      sendTimeEnd = #{sendTimeEnd,jdbcType=TIME},
+      sendess = #{sendess,jdbcType=DECIMAL},
+      serviceFee = #{serviceFee,jdbcType=DECIMAL},
+      rates = #{rates,jdbcType=REAL},
+      agreementPeriod = #{agreementPeriod,jdbcType=TINYINT},
+      totalPeriod = #{totalPeriod,jdbcType=INTEGER},
+      signTime = #{signTime,jdbcType=DATE},
+      iosCid = #{iosCid,jdbcType=VARCHAR},
+      androidCid = #{androidCid,jdbcType=VARCHAR},
+      totalComment = #{totalComment,jdbcType=SMALLINT},
+      avgComment = #{avgComment,jdbcType=DECIMAL},
+      isDrawC = #{isDrawC,jdbcType=BIT},
+      amount = #{amount,jdbcType=DECIMAL},
+      qrcodeurl = #{qrcodeurl,jdbcType=VARCHAR},
+      spGroupId = #{spGroupId,jdbcType=INTEGER},
+      isFirstOrd = #{isFirstOrd,jdbcType=BIT},
+      type = #{type,jdbcType=TINYINT},
+      suType = #{suType,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

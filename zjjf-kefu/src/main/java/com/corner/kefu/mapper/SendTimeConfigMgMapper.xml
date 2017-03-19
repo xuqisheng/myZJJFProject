@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.SendTimeConfigMgMapper">
+	<!-- 送货时间配置列表 -->
+	<sql id="getSendTimeConfigParam">
+		<where>
+			<if test="name != null and name != ''">
+				and name like "%"#{name}"%"
+			</if>
+		</where>
+	</sql>
+	<select id="getSendTimeConfig" parameterType="com.corner.kefu.beans.ro.SendTimeConfigRo" resultType="com.corner.kefu.beans.vo.SendTimeConfigVo">
+		SELECT * FROM SendTimeConfig
+		<include refid="getSendTimeConfigParam"/>
+		order by addTime desc
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<select id="getSendTimeConfigCount" parameterType="com.corner.kefu.beans.ro.SendTimeConfigRo" resultType="java.lang.Integer">
+		SELECT count(1) FROM SendTimeConfig
+		<include refid="getSendTimeConfigParam"/>
+	</select>
+	
+	<update id="delOrReco" parameterType="java.util.Map">
+		update SendTimeConfig set isDelete=#{isDelete} where id=#{id}
+	</update>
+
+	<select id="getAllSendTimeConfig" resultType="com.corner.core.beans.SendTimeConfig">
+     SELECT
+			*
+		FROM
+			SendTimeConfig
+		WHERE
+			`status` = 1
+		AND isDelete = 0
+		ORDER BY
+			ordId ASC,
+		  addTime ASC
+	</select>
+</mapper>

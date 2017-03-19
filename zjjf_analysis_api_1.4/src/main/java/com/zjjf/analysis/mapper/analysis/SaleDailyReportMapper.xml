@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.SaleDailyReportMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.supplier.SaleDailyReport" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="yesTodayturnover" property="yesTodayturnover" jdbcType="DECIMAL" />
+    <result column="turnover" property="turnover" jdbcType="DECIMAL" />
+    <result column="todayGoal" property="todayGoal" jdbcType="DECIMAL" />
+    <result column="rateDailyComp" property="rateDailyComp" jdbcType="DECIMAL" />
+    <result column="fee" property="fee" jdbcType="DECIMAL" />
+    <result column="rateFee" property="rateFee" jdbcType="DECIMAL" />
+    <result column="sumMonth" property="sumMonth" jdbcType="DECIMAL" />
+    <result column="goalMonth" property="goalMonth" jdbcType="DECIMAL" />
+    <result column="rateMonthComp" property="rateMonthComp" jdbcType="DECIMAL" />
+    <result column="totalFee" property="totalFee" jdbcType="DECIMAL" />
+    <result column="rateFeeMonth" property="rateFeeMonth" jdbcType="DECIMAL" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, cityId, areaId, spGroupId, supplierId, dayTime, yesTodayturnover, turnover, todayGoal, 
+    rateDailyComp, fee, rateFee, sumMonth, goalMonth, rateMonthComp, totalFee, rateFeeMonth, 
+    updateTime, createTime
+  </sql>
+  
+  <select id="getData" resultType="com.zjjf.analysis.beans.analysis.supplier.SaleDailyReport" parameterType="java.util.Map" >
+	   select 
+	        id,
+		    cityId,
+		    areaId,
+		    spGroupId,
+		    supplierId,
+		    dayTime,
+		    yesTodayturnover,
+		    turnover,
+		    todayGoal,
+		    rateDailyComp,
+		    fee,
+		    rateFee,
+		    sumMonth,
+		    goalMonth,
+		    rateMonthComp,
+		    totalFee,
+		    rateFeeMonth,
+		    updateTime,
+		    createTime
+		from
+		  sale_daily_report t1
+	   <where>
+	      <if test="areaIdList != null and areaIdList != '' " >
+  		  	  and t1.areaId in 
+	          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="cityIdList != null and cityIdList != '' " >
+  		  	  and t1.cityId in 
+	          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="supplierIdList != null and supplierIdList.size() > 0 " >
+	 		  and t1.`supplierId` in 
+	          <foreach collection="supplierIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+		  <if test="areaId != null and areaId != '' " >
+	      	and t1.areaId = #{areaId}
+	      </if>
+	      <if test="cityId != null and cityId != '' " >
+	      	and t1.cityId = #{cityId}
+	      </if>
+	      <if test="spGroupId != null and spGroupId != '' " >
+	      	and t1.spGroupId = #{spGroupId}
+	      </if>
+	      <if test="dayTime != null and dayTime != '' " >
+	      	and t1.dayTime = #{dayTime}
+	      </if>
+	      order by t1.cityId, t1.areaId, t1.id desc limit #{pageNo}, #{offset}
+	  </where>
+  </select>
+  
+  <select id="getDataCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+	   select count(*) from sale_daily_report t1
+	   <where>
+	      <if test="areaIdList != null and areaIdList != '' " >
+  		  	  and t1.areaId in 
+	          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="cityIdList != null and cityIdList != '' " >
+  		  	  and t1.cityId in 
+	          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="supplierIdList != null and supplierIdList.size() > 0 " >
+	 		  and t1.`supplierId` in 
+	          <foreach collection="supplierIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+		  <if test="areaId != null and areaId != '' " >
+	      	and t1.areaId = #{areaId}
+	      </if>
+	      <if test="cityId != null and cityId != '' " >
+	      	and t1.cityId = #{cityId}
+	      </if>
+	      <if test="spGroupId != null and spGroupId != '' " >
+	      	and t1.spGroupId = #{spGroupId}
+	      </if>
+	      <if test="dayTime != null and dayTime != '' " >
+	      	and t1.dayTime = #{dayTime}
+	      </if>
+	  </where>
+  </select>
+  
+  <select id="getDataExcel" resultType="com.zjjf.analysis.beans.analysis.supplier.SaleDailyReport" parameterType="java.util.Map" >
+	   select 
+	        id,
+		    cityId,
+		    areaId,
+		    spGroupId,
+		    supplierId,
+		    dayTime,
+		    yesTodayturnover,
+		    turnover,
+		    todayGoal,
+		    rateDailyComp,
+		    fee,
+		    rateFee,
+		    sumMonth,
+		    goalMonth,
+		    rateMonthComp,
+		    totalFee,
+		    rateFeeMonth,
+		    updateTime,
+		    createTime
+		from
+		  sale_daily_report t1
+	   <where>
+	      <if test="areaIdList != null and areaIdList != '' " >
+  		  	  and t1.areaId in 
+	          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="cityIdList != null and cityIdList != '' " >
+  		  	  and t1.cityId in 
+	          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="supplierIdList != null and supplierIdList.size() > 0 " >
+	 		  and t1.`supplierId` in 
+	          <foreach collection="supplierIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+		  <if test="areaId != null and areaId != '' " >
+	      	and t1.areaId = #{areaId}
+	      </if>
+	      <if test="cityId != null and cityId != '' " >
+	      	and t1.cityId = #{cityId}
+	      </if>
+	      <if test="spGroupId != null and spGroupId != '' " >
+	      	and t1.spGroupId = #{spGroupId}
+	      </if>
+	      <if test="dayTime != null and dayTime != '' " >
+	      	and t1.dayTime = #{dayTime}
+	      </if>
+	      order by t1.cityId, t1.areaId, t1.id desc limit 10000
+	  </where>
+  </select>
+</mapper>

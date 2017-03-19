@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ScmsWarehouseMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ScmsWarehouse" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="houseCode" property="houseCode" jdbcType="VARCHAR" />
+    <result column="payPassword" property="payPassword" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+    <result column="salt" property="salt" jdbcType="VARCHAR" />
+    <result column="job" property="job" jdbcType="VARCHAR" />
+    <result column="lastTime" property="lastTime" jdbcType="TIMESTAMP" />
+    <result column="loginIP" property="loginIP" jdbcType="VARCHAR" />
+    <result column="callNum" property="callNum" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="fax" property="fax" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="county" property="county" jdbcType="INTEGER" />
+    <result column="houseAddress" property="houseAddress" jdbcType="VARCHAR" />
+    <result column="houseMark" property="houseMark" jdbcType="VARCHAR" />
+    <result column="branderName" property="branderName" jdbcType="VARCHAR" />
+    <result column="branderTel" property="branderTel" jdbcType="VARCHAR" />
+    <result column="regTime" property="regTime" jdbcType="TIMESTAMP" />
+    <result column="tplId" property="tplId" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="updateMark" property="updateMark" jdbcType="VARCHAR" />
+    <result column="bankCardurl" property="bankCardurl" jdbcType="VARCHAR" />
+    <result column="bankNum" property="bankNum" jdbcType="VARCHAR" />
+    <result column="bankUserName" property="bankUserName" jdbcType="VARCHAR" />
+    <result column="bankName" property="bankName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="tplName" property="tplName" jdbcType="VARCHAR" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, userName, houseCode, payPassword, password, token, salt, job, lastTime, 
+    loginIP, callNum, email, fax, province, city, county, houseAddress, houseMark, branderName, 
+    branderTel, regTime, tplId, updateTime, updateMark, bankCardurl, bankNum, bankUserName, 
+    bankName, status, isDelete, tplName, col1, col2, col3
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ScmsWarehouse
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ScmsWarehouse
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ScmsWarehouse" >
+    insert into ScmsWarehouse (id, name, userName, 
+      houseCode, payPassword, password, 
+      token, salt, job, lastTime, 
+      loginIP, callNum, email, 
+      fax, province, city, 
+      county, houseAddress, houseMark, 
+      branderName, branderTel, regTime, 
+      tplId, updateTime, updateMark, 
+      bankCardurl, bankNum, bankUserName, 
+      bankName, status, isDelete, 
+      tplName, col1, col2, 
+      col3)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{houseCode,jdbcType=VARCHAR}, #{payPassword,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{token,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR}, #{lastTime,jdbcType=TIMESTAMP}, 
+      #{loginIP,jdbcType=VARCHAR}, #{callNum,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{fax,jdbcType=VARCHAR}, #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, 
+      #{county,jdbcType=INTEGER}, #{houseAddress,jdbcType=VARCHAR}, #{houseMark,jdbcType=VARCHAR}, 
+      #{branderName,jdbcType=VARCHAR}, #{branderTel,jdbcType=VARCHAR}, #{regTime,jdbcType=TIMESTAMP}, 
+      #{tplId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateMark,jdbcType=VARCHAR}, 
+      #{bankCardurl,jdbcType=VARCHAR}, #{bankNum,jdbcType=VARCHAR}, #{bankUserName,jdbcType=VARCHAR}, 
+      #{bankName,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}, 
+      #{tplName,jdbcType=VARCHAR}, #{col1,jdbcType=VARCHAR}, #{col2,jdbcType=VARCHAR}, 
+      #{col3,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ScmsWarehouse" >
+    insert into ScmsWarehouse
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="userName != null" >
+        userName,
+      </if>
+      <if test="houseCode != null" >
+        houseCode,
+      </if>
+      <if test="payPassword != null" >
+        payPassword,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="token != null" >
+        token,
+      </if>
+      <if test="salt != null" >
+        salt,
+      </if>
+      <if test="job != null" >
+        job,
+      </if>
+      <if test="lastTime != null" >
+        lastTime,
+      </if>
+      <if test="loginIP != null" >
+        loginIP,
+      </if>
+      <if test="callNum != null" >
+        callNum,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="fax != null" >
+        fax,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="county != null" >
+        county,
+      </if>
+      <if test="houseAddress != null" >
+        houseAddress,
+      </if>
+      <if test="houseMark != null" >
+        houseMark,
+      </if>
+      <if test="branderName != null" >
+        branderName,
+      </if>
+      <if test="branderTel != null" >
+        branderTel,
+      </if>
+      <if test="regTime != null" >
+        regTime,
+      </if>
+      <if test="tplId != null" >
+        tplId,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="updateMark != null" >
+        updateMark,
+      </if>
+      <if test="bankCardurl != null" >
+        bankCardurl,
+      </if>
+      <if test="bankNum != null" >
+        bankNum,
+      </if>
+      <if test="bankUserName != null" >
+        bankUserName,
+      </if>
+      <if test="bankName != null" >
+        bankName,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="tplName != null" >
+        tplName,
+      </if>
+      <if test="col1 != null" >
+        col1,
+      </if>
+      <if test="col2 != null" >
+        col2,
+      </if>
+      <if test="col3 != null" >
+        col3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="houseCode != null" >
+        #{houseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payPassword != null" >
+        #{payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null" >
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null" >
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="lastTime != null" >
+        #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIP != null" >
+        #{loginIP,jdbcType=VARCHAR},
+      </if>
+      <if test="callNum != null" >
+        #{callNum,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null" >
+        #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=INTEGER},
+      </if>
+      <if test="county != null" >
+        #{county,jdbcType=INTEGER},
+      </if>
+      <if test="houseAddress != null" >
+        #{houseAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="houseMark != null" >
+        #{houseMark,jdbcType=VARCHAR},
+      </if>
+      <if test="branderName != null" >
+        #{branderName,jdbcType=VARCHAR},
+      </if>
+      <if test="branderTel != null" >
+        #{branderTel,jdbcType=VARCHAR},
+      </if>
+      <if test="regTime != null" >
+        #{regTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tplId != null" >
+        #{tplId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateMark != null" >
+        #{updateMark,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCardurl != null" >
+        #{bankCardurl,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNum != null" >
+        #{bankNum,jdbcType=VARCHAR},
+      </if>
+      <if test="bankUserName != null" >
+        #{bankUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="tplName != null" >
+        #{tplName,jdbcType=VARCHAR},
+      </if>
+      <if test="col1 != null" >
+        #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        #{col3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ScmsWarehouse" >
+    update ScmsWarehouse
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        userName = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="houseCode != null" >
+        houseCode = #{houseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payPassword != null" >
+        payPassword = #{payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null" >
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null" >
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        job = #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="lastTime != null" >
+        lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIP != null" >
+        loginIP = #{loginIP,jdbcType=VARCHAR},
+      </if>
+      <if test="callNum != null" >
+        callNum = #{callNum,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null" >
+        fax = #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="county != null" >
+        county = #{county,jdbcType=INTEGER},
+      </if>
+      <if test="houseAddress != null" >
+        houseAddress = #{houseAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="houseMark != null" >
+        houseMark = #{houseMark,jdbcType=VARCHAR},
+      </if>
+      <if test="branderName != null" >
+        branderName = #{branderName,jdbcType=VARCHAR},
+      </if>
+      <if test="branderTel != null" >
+        branderTel = #{branderTel,jdbcType=VARCHAR},
+      </if>
+      <if test="regTime != null" >
+        regTime = #{regTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tplId != null" >
+        tplId = #{tplId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateMark != null" >
+        updateMark = #{updateMark,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCardurl != null" >
+        bankCardurl = #{bankCardurl,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNum != null" >
+        bankNum = #{bankNum,jdbcType=VARCHAR},
+      </if>
+      <if test="bankUserName != null" >
+        bankUserName = #{bankUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        bankName = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="tplName != null" >
+        tplName = #{tplName,jdbcType=VARCHAR},
+      </if>
+      <if test="col1 != null" >
+        col1 = #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        col2 = #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        col3 = #{col3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ScmsWarehouse" >
+    update ScmsWarehouse
+    set name = #{name,jdbcType=VARCHAR},
+      userName = #{userName,jdbcType=VARCHAR},
+      houseCode = #{houseCode,jdbcType=VARCHAR},
+      payPassword = #{payPassword,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      token = #{token,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
+      job = #{job,jdbcType=VARCHAR},
+      lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      loginIP = #{loginIP,jdbcType=VARCHAR},
+      callNum = #{callNum,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      fax = #{fax,jdbcType=VARCHAR},
+      province = #{province,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      county = #{county,jdbcType=INTEGER},
+      houseAddress = #{houseAddress,jdbcType=VARCHAR},
+      houseMark = #{houseMark,jdbcType=VARCHAR},
+      branderName = #{branderName,jdbcType=VARCHAR},
+      branderTel = #{branderTel,jdbcType=VARCHAR},
+      regTime = #{regTime,jdbcType=TIMESTAMP},
+      tplId = #{tplId,jdbcType=VARCHAR},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      updateMark = #{updateMark,jdbcType=VARCHAR},
+      bankCardurl = #{bankCardurl,jdbcType=VARCHAR},
+      bankNum = #{bankNum,jdbcType=VARCHAR},
+      bankUserName = #{bankUserName,jdbcType=VARCHAR},
+      bankName = #{bankName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      tplName = #{tplName,jdbcType=VARCHAR},
+      col1 = #{col1,jdbcType=VARCHAR},
+      col2 = #{col2,jdbcType=VARCHAR},
+      col3 = #{col3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

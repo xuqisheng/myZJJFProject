@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.PlantRebateMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.PlantRebate" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="rebateName" property="rebateName" jdbcType="VARCHAR" />
+    <result column="rebateContent" property="rebateContent" jdbcType="VARCHAR" />
+    <result column="ordId" property="ordId" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, rebateName, rebateContent, ordId, addTime, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from PlantRebate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from PlantRebate
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.PlantRebate" >
+    insert into PlantRebate (id, rebateName, rebateContent, 
+      ordId, addTime, status, 
+      isDelete)
+    values (#{id,jdbcType=INTEGER}, #{rebateName,jdbcType=VARCHAR}, #{rebateContent,jdbcType=VARCHAR}, 
+      #{ordId,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
+      #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.PlantRebate" >
+    insert into PlantRebate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="rebateName != null" >
+        rebateName,
+      </if>
+      <if test="rebateContent != null" >
+        rebateContent,
+      </if>
+      <if test="ordId != null" >
+        ordId,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="rebateName != null" >
+        #{rebateName,jdbcType=VARCHAR},
+      </if>
+      <if test="rebateContent != null" >
+        #{rebateContent,jdbcType=VARCHAR},
+      </if>
+      <if test="ordId != null" >
+        #{ordId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.PlantRebate" >
+    update PlantRebate
+    <set >
+      <if test="rebateName != null" >
+        rebateName = #{rebateName,jdbcType=VARCHAR},
+      </if>
+      <if test="rebateContent != null" >
+        rebateContent = #{rebateContent,jdbcType=VARCHAR},
+      </if>
+      <if test="ordId != null" >
+        ordId = #{ordId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.PlantRebate" >
+    update PlantRebate
+    set rebateName = #{rebateName,jdbcType=VARCHAR},
+      rebateContent = #{rebateContent,jdbcType=VARCHAR},
+      ordId = #{ordId,jdbcType=INTEGER},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

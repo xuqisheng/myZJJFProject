@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>销售出库管理</title>
+		<link rel="stylesheet" type="text/css" href="../../resources/css/base.css" />
+		<script src="../../resources/vendor/jquery/jquery-1.12.4.min.js"></script>
+		<script src="../../resources/js/comm.js"></script>
+		<script src="../../resources/vendor/My97DatePicker/WdatePicker.js"></script>
+	</head>
+	<style type="text/css">
+
+	</style>
+
+	<body>
+		<div class="wrap-bd">
+			<div class="mb-small clearfix">
+				<div class="fl title">销售出库管理</div>
+			</div>
+			<div class="op-section clearfix">
+				<label id="" class="mr-small">
+					销售单号：
+				</label>
+				<input type="text" name="" id="" value="" class="mr-small input input-search-date" placeholder="仓库编号/名称" />
+				<label id="" class="mr-small">
+					商户单号：
+				</label>
+				<input type="text" name="" id="" value="" class="mr-small input input-search-date" placeholder="仓库编号/名称" />
+				<label id="" class="mr-small">
+					出库状态：
+				</label>
+				<select name="" class="select mr-small">
+					<option value="">全部</option>
+				</select>
+				<label for="" class="mr-small">出库时间：</label>
+				<input type="text" name="ruleStart" id="" value="" class="input input-search-date J_timeS" /> -
+				<input type="text" name="ruleEnd" id="" value="" class="input input-search-date J_timeE mr-default" />
+				<input type="button" class="input-search-button " value="搜索" />
+			</div>
+			<div class="mb-small clearfix mt-default">
+				<a href="add-sale-out.html" class="button button-operate mr-small" id="J_New">新建</a>
+				<a href="#" class="button button-operate mr-small">修改</a>
+				<a href="check-sale-out.html" class="button button-operate mr-small">查看</a>
+				<a href="#" class="button button-operate mr-small">删除</a>
+				<a href="#" class="button button-operate mr-small">审核</a>
+				<a href="#" class="button button-operate mr-small">打印</a>
+				<a href="#" class="button button-operate mr-small">出库</a>
+				<a href="#" class="button button-operate mr-small">确认送达</a>
+				<a href="#" class="button button-operate mr-small">退货</a>
+			</div>
+			<table class="table-list table-border" id="stock_info">
+				<thead>
+					<tr>
+						<th><input type="checkbox" name="" id="J_selectAll" value="" /></th>
+						<th>序号</th>
+						<th>出库单号</th>
+						<th>销售单号</th>
+						<th>商户名称</th>
+						<th>联系人</th>
+						<th>手机号</th>
+						<th>订单金额</th>
+						<th>出库状态</th>
+						<th>出库人</th>
+						<th>出库时间</th>
+						<th>是否审核</th>
+						<th>审核人</th>
+						<th>审核时间</th>
+					</tr>
+				</thead>
+				<tbody class="table-tbody">
+					<tr>
+						<td><input type="checkbox" name="" id="" value="" class="checkbox J_chk" /></td>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			$('.table-list td').click(function() {
+				$(this).parent().css('background', '#009dd9').addClass('.chosed').siblings().css('background', '#fff').removeClass('.chosed');
+			})
+			dateRange('.J_timeS', '.J_timeE', 1);
+			selectAll('#J_selectAll', '.J_chk');
+		})
+	</script>
+
+</html>

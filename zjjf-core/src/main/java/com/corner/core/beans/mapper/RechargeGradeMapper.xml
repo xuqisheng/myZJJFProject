@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.RechargeGradeMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.RechargeGrade" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gradeMoney" property="gradeMoney" jdbcType="DECIMAL" />
+    <result column="spVoucherId" property="spVoucherId" jdbcType="INTEGER" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, gradeMoney, spVoucherId, spGroupId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from RechargeGrade
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from RechargeGrade
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.RechargeGrade" >
+    insert into RechargeGrade (id, gradeMoney, spVoucherId, 
+      spGroupId)
+    values (#{id,jdbcType=INTEGER}, #{gradeMoney,jdbcType=DECIMAL}, #{spVoucherId,jdbcType=INTEGER}, 
+      #{spGroupId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.RechargeGrade" >
+    insert into RechargeGrade
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="gradeMoney != null" >
+        gradeMoney,
+      </if>
+      <if test="spVoucherId != null" >
+        spVoucherId,
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gradeMoney != null" >
+        #{gradeMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="spVoucherId != null" >
+        #{spVoucherId,jdbcType=INTEGER},
+      </if>
+      <if test="spGroupId != null" >
+        #{spGroupId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.RechargeGrade" >
+    update RechargeGrade
+    <set >
+      <if test="gradeMoney != null" >
+        gradeMoney = #{gradeMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="spVoucherId != null" >
+        spVoucherId = #{spVoucherId,jdbcType=INTEGER},
+      </if>
+      <if test="spGroupId != null" >
+        spGroupId = #{spGroupId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.RechargeGrade" >
+    update RechargeGrade
+    set gradeMoney = #{gradeMoney,jdbcType=DECIMAL},
+      spVoucherId = #{spVoucherId,jdbcType=INTEGER},
+      spGroupId = #{spGroupId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,85 @@
+header {
+  .w();
+  height: 55px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+.logo {
+  float: left;
+}
+.shopcart-bar {
+  @color: #ccc;
+  @active-color: #6ab56b;
+  @curr-color: #b1dcad;
+  position: relative;
+  float: right;
+  margin: 12px 0 36px 0;
+  .size(594px,6px);
+  line-height: 60px;
+  background: @color;
+  color: #aaa;
+  text-align: center;
+  border-radius: 2px;
+  z-index: 1;
+  .shopcart-bar-item {
+    position: relative;
+    float: left;
+    .size(198px,6px);
+    display: block;
+    border-radius: 2px;
+    z-index: 2;
+    .number {
+      position: absolute;
+      top: -9px;
+      left: 86px;
+      .size(25px);
+      line-height: 25px;
+      display: inline-block;
+      background: @color;
+      border-radius: 50%;
+      color: #fff;
+      text-align: center;
+      z-index: 3;
+    }
+    &.curr {
+      background: @active-color;
+      color: @active-color;
+      .number {
+        background: @active-color;
+      }
+    }
+    &.active {
+      background: @curr-color;
+      color: @curr-color;
+      .number {
+        background: @curr-color;
+      }
+    }
+  }
+}
+.title {
+  line-height: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  a {
+    font-size: 12px;
+    text-decoration: none;
+    font-weight: normal;
+    color: #007fbf;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+.button-balance {
+  border: 0 none;
+  .size(120px,60px);
+  display: inline-block;
+  background: @main-color;
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+  &:hover {
+    background: @main-color-hover;
+  }
+}

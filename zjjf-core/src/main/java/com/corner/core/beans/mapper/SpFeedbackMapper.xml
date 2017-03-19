@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SpFeedbackMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpFeedback" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="sendUser" property="sendUser" jdbcType="TINYINT" />
+    <result column="checkerId" property="checkerId" jdbcType="VARCHAR" />
+    <result column="checkerNm" property="checkerNm" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="confirmTime" property="confirmTime" jdbcType="TIMESTAMP" />
+    <result column="deviceType" property="deviceType" jdbcType="TINYINT" />
+    <result column="appVersion" property="appVersion" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="questionType" property="questionType" jdbcType="TINYINT" />
+    <result column="picNumber" property="picNumber" jdbcType="BIT" />
+    <result column="picPaths" property="picPaths" jdbcType="VARCHAR" />
+    <result column="revertStatus" property="revertStatus" jdbcType="TINYINT" />
+    <result column="kfContent" property="kfContent" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, storeId, title, content, addTime, sendUser, checkerId, checkerNm, status, isDelete, 
+    confirmTime, deviceType, appVersion, tel, email, questionType, picNumber, picPaths, 
+    revertStatus, kfContent
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from SpFeedback
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from SpFeedback
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SpFeedback" >
+    insert into SpFeedback (id, storeId, title, 
+      content, addTime, sendUser, 
+      checkerId, checkerNm, status, 
+      isDelete, confirmTime, deviceType, 
+      appVersion, tel, email, 
+      questionType, picNumber, picPaths, 
+      revertStatus, kfContent)
+    values (#{id,jdbcType=BIGINT}, #{storeId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{sendUser,jdbcType=TINYINT}, 
+      #{checkerId,jdbcType=VARCHAR}, #{checkerNm,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{isDelete,jdbcType=BIT}, #{confirmTime,jdbcType=TIMESTAMP}, #{deviceType,jdbcType=TINYINT}, 
+      #{appVersion,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{questionType,jdbcType=TINYINT}, #{picNumber,jdbcType=BIT}, #{picPaths,jdbcType=VARCHAR}, 
+      #{revertStatus,jdbcType=TINYINT}, #{kfContent,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SpFeedback" >
+    insert into SpFeedback
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="sendUser != null" >
+        sendUser,
+      </if>
+      <if test="checkerId != null" >
+        checkerId,
+      </if>
+      <if test="checkerNm != null" >
+        checkerNm,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="confirmTime != null" >
+        confirmTime,
+      </if>
+      <if test="deviceType != null" >
+        deviceType,
+      </if>
+      <if test="appVersion != null" >
+        appVersion,
+      </if>
+      <if test="tel != null" >
+        tel,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="questionType != null" >
+        questionType,
+      </if>
+      <if test="picNumber != null" >
+        picNumber,
+      </if>
+      <if test="picPaths != null" >
+        picPaths,
+      </if>
+      <if test="revertStatus != null" >
+        revertStatus,
+      </if>
+      <if test="kfContent != null" >
+        kfContent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendUser != null" >
+        #{sendUser,jdbcType=TINYINT},
+      </if>
+      <if test="checkerId != null" >
+        #{checkerId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkerNm != null" >
+        #{checkerNm,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="confirmTime != null" >
+        #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deviceType != null" >
+        #{deviceType,jdbcType=TINYINT},
+      </if>
+      <if test="appVersion != null" >
+        #{appVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="questionType != null" >
+        #{questionType,jdbcType=TINYINT},
+      </if>
+      <if test="picNumber != null" >
+        #{picNumber,jdbcType=BIT},
+      </if>
+      <if test="picPaths != null" >
+        #{picPaths,jdbcType=VARCHAR},
+      </if>
+      <if test="revertStatus != null" >
+        #{revertStatus,jdbcType=TINYINT},
+      </if>
+      <if test="kfContent != null" >
+        #{kfContent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SpFeedback" >
+    update SpFeedback
+    <set >
+      <if test="storeId != null" >
+        storeId = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendUser != null" >
+        sendUser = #{sendUser,jdbcType=TINYINT},
+      </if>
+      <if test="checkerId != null" >
+        checkerId = #{checkerId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkerNm != null" >
+        checkerNm = #{checkerNm,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="confirmTime != null" >
+        confirmTime = #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deviceType != null" >
+        deviceType = #{deviceType,jdbcType=TINYINT},
+      </if>
+      <if test="appVersion != null" >
+        appVersion = #{appVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="questionType != null" >
+        questionType = #{questionType,jdbcType=TINYINT},
+      </if>
+      <if test="picNumber != null" >
+        picNumber = #{picNumber,jdbcType=BIT},
+      </if>
+      <if test="picPaths != null" >
+        picPaths = #{picPaths,jdbcType=VARCHAR},
+      </if>
+      <if test="revertStatus != null" >
+        revertStatus = #{revertStatus,jdbcType=TINYINT},
+      </if>
+      <if test="kfContent != null" >
+        kfContent = #{kfContent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SpFeedback" >
+    update SpFeedback
+    set storeId = #{storeId,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      sendUser = #{sendUser,jdbcType=TINYINT},
+      checkerId = #{checkerId,jdbcType=VARCHAR},
+      checkerNm = #{checkerNm,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      confirmTime = #{confirmTime,jdbcType=TIMESTAMP},
+      deviceType = #{deviceType,jdbcType=TINYINT},
+      appVersion = #{appVersion,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      questionType = #{questionType,jdbcType=TINYINT},
+      picNumber = #{picNumber,jdbcType=BIT},
+      picPaths = #{picPaths,jdbcType=VARCHAR},
+      revertStatus = #{revertStatus,jdbcType=TINYINT},
+      kfContent = #{kfContent,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

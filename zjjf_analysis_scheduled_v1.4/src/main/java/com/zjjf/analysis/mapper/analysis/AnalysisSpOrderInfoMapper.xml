@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.AnalysisSpOrderInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.orders.AnalysisSpOrderInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="addTime" property="addTime" jdbcType="VARCHAR" />
+    <result column="gaveTime" property="addTime" jdbcType="VARCHAR" />
+    <result column="orderNo" property="orderNo" jdbcType="VARCHAR" />
+    <result column="chirdOrderNo" property="chirdOrderNo" jdbcType="VARCHAR" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="sku" property="sku" jdbcType="INTEGER" />
+    <result column="goodsPrice" property="goodsPrice" jdbcType="DECIMAL" />
+    <result column="freight" property="freight" jdbcType="DECIMAL" />
+    <result column="coupon" property="coupon" jdbcType="DECIMAL" />
+    <result column="rebate" property="rebate" jdbcType="DECIMAL" />
+    <result column="orderPrice" property="orderPrice" jdbcType="DECIMAL" />
+    <result column="itemPrice" property="itemPrice" jdbcType="DECIMAL" />
+    <result column="fee" property="fee" jdbcType="DECIMAL" />
+    <result column="supportmetho" property="supportmetho" jdbcType="INTEGER" />
+    <result column="supportStatus" property="supportStatus" jdbcType="INTEGER" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+    <result column="payMoney" property="payMoney" jdbcType="DECIMAL" />
+    <result column="isZj" property="isZj" jdbcType="INTEGER" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="ackTime" property="ackTime" jdbcType="VARCHAR" />
+    <result column="areaName" property="areaName" jdbcType="VARCHAR" />
+    <result column="cityName" property="cityName" jdbcType="VARCHAR" />
+    <result column="spGroupName" property="spGroupName" jdbcType="VARCHAR" />
+    <result column="supplierName" property="supplierName" jdbcType="VARCHAR" />
+    <result column="storeName" property="storeName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, cityId, areaId, storeId, spGroupId, addTime, gaveTime, orderNo, chirdOrderNo, quantity, 
+    sku, goodsPrice, freight, coupon, rebate, orderPrice, itemPrice, fee, supportmetho, supportStatus, 
+    supplierId, status, updateTime, createTime, payMoney, ackTime, isZj, dayTime, areaName, cityName, spGroupName, supplierName, storeName
+  </sql>
+  
+  <insert id ="batchAdd" parameterType="List"> 
+	<![CDATA[
+      insert into analysis_sporderinfo (cityId, areaId, 
+	      spGroupId, addTime, gaveTime, orderNo, 
+	      chirdOrderNo, quantity, sku, 
+	      goodsPrice, freight, payMoney, coupon, rebate, 
+	      orderPrice, itemPrice, fee, supportmetho, 
+	      supportStatus, supplierId, status, storeId, ackTime, isZj, dayTime, createTime)
+	    values
+	]]>
+    <foreach collection ="list" item ="item" index ="index" separator =","> 
+        ( #{item.cityId,jdbcType=INTEGER}, #{item.areaId,jdbcType=INTEGER}, 
+	      #{item.spGroupId,jdbcType=INTEGER}, #{item.addTime,jdbcType=VARCHAR}, #{item.gaveTime,jdbcType=VARCHAR}, #{item.orderNo,jdbcType=VARCHAR}, 
+	      #{item.chirdOrderNo,jdbcType=VARCHAR}, #{item.quantity,jdbcType=INTEGER}, #{item.sku,jdbcType=INTEGER}, 
+	      #{item.goodsPrice,jdbcType=DECIMAL}, #{item.freight,jdbcType=DECIMAL}, #{item.payMoney,jdbcType=DECIMAL}, #{item.coupon,jdbcType=DECIMAL}, #{item.rebate,jdbcType=DECIMAL}, 
+	      #{item.orderPrice,jdbcType=DECIMAL}, #{item.itemPrice,jdbcType=DECIMAL}, #{item.fee,jdbcType=DECIMAL}, #{item.supportmetho,jdbcType=INTEGER}, 
+	      #{item.supportStatus,jdbcType=INTEGER}, #{item.supplierId,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER},  #{item.storeId,jdbcType=INTEGER}, 
+	      #{item.ackTime,jdbcType=VARCHAR}, #{item.isZj,jdbcType=INTEGER},  #{item.dayTime,jdbcType=INTEGER}, #{item.createTime,jdbcType=INTEGER})
+    </foreach> 
+  </insert>
+  
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.analysis.orders.AnalysisSpOrderInfo" >
+    insert into analysis_sporderinfo (id, cityId, areaId, 
+      spGroupId, addTime, gaveTime, orderNo, 
+      chirdOrderNo, quantity, sku, 
+      goodsPrice, freight, payMoney, coupon, rebate, 
+      orderPrice, itemPrice, fee, supportmetho, 
+      supportStatus, supplierId, status, storeId, ackTime, updateTime, isZj, dayTime, 
+      areaName, cityName, spGroupName, supplierName, storeName, createTime)
+    values (#{id,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, 
+      #{spGroupId,jdbcType=INTEGER}, #{addTime,jdbcType=VARCHAR}, #{gaveTime,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, 
+      #{chirdOrderNo,jdbcType=VARCHAR}, #{quantity,jdbcType=INTEGER}, #{sku,jdbcType=INTEGER}, 
+      #{goodsPrice,jdbcType=DECIMAL},  #{freight,jdbcType=DECIMAL}, #{payMoney,jdbcType=DECIMAL}, #{coupon,jdbcType=DECIMAL}, #{rebate,jdbcType=DECIMAL}, 
+      #{orderPrice,jdbcType=DECIMAL},  #{itemPrice,jdbcType=DECIMAL}, #{fee,jdbcType=DECIMAL}, #{supportmetho,jdbcType=INTEGER}, 
+      #{supportStatus,jdbcType=INTEGER}, #{supplierId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER}, #{ackTime,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{isZj,jdbcType=INTEGER}, #{dayTime,jdbcType=INTEGER}, 
+      #{areaName,jdbcType=VARCHAR}, #{cityName,jdbcType=VARCHAR}, #{spGroupName,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, #{storeName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=INTEGER})
+  </insert>
+  
+  <select id="getSupplierIdList" resultType="com.zjjf.analysis.beans.analysis.orders.AnalysisSpOrderInfo" parameterType="java.lang.String" >
+     select supplierId, spGroupId from analysis_sporderinfo where `dayTime` = #{dayTime} and supplierId is not null group by supplierId, spGroupId limit #{offset}, 1000 
+  </select>
+  
+  <select id="getStoreIdList" resultMap="BaseResultMap" parameterType="java.lang.String" >
+     select storeId, isZj, spGroupId from analysis_sporderinfo where `dayTime` = #{dayTime} and storeId is not null group by storeId, isZj, spGroupId limit #{offset}, 1000 
+  </select>
+  
+  <select id="getSpGroupIdIdList" resultMap="BaseResultMap" parameterType="java.lang.String" >
+     select id, spGroupId from analysis_sporderinfo where `dayTime` = #{addTime} and spGroupId is not null group by spGroupId  limit #{offset}, 1000 
+  </select>
+  
+  <select id="getSupplierSpGroupLog" resultMap="BaseResultMap" parameterType="java.util.Map" >
+     select supplierId, spGroupId from analysis_sporderinfo group by spGroupId, supplierId  limit #{offset}, 1000 
+  </select>
+  
+  <select id="getMonthActiveBySpGroupId" resultType="com.zjjf.analysis.beans.analysis.supplier.SpGroupDaily" parameterType="java.util.Map" >
+     select count(distinct storeId) as "monthActive" from analysis_sporderinfo where spGroupId = #{spGroupId} and `dayTime` &gt;= #{dayTimeBegin} and `dayTime` &lt;= #{dayTimeEnd}
+  </select>
+  
+  <select id="getSpGroupLogByDayTime" resultType="java.lang.Integer" parameterType="java.lang.String" >
+     select spGroupId from analysis_sporderinfo where `dayTime` = #{dayTime} group by spGroupId limit #{offset}, 1000 
+  </select>
+  
+  <select id="getBySupplierIdSpGroupIdAndAddTime" resultType="com.zjjf.analysis.beans.analysis.supplier.SupplierDaily" parameterType="java.util.Map" >
+     
+     select 
+	  t1.`spGroupId`,
+	  t1.`supplierId`,
+	  sum(t1.itemPrice) as "turnover",
+	  sum(t1.rebate) as "totalRebate",
+	  sum(t1.coupon) as "totalCoupon",
+	  sum(t1.freight) as "totalFreight",
+	  count(t1.id)    as "orderCount",
+	  sum(t1.quantity) as "quantity",
+	  sum(t1.`sku`) as "sku"
+	from
+	  `analysis_sporderinfo` t1 where t1.supplierId = #{supplierId} and t1.spGroupId = #{spGroupId} and t1.dayTime =#{dayTime}
+  </select>
+  
+  <select id="getBySpGroupIdAndAddTime" resultType="com.zjjf.analysis.beans.analysis.supplier.SpGroupDaily" parameterType="java.util.Map" >
+     
+     select 
+	  t1.`spGroupId`,
+	  t1.`supplierId`,
+	  sum(t1.itemPrice) as "turnover",
+	  sum(t1.rebate) as "totalRebate",
+	  sum(t1.coupon) as "totalCoupon",
+	  sum(t1.freight) as "totalFreight",
+	  count(t1.id)    as "orderCount",
+	  count(distinct t1.storeId) as "storeOrderCount",
+	  sum(t1.quantity) as "quantity",
+	  sum(t1.`sku`) as "sku"
+	from
+	  `analysis_sporderinfo` t1 where t1.spGroupId = #{spGroupId} and t1.dayTime =#{dayTime}
+  </select>
+  
+  <select id="getNewRegStoreOrdercount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+     select count(*) from `analysis_sporderinfo` t1 where t1.storeId = #{storeId} and spGroupId =#{spGroupId} and t1.dayTime &lt;=#{dayTime}
+  </select>
+  
+  <select id="getByStoreIdAndAddTime" resultType="com.zjjf.analysis.beans.analysis.store.StoreDaily" parameterType="java.util.Map" >
+     
+     select 
+	  t1.`supplierId`,
+	  t1.`storeId`,
+	  t1.cityId,
+	  t1.cityName,
+	  t1.areaId,
+	  t1.areaName,
+	  t1.storeName,
+	  t1.supplierId,
+	  t1.spGroupName,
+	  t1.spGroupId,
+	  sum(t1.itemPrice) as "turnover",
+	  sum(t1.rebate) as "totalRebate",
+	  sum(t1.coupon) as "totalCoupon",
+	  sum(t1.freight) as "totalFreight",
+	  count(distinct orderNo) as "orderCount",
+	  sum(t1.quantity) as "quantity",
+	  sum(t1.`sku`) as "sku"
+	from
+	  `analysis_sporderinfo` t1
+	where t1.storeId = #{storeId} and t1.isZj = #{isZj} and t1.spGroupId = #{spGroupId} and t1.dayTime=#{dayTime}
+  </select>
+  
+  <select id="getSpGroupBySupplierId" resultType="com.zjjf.analysis.beans.analysis.orders.AnalysisSpOrderInfo" parameterType="java.util.Map" >
+     
+     select distinct supplierId, spGroupId from `analysis_sporderinfo` where supplierId = #{supplierId} and dayTime = #{dayTime}
+  </select>
+  
+  <select id="getOrderCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+     select count(*) from analysis_sporderinfo where supplierId=#{supplierId} and spGroupId = #{spGroupId} and `dayTime`=#{dayTime}
+     <if test="deliveryStatus != null" >
+        and status in (4, 5)
+     </if>
+  </select>
+  
+  <select id="getByChirdOrderNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+     select id, orderNo from analysis_sporderinfo where chirdOrderNo = #{chirdOrderNo} limit 1
+  </select>
+  
+  <update id="updateBean" parameterType="com.zjjf.analysis.beans.analysis.orders.AnalysisSpOrderInfo" >
+    update analysis_sporderinfo
+    <set >
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="cityId != null" >
+        cityId = #{cityId},
+      </if>
+      <if test="areaId != null" >
+        areaId = #{areaId},
+      </if>
+      <if test="cityName != null" >
+        cityName = #{cityName},
+      </if>
+      <if test="areaName != null" >
+        areaName = #{areaName},
+      </if>
+      <if test="spGroupName != null" >
+        spGroupName = #{spGroupName},
+      </if>
+      <if test="supplierName != null" >
+        supplierName = #{supplierName},
+      </if>
+      <if test="storeName != null" >
+        storeName = #{storeName},
+      </if>
+      <if test="isZj != null" >
+        isZj = #{isZj},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  
+  <select id="getByStoreIdBeforeTime" resultType="java.lang.Integer" parameterType="java.util.Map" >
+     select count(distinct storeId) from analysis_sporderinfo where `dayTime` &lt;= #{dayTimeEnd} and spGroupId = #{spGroupId}
+     <if test="storeIdList != null and storeIdList != '' " >
+		  and storeId in 
+         <foreach collection="storeIdList" index="index" item="item" open="(" separator="," close=")">
+           #{item}
+         </foreach> 
+     </if>
+  </select>
+</mapper>

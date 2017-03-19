@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpCustomerServiceMapper">
+<!-- 根据条件查询用户列表 begin -->
+	  <sql id="selectParam">
+	  	FROM CustomerService cs 
+		left join Department d on cs.deptId = d.id 
+		left join Position p on cs.postId = p.id
+		left join UserRoleMap urm on cs.id = urm.userId
+		join Role r on urm.roleId = r.id
+		where 1=1
+		<if test="allName != null and allName!=''">
+			and (cs.userName like "%"#{allName}"%" or cs.nickName like "%"#{allName}"%" or r.roleName like "%"#{allName}"%")	
+		</if>
+		<choose>
+			<when test="status != null">
+				and cs.status=#{status}
+			</when>
+			<otherwise>
+				and cs.status=2
+			</otherwise>
+		</choose>
+		
+		and cs.isDelete=0
+		group by cs.id
+	  </sql>
+	  <select id="getAllCustomerServiceByParam" parameterType="com.corner.kefu.beans.ro.sp.CustomerServiceRo" resultType="com.corner.kefu.beans.vo.sp.CustomerServiceVo">
+	  	SELECT 
+	  		cs.* ,
+	  		(SELECT userName FROM CustomerService WHERE id=cs.createrId) as createName,
+	  		d.name as deptName,
+	  		p.name as postName,
+	  		REPLACE(group_concat(r.roleName),',','&lt;br&gt;') as roleName 
+	  	<include refid="selectParam"/>
+	  	order by cs.updateTime desc 
+		limit #{pageIndex},#{pageSize} 
+	  </select>
+	  
+	  <select id="getCount" parameterType="com.corner.kefu.beans.ro.sp.CustomerServiceRo" resultType="java.lang.Integer">
+	  	select count(1) from (
+		  	SELECT 
+		  		cs.* ,
+		  		(SELECT userName FROM CustomerService WHERE id=cs.createrId) as createName,
+		  		d.name as deptName,
+		  		p.name as postName,
+		  		REPLACE(group_concat(r.roleName),',','&lt;br&gt;') as roleName 
+		  	 	<include refid="selectParam"/>
+		  	) a
+	  </select>
+<!-- 根据条件查询用户列表 end -->
+
+<!-- 根据id获取用户的登录密码 -->
+  <select id="getPasswordById" parameterType="java.lang.String" resultType="java.lang.String">
+  	select password from CustomerService where id=#{id}
+  </select>
+  <!-- 修改客服登陆密码 -->
+  <update id="updateLoginPassword" parameterType="java.util.Map">
+  	update CustomerService set password = #{password} where id = #{id}
+  </update>
+
+
+<!-- 获取所有的客服人员 -->
+<select id="getAllCustomerService" resultType="com.corner.core.beans.CustomerService">
+	SELECT `id`,`userName`,`nickName`,`gender`,`mobile` FROM `CustomerService`
+</select>
+</mapper>

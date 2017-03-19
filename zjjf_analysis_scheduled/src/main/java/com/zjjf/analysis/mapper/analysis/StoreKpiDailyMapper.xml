@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.StoreKpiDailyMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.store.StoreKpiDaily" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="storeCode" property="storeCode" jdbcType="VARCHAR" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="turnover" property="turnover" jdbcType="DECIMAL" />
+    <result column="kpiTurnover" property="kpiTurnover" jdbcType="DECIMAL" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+    <result column="isZj" property="isZj" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, storeId, spGroupId, dayTime, kpiTurnover, updateTime, createTime, isZj
+  </sql>
+  
+  <select id="getExitRecord" resultType="com.zjjf.analysis.beans.analysis.store.StoreKpiDaily">
+    select  
+	    t1.id, 
+	    t1.storeId, 
+	    t1.dayTime, 
+	    t1.spGroupId,
+	    IFNULL(t1.kpiTurnover, 0)  as kpiTurnover,
+	    t1.isZj
+    from `store_kpi_daily` t1 where t1.`dayTime`= #{dayTime} and t1.storeId = #{storeId} and t1.spGroupId = #{spGroupId} and t1.isZj = #{isZj} limit 1
+  </select>
+  
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.analysis.store.StoreKpiDaily" >
+    insert into store_kpi_daily (storeId, spGroupId, dayTime, kpiTurnover, createTime,  isZj)
+    values (#{storeId,jdbcType=INTEGER}, #{spGroupId,jdbcType=INTEGER}, #{dayTime,jdbcType=INTEGER}, #{kpiTurnover,jdbcType=DECIMAL}, #{createTime,jdbcType=INTEGER}, #{isZj,jdbcType=INTEGER})
+  </insert>
+ 
+  <update id="updateKpiTurnover" parameterType="com.zjjf.analysis.beans.analysis.store.StoreKpiDaily" >
+    update store_kpi_daily set  kpiTurnover = #{kpiTurnover} where id = #{id}
+  </update>
+  
+</mapper>

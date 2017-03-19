@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.SpgroupDailyReportMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.supplier.SpgroupDailyReport" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="yestodayAddReg" property="yestodayAddReg" jdbcType="INTEGER" />
+    <result column="todayAddReg" property="todayAddReg" jdbcType="INTEGER" />
+    <result column="monthReg" property="monthReg" jdbcType="INTEGER" />
+    <result column="monthGoalReg" property="monthGoalReg" jdbcType="INTEGER" />
+    <result column="monthRegIncrease" property="monthRegIncrease" jdbcType="DECIMAL" />
+    <result column="yestodayAddActive" property="yestodayAddActive" jdbcType="INTEGER" />
+    <result column="todayAddActive" property="todayAddActive" jdbcType="INTEGER" />
+    <result column="yestodayMaintain" property="yestodayMaintain" jdbcType="INTEGER" />
+    <result column="todayMaintain" property="todayMaintain" jdbcType="INTEGER" />
+    <result column="yestodayStoreOrderCount" property="yestodayStoreOrderCount" jdbcType="INTEGER" />
+    <result column="storeOrderCount" property="storeOrderCount" jdbcType="INTEGER" />
+    <result column="monthActive" property="monthActive" jdbcType="INTEGER" />
+    <result column="monthGoalActive" property="monthGoalActive" jdbcType="INTEGER" />
+    <result column="monthActiveIncrease" property="monthActiveIncrease" jdbcType="DECIMAL" />
+    <result column="totalStore" property="totalStore" jdbcType="INTEGER" />
+    <result column="unorderStore" property="unorderStore" jdbcType="INTEGER" />
+    <result column="monthAddActive" property="monthAddActive" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, cityId, areaId, spGroupId, dayTime, yestodayAddReg, todayAddReg, monthReg, monthGoalReg, 
+    monthRegIncrease, yestodayAddActive, todayAddActive, yestodayMaintain, todayMaintain, 
+    yestodayStoreOrderCount, storeOrderCount, monthActive, monthGoalActive, monthActiveIncrease, 
+    totalStore, unorderStore, monthAddActive, updateTime, createTime
+  </sql>
+  
+  <insert id="insert" parameterType="com.zjjf.analysis.beans.analysis.supplier.SpgroupDailyReport" >
+    insert into spgroup_daily_report (id, cityId, areaId, 
+      spGroupId, dayTime, yestodayAddReg, 
+      todayAddReg, monthReg, monthGoalReg, 
+      monthRegIncrease, yestodayAddActive, todayAddActive, 
+      yestodayMaintain, todayMaintain, yestodayStoreOrderCount, 
+      storeOrderCount, monthActive, monthGoalActive, 
+      monthActiveIncrease, totalStore, unorderStore, 
+      monthAddActive, updateTime, createTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, 
+      #{spGroupId,jdbcType=INTEGER}, #{dayTime,jdbcType=INTEGER}, #{yestodayAddReg,jdbcType=INTEGER}, 
+      #{todayAddReg,jdbcType=INTEGER}, #{monthReg,jdbcType=INTEGER}, #{monthGoalReg,jdbcType=INTEGER}, 
+      #{monthRegIncrease,jdbcType=DECIMAL}, #{yestodayAddActive,jdbcType=INTEGER}, #{todayAddActive,jdbcType=INTEGER}, 
+      #{yestodayMaintain,jdbcType=INTEGER}, #{todayMaintain,jdbcType=INTEGER}, #{yestodayStoreOrderCount,jdbcType=INTEGER}, 
+      #{storeOrderCount,jdbcType=INTEGER}, #{monthActive,jdbcType=INTEGER}, #{monthGoalActive,jdbcType=INTEGER}, 
+      #{monthActiveIncrease,jdbcType=DECIMAL}, #{totalStore,jdbcType=INTEGER}, #{unorderStore,jdbcType=INTEGER}, 
+      #{monthAddActive,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=INTEGER}
+      )
+  </insert>
+ 	
+  <update id="update" parameterType="com.zjjf.analysis.beans.analysis.supplier.SpgroupDailyReport" >
+    update spgroup_daily_report
+    <set >
+      <if test="todayAddActive != null" >
+        todayAddActive = #{todayAddActive,jdbcType=INTEGER},
+      </if>
+      <if test="storeOrderCount != null" >
+        storeOrderCount = #{storeOrderCount,jdbcType=INTEGER},
+      </if>
+      <if test="monthActive != null" >
+        monthActive = #{monthActive,jdbcType=INTEGER},
+      </if>
+      <if test="todayMaintain != null" >
+        todayMaintain = #{todayMaintain,jdbcType=INTEGER},
+      </if> 
+      <if test="monthAddActive != null" >
+        monthAddActive = #{monthAddActive,jdbcType=INTEGER},
+      </if>
+      <if test="totalStore != null" >
+        totalStore = #{totalStore,jdbcType=INTEGER},
+      </if>
+      <if test="unorderStore != null" >
+        unorderStore = #{unorderStore,jdbcType=INTEGER},
+      </if>
+      <if test="todayAddReg != null" >
+        todayAddReg = #{todayAddReg,jdbcType=INTEGER},
+      </if>
+      <if test="monthReg != null" >
+        monthReg = #{monthReg,jdbcType=INTEGER},
+      </if>
+      <if test="monthGoalActive != null" >
+        monthGoalActive = #{monthGoalActive,jdbcType=INTEGER},
+      </if>
+      <if test="monthGoalReg != null" >
+        monthGoalReg = #{monthGoalReg,jdbcType=INTEGER},
+      </if>
+      <if test="monthRegIncrease != null" >
+        monthRegIncrease = #{monthRegIncrease,jdbcType=DECIMAL},
+      </if>
+      <if test="monthActiveIncrease != null" >
+        monthActiveIncrease = #{monthActiveIncrease,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+ 
+  <select id="getExitRecord" resultType="com.zjjf.analysis.beans.analysis.supplier.SpgroupDailyReport">
+    select  
+	    t1.id, 
+	    t1.spGroupId, 
+	    t1.dayTime
+    from `spgroup_daily_report` t1 where t1.`dayTime`= #{dayTime} and t1.spGroupId = #{spGroupId}  limit 1
+  </select>
+</mapper>

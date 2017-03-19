@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.corner.ErpPurchaseStockDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.corner.ErpPurchaseStockDetail" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="pId" property="pId" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="itemBaseId" property="itemBaseId" jdbcType="INTEGER" />
+    <result column="barCode" property="barCode" jdbcType="VARCHAR" />
+    <result column="mdseId" property="mdseId" jdbcType="VARCHAR" />
+    <result column="itemCode" property="itemCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="spec" property="spec" jdbcType="VARCHAR" />
+    <result column="pkg" property="pkg" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="quantity" property="quantity" jdbcType="SMALLINT" />
+    <result column="operateQuantity" property="operateQuantity" jdbcType="SMALLINT" />
+    <result column="operateStock" property="operateStock" jdbcType="SMALLINT" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="areaPrice" property="areaPrice" jdbcType="DECIMAL" />
+    <result column="totalPrice" property="totalPrice" jdbcType="DECIMAL" />
+    <result column="wh3Id" property="wh3Id" jdbcType="VARCHAR" />
+    <result column="wh3Name" property="wh3Name" jdbcType="VARCHAR" />
+    <result column="wh2Name" property="wh2Name" jdbcType="VARCHAR" />
+    <result column="wh1Name" property="wh1Name" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="productionTime" property="productionTime" jdbcType="TIMESTAMP" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pId, orderId, itemBaseId, barCode, mdseId, itemCode, name, spec, pkg, img, quantity, 
+    operateQuantity, operateStock, price, areaPrice, totalPrice, wh3Id, wh3Name, wh2Name, 
+    wh1Name, remark, addTime, productionTime, isDelete
+  </sql>
+  
+  <select id="getData" resultType="com.zjjf.analysis.beans.analysis.corner.ErpPurchaseStockDetailVo" parameterType="java.util.Map" >
+	  select 
+		  t1.id, 
+		  t1.pId, 
+		  t1.orderId, 
+		  t1.itemBaseId, 
+		  t1.barCode, 
+		  t1.mdseId, 
+		  t1.itemCode, 
+		  t1.name, 
+		  t1.spec, 
+		  t1.pkg, 
+		  t1.img, 
+    	  t1.operateQuantity, 
+    	  t1.operateStock, 
+    	  t1.price, 
+    	  t1.areaPrice, 
+    	  t1.totalPrice, 
+    	  t1.wh3Id, 
+    	  t2.managerId,
+    	  t2.whId,
+    	  t1.wh3Name, 
+    	  t1.wh2Name, 
+   	      t1.wh1Name, 
+   	      t1.remark, 
+   	      t5.addTime,
+   	      t1.productionTime, 
+   	      t1.isDelete,
+   	      t2.managerId,
+   	      t2.whId,
+	      t2.supplierId,
+	      t5.purchaseUserName as "addUser",
+	      t3.managerName,
+	      t4.orderId as "parentOrderId",
+	      date_format(t5.gaveTime, '%Y-%m-%d') as gaveTime,
+	      t4.quantity,
+   	      case
+		    when t5.`type` = 1
+		    then '采购入库'
+		    when t5.`type` = 2
+		    then '采购退货'
+		    else '' 
+		   end as "settleStatusName"
+	   from
+		ERPPurchaseStockDetail t1  
+		left join ERPPurchaseStockInfo t2 on t2.orderId = t1.orderId
+		left join ERPManager t3 on t3.id = t2.managerId
+		left join ERPManagerOrderDetail t4 on t4.id = t1.pid
+		left join ERPManagerOrderInfo t5 on t5.orderId = t4.orderId
+	   where t2.checkStatus = 2 
+	      <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+	      	and date_format(t5.`addTime`, '%Y-%m-%d') &gt;= #{dayTimeBegin}
+	      </if>
+	      <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+	      	and date_format(t5.`addTime`, '%Y-%m-%d')  &lt;= #{dayTimeEnd}
+	      </if>
+	      <if test="whId != null and whId != '' " >
+	      	and t2.whId = #{whId}
+	      </if>
+	      <if test="orderNoOrManagerName != null and orderNoOrManagerName != '' " >
+	      	and (t3.managerName like "%"#{orderNoOrManagerName}"%" or t4.orderId like "%"#{orderNoOrManagerName}"%")
+	      </if>
+	      <if test="itemNameOrItemCode != null and itemNameOrItemCode != '' " >
+	      	and (t1.barCode like "%"#{itemNameOrItemCode}"%" or t1.name like "%"#{itemNameOrItemCode}"%")
+	      </if>
+	    order by t5.addTime desc, t5.orderId limit #{pageNo}, #{offset}
+  </select>
+  
+  <select id="getDataCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+	  select count(*) from
+		ERPPurchaseStockDetail t1  
+		left join ERPPurchaseStockInfo t2 on t2.orderId = t1.orderId
+		left join ERPManager t3 on t3.id = t2.managerId
+		left join ERPManagerOrderDetail t4 on t4.id = t1.pid
+		left join ERPManagerOrderInfo t5 on t5.orderId = t4.orderId
+	   where t2.checkStatus = 2 
+	      <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+	      	and date_format(t5.`addTime`, '%Y-%m-%d') &gt;= #{dayTimeBegin}
+	      </if>
+	      <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+	      	and date_format(t5.`addTime`, '%Y-%m-%d')  &lt;= #{dayTimeEnd}
+	      </if>
+	      <if test="whId != null and whId != '' " >
+	      	and t2.whId = #{whId}
+	      </if>
+	      <if test="orderNoOrManagerName != null and orderNoOrManagerName != '' " >
+	      	and (t3.managerName like "%"#{orderNoOrManagerName}"%" or t4.orderId like "%"#{orderNoOrManagerName}"%")
+	      </if>
+	      <if test="itemNameOrItemCode != null and itemNameOrItemCode != '' " >
+	      	and (t1.barCode like "%"#{itemNameOrItemCode}"%" or t1.name like "%"#{itemNameOrItemCode}"%")
+	      </if>
+  </select>
+  
+  <select id="getDataExcel" resultType="com.zjjf.analysis.beans.analysis.corner.ErpPurchaseStockDetailVo" parameterType="java.util.Map" >
+	  select 
+		  t1.id, 
+		  t1.pId, 
+		  t1.orderId, 
+		  t1.itemBaseId, 
+		  t1.barCode, 
+		  t1.mdseId, 
+		  t1.itemCode, 
+		  t1.name, 
+		  t1.spec, 
+		  t1.pkg, 
+		  t1.img, 
+    	  t1.operateQuantity, 
+    	  t1.operateStock, 
+    	  t1.price, 
+    	  t1.areaPrice, 
+    	  t1.totalPrice, 
+    	  t1.wh3Id, 
+    	  t1.wh3Name, 
+    	  t1.wh2Name, 
+   	      t1.wh1Name, 
+   	      t1.remark, 
+   	      t5.addTime,
+   	      t1.productionTime, 
+   	      t1.isDelete,
+   	      t2.managerId,
+   	      t2.whId,
+	      t2.supplierId,
+	      t5.purchaseUserName as "addUser",
+	      t3.managerName,
+	      t4.orderId as "parentOrderId",
+	      date_format(t5.gaveTime, '%Y-%m-%d') as gaveTime,
+	      t4.quantity,
+   	      case
+		    when t5.`type` = 1
+		    then '采购入库'
+		    when t5.`type` = 2
+		    then '采购退货'
+		    else '' 
+		   end as "settleStatusName"
+	   from
+		ERPPurchaseStockDetail t1  
+		left join ERPPurchaseStockInfo t2 on t2.orderId = t1.orderId
+		left join ERPManager t3 on t3.id = t2.managerId
+		left join ERPManagerOrderDetail t4 on t4.id = t1.pid
+		left join ERPManagerOrderInfo t5 on t5.orderId = t4.orderId
+	    where t2.checkStatus = 2 
+	      <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+	      	and date_format(t5.`addTime`, '%Y-%m-%d') &gt;= #{dayTimeBegin}
+	      </if>
+	      <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+	      	and date_format(t5.`addTime`, '%Y-%m-%d')  &lt;= #{dayTimeEnd}
+	      </if>
+	      <if test="whId != null and whId != '' " >
+	      	and t2.whId = #{whId}
+	      </if>
+	      <if test="orderNoOrManagerName != null and orderNoOrManagerName != '' " >
+	      	and (t3.managerName like "%"#{orderNoOrManagerName}"%" or t4.orderId like "%"#{orderNoOrManagerName}"%")
+	      </if>
+	      <if test="itemNameOrItemCode != null and itemNameOrItemCode != '' " >
+	      	and (t1.barCode like "%"#{itemNameOrItemCode}"%" or t1.name like "%"#{itemNameOrItemCode}"%")
+	      </if>
+	   order by t5.addTime desc, t5.orderId limit 10000
+  </select>
+  
+  <select id="getDailyMummary" resultType="java.util.Map" parameterType="java.util.Map" >
+	  select 
+	      IFNULL(sum(t4.quantity), 0)  as quantity,
+	      IFNULL(sum(t1.operateStock), 0)  as operateQuantity,
+	      IFNULL(sum(t1.totalPrice), 0)  as areaPrice
+	   from
+		ERPPurchaseStockDetail t1  
+		left join ERPPurchaseStockInfo t2 on t2.orderId = t1.orderId
+		left join ERPManager t3 on t3.id = t2.managerId
+		left join ERPManagerOrderDetail t4 on t4.id = t1.pid
+		left join ERPManagerOrderInfo t5 on t5.orderId = t4.orderId
+		where t2.checkStatus = 2 
+	      <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+	      	and date_format(t5.`addTime`, '%Y-%m-%d') &gt;= #{dayTimeBegin}
+	      </if>
+	      <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+	      	and date_format(t5.`addTime`, '%Y-%m-%d')  &lt;= #{dayTimeEnd}
+	      </if>
+	      <if test="whId != null and whId != '' " >
+	      	and t2.whId = #{whId}
+	      </if>
+	      <if test="orderNoOrManagerName != null and orderNoOrManagerName != '' " >
+	      	and (t3.managerName like "%"#{orderNoOrManagerName}"%" or t4.orderId like "%"#{orderNoOrManagerName}"%")
+	      </if>
+	       <if test="itemNameOrItemCode != null and itemNameOrItemCode != '' " >
+	      	and (t1.barCode like "%"#{itemNameOrItemCode}"%" or t1.name like "%"#{itemNameOrItemCode}"%")
+	      </if>
+  </select>
+    
+  <select id="getByItemBaseIdTime" resultType="com.zjjf.analysis.beans.analysis.corner.ErpPurchaseStockDetail">
+    select t1.totalPrice, t1.operateStock, t1.orderId 
+       from ERPPurchaseStockDetail t1  
+		left join ERPPurchaseStockInfo t2 on t2.orderId = t1.orderId
+		left join ERPManager t3 on t3.id = t2.managerId
+		left join ERPManagerOrderDetail t4 on t4.id = t1.pid
+		left join ERPManagerOrderInfo t5 on t5.orderId = t4.orderId
+	   where t2.checkStatus = 2 and t1.itemBaseId=#{itemBaseId} and t2.managerId=#{managerId} and t2.whId=#{whId}
+    	and date_format(t5.`addTime`, '%Y-%m-%d') &gt;= #{dayTimeBegin} and date_format(t5.`addTime`, '%Y-%m-%d') &lt;= #{dayTimeEnd}
+  </select>
+  
+  <select id="getMinAreaPriceByManagerIdWhIdItemBaseId" resultType="com.zjjf.analysis.beans.analysis.corner.ErpPurchaseStockDetail">
+    select min(t1.areaPrice) as areaPrice
+       from ERPPurchaseStockDetail t1  
+		left join ERPPurchaseStockInfo t2 on t2.orderId = t1.orderId
+		left join ERPManager t3 on t3.id = t2.managerId
+		left join ERPManagerOrderDetail t4 on t4.id = t1.pid
+		left join ERPManagerOrderInfo t5 on t5.orderId = t4.orderId
+	   where t2.checkStatus = 2 and t1.areaPrice != 0 and t1.itemBaseId=#{itemBaseId} and t2.managerId=#{managerId} and t2.whId=#{whId}
+    	and date_format(t5.`addTime`, '%Y-%m-%d') &gt;= #{dayTimeBegin} and date_format(t5.`addTime`, '%Y-%m-%d') &lt;= #{dayTimeEnd}
+  </select>
+ 
+ 
+</mapper>

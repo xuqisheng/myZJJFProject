@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.StoreItemMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.StoreItem" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="itemId" property="itemId" jdbcType="INTEGER" />
+    <result column="mdseId" property="mdseId" jdbcType="VARCHAR" />
+    <result column="ordId" property="ordId" jdbcType="TINYINT" />
+    <result column="storeId" property="storeId" jdbcType="INTEGER" />
+    <result column="storeName" property="storeName" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="discountPrice" property="discountPrice" jdbcType="DECIMAL" />
+    <result column="rates" property="rates" jdbcType="DECIMAL" />
+    <result column="goodsStock" property="goodsStock" jdbcType="SMALLINT" />
+    <result column="sales" property="sales" jdbcType="SMALLINT" />
+    <result column="clickRate" property="clickRate" jdbcType="INTEGER" />
+    <result column="subnews" property="subnews" jdbcType="BIT" />
+    <result column="subtuijian" property="subtuijian" jdbcType="BIT" />
+    <result column="addTime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+    <result column="col4" property="col4" jdbcType="VARCHAR" />
+    <result column="col5" property="col5" jdbcType="VARCHAR" />
+    <result column="col6" property="col6" jdbcType="VARCHAR" />
+    <result column="middlenumber" property="middlenumber" jdbcType="SMALLINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, itemId, mdseId, ordId, storeId, storeName, price, discountPrice, rates, goodsStock, 
+    sales, clickRate, subnews, subtuijian, addTime, updateTime, status, isDelete, col1, 
+    col2, col3, col4, col5, col6, middlenumber
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from StoreItem
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from StoreItem
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.StoreItem" >
+    insert into StoreItem (id, itemId, mdseId, 
+      ordId, storeId, storeName, 
+      price, discountPrice, rates, 
+      goodsStock, sales, clickRate, 
+      subnews, subtuijian, addTime, 
+      updateTime, status, isDelete, 
+      col1, col2, col3, col4, 
+      col5, col6, middlenumber
+      )
+    values (#{id,jdbcType=VARCHAR}, #{itemId,jdbcType=INTEGER}, #{mdseId,jdbcType=VARCHAR}, 
+      #{ordId,jdbcType=TINYINT}, #{storeId,jdbcType=INTEGER}, #{storeName,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, #{rates,jdbcType=DECIMAL}, 
+      #{goodsStock,jdbcType=SMALLINT}, #{sales,jdbcType=SMALLINT}, #{clickRate,jdbcType=INTEGER}, 
+      #{subnews,jdbcType=BIT}, #{subtuijian,jdbcType=BIT}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}, 
+      #{col1,jdbcType=VARCHAR}, #{col2,jdbcType=VARCHAR}, #{col3,jdbcType=VARCHAR}, #{col4,jdbcType=VARCHAR}, 
+      #{col5,jdbcType=VARCHAR}, #{col6,jdbcType=VARCHAR}, #{middlenumber,jdbcType=SMALLINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.StoreItem" >
+    insert into StoreItem
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="itemId != null" >
+        itemId,
+      </if>
+      <if test="mdseId != null" >
+        mdseId,
+      </if>
+      <if test="ordId != null" >
+        ordId,
+      </if>
+      <if test="storeId != null" >
+        storeId,
+      </if>
+      <if test="storeName != null" >
+        storeName,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="discountPrice != null" >
+        discountPrice,
+      </if>
+      <if test="rates != null" >
+        rates,
+      </if>
+      <if test="goodsStock != null" >
+        goodsStock,
+      </if>
+      <if test="sales != null" >
+        sales,
+      </if>
+      <if test="clickRate != null" >
+        clickRate,
+      </if>
+      <if test="subnews != null" >
+        subnews,
+      </if>
+      <if test="subtuijian != null" >
+        subtuijian,
+      </if>
+      <if test="addTime != null" >
+        addTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="col1 != null" >
+        col1,
+      </if>
+      <if test="col2 != null" >
+        col2,
+      </if>
+      <if test="col3 != null" >
+        col3,
+      </if>
+      <if test="col4 != null" >
+        col4,
+      </if>
+      <if test="col5 != null" >
+        col5,
+      </if>
+      <if test="col6 != null" >
+        col6,
+      </if>
+      <if test="middlenumber != null" >
+        middlenumber,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="itemId != null" >
+        #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="mdseId != null" >
+        #{mdseId,jdbcType=VARCHAR},
+      </if>
+      <if test="ordId != null" >
+        #{ordId,jdbcType=TINYINT},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="storeName != null" >
+        #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="discountPrice != null" >
+        #{discountPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="rates != null" >
+        #{rates,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsStock != null" >
+        #{goodsStock,jdbcType=SMALLINT},
+      </if>
+      <if test="sales != null" >
+        #{sales,jdbcType=SMALLINT},
+      </if>
+      <if test="clickRate != null" >
+        #{clickRate,jdbcType=INTEGER},
+      </if>
+      <if test="subnews != null" >
+        #{subnews,jdbcType=BIT},
+      </if>
+      <if test="subtuijian != null" >
+        #{subtuijian,jdbcType=BIT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null" >
+        #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        #{col3,jdbcType=VARCHAR},
+      </if>
+      <if test="col4 != null" >
+        #{col4,jdbcType=VARCHAR},
+      </if>
+      <if test="col5 != null" >
+        #{col5,jdbcType=VARCHAR},
+      </if>
+      <if test="col6 != null" >
+        #{col6,jdbcType=VARCHAR},
+      </if>
+      <if test="middlenumber != null" >
+        #{middlenumber,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.StoreItem" >
+    update StoreItem
+    <set >
+      <if test="itemId != null" >
+        itemId = #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="mdseId != null" >
+        mdseId = #{mdseId,jdbcType=VARCHAR},
+      </if>
+      <if test="ordId != null" >
+        ordId = #{ordId,jdbcType=TINYINT},
+      </if>
+      <if test="storeId != null" >
+        storeId = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="storeName != null" >
+        storeName = #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="discountPrice != null" >
+        discountPrice = #{discountPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="rates != null" >
+        rates = #{rates,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsStock != null" >
+        goodsStock = #{goodsStock,jdbcType=SMALLINT},
+      </if>
+      <if test="sales != null" >
+        sales = #{sales,jdbcType=SMALLINT},
+      </if>
+      <if test="clickRate != null" >
+        clickRate = #{clickRate,jdbcType=INTEGER},
+      </if>
+      <if test="subnews != null" >
+        subnews = #{subnews,jdbcType=BIT},
+      </if>
+      <if test="subtuijian != null" >
+        subtuijian = #{subtuijian,jdbcType=BIT},
+      </if>
+      <if test="addTime != null" >
+        addTime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="col1 != null" >
+        col1 = #{col1,jdbcType=VARCHAR},
+      </if>
+      <if test="col2 != null" >
+        col2 = #{col2,jdbcType=VARCHAR},
+      </if>
+      <if test="col3 != null" >
+        col3 = #{col3,jdbcType=VARCHAR},
+      </if>
+      <if test="col4 != null" >
+        col4 = #{col4,jdbcType=VARCHAR},
+      </if>
+      <if test="col5 != null" >
+        col5 = #{col5,jdbcType=VARCHAR},
+      </if>
+      <if test="col6 != null" >
+        col6 = #{col6,jdbcType=VARCHAR},
+      </if>
+      <if test="middlenumber != null" >
+        middlenumber = #{middlenumber,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.StoreItem" >
+    update StoreItem
+    set itemId = #{itemId,jdbcType=INTEGER},
+      mdseId = #{mdseId,jdbcType=VARCHAR},
+      ordId = #{ordId,jdbcType=TINYINT},
+      storeId = #{storeId,jdbcType=INTEGER},
+      storeName = #{storeName,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      discountPrice = #{discountPrice,jdbcType=DECIMAL},
+      rates = #{rates,jdbcType=DECIMAL},
+      goodsStock = #{goodsStock,jdbcType=SMALLINT},
+      sales = #{sales,jdbcType=SMALLINT},
+      clickRate = #{clickRate,jdbcType=INTEGER},
+      subnews = #{subnews,jdbcType=BIT},
+      subtuijian = #{subtuijian,jdbcType=BIT},
+      addTime = #{addTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT},
+      col1 = #{col1,jdbcType=VARCHAR},
+      col2 = #{col2,jdbcType=VARCHAR},
+      col3 = #{col3,jdbcType=VARCHAR},
+      col4 = #{col4,jdbcType=VARCHAR},
+      col5 = #{col5,jdbcType=VARCHAR},
+      col6 = #{col6,jdbcType=VARCHAR},
+      middlenumber = #{middlenumber,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

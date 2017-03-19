@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.account.dao.SpWDSheetMgMapper" >
+
+	<!-- 获取会计列表条件 -->
+	<sql id="getPageList_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id != null">
+				id = #{id}
+			</if>
+			<if test="xtype != null">
+				AND  xtype = #{xtype}
+			</if>
+			<if test="isDelete != null">
+				AND isDelete = #{isDelete}
+			</if>
+			<if test="status != null">
+				AND status = #{status}
+			</if>
+			<if test="keyword != null and keyword !=''">
+				AND ( sheetNum like CONCAT('%','${keyword}','%') 
+				or payBankNum like CONCAT('%','${keyword}','%') )
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 获取会计列表 -->
+ 	<select id="getPageList" parameterType="com.corner.account.beans.ro.SpWithDrawMgCondition"  resultType="SpWDSheet">
+		SELECT * FROM SpWDSheet
+		<include refid="getPageList_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取会计列表 总记录数-->
+ 	<select id="getPageListSize" parameterType="com.corner.account.beans.ro.SpWithDrawMgCondition"  resultType="int">
+		SELECT count(1) FROM SpWDSheet
+		<include refid="getPageList_condition" />
+	</select>
+	
+	<!-- 检查费用单是否存在 -->
+ 	<select id="checkSheetExit" parameterType="com.corner.account.beans.ro.SpWithDrawMgCondition"  resultType="SpWDSheetMapKey">
+		SELECT * FROM SpWDSheetMap
+		WHERE wdId in 
+    	<foreach collection="withDrawIdsArray" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<!-- 插入数据 -->
+ 	<insert id="addWDSheetMapBatch" parameterType="com.corner.account.beans.ro.SpWithDrawMgCondition">
+		update SpWithDraw set status=4 where id in
+    	<foreach collection="withDrawIdsArray" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		;insert into SpWDSheetMap(sheetId,wdId) values
+		<foreach collection="withDrawIdsArray" item="item"  separator=",">  
+        (#{id},#{item})
+    	</foreach> 
+	</insert>
+
+	
+</mapper>

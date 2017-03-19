@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.AccounterMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.Accounter" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="nickName" property="nickName" jdbcType="VARCHAR" />
+    <result column="realName" property="realName" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="INTEGER" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="intensity" property="intensity" jdbcType="INTEGER" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="idNum" property="idNum" jdbcType="VARCHAR" />
+    <result column="idPicUrl0" property="idPicUrl0" jdbcType="VARCHAR" />
+    <result column="idPicUrl1" property="idPicUrl1" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="province" property="province" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="areaid" property="areaid" jdbcType="INTEGER" />
+    <result column="regTime" property="regTime" jdbcType="TIMESTAMP" />
+    <result column="lastTime" property="lastTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="regIP" property="regIP" jdbcType="VARCHAR" />
+    <result column="lastIP" property="lastIP" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="useAddress" property="useAddress" jdbcType="VARCHAR" />
+    <result column="isManager" property="isManager" jdbcType="BIT" />
+    <result column="isModify" property="isModify" jdbcType="TINYINT" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userName, nickName, realName, gender, password, intensity, mobile, idNum, idPicUrl0, 
+    idPicUrl1, email, birthday, province, city, areaid, regTime, lastTime, updateTime, 
+    regIP, lastIP, url, useAddress, isManager, isModify, token, status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from Accounter
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from Accounter
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.Accounter" >
+    insert into Accounter (id, userName, nickName, 
+      realName, gender, password, 
+      intensity, mobile, idNum, 
+      idPicUrl0, idPicUrl1, email, 
+      birthday, province, city, 
+      areaid, regTime, lastTime, 
+      updateTime, regIP, lastIP, 
+      url, useAddress, isManager, 
+      isModify, token, status, 
+      isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
+      #{realName,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, 
+      #{intensity,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, #{idNum,jdbcType=VARCHAR}, 
+      #{idPicUrl0,jdbcType=VARCHAR}, #{idPicUrl1,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{birthday,jdbcType=DATE}, #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, 
+      #{areaid,jdbcType=INTEGER}, #{regTime,jdbcType=TIMESTAMP}, #{lastTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{regIP,jdbcType=VARCHAR}, #{lastIP,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{useAddress,jdbcType=VARCHAR}, #{isManager,jdbcType=BIT}, 
+      #{isModify,jdbcType=TINYINT}, #{token,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.Accounter" >
+    insert into Accounter
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userName != null" >
+        userName,
+      </if>
+      <if test="nickName != null" >
+        nickName,
+      </if>
+      <if test="realName != null" >
+        realName,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="intensity != null" >
+        intensity,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="idNum != null" >
+        idNum,
+      </if>
+      <if test="idPicUrl0 != null" >
+        idPicUrl0,
+      </if>
+      <if test="idPicUrl1 != null" >
+        idPicUrl1,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="areaid != null" >
+        areaid,
+      </if>
+      <if test="regTime != null" >
+        regTime,
+      </if>
+      <if test="lastTime != null" >
+        lastTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="regIP != null" >
+        regIP,
+      </if>
+      <if test="lastIP != null" >
+        lastIP,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="useAddress != null" >
+        useAddress,
+      </if>
+      <if test="isManager != null" >
+        isManager,
+      </if>
+      <if test="isModify != null" >
+        isModify,
+      </if>
+      <if test="token != null" >
+        token,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="intensity != null" >
+        #{intensity,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="idNum != null" >
+        #{idNum,jdbcType=VARCHAR},
+      </if>
+      <if test="idPicUrl0 != null" >
+        #{idPicUrl0,jdbcType=VARCHAR},
+      </if>
+      <if test="idPicUrl1 != null" >
+        #{idPicUrl1,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=INTEGER},
+      </if>
+      <if test="areaid != null" >
+        #{areaid,jdbcType=INTEGER},
+      </if>
+      <if test="regTime != null" >
+        #{regTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastTime != null" >
+        #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regIP != null" >
+        #{regIP,jdbcType=VARCHAR},
+      </if>
+      <if test="lastIP != null" >
+        #{lastIP,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="useAddress != null" >
+        #{useAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="isManager != null" >
+        #{isManager,jdbcType=BIT},
+      </if>
+      <if test="isModify != null" >
+        #{isModify,jdbcType=TINYINT},
+      </if>
+      <if test="token != null" >
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.Accounter" >
+    update Accounter
+    <set >
+      <if test="userName != null" >
+        userName = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        nickName = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        realName = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="intensity != null" >
+        intensity = #{intensity,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="idNum != null" >
+        idNum = #{idNum,jdbcType=VARCHAR},
+      </if>
+      <if test="idPicUrl0 != null" >
+        idPicUrl0 = #{idPicUrl0,jdbcType=VARCHAR},
+      </if>
+      <if test="idPicUrl1 != null" >
+        idPicUrl1 = #{idPicUrl1,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="areaid != null" >
+        areaid = #{areaid,jdbcType=INTEGER},
+      </if>
+      <if test="regTime != null" >
+        regTime = #{regTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastTime != null" >
+        lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regIP != null" >
+        regIP = #{regIP,jdbcType=VARCHAR},
+      </if>
+      <if test="lastIP != null" >
+        lastIP = #{lastIP,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="useAddress != null" >
+        useAddress = #{useAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="isManager != null" >
+        isManager = #{isManager,jdbcType=BIT},
+      </if>
+      <if test="isModify != null" >
+        isModify = #{isModify,jdbcType=TINYINT},
+      </if>
+      <if test="token != null" >
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.Accounter" >
+    update Accounter
+    set userName = #{userName,jdbcType=VARCHAR},
+      nickName = #{nickName,jdbcType=VARCHAR},
+      realName = #{realName,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=INTEGER},
+      password = #{password,jdbcType=VARCHAR},
+      intensity = #{intensity,jdbcType=INTEGER},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      idNum = #{idNum,jdbcType=VARCHAR},
+      idPicUrl0 = #{idPicUrl0,jdbcType=VARCHAR},
+      idPicUrl1 = #{idPicUrl1,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      province = #{province,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      areaid = #{areaid,jdbcType=INTEGER},
+      regTime = #{regTime,jdbcType=TIMESTAMP},
+      lastTime = #{lastTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      regIP = #{regIP,jdbcType=VARCHAR},
+      lastIP = #{lastIP,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      useAddress = #{useAddress,jdbcType=VARCHAR},
+      isManager = #{isManager,jdbcType=BIT},
+      isModify = #{isModify,jdbcType=TINYINT},
+      token = #{token,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

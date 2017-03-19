@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpItemBaseMgMapper" >
+	<resultMap id="BaseResultMap" type="com.corner.core.beans.ItemBase" extends="com.corner.core.dao.ItemBaseMapper.BaseResultMap">
+	</resultMap>
+	<!-- 商品库管理*****************************************************************begin -->
+	<sql id="selectParam">
+		FROM
+			ItemBase ib
+		left JOIN ItemCatelog ic ON ib.cateId = ic.id
+		left JOIN ItemCatelog il ON ic.pid = il.id
+		left join Brand b on ib.brandId = b.id 
+		WHERE 
+			1=1
+		<if test="status != null">
+			AND ib.status = #{status}
+		</if>
+		<if test="isDelete != null">
+			AND ib.isDelete = #{isDelete}
+		</if>
+		<if test="yiJiId!=null and yiJiId!=0 and yiJiId!=-1">
+			AND ic.pid=#{yiJiId}
+		</if>
+		<if test="erJiId!=null and erJiId!=0 and erJiId!=-1">
+			AND ic.id=#{erJiId}
+		</if>
+		<if test="status!=null">
+			AND ib.status=#{status}
+		</if>
+		<if test="checkStatus!=null">
+			AND ib.checkStatus=#{checkStatus}
+		</if>
+		<if test="noAndName!=null and noAndName!=''">
+			AND (ib.mdseId like #{noAndName}"%" OR ib.`name` like "%"#{noAndName}"%" OR ib.shortNm like #{noAndName}"%")
+		</if>
+		<if test="brandName!=null and brandName!=''">
+			AND b.name like "%"#{brandName}"%"
+		</if>
+		<if test="name!=null and name!=''">
+			AND ib.name like "%"#{name}"%"
+		</if>
+		<if test="mdseId!=null and mdseId!=''">
+			AND ib.mdseId like "%"#{mdseId}"%"
+		</if>
+		order by ib.addTime desc
+	</sql>
+	
+	<!-- 根据条件查询所有的商品 -->
+	<select id="getAllItemBaseByPatam" parameterType="com.corner.kefu.beans.ro.ItemBaseRo" resultType="com.corner.kefu.beans.vo.ItemBaseVo">
+		SELECT
+			ib.*,
+			(SELECT COUNT(1) FROM ItemBase WHERE upId = ib.id) as countNum,
+			il.id as yiJiId,
+			il.name as yiJiName,
+			ic.id as erJiId,
+			ic.name as erJiName,
+			(select mdseId from ItemBase where id = ib.upId) as upMdseId,
+			b.name as brandName
+		<include refid="selectParam"/>
+		<if test="pageSize!=0">
+			limit ${pageIndex},${pageSize}
+		</if>
+	</select>
+	
+	<select id="getCountItemBase" parameterType="com.corner.kefu.beans.ro.ItemBaseRo" resultType="java.lang.Integer">
+		select count(1) 
+	<include refid="selectParam"/>
+	</select>
+	
+	<!-- 通过id查出商品 -->
+	<select id="getItemBaseById" parameterType="java.lang.Integer" resultType="com.corner.kefu.beans.vo.ItemBaseVo">
+		select ib.*,ic.id as erJiId,ic.pId as yiJiId from ItemBase ib left join ItemCatelog ic on ib.cateId = ic.id where ib.id = #{id}
+	</select>
+	
+	<!-- 通过id查出商品的物流规格 -->
+	<select id="getLogisticsSpecificationsById" parameterType="java.util.Map" resultType="com.corner.kefu.beans.vo.ItemBaseVo">
+		select * from ItemBase where upId = #{id}
+	</select>
+	
+	<!-- 确定商品条形码唯一 -->
+	<select id="okUniqueness" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(1) from ItemBase where mdseId=#{mdseId} <!-- and isDelete=0 and useType = 5 -->
+	</select>
+	
+	<!-- 根据id查出商品是否存在 -->
+	<select id="getCountItemBaseById" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(1) from ItemBase where id = #{id} and isDelete=0
+	</select>
+	
+	<!-- 删除商品 -->
+	<update id="deleteItemBase" parameterType="java.lang.Integer">
+		update ItemBase
+		set
+		isDelete=1
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 根据di删除或恢复物流规格-->
+	<update id="deleteLogisticsById" parameterType="java.util.Map">
+		update ItemBase set isDelete = #{isDelete} where id = #{id}
+	</update>
+	
+	 <!-- 添加基本商品和物流规格 -->
+	<insert id="addOneItemBase" parameterType="com.corner.kefu.beans.ro.ItemBaseRo" useGeneratedKeys="true" keyProperty="id">
+		insert into ItemBase
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id,
+			<if test="cateid != null">
+				cateId,
+			</if>
+			<if test="mdseId != null">
+				mdseId,
+			</if>
+			<if test="ordid != null">
+				ordId,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="brand != null">
+				brand,
+			</if>
+			<if test="spec != null">
+				spec,
+			</if>
+			<if test="imgs != null">
+				imgS,
+			</if>
+			<if test="imgb != null">
+				imgB,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="sales != null">
+				sales,
+			</if>
+			<if test="news != null">
+				news,
+			</if>
+			<if test="tuijian != null">
+				tuiJian,
+			</if>
+			<if test="addtime != null">
+				addTime,
+			</if>
+			<if test="updatetime != null">
+				updateTime,
+			</if>
+			<if test="useType != null">
+				useType,
+			</if>
+			<if test="measure != null">
+				measure,
+			</if>
+			<if test="taste !=null">
+				taste,
+			</if>
+			<if test="upId != null">
+				upId,
+			</if>
+			<if test="pkg != null and pkg != ''">
+				pkg,
+			</if>
+			<if test="pkgNum !=null">
+				pkgNum,
+			</if>
+			<if test="brandId != null">
+				brandId,
+			</if>
+			<if test="color != null">
+				color,
+			</if>
+			<if test="tgId != null">
+				tgId,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="shortNm != null and shortNm != ''">
+				shortNm,
+			</if>
+			<if test="quanNm != null and quanNm != ''">
+				quanNm,
+			</if>
+			<if test="upper != null">
+				upper,
+			</if>
+			<if test="lower != null">
+				lower,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id,jdbcType=INTEGER},
+			<if test="cateid != null">
+				#{cateid,jdbcType=INTEGER},
+			</if>
+			<if test="mdseId != null">
+				#{mdseId,jdbcType=VARCHAR},
+			</if>
+			<if test="ordid != null">
+				#{ordid,jdbcType=TINYINT},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="brand != null">
+				#{brand,jdbcType=VARCHAR},
+			</if>
+			<if test="spec != null">
+				#{spec,jdbcType=VARCHAR},
+			</if>
+			<if test="imgs != null">
+				#{imgs,jdbcType=VARCHAR},
+			</if>
+			<if test="imgb != null">
+				#{imgb,jdbcType=VARCHAR},
+			</if>
+			<if test="price != null">
+				#{price,jdbcType=DECIMAL},
+			</if>
+			<if test="sales != null">
+				#{sales,jdbcType=INTEGER},
+			</if>
+			<if test="news != null">
+				#{news,jdbcType=BIT},
+			</if>
+			<if test="tuijian != null">
+				#{tuijian,jdbcType=BIT},
+			</if>
+			<if test="addtime != null">
+				#{addtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatetime != null">
+				#{updatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="useType != null">
+				#{useType,jdbcType=TINYINT},
+			</if>
+			<if test="measure != null">
+				#{measure},
+			</if>
+			<if test="taste !=null">
+				#{taste},
+			</if>
+			<if test="upId != null">
+				#{upId},
+			</if>
+			<if test="pkg != null and pkg != ''">
+				#{pkg},
+			</if>
+			<if test="pkgNum !=null">
+				#{pkgNum},
+			</if>
+			<if test="brandId != null">
+				#{brandId,jdbcType=INTEGER},
+			</if>
+			<if test="color != null">
+				#{color,jdbcType=VARCHAR},
+			</if>
+			<if test="tgId != null">
+				#{tgId,jdbcType=VARCHAR},
+			</if>
+			<if test="status !=null">
+				#{status},
+			</if>
+			<if test="shortNm != null and shortNm != ''">
+				#{shortNm},
+			</if>
+			<if test="quanNm != null and quanNm != ''">
+				#{quanNm},
+			</if>
+			<if test="upper != null">
+				#{upper},
+			</if>
+			<if test="lower != null">
+				#{lower},
+			</if>
+		</trim>
+	</insert> 
+	<!-- 更新商品和物流规格 -->
+	<update id="updateItemBaseOneById" parameterType="com.corner.kefu.beans.ro.ItemBaseRo">
+		update ItemBase
+		<set>
+			<if test="cateid != null">
+				cateId = #{cateid,jdbcType=INTEGER},
+			</if>
+			<if test="mdseId != null">
+				mdseId = #{mdseId,jdbcType=VARCHAR},
+			</if>
+			<if test="ordid != null">
+				ordId = #{ordid,jdbcType=TINYINT},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="brand != null">
+				brand = #{brand,jdbcType=VARCHAR},
+			</if>
+			<if test="spec != null">
+				spec = #{spec,jdbcType=VARCHAR},
+			</if>
+			<if test="imgs != null">
+				imgS = #{imgs,jdbcType=VARCHAR},
+			</if>
+			<if test="imgb != null">
+				imgB = #{imgb,jdbcType=VARCHAR},
+			</if>
+			<if test="price != null">
+				price = #{price,jdbcType=DECIMAL},
+			</if> 
+			<if test="sales != null">
+				sales = #{sales,jdbcType=INTEGER},
+			</if>
+			<if test="news != null">
+				news = #{news,jdbcType=BIT},
+			</if>
+			<if test="tuijian != null">
+				tuiJian = #{tuijian,jdbcType=BIT},
+			</if>
+			<if test="addtime != null">
+				addTime = #{addtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatetime != null">
+				updateTime = #{updatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="useType != null">
+				useType = #{useType,jdbcType=TINYINT},
+			</if>
+			<if test="taste != null">
+				taste = #{taste,jdbcType=VARCHAR},
+			</if>
+			<if test="measure != null">
+				measure = #{measure,jdbcType=VARCHAR},
+			</if>
+			<if test="pkg != null">
+				pkg = #{pkg,jdbcType=VARCHAR},
+			</if>
+			<if test="pkgNum != null">
+				pkgNum = #{pkgNum,jdbcType=INTEGER},
+			</if>
+			<if test="upId != null">
+				upId = #{upId,jdbcType=INTEGER},
+			</if>
+			<if test="brandId != null">
+				brandId = #{brandId,jdbcType=INTEGER},
+			</if>
+			<if test="color != null">
+				color = #{color,jdbcType=VARCHAR},
+			</if>
+			<if test="tgId != null">
+				tgId = #{tgId,jdbcType=VARCHAR},
+			</if>
+			<if test="checkStatus != null">
+				checkStatus = #{checkStatus},
+			</if>
+			<if test="checkUser != null and checkStatus != ''">
+				checkUser = #{checkUser},
+			</if>
+			<if test="checkTime != null">
+				checkTime = #{checkTime},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="shortNm != null and shortNm != ''">
+				shortNm = #{shortNm},
+			</if>
+			<if test="quanNm != null and quanNm != ''">
+				quanNm = #{quanNm},
+			</if>
+			<if test="upper != null">
+				upper = #{upper},
+			</if>
+			<if test="lower != null">
+				lower = #{lower},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 商品库管理******************************************************************end* -->
+	
+	
+	<sql id="pageSql">
+	 limit #{pageIndex},#{pageSize}
+	</sql>
+	<sql id="getPagingItemBaseList_condition">
+	 from ItemBase where isDelete = 0 and status = 1
+	 <if test="searchKey!=null and searchKey!=''">
+	  and (mdseId like "%"#{searchKey}"%"  or name like "%"#{searchKey}"%")
+	 </if>
+	</sql>
+	<select id="getPagingItemBaseList" parameterType="com.corner.kefu.beans.ro.ItemBaseMgRo" resultMap="BaseResultMap">
+	   select *
+	   <include refid="getPagingItemBaseList_condition"/>
+	   <include refid="pageSql"/> 
+	</select>
+	<select id="getCountPagingItemBaseList" parameterType="com.corner.kefu.beans.ro.ItemBaseMgRo" resultType="java.lang.Integer">
+	  select count(1)
+	  <include refid="getPagingItemBaseList_condition"/>
+	</select>
+	
+	
+	<select id="getYijiYixiaItemBase" parameterType="java.util.HashMap" resultType="com.corner.core.beans.ItemBase">
+	   SELECT
+			*
+		FROM
+			ItemBase a
+		WHERE
+			a.isDelete = 0
+		AND a.`status` = 1
+		AND a.cateId IN (
+			SELECT
+				id
+			FROM
+				ItemCatelog
+			WHERE
+				pid = #{cateId}
+			AND `status` = 1
+			AND isDelete = 0
+		)
+		<if test="searchKey!=null and searchKey!=''">
+		 AND (a.mdseId like "%"#{searchKey}"%" or a.name like "%"#{searchKey}"%")
+		</if>
+	</select>
+	
+	<select id="getErjiYixiaItemBase" parameterType="java.util.HashMap" resultType="com.corner.core.beans.ItemBase">
+	  SELECT * FROM ItemBase where cateId = #{cateId} AND `status`=1 AND isDelete = 0 
+	  <if test="searchKey!=null and searchKey!=''">
+		 AND (mdseId like "%"#{searchKey}"%" or name like "%"#{searchKey}"%")
+	  </if>
+	</select>
+	
+	
+	<select id="getTongJiItemBase" parameterType="java.util.HashMap" resultType="com.corner.core.beans.ItemBase">
+	  SELECT
+			*
+		FROM
+			ItemBase a
+		WHERE
+			cateId = (
+				SELECT
+					cateId
+				FROM
+					ItemBase
+				WHERE
+					id = #{cateId}
+			)
+		AND a.`status` = 1 AND a.isDelete = 0
+		<if test="searchKey!=null and searchKey!=''">
+		 AND (a.mdseId like "%"#{searchKey}"%" or a.name like "%"#{searchKey}"%")
+	  </if> 
+	</select>
+	
+	<!-- 根据mdseId查出商品 -->
+	<select id="getItemBaseByMdseId" parameterType="java.util.Map" resultType="com.corner.core.beans.ItemBase">
+		select * from ItemBase where mdseId = #{mdseId}
+	</select>
+</mapper>

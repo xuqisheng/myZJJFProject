@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.AttachmentMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.Attachment" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="obIntId" property="obIntId" jdbcType="INTEGER" />
+    <result column="obStrId" property="obStrId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="picNum" property="picNum" jdbcType="VARCHAR" />
+    <result column="picCode" property="picCode" jdbcType="VARCHAR" />
+    <result column="picRemark" property="picRemark" jdbcType="VARCHAR" />
+    <result column="picStartDate" property="picStartDate" jdbcType="TIMESTAMP" />
+    <result column="picEndDate" property="picEndDate" jdbcType="TIMESTAMP" />
+    <result column="picUrl" property="picUrl" jdbcType="VARCHAR" />
+    <result column="typex" property="typex" jdbcType="SMALLINT" />
+    <result column="IsDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, obIntId, obStrId, name, picNum, picCode, picRemark, picStartDate, picEndDate, 
+    picUrl, typex, IsDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from Attachment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from Attachment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.Attachment" >
+    insert into Attachment (id, obIntId, obStrId, 
+      name, picNum, picCode, 
+      picRemark, picStartDate, picEndDate, 
+      picUrl, typex, IsDelete
+      )
+    values (#{id,jdbcType=INTEGER}, #{obIntId,jdbcType=INTEGER}, #{obStrId,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{picNum,jdbcType=VARCHAR}, #{picCode,jdbcType=VARCHAR}, 
+      #{picRemark,jdbcType=VARCHAR}, #{picStartDate,jdbcType=TIMESTAMP}, #{picEndDate,jdbcType=TIMESTAMP}, 
+      #{picUrl,jdbcType=VARCHAR}, #{typex,jdbcType=SMALLINT}, #{isDelete,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.Attachment" >
+    insert into Attachment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="obIntId != null" >
+        obIntId,
+      </if>
+      <if test="obStrId != null" >
+        obStrId,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="picNum != null" >
+        picNum,
+      </if>
+      <if test="picCode != null" >
+        picCode,
+      </if>
+      <if test="picRemark != null" >
+        picRemark,
+      </if>
+      <if test="picStartDate != null" >
+        picStartDate,
+      </if>
+      <if test="picEndDate != null" >
+        picEndDate,
+      </if>
+      <if test="picUrl != null" >
+        picUrl,
+      </if>
+      <if test="typex != null" >
+        typex,
+      </if>
+      <if test="isDelete != null" >
+        IsDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="obIntId != null" >
+        #{obIntId,jdbcType=INTEGER},
+      </if>
+      <if test="obStrId != null" >
+        #{obStrId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="picNum != null" >
+        #{picNum,jdbcType=VARCHAR},
+      </if>
+      <if test="picCode != null" >
+        #{picCode,jdbcType=VARCHAR},
+      </if>
+      <if test="picRemark != null" >
+        #{picRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="picStartDate != null" >
+        #{picStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="picEndDate != null" >
+        #{picEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="picUrl != null" >
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="typex != null" >
+        #{typex,jdbcType=SMALLINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.Attachment" >
+    update Attachment
+    <set >
+      <if test="obIntId != null" >
+        obIntId = #{obIntId,jdbcType=INTEGER},
+      </if>
+      <if test="obStrId != null" >
+        obStrId = #{obStrId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="picNum != null" >
+        picNum = #{picNum,jdbcType=VARCHAR},
+      </if>
+      <if test="picCode != null" >
+        picCode = #{picCode,jdbcType=VARCHAR},
+      </if>
+      <if test="picRemark != null" >
+        picRemark = #{picRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="picStartDate != null" >
+        picStartDate = #{picStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="picEndDate != null" >
+        picEndDate = #{picEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="picUrl != null" >
+        picUrl = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="typex != null" >
+        typex = #{typex,jdbcType=SMALLINT},
+      </if>
+      <if test="isDelete != null" >
+        IsDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.Attachment" >
+    update Attachment
+    set obIntId = #{obIntId,jdbcType=INTEGER},
+      obStrId = #{obStrId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      picNum = #{picNum,jdbcType=VARCHAR},
+      picCode = #{picCode,jdbcType=VARCHAR},
+      picRemark = #{picRemark,jdbcType=VARCHAR},
+      picStartDate = #{picStartDate,jdbcType=TIMESTAMP},
+      picEndDate = #{picEndDate,jdbcType=TIMESTAMP},
+      picUrl = #{picUrl,jdbcType=VARCHAR},
+      typex = #{typex,jdbcType=SMALLINT},
+      IsDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

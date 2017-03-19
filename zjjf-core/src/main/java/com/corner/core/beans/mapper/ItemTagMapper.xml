@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ItemTagMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ItemTag" >
+    <id column="tag_id" property="tag_id" jdbcType="INTEGER" />
+    <result column="tag_name" property="tag_name" jdbcType="VARCHAR" />
+    <result column="tag_img" property="tag_img" jdbcType="VARCHAR" />
+    <result column="tag_ordId" property="tag_ordId" jdbcType="SMALLINT" />
+    <result column="tag_add_time" property="tag_add_time" jdbcType="TIMESTAMP" />
+    <result column="tag_statue" property="tag_statue" jdbcType="TINYINT" />
+    <result column="tag_isDelete" property="tag_isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    tag_id, tag_name, tag_img, tag_ordId, tag_add_time, tag_statue, tag_isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ItemTag
+    where tag_id = #{tag_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ItemTag
+    where tag_id = #{tag_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ItemTag" >
+    insert into ItemTag (tag_id, tag_name, tag_img, 
+      tag_ordId, tag_add_time, tag_statue, 
+      tag_isDelete)
+    values (#{tag_id,jdbcType=INTEGER}, #{tag_name,jdbcType=VARCHAR}, #{tag_img,jdbcType=VARCHAR}, 
+      #{tag_ordId,jdbcType=SMALLINT}, #{tag_add_time,jdbcType=TIMESTAMP}, #{tag_statue,jdbcType=TINYINT}, 
+      #{tag_isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ItemTag" >
+    insert into ItemTag
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tag_id != null" >
+        tag_id,
+      </if>
+      <if test="tag_name != null" >
+        tag_name,
+      </if>
+      <if test="tag_img != null" >
+        tag_img,
+      </if>
+      <if test="tag_ordId != null" >
+        tag_ordId,
+      </if>
+      <if test="tag_add_time != null" >
+        tag_add_time,
+      </if>
+      <if test="tag_statue != null" >
+        tag_statue,
+      </if>
+      <if test="tag_isDelete != null" >
+        tag_isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tag_id != null" >
+        #{tag_id,jdbcType=INTEGER},
+      </if>
+      <if test="tag_name != null" >
+        #{tag_name,jdbcType=VARCHAR},
+      </if>
+      <if test="tag_img != null" >
+        #{tag_img,jdbcType=VARCHAR},
+      </if>
+      <if test="tag_ordId != null" >
+        #{tag_ordId,jdbcType=SMALLINT},
+      </if>
+      <if test="tag_add_time != null" >
+        #{tag_add_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tag_statue != null" >
+        #{tag_statue,jdbcType=TINYINT},
+      </if>
+      <if test="tag_isDelete != null" >
+        #{tag_isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ItemTag" >
+    update ItemTag
+    <set >
+      <if test="tag_name != null" >
+        tag_name = #{tag_name,jdbcType=VARCHAR},
+      </if>
+      <if test="tag_img != null" >
+        tag_img = #{tag_img,jdbcType=VARCHAR},
+      </if>
+      <if test="tag_ordId != null" >
+        tag_ordId = #{tag_ordId,jdbcType=SMALLINT},
+      </if>
+      <if test="tag_add_time != null" >
+        tag_add_time = #{tag_add_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tag_statue != null" >
+        tag_statue = #{tag_statue,jdbcType=TINYINT},
+      </if>
+      <if test="tag_isDelete != null" >
+        tag_isDelete = #{tag_isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where tag_id = #{tag_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ItemTag" >
+    update ItemTag
+    set tag_name = #{tag_name,jdbcType=VARCHAR},
+      tag_img = #{tag_img,jdbcType=VARCHAR},
+      tag_ordId = #{tag_ordId,jdbcType=SMALLINT},
+      tag_add_time = #{tag_add_time,jdbcType=TIMESTAMP},
+      tag_statue = #{tag_statue,jdbcType=TINYINT},
+      tag_isDelete = #{tag_isDelete,jdbcType=BIT}
+    where tag_id = #{tag_id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.ConfigShareMgMapper">
+	<!-- 获取配置 -->
+	<select id="getConfigShareById" parameterType="com.corner.kefu.beans.ro.ConfigShareRo" resultType="com.corner.kefu.beans.vo.ConfigShareVo">
+		SELECT
+			a.*,
+			b.id as ruleId,
+		    b.ruleName,
+			b.useMoney,
+			b.useDay,
+			b.startPrice,
+			b.ruleRemark,
+			b.billType,
+			b.payType,
+			b.payStr,
+			b.useItemFlag,
+			b.useItemIds
+		FROM
+			(
+			SELECT
+				*
+			FROM
+				ConfigShare
+			WHERE
+				STATUS = 1
+			AND isDelete = 0
+			<if test="configId != null">
+				AND configId = #{configId}
+			</if>
+			<if test="awardType != null">
+				AND awardType = #{awardType}
+			</if>
+			) a
+		LEFT JOIN (
+			SELECT
+				id,
+				ruleName,
+				useMoney,
+				useDay,
+				startPrice,
+				ruleRemark,
+				billType,
+				payType,
+				payStr,
+				useItemFlag,
+				useItemIds
+			FROM
+				SpVoucherTemp
+			WHERE
+				STATUS = 1
+			AND isDelete = 0
+			<!-- AND billType = 1 默认是现金卷-->
+			AND creatStatus = 1
+			AND creatPub = 1
+		) b ON a.couponId = b.id
+	</select>
+	<!-- 获取所有优惠券 ****************************************************begin -->
+	<select id="getAllSpVoucherTemp" parameterType="com.corner.kefu.beans.ro.sp.SpVoucherTempRo" resultType="com.corner.kefu.beans.vo.sp.SpVoucherTempVo">
+		SELECT
+			id,
+			ruleName,
+			useMoney,
+			useDay,
+			startPrice
+		FROM
+			SpVoucherTemp
+		WHERE
+			STATUS = 1
+		AND isDelete = 0
+		<!-- AND billType = 1 默认是现金卷-->
+		AND creatPub = 1
+		AND creatStatus = 1
+		<if test="ruleName != null and ruleName != ''">
+			AND ruleName like "%"#{ruleName}"%"
+		</if>
+		<if test="pageIndex != null">
+			limit #{pageIndex},#{pageSize}
+		</if>
+	</select>
+	<select id="getAllSpVoucherTempCount" parameterType="com.corner.kefu.beans.ro.sp.SpVoucherTempRo" resultType="java.lang.Integer">
+		SELECT
+			count(1)
+		FROM
+			SpVoucherTemp
+		WHERE
+			STATUS = 1
+		AND isDelete = 0
+		<!-- AND billType = 1 默认是现金卷-->
+		AND creatPub = 1
+		AND creatStatus = 1
+		<if test="ruleName != null and ruleName != ''">
+			AND ruleName like "%"#{ruleName}"%"
+		</if>
+	</select>
+	<!-- 获取所有优惠券 ****************************************************end -->
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.RoleMgMapper" >
+
+	<!-- 获取会计列表条件 -->
+	<sql id="getPageList_condition">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id != null">
+				id = #{id}
+			</if>
+			<if test="isDelete != null">
+				AND isDelete = #{isDelete}
+			</if>
+			<if test="status != null">
+				AND status = #{status}
+			</if>
+			<if test="rolename != null">
+				AND rolename like CONCAT('%','${rolename}','%')
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 获取列表 -->
+ 	<select id="getPageList" parameterType="com.corner.scms.beans.ro.auth.RoleCondition"  resultType="Role">
+		select * from Role
+		<include refid="getPageList_condition" />
+		<include refid="BasePublicMapper.orderSql" />
+		<include refid="BasePublicMapper.pageSql" />
+	</select>
+
+	<!-- 获取列表 总记录数-->
+ 	<select id="getPageListSize" parameterType="com.corner.scms.beans.ro.auth.RoleCondition"  resultType="int">
+		select count(1) from Role
+		<include refid="getPageList_condition" />
+	</select>
+	
+	<!-- 获取角色对应的权限-->
+ 	<select id="getAuthsByRoleId" parameterType="java.lang.String"  resultType="string">
+		select s.AuthId from RoleAuthMap s where s.RoleId = #{id}
+	</select>
+	
+	<insert id="saveUserAuths">
+		delete from RoleAuthMap where roleId=#{roleId};
+		insert into RoleAuthMap(roleId,authId)
+		values
+		<foreach collection="authIds" item="item"  separator="," >  
+        (#{roleId},#{item})
+    	</foreach>  
+	</insert>
+	
+</mapper>

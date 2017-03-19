@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.sp.SpVoucherMgMapper" >
+ <resultMap id="BaseResultMap" type="com.corner.core.beans.SpVoucher" extends="com.corner.core.dao.SpVoucherMapper.BaseResultMap"></resultMap>
+  <!--===========================-->    
+  <!-- 获取storeId的现金券列表 for APP -->
+  <!--===========================-->
+  <select id="getStoreVoucherVoList" parameterType="com.corner.kefu.beans.ro.sp.SpVoucherRo" resultType="com.corner.kefu.beans.vo.sp.SpVhVo">
+	SELECT * FROM SpVoucher a where storeId = #{storeId} 
+	<if test="preOrderId !=null and preOrderId !=''">
+		AND preOrderId = #{preOrderId}
+	</if>
+	<if test="ruleId !=null">
+		AND ruleId = #{ruleId}
+	</if>
+	<if test="oneDay !=null">
+		AND  day(createTime)=day(NOW())
+	</if>
+	<if test="pubStatus !=null">
+		AND pubStatus = #{pubStatus}
+	</if>
+	<if test="getType == 1">
+		AND `status`=1 
+	</if>
+	<if test="getType == 2">
+		AND `status` in (2,3,4) 
+	</if>
+	<if test="isDelete != null">
+		AND isDelete = #{isDelete}
+	</if>
+	<if test="sortName != null and sortOrder != null">
+		order by ${sortName} ${sortOrder}
+	</if>
+	<if test="pageSize!=0">
+		limit ${pageIndex},${pageSize}
+	</if>
+  </select>
+  
+  <select id="getSpVoucherIsUsedList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id from SpVoucher
+    where ruleId=#{ruleId} and status in(2,3) limit 1
+  </select>
+  <delete id="deleteBySpVoucherTempId" parameterType="java.lang.Integer">
+    delete from SpVoucher where ruleId = #{id}
+  </delete>
+  <select id="getStoreIsHasSpVoucher" parameterType="java.util.HashMap" resultMap="BaseResultMap"> 
+    select * from SpVoucher where ruleId=#{id} and storeId = #{storeId}
+  </select>
+  
+  <select id="getSpVoucherByRuleIdAndStoreId" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+     select * from SpVoucher
+     where ruleId=#{ruleId} and storeId=#{storeId}
+  </select>
+  
+  <delete id="deleteByRuleIdAndStoreId" parameterType="java.util.HashMap">
+    delete from SpVoucher where ruleId = #{ruleId} and storeId=#{storeId};
+  </delete>
+  
+  
+  <sql id="pageSql">
+     Limit #{pageIndex},#{pageSize}
+  </sql>
+  <sql id="getSpVoucherUsedLog_condition">
+    FROM
+		SpVoucher a
+	JOIN Store b ON a.storeId = b.id
+	JOIN SpOrderInfo c ON a.orderId = c.id 
+    where a.isDelete=0 and (a.status=2 or a.status=3)
+    and a.ruleId=#{id}
+    <if test="keyStr!=null">
+    and ( 
+          b.mobile like "%"#{keyStr}"%"
+          or
+          b.name like "%"#{keyStr}"%"
+          or
+          c.orderId like "%"#{keyStr}"%"
+        )
+    </if>
+  </sql>
+  <select id="getSpVoucherUsedLog" parameterType="java.util.HashMap" resultType="com.corner.kefu.beans.vo.sp.StoreVo">
+     SELECT
+		a.storeId AS id,
+		a.storeNm AS `name`,
+		a.money AS voucherMoney,
+		c.orderId AS ordId,
+		b.contact,
+		b.mobile,
+		a.updateTime AS dateTime,
+		c.orderPrice AS amount,
+		a.status as type
+      <include refid="getSpVoucherUsedLog_condition"/>
+      order by a.updateTime desc
+      <include refid="pageSql"/>
+  </select>
+  <select id="getCountSpVoucherUsedLog" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+  select count(1)
+  <include refid="getSpVoucherUsedLog_condition"/>
+  </select>
+  
+  <select id="getSupplierSpVoucherUsedList" parameterType="java.util.HashMap" resultType="com.corner.core.beans.SpVoucher">
+	SELECT
+		*
+	FROM
+		SpVoucher
+	WHERE
+		spVoucherActiveId = #{spVoucherActiveId}
+	AND spId = #{supplierId}
+	AND `status` = 3
+	AND isDelete = 0
+  </select>
+  
+  
+  <select id="getSpVoucerIsEdit" parameterType="java.lang.Integer" resultType="com.corner.core.beans.SpVoucher">
+     select * from
+     SpVoucher where ruleId = #{id}
+  </select>
+  
+  <update id="batchRemoveSpVoucher" parameterType="java.lang.String">
+    <foreach collection="array" separator=";" item="item">
+    update SpVoucher set isDelete = 1 where storeId=#{item} and spId is not null and status in(1,2,4)
+    </foreach>
+  </update>
+  
+  
+  <sql id="getSpVoucherTempIndex_condition">
+   FROM
+		SpVoucherTemp a
+	LEFT JOIN SpVoucher b ON a.id = b.ruleId
+	WHERE
+		a.isDelete = 0
+		<if test="useMoneyStr!=null and useMoneyStr!=''">
+		    and a.useMoney = #{useMoneyStr}
+		  </if>
+		  <if test="ruleName!=null and ruleName!=''">
+		    and a.ruleName like "%"#{ruleName}"%"
+		  </if>
+		  <if test="startDate!=null">
+		   and a.addTime <![CDATA[>=]]> #{startDate}
+		  </if>
+		  <if test="endDate!=null">
+		   and a.addTime <![CDATA[<]]> #{endDate}
+		  </if>
+	GROUP BY 
+	a.id
+  </sql>
+  
+  <select id="getSpVoucherTempIndex" parameterType="com.corner.kefu.beans.ro.sp.SpVoucherTempRo" resultType="com.corner.kefu.beans.vo.sp.SpVoucherTempVo">
+		SELECT
+		a.id,
+		a.ruleName,
+		a.useMoney,
+		a.useDay,
+		a.startPrice,
+		a.addTime,
+		a.remark,
+		b.id,
+		sum(b.id is not null) AS grantCount,
+		sum(b.id is not null AND b.`status` IN (2, 3)) AS usedCount
+		<include refid="getSpVoucherTempIndex_condition"/>
+		order by a.id desc
+		<include refid="pageSql"/>
+  </select>
+  
+  <select id="getCountSpVoucherTempIndex" parameterType="com.corner.kefu.beans.ro.sp.SpVoucherTempRo" resultType="java.lang.Integer">
+  select count(1) from(
+    select a.id
+    <include refid="getSpVoucherTempIndex_condition"/>
+    ) count
+  </select>
+
+  <insert id="batchSave" parameterType="java.util.ArrayList">
+    <foreach collection="list" separator=";" item="item">
+		insert into SpVoucher
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="item.id != null" >
+				id,
+			</if>
+			<if test="item.storeId != null" >
+				storeId,
+			</if>
+			<if test="item.storeNm != null" >
+				storeNm,
+			</if>
+			<if test="item.ruleId != null" >
+				ruleId,
+			</if>
+			<if test="item.name != null" >
+				name,
+			</if>
+			<if test="item.remark != null" >
+				remark,
+			</if>
+			<if test="item.money != null" >
+				money,
+			</if>
+			<if test="item.spId != null" >
+				spId,
+			</if>
+			<if test="item.plantHalve != null" >
+				plantHalve,
+			</if>
+			<if test="item.billType != null" >
+				billType,
+			</if>
+			<if test="item.startPrice != null" >
+				startPrice,
+			</if>
+			<if test="item.transportTimeType != null" >
+				transportTimeType,
+			</if>
+			<if test="item.payType != null" >
+				payType,
+			</if>
+			<if test="item.payStr != null" >
+				payStr,
+			</if>
+			<if test="item.goodsType != null" >
+				goodsType,
+			</if>
+			<if test="item.useType != null" >
+				useType,
+			</if>
+			<if test="item.preOrderId != null" >
+				preOrderId,
+			</if>
+			<if test="item.orderId != null" >
+				orderId,
+			</if>
+			<if test="item.scope != null" >
+				scope,
+			</if>
+			<if test="item.startTime != null" >
+				startTime,
+			</if>
+			<if test="item.expiredTime != null" >
+				expiredTime,
+			</if>
+			<if test="item.createrId != null" >
+				createrId,
+			</if>
+			<if test="item.createrName != null" >
+				createrName,
+			</if>
+			<if test="item.createType != null" >
+				createType,
+			</if>
+			<if test="item.createTime != null" >
+				createTime,
+			</if>
+			<if test="item.updateTime != null" >
+				updateTime,
+			</if>
+			<if test="item.secKey != null" >
+				secKey,
+			</if>
+			<if test="item.pubStatus != null" >
+				pubStatus,
+			</if>
+			<if test="item.status != null" >
+				status,
+			</if>
+			<if test="item.acStatus != null" >
+				acStatus,
+			</if>
+			<if test="item.acTime != null" >
+				acTime,
+			</if>
+			<if test="item.acId != null" >
+				acId,
+			</if>
+			<if test="item.spVoucherActiveId != null" >
+				spVoucherActiveId,
+			</if>
+			<if test="item.isDelete != null" >
+				isDelete,
+			</if>
+			<if test="item.goodsStr != null" >
+				goodsStr,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="item.id != null" >
+				#{item.id,jdbcType=VARCHAR},
+			</if>
+			<if test="item.storeId != null" >
+				#{item.storeId,jdbcType=INTEGER},
+			</if>
+			<if test="item.storeNm != null" >
+				#{item.storeNm,jdbcType=VARCHAR},
+			</if>
+			<if test="item.ruleId != null" >
+				#{item.ruleId,jdbcType=INTEGER},
+			</if>
+			<if test="item.name != null" >
+				#{item.name,jdbcType=VARCHAR},
+			</if>
+			<if test="item.remark != null" >
+				#{item.remark,jdbcType=VARCHAR},
+			</if>
+			<if test="item.money != null" >
+				#{item.money,jdbcType=INTEGER},
+			</if>
+			<if test="item.spId != null" >
+				#{item.spId,jdbcType=VARCHAR},
+			</if>
+			<if test="item.plantHalve != null" >
+				#{item.plantHalve,jdbcType=DOUBLE},
+			</if>
+			<if test="item.billType != null" >
+				#{item.billType,jdbcType=TINYINT},
+			</if>
+			<if test="item.startPrice != null" >
+				#{item.startPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="item.transportTimeType != null" >
+				#{item.transportTimeType,jdbcType=TINYINT},
+			</if>
+			<if test="item.payType != null" >
+				#{item.payType,jdbcType=TINYINT},
+			</if>
+			<if test="item.payStr != null" >
+				#{item.payStr,jdbcType=VARCHAR},
+			</if>
+			<if test="item.goodsType != null" >
+				#{item.goodsType,jdbcType=TINYINT},
+			</if>
+			<if test="item.useType != null" >
+				#{item.useType,jdbcType=TINYINT},
+			</if>
+			<if test="item.preOrderId != null" >
+				#{item.preOrderId,jdbcType=VARCHAR},
+			</if>
+			<if test="item.orderId != null" >
+				#{item.orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="item.scope != null" >
+				#{item.scope,jdbcType=VARCHAR},
+			</if>
+			<if test="item.startTime != null" >
+				#{item.startTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="item.expiredTime != null" >
+				#{item.expiredTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="item.createrId != null" >
+				#{item.createrId,jdbcType=VARCHAR},
+			</if>
+			<if test="item.createrName != null" >
+				#{item.createrName,jdbcType=VARCHAR},
+			</if>
+			<if test="item.createType != null" >
+				#{item.createType,jdbcType=TINYINT},
+			</if>
+			<if test="item.createTime != null" >
+				#{item.createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="item.updateTime != null" >
+				#{item.updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="item.secKey != null" >
+				#{item.secKey,jdbcType=VARCHAR},
+			</if>
+			<if test="item.pubStatus != null" >
+				#{item.pubStatus,jdbcType=TINYINT},
+			</if>
+			<if test="item.status != null" >
+				#{item.status,jdbcType=TINYINT},
+			</if>
+			<if test="item.acStatus != null" >
+				#{item.acStatus,jdbcType=TINYINT},
+			</if>
+			<if test="item.acTime != null" >
+				#{item.acTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="item.acId != null" >
+				#{item.acId,jdbcType=VARCHAR},
+			</if>
+			<if test="item.spVoucherActiveId != null" >
+				#{item.spVoucherActiveId,jdbcType=INTEGER},
+			</if>
+			<if test="item.isDelete != null" >
+				#{item.isDelete,jdbcType=BIT},
+			</if>
+			<if test="item.goodsStr != null" >
+				#{item.goodsStr,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</foreach>
+  </insert>
+
+	<select id="getTotalReturn" parameterType="java.util.HashMap" resultType="java.math.BigDecimal">
+       SELECT
+			SUM(a.itemPrice)
+		FROM
+			(
+				SELECT
+					*
+				FROM
+					ERPMarketStockInfo
+				WHERE
+					`level` = 2
+				AND storeId = #{store.id}
+				AND isDelete = 0
+				AND checkStatus = 2
+				AND (
+					addTime BETWEEN #{active.ruleStart}
+					AND #{active.ruleEnd}
+				)
+			) a
+		JOIN ERPMarketStockInfo b ON a.pId = b.id
+		JOIN SpOrderInfo c ON b.pId = c.id
+		where c.supportmetho IN 
+		<foreach collection="rulePayArr" open="(" separator="," close=")" index="index" item="item">
+			#{item}
+		</foreach>
+	</select>
+</mapper>

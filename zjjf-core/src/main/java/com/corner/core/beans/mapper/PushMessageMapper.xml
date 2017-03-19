@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.PushMessageMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.PushMessage" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="messageType" property="messageType" jdbcType="SMALLINT" />
+    <result column="ticker" property="ticker" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="text" property="text" jdbcType="VARCHAR" />
+    <result column="State" property="state" jdbcType="SMALLINT" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="receiveId" property="receiveId" jdbcType="VARCHAR" />
+    <result column="publishId" property="publishId" jdbcType="VARCHAR" />
+    <result column="isDelete" property="isDelete" jdbcType="SMALLINT" />
+    <result column="action" property="action" jdbcType="VARCHAR" />
+    <result column="uMengPushType" property="uMengPushType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, messageType, ticker, title, text, State, createTime, receiveId, publishId, isDelete, 
+    action, uMengPushType
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from PushMessage
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from PushMessage
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.PushMessage" >
+    insert into PushMessage (id, messageType, ticker, 
+      title, text, State, 
+      createTime, receiveId, publishId, 
+      isDelete, action, uMengPushType
+      )
+    values (#{id,jdbcType=VARCHAR}, #{messageType,jdbcType=SMALLINT}, #{ticker,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{text,jdbcType=VARCHAR}, #{state,jdbcType=SMALLINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{receiveId,jdbcType=VARCHAR}, #{publishId,jdbcType=VARCHAR}, 
+      #{isDelete,jdbcType=SMALLINT}, #{action,jdbcType=VARCHAR}, #{uMengPushType,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.PushMessage" >
+    insert into PushMessage
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="messageType != null" >
+        messageType,
+      </if>
+      <if test="ticker != null" >
+        ticker,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="text != null" >
+        text,
+      </if>
+      <if test="state != null" >
+        State,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="receiveId != null" >
+        receiveId,
+      </if>
+      <if test="publishId != null" >
+        publishId,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+      <if test="action != null" >
+        action,
+      </if>
+      <if test="uMengPushType != null" >
+        uMengPushType,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="messageType != null" >
+        #{messageType,jdbcType=SMALLINT},
+      </if>
+      <if test="ticker != null" >
+        #{ticker,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="text != null" >
+        #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=SMALLINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveId != null" >
+        #{receiveId,jdbcType=VARCHAR},
+      </if>
+      <if test="publishId != null" >
+        #{publishId,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=SMALLINT},
+      </if>
+      <if test="action != null" >
+        #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="uMengPushType != null" >
+        #{uMengPushType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.PushMessage" >
+    update PushMessage
+    <set >
+      <if test="messageType != null" >
+        messageType = #{messageType,jdbcType=SMALLINT},
+      </if>
+      <if test="ticker != null" >
+        ticker = #{ticker,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="text != null" >
+        text = #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        State = #{state,jdbcType=SMALLINT},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveId != null" >
+        receiveId = #{receiveId,jdbcType=VARCHAR},
+      </if>
+      <if test="publishId != null" >
+        publishId = #{publishId,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=SMALLINT},
+      </if>
+      <if test="action != null" >
+        action = #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="uMengPushType != null" >
+        uMengPushType = #{uMengPushType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.PushMessage" >
+    update PushMessage
+    set messageType = #{messageType,jdbcType=SMALLINT},
+      ticker = #{ticker,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      text = #{text,jdbcType=VARCHAR},
+      State = #{state,jdbcType=SMALLINT},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      receiveId = #{receiveId,jdbcType=VARCHAR},
+      publishId = #{publishId,jdbcType=VARCHAR},
+      isDelete = #{isDelete,jdbcType=SMALLINT},
+      action = #{action,jdbcType=VARCHAR},
+      uMengPushType = #{uMengPushType,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

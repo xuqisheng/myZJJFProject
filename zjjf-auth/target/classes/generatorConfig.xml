@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<!-- 指定数据连接驱动jar地址 -->
+	<classPathEntry location="D:\maven\mavenBOX\mysql\mysql-connector-java\5.1.36\mysql-connector-java-5.1.36.jar" />
+	
+	<!-- 一个数据库一个context --> 
+	<context id="sysGenerator" targetRuntime="MyBatis3">
+		<!-- 注释 -->  
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+			<property name="prjname" value="zjjf-auth" />
+		</commentGenerator>
+		
+		<!-- jdbc连接 --> 
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://zjjf.f3322.net:3316/corner" userId="mibo"
+			password="mibo2802">
+		</jdbcConnection>
+
+		<!-- 生成实体类地址 -->
+		<javaModelGenerator targetPackage="com.corner.auth.beans" targetProject="zjjf-auth">
+			<property name="enableSubPackages" value="true" />
+			<!-- 是否针对string类型的字段在set的时候进行trim调用 -->  
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+		
+		<!-- 生成mapxml文件 -->  
+		<sqlMapGenerator targetPackage="com.corner.auth.mapper"
+			targetProject="zjjf-auth">
+			<!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] --> 
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+		<!-- 生成mapxml对应client，也就是接口dao -->      
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.corner.auth.dao" targetProject="zjjf-auth">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+		<!-- 配置表信息 -->
+		<table tableName="AdmUserRoleMap" domainObjectName="AdmUserRoleMap"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<property name="useActualColumnNames" value="true" />
+		</table>
+		
+	</context>
+</generatorConfiguration>

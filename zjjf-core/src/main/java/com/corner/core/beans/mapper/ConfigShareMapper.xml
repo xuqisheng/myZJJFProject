@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.ConfigShareMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.ConfigShare" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="configId" property="configId" jdbcType="INTEGER" />
+    <result column="mobileUrl" property="mobileUrl" jdbcType="VARCHAR" />
+    <result column="supplierUrl" property="supplierUrl" jdbcType="VARCHAR" />
+    <result column="awardType" property="awardType" jdbcType="TINYINT" />
+    <result column="couponId" property="couponId" jdbcType="INTEGER" />
+    <result column="appDescribe" property="appDescribe" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, configId, mobileUrl, supplierUrl, awardType, couponId, appDescribe, updateTime, 
+    status, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ConfigShare
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ConfigShare
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.ConfigShare" >
+    insert into ConfigShare (id, configId, mobileUrl, 
+      supplierUrl, awardType, couponId, 
+      appDescribe, updateTime, status, 
+      isDelete)
+    values (#{id,jdbcType=INTEGER}, #{configId,jdbcType=INTEGER}, #{mobileUrl,jdbcType=VARCHAR}, 
+      #{supplierUrl,jdbcType=VARCHAR}, #{awardType,jdbcType=TINYINT}, #{couponId,jdbcType=INTEGER}, 
+      #{appDescribe,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
+      #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.ConfigShare" >
+    insert into ConfigShare
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="configId != null" >
+        configId,
+      </if>
+      <if test="mobileUrl != null" >
+        mobileUrl,
+      </if>
+      <if test="supplierUrl != null" >
+        supplierUrl,
+      </if>
+      <if test="awardType != null" >
+        awardType,
+      </if>
+      <if test="couponId != null" >
+        couponId,
+      </if>
+      <if test="appDescribe != null" >
+        appDescribe,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="configId != null" >
+        #{configId,jdbcType=INTEGER},
+      </if>
+      <if test="mobileUrl != null" >
+        #{mobileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierUrl != null" >
+        #{supplierUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="awardType != null" >
+        #{awardType,jdbcType=TINYINT},
+      </if>
+      <if test="couponId != null" >
+        #{couponId,jdbcType=INTEGER},
+      </if>
+      <if test="appDescribe != null" >
+        #{appDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.ConfigShare" >
+    update ConfigShare
+    <set >
+      <if test="configId != null" >
+        configId = #{configId,jdbcType=INTEGER},
+      </if>
+      <if test="mobileUrl != null" >
+        mobileUrl = #{mobileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierUrl != null" >
+        supplierUrl = #{supplierUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="awardType != null" >
+        awardType = #{awardType,jdbcType=TINYINT},
+      </if>
+      <if test="couponId != null" >
+        couponId = #{couponId,jdbcType=INTEGER},
+      </if>
+      <if test="appDescribe != null" >
+        appDescribe = #{appDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.ConfigShare" >
+    update ConfigShare
+    set configId = #{configId,jdbcType=INTEGER},
+      mobileUrl = #{mobileUrl,jdbcType=VARCHAR},
+      supplierUrl = #{supplierUrl,jdbcType=VARCHAR},
+      awardType = #{awardType,jdbcType=TINYINT},
+      couponId = #{couponId,jdbcType=INTEGER},
+      appDescribe = #{appDescribe,jdbcType=VARCHAR},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

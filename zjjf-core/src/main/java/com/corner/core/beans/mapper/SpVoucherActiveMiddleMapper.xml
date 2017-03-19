@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.SpVoucherActiveMiddleMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.SpVoucherActiveMiddle" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="storeGroupID" property="storeGroupID" jdbcType="VARCHAR" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
+    <result column="scmsItemId" property="scmsItemId" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="DOUBLE" />
+    <result column="spVoucherActiveId" property="spVoucherActiveId" jdbcType="INTEGER" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, storeGroupID, supplierId, scmsItemId, number, money, spVoucherActiveId, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SpVoucherActiveMiddle
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SpVoucherActiveMiddle
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.SpVoucherActiveMiddle" >
+    insert into SpVoucherActiveMiddle (id, storeGroupID, supplierId, 
+      scmsItemId, number, money, 
+      spVoucherActiveId, isDelete)
+    values (#{id,jdbcType=VARCHAR}, #{storeGroupID,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, 
+      #{scmsItemId,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, #{money,jdbcType=DOUBLE}, 
+      #{spVoucherActiveId,jdbcType=INTEGER}, #{isDelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.SpVoucherActiveMiddle" >
+    insert into SpVoucherActiveMiddle
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="storeGroupID != null" >
+        storeGroupID,
+      </if>
+      <if test="supplierId != null" >
+        supplierId,
+      </if>
+      <if test="scmsItemId != null" >
+        scmsItemId,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="spVoucherActiveId != null" >
+        spVoucherActiveId,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="storeGroupID != null" >
+        #{storeGroupID,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="scmsItemId != null" >
+        #{scmsItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="spVoucherActiveId != null" >
+        #{spVoucherActiveId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.SpVoucherActiveMiddle" >
+    update SpVoucherActiveMiddle
+    <set >
+      <if test="storeGroupID != null" >
+        storeGroupID = #{storeGroupID,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        supplierId = #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="scmsItemId != null" >
+        scmsItemId = #{scmsItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="spVoucherActiveId != null" >
+        spVoucherActiveId = #{spVoucherActiveId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.SpVoucherActiveMiddle" >
+    update SpVoucherActiveMiddle
+    set storeGroupID = #{storeGroupID,jdbcType=VARCHAR},
+      supplierId = #{supplierId,jdbcType=VARCHAR},
+      scmsItemId = #{scmsItemId,jdbcType=VARCHAR},
+      number = #{number,jdbcType=INTEGER},
+      money = #{money,jdbcType=DOUBLE},
+      spVoucherActiveId = #{spVoucherActiveId,jdbcType=INTEGER},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

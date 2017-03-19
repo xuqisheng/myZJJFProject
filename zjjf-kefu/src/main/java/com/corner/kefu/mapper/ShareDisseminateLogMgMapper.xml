@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.kefu.dao.ShareDisseminateLogMgMapper">
+	<update id="updateLogByStoreId" parameterType="com.corner.core.beans.ShareDisseminateLog" >
+	    update ShareDisseminateLog
+	    <set >
+	      <if test="sendType != null" >
+	        sendType = #{sendType,jdbcType=INTEGER},
+	      </if>
+	      <if test="sendUserId != null" >
+	        sendUserId = #{sendUserId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="encourageType != null" >
+	        encourageType = #{encourageType,jdbcType=TINYINT},
+	      </if>
+	      <if test="encourageVoucher != null" >
+	        encourageVoucher = #{encourageVoucher,jdbcType=VARCHAR},
+	      </if>
+	      <if test="acceptPlaceName != null" >
+	        acceptPlaceName = #{acceptPlaceName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="acceptTel != null" >
+	        acceptTel = #{acceptTel,jdbcType=VARCHAR},
+	      </if>
+	      <if test="regTime != null" >
+	        regTime = #{regTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="confirmTime != null" >
+	        confirmTime = #{confirmTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="isDelete != null" >
+	        isDelete = #{isDelete,jdbcType=BIT},
+	      </if>
+	    </set>
+	    where acceptUserId = #{acceptUserId,jdbcType=VARCHAR}
+	  </update>
+</mapper>

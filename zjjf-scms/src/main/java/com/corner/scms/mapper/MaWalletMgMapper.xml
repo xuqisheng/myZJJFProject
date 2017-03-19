@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.scms.dao.MaWalletMgMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.MaWallet" extends="com.corner.core.dao.MaWalletMapper.BaseResultMap">
+  </resultMap>
+  
+  <update id="addManagerWallet" parameterType="java.util.HashMap">
+   UPDATE MaWallet
+	SET wallet = wallet + #{operateMoney},
+	 walletUpdateTime = NOW()
+	WHERE
+		id = #{managerId}
+  </update>
+  
+  <select id="selectById" parameterType="java.lang.String" resultType="com.corner.core.beans.MaWallet">
+    select * from MaWallet where id = #{managerId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByOrderId" parameterType="com.corner.core.beans.ScOrderInfo" resultType="com.corner.core.beans.MaWalletLog">
+   SELECT
+		*
+	FROM
+		MaWalletLog
+	WHERE
+		orderId = #{id}
+  </select>
+</mapper>

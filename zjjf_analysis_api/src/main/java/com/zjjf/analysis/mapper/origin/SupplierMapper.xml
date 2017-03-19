@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.origin.SupplierMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.supplier.Supplier" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="supplierName" property="supplierName" jdbcType="VARCHAR" />
+    <result column="supplierCode" property="supplierCode" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+    <result column="salt" property="salt" jdbcType="VARCHAR" />
+    <result column="lastTime" property="lastTime" jdbcType="TIMESTAMP" />
+    <result column="loginIP" property="loginIP" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="callNum" property="callNum" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="bsCircleId" property="bsCircleId" jdbcType="INTEGER" />
+    <result column="supplierAddress" property="supplierAddress" jdbcType="VARCHAR" />
+    <result column="supplierMark" property="supplierMark" jdbcType="VARCHAR" />
+    <result column="managerName" property="managerName" jdbcType="VARCHAR" />
+    <result column="managerTel" property="managerTel" jdbcType="VARCHAR" />
+    <result column="regTime" property="regTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="updateMark" property="updateMark" jdbcType="VARCHAR" />
+    <result column="bankCardurl" property="bankCardurl" jdbcType="VARCHAR" />
+    <result column="bankNum" property="bankNum" jdbcType="VARCHAR" />
+    <result column="bankName" property="bankName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+    <result column="col1" property="col1" jdbcType="VARCHAR" />
+    <result column="col2" property="col2" jdbcType="VARCHAR" />
+    <result column="col3" property="col3" jdbcType="VARCHAR" />
+    <result column="supplierType" property="supplierType" jdbcType="TINYINT" />
+    <result column="licenseNum" property="licenseNum" jdbcType="VARCHAR" />
+    <result column="licensePic" property="licensePic" jdbcType="VARCHAR" />
+    <result column="commitmentPic" property="commitmentPic" jdbcType="VARCHAR" />
+    <result column="deposit" property="deposit" jdbcType="DECIMAL" />
+    <result column="depositStatus" property="depositStatus" jdbcType="INTEGER" />
+    <result column="serviceFee" property="serviceFee" jdbcType="DECIMAL" />
+    <result column="rates" property="rates" jdbcType="REAL" />
+    <result column="versionNo" property="versionNo" jdbcType="INTEGER" />
+    <result column="cardUser" property="cardUser" jdbcType="VARCHAR" />
+    <result column="wallet" property="wallet" jdbcType="DECIMAL" />
+    <result column="walletAddTime" property="walletAddTime" jdbcType="TIMESTAMP" />
+    <result column="walletUpdateTime" property="walletUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="startPrice" property="startPrice" jdbcType="DECIMAL" />
+    <result column="freight" property="freight" jdbcType="DECIMAL" />
+    <result column="sequenceNum" property="sequenceNum" jdbcType="INTEGER" />
+    <result column="payPassword" property="payPassword" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, supplierName, supplierCode, password, token, salt, lastTime, loginIP, mobile, 
+    callNum, email, province, city, areaId, bsCircleId, supplierAddress, supplierMark, 
+    managerName, managerTel, regTime, updateTime, updateMark, bankCardurl, bankNum, bankName, 
+    status, isDelete, col1, col2, col3, supplierType, licenseNum, licensePic, commitmentPic, 
+    deposit, depositStatus, serviceFee, rates, versionNo, cardUser, wallet, walletAddTime, 
+    walletUpdateTime, startPrice, freight, sequenceNum, payPassword
+  </sql>
+  
+  <select id="getById" resultType="com.zjjf.analysis.beans.analysis.supplier.Supplier" parameterType="java.lang.String" >
+    select <include refid="Base_Column_List" /> from Supplier where id = #{id}
+  </select>
+  
+  <select id="getByName" parameterType="java.lang.String" resultType="com.zjjf.analysis.beans.analysis.supplier.Supplier">
+  	select <include refid="Base_Column_List"/> from Supplier where supplierName like "%"#{supplierName}"%"
+  </select>
+
+</mapper>

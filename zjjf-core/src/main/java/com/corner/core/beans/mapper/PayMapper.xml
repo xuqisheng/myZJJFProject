@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.core.dao.PayMapper" >
+  <resultMap id="BaseResultMap" type="com.corner.core.beans.Pay" >
+    <id column="Id" property="id" jdbcType="VARCHAR" />
+    <result column="OrderNo" property="orderNo" jdbcType="VARCHAR" />
+    <result column="OrderAmount" property="orderAmount" jdbcType="DECIMAL" />
+    <result column="BankId" property="bankId" jdbcType="VARCHAR" />
+    <result column="PayNo" property="payNo" jdbcType="VARCHAR" />
+    <result column="PayType" property="payType" jdbcType="VARCHAR" />
+    <result column="PayAmount" property="payAmount" jdbcType="DECIMAL" />
+    <result column="Fee" property="fee" jdbcType="DECIMAL" />
+    <result column="SingPrice" property="singPrice" jdbcType="VARCHAR" />
+    <result column="Quantity" property="quantity" jdbcType="VARCHAR" />
+    <result column="PayWay" property="payWay" jdbcType="TINYINT" />
+    <result column="DealState" property="dealState" jdbcType="VARCHAR" />
+    <result column="DealCreatTime" property="dealCreatTime" jdbcType="TIMESTAMP" />
+    <result column="DealPayTime" property="dealPayTime" jdbcType="TIMESTAMP" />
+    <result column="Remark" property="remark" jdbcType="VARCHAR" />
+    <result column="CreateTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="State" property="state" jdbcType="TINYINT" />
+    <result column="isDelete" property="isDelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, OrderNo, OrderAmount, BankId, PayNo, PayType, PayAmount, Fee, SingPrice, Quantity, 
+    PayWay, DealState, DealCreatTime, DealPayTime, Remark, CreateTime, State, isDelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from Pay
+    where Id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from Pay
+    where Id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.corner.core.beans.Pay" >
+    insert into Pay (Id, OrderNo, OrderAmount, 
+      BankId, PayNo, PayType, 
+      PayAmount, Fee, SingPrice, 
+      Quantity, PayWay, DealState, 
+      DealCreatTime, DealPayTime, Remark, 
+      CreateTime, State, isDelete
+      )
+    values (#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{orderAmount,jdbcType=DECIMAL}, 
+      #{bankId,jdbcType=VARCHAR}, #{payNo,jdbcType=VARCHAR}, #{payType,jdbcType=VARCHAR}, 
+      #{payAmount,jdbcType=DECIMAL}, #{fee,jdbcType=DECIMAL}, #{singPrice,jdbcType=VARCHAR}, 
+      #{quantity,jdbcType=VARCHAR}, #{payWay,jdbcType=TINYINT}, #{dealState,jdbcType=VARCHAR}, 
+      #{dealCreatTime,jdbcType=TIMESTAMP}, #{dealPayTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{state,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.corner.core.beans.Pay" >
+    insert into Pay
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="orderNo != null" >
+        OrderNo,
+      </if>
+      <if test="orderAmount != null" >
+        OrderAmount,
+      </if>
+      <if test="bankId != null" >
+        BankId,
+      </if>
+      <if test="payNo != null" >
+        PayNo,
+      </if>
+      <if test="payType != null" >
+        PayType,
+      </if>
+      <if test="payAmount != null" >
+        PayAmount,
+      </if>
+      <if test="fee != null" >
+        Fee,
+      </if>
+      <if test="singPrice != null" >
+        SingPrice,
+      </if>
+      <if test="quantity != null" >
+        Quantity,
+      </if>
+      <if test="payWay != null" >
+        PayWay,
+      </if>
+      <if test="dealState != null" >
+        DealState,
+      </if>
+      <if test="dealCreatTime != null" >
+        DealCreatTime,
+      </if>
+      <if test="dealPayTime != null" >
+        DealPayTime,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+      <if test="createTime != null" >
+        CreateTime,
+      </if>
+      <if test="state != null" >
+        State,
+      </if>
+      <if test="isDelete != null" >
+        isDelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderAmount != null" >
+        #{orderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="bankId != null" >
+        #{bankId,jdbcType=VARCHAR},
+      </if>
+      <if test="payNo != null" >
+        #{payNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="payAmount != null" >
+        #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="fee != null" >
+        #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="singPrice != null" >
+        #{singPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=VARCHAR},
+      </if>
+      <if test="payWay != null" >
+        #{payWay,jdbcType=TINYINT},
+      </if>
+      <if test="dealState != null" >
+        #{dealState,jdbcType=VARCHAR},
+      </if>
+      <if test="dealCreatTime != null" >
+        #{dealCreatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealPayTime != null" >
+        #{dealPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.corner.core.beans.Pay" >
+    update Pay
+    <set >
+      <if test="orderNo != null" >
+        OrderNo = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderAmount != null" >
+        OrderAmount = #{orderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="bankId != null" >
+        BankId = #{bankId,jdbcType=VARCHAR},
+      </if>
+      <if test="payNo != null" >
+        PayNo = #{payNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        PayType = #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="payAmount != null" >
+        PayAmount = #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="fee != null" >
+        Fee = #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="singPrice != null" >
+        SingPrice = #{singPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        Quantity = #{quantity,jdbcType=VARCHAR},
+      </if>
+      <if test="payWay != null" >
+        PayWay = #{payWay,jdbcType=TINYINT},
+      </if>
+      <if test="dealState != null" >
+        DealState = #{dealState,jdbcType=VARCHAR},
+      </if>
+      <if test="dealCreatTime != null" >
+        DealCreatTime = #{dealCreatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealPayTime != null" >
+        DealPayTime = #{dealPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        State = #{state,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        isDelete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.corner.core.beans.Pay" >
+    update Pay
+    set OrderNo = #{orderNo,jdbcType=VARCHAR},
+      OrderAmount = #{orderAmount,jdbcType=DECIMAL},
+      BankId = #{bankId,jdbcType=VARCHAR},
+      PayNo = #{payNo,jdbcType=VARCHAR},
+      PayType = #{payType,jdbcType=VARCHAR},
+      PayAmount = #{payAmount,jdbcType=DECIMAL},
+      Fee = #{fee,jdbcType=DECIMAL},
+      SingPrice = #{singPrice,jdbcType=VARCHAR},
+      Quantity = #{quantity,jdbcType=VARCHAR},
+      PayWay = #{payWay,jdbcType=TINYINT},
+      DealState = #{dealState,jdbcType=VARCHAR},
+      DealCreatTime = #{dealCreatTime,jdbcType=TIMESTAMP},
+      DealPayTime = #{dealPayTime,jdbcType=TIMESTAMP},
+      Remark = #{remark,jdbcType=VARCHAR},
+      CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      State = #{state,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=BIT}
+    where Id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

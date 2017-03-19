@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BasePublicMapper">
+
+	<!-- ************************************************************************************************************ -->
+	<!-- 全局定义 -->
+	<!-- ************************************************************************************************************ -->
+    <!-- 分页前面包装部分 -->
+	<sql id="pageBegin">
+		<![CDATA[ SELECT * FROM( ]]>
+	</sql>
+
+	<!-- 分页后面包装部分 -->
+	<sql id="pageEnd">
+		<![CDATA[ ) U WHERE ROWNUMBER > #{start} AND ROWNUMBER <= #{end} ]]>
+	</sql>
+    
+    <!-- 分页后面包装部分 -->
+	<sql id="pageEndmysql">
+		<![CDATA[ limit #{start},#{count}]]>
+	</sql>
+	
+	<sql id="pageSql">
+		<![CDATA[ limit #{pageIndex},#{pageSize}  ]]>
+	</sql>
+	
+	<!-- 排序包装 -->
+	<sql id="orderSql">
+		<if test="sortName != null and sortOrder != null and sortOrder != '' and sortName != ''">
+			ORDER BY
+			<![CDATA[${sortName} ${sortOrder} ]]>
+		</if>
+	</sql>
+	<!-- ************************************************************************************************************ -->
+	<!-- 公共sql部分 -->
+	<!-- ************************************************************************************************************ -->
+	<sql id="columnInTblUserInfo">
+    	<![CDATA[
+    	ui.user_id as ui_user_id,
+    	ui.phone as ui_phone,
+    	ui.qq as ui_qq,
+    	ui.age as ui_age,
+    	ui.nickname as ui_nickname,
+    	ui.sex as ui_sex,
+    	ui.province_id as ui_province_id,
+		ui.city_id as ui_city_id,
+		ui.job as ui_job,
+		ui.gold as ui_gold,
+		ui.score as ui_score,
+		ui.contact_way as ui_contact_way,
+		ui.call_time as ui_call_time,
+		ui.review as ui_review,
+		ui.create_time as ui_create_time,
+		ui.update_time as ui_update_time
+		]]>
+    </sql>
+    
+    <sql id="columnInTblStoryInfo">
+		<![CDATA[
+		si.id as si_id,
+		si.user_id as si_user_id,
+		si.title as si_title,
+		si.story as si_story,
+		si.total_contacts as si_total_contacts,
+		si.used_contacts as si_used_contacts,
+		si.comment_num as si_comment_num,
+		si.praise_num as si_praise_num,
+		si.review as si_review,
+		si.status as si_status,
+		si.create_time as si_create_time,
+		si.update_time as si_update_time
+		]]>
+    </sql>
+    <sql id="getRealStoryNum">
+    	<![CDATA[
+    	(
+    	SELECT 
+    		COUNT(1)
+    	FROM
+    		tbl_story_info si
+    	WHERE
+    		now() > si.create_time
+    	AND
+    		si.user_id=ui.user_id
+    	AND
+    		si.review = 0
+    	AND
+    		si.status = 0
+    	GROUP BY 
+    		si.user_id
+    	) as ui_story_num
+    	]]>
+    </sql>
+    
+</mapper>

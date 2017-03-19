@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.corner.kefu.dao.SystemVersionMgMapper">
+<!-- 通用分页sql -->
+	
+	<sql id="pageSql">
+		<if test="pageIndex != null">
+			limit #{pageIndex},#{pageSize}
+		</if>
+	</sql>
+	
+	<sql id="paramSql">
+		WHERE
+			isDelete = 0
+		<if test="beginTime != null">
+			and publishTime &gt; #{beginTime}
+		</if>
+		<if test="endTime != null">
+			and publishTime &lt; #{endTime}
+		</if>
+		<if test="versionNo != null and versionNo != ''">
+			and versionNo like "%"#{versionNo}"%"
+		</if>	
+	</sql>
+	<!-- 版本信息列表 -->
+	<select id="getAllVersionInfo" parameterType="com.corner.kefu.beans.ro.SystemVersionRo" resultType="com.corner.kefu.beans.vo.SystemVersionVo">
+		SELECT
+			*
+		FROM
+			SystemVersion
+		<include refid="paramSql"/>
+		order by addTime desc
+		<include refid="pageSql"/>
+	</select>
+	<select id="getAllVersionInfoCount" parameterType="com.corner.kefu.beans.ro.SystemVersionRo" resultType="java.lang.Integer">
+		SELECT 
+			count(1)
+		FROM 
+			SystemVersion
+		<include refid="paramSql"/>
+	</select>
+	<!-- 根据id获取版本信息 -->
+	<select id="getVersionInfoById" parameterType="java.util.Map" resultType="com.corner.kefu.beans.vo.SystemVersionVo">
+		SELECT
+			*
+		FROM
+			SystemVersion
+		WHERE
+			isDelete = 0
+		and id = #{id}		
+	</select>
+	
+</mapper>

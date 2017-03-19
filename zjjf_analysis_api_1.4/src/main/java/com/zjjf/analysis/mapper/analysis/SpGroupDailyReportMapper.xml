@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjf.analysis.mapper.analysis.SpGroupDailyReportMapper" >
+  <resultMap id="BaseResultMap" type="com.zjjf.analysis.beans.analysis.supplier.SpGroupDailyReport" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="spGroupId" property="spGroupId" jdbcType="INTEGER" />
+    <result column="dayTime" property="dayTime" jdbcType="INTEGER" />
+    <result column="yestodayAddReg" property="yestodayAddReg" jdbcType="INTEGER" />
+    <result column="todayAddReg" property="todayAddReg" jdbcType="INTEGER" />
+    <result column="monthReg" property="monthReg" jdbcType="INTEGER" />
+    <result column="monthGoalReg" property="monthGoalReg" jdbcType="INTEGER" />
+    <result column="monthRegIncrease" property="monthRegIncrease" jdbcType="DECIMAL" />
+    <result column="yestodayAddActive" property="yestodayAddActive" jdbcType="INTEGER" />
+    <result column="todayAddActive" property="todayAddActive" jdbcType="INTEGER" />
+    <result column="monthAddActive" property="monthAddActive" jdbcType="INTEGER" />
+    <result column="yestodayMaintain" property="yestodayMaintain" jdbcType="INTEGER" />
+    <result column="todayMaintain" property="todayMaintain" jdbcType="INTEGER" />
+    <result column="yestodayStoreOrderCount" property="yestodayStoreOrderCount" jdbcType="INTEGER" />
+    <result column="storeOrderCount" property="storeOrderCount" jdbcType="INTEGER" />
+    <result column="monthActive" property="monthActive" jdbcType="INTEGER" />
+    <result column="monthGoalActive" property="monthGoalActive" jdbcType="INTEGER" />
+    <result column="monthActiveIncrease" property="monthActiveIncrease" jdbcType="DECIMAL" />
+    <result column="totalStore" property="totalStore" jdbcType="INTEGER" />
+    <result column="unorderStore" property="unorderStore" jdbcType="INTEGER" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, cityId, areaId, spGroupId, dayTime, yestodayAddReg, todayAddReg, monthReg, monthGoalReg, 
+    monthRegIncrease, yestodayAddActive, todayAddActive, monthAddActive, yestodayMaintain, 
+    todayMaintain, yestodayStoreOrderCount, storeOrderCount, monthActive, monthGoalActive, 
+    monthActiveIncrease, totalStore, unorderStore, updateTime, createTime
+  </sql>
+  
+  <select id="getReportData" resultType="com.zjjf.analysis.beans.analysis.supplier.SpGroupDailyReport" parameterType="java.util.Map" >
+  	   select  
+	      t1.cityId,
+		  t1.areaId,
+		  t1.spGroupId,
+		  t1.todayAddReg,
+		  t1.todayMaintain,
+		  t1.storeOrderCount,
+		  t1.todayAddActive,
+		  t1.yestodayAddReg,
+		  t1.yestodayMaintain,
+		  t1.yestodayAddActive,
+		  t1.yestodayStoreOrderCount,
+		  t1.dayTime,
+		  t1.monthReg,
+		  t1.monthRegIncrease,
+		  t1.monthActive,
+		  t1.monthAddActive,
+		  t1.monthActiveIncrease,
+		  t1.totalStore,
+		  t1.unorderStore,
+		  t1.monthGoalReg,
+		  t1.monthGoalActive 
+        from spgroup_daily_report t1
+        <where>
+	      <if test="areaIdList != null and areaIdList != '' " >
+  		  	  and t1.areaId in 
+	          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="cityIdList != null and cityIdList != '' " >
+  		  	  and t1.cityId in 
+	          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+		  <if test="areaId != null and areaId != '' " >
+	      	and t1.areaId = #{areaId}
+	      </if>
+	      <if test="cityId != null and cityId != '' " >
+	      	and t1.cityId = #{cityId}
+	      </if>
+	      <if test="spGroupId != null and spGroupId != '' " >
+	      	and t1.spGroupId = #{spGroupId}
+	      </if>
+	      <if test="dayTime != null and dayTime != '' " >
+	      	and t1.dayTime = #{dayTime}
+	      </if>
+	      order by t1.cityId, t1.areaId, t1.id desc limit #{pageNo}, #{offset}
+	  </where>
+  </select>
+  
+  <select id="getReportDataCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+  	   select  
+	      count(*)
+        from spgroup_daily_report t1
+        <where>
+	      <if test="areaIdList != null and areaIdList != '' " >
+  		  	  and t1.areaId in 
+	          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="cityIdList != null and cityIdList != '' " >
+  		  	  and t1.cityId in 
+	          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+		  <if test="areaId != null and areaId != '' " >
+	      	and t1.areaId = #{areaId}
+	      </if>
+	      <if test="cityId != null and cityId != '' " >
+	      	and t1.cityId = #{cityId}
+	      </if>
+	      <if test="spGroupId != null and spGroupId != '' " >
+	      	and t1.spGroupId = #{spGroupId}
+	      </if>
+	      <if test="dayTime != null and dayTime != '' " >
+	      	and t1.dayTime = #{dayTime}
+	      </if>
+	  </where>
+  </select>
+  
+  <select id="getReportDataExcel" resultType="com.zjjf.analysis.beans.analysis.supplier.SpGroupDailyReport" parameterType="java.util.Map" >
+  	   select  
+	      t1.cityId,
+		  t1.areaId,
+		  t1.spGroupId,
+		  t1.todayAddReg,
+		  t1.todayMaintain,
+		  t1.storeOrderCount,
+		  t1.todayAddActive,
+	  	  t1.yestodayAddReg,
+		  t1.yestodayMaintain,
+		  t1.yestodayAddActive,
+		  t1.yestodayStoreOrderCount,
+		  t1.dayTime,
+		  t1.monthReg,
+		  t1.monthRegIncrease,
+		  t1.monthActive,
+		  t1.monthAddActive,
+		  t1.monthActiveIncrease,
+		  t1.totalStore,
+		  t1.unorderStore,
+		  t1.monthGoalReg,
+		  t1.monthGoalActive 
+        from spgroup_daily_report t1
+        <where>
+	      <if test="areaIdList != null and areaIdList != '' " >
+  		  	  and t1.areaId in 
+	          <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+	      <if test="cityIdList != null and cityIdList != '' " >
+  		  	  and t1.cityId in 
+	          <foreach collection="cityIdList" index="index" item="item" open="(" separator="," close=")">
+	            #{item}
+	          </foreach> 
+	      </if>
+		  <if test="areaId != null and areaId != '' " >
+	      	and t1.areaId = #{areaId}
+	      </if>
+	      <if test="cityId != null and cityId != '' " >
+	      	and t1.cityId = #{cityId}
+	      </if>
+	      <if test="spGroupId != null and spGroupId != '' " >
+	      	and t1.spGroupId = #{spGroupId}
+	      </if>
+	      <if test="dayTime != null and dayTime != '' " >
+	      	and t1.dayTime = #{dayTime}
+	      </if>
+	      order by t1.cityId, t1.areaId, t1.id desc limit 10000
+	  </where>
+  </select>
+  
+  <select id="getMonthData" resultType="com.zjjf.analysis.beans.analysis.supplier.SpGroupDailyReport" parameterType="java.util.Map" >
+	 select monthActive, monthReg,  totalStore from spgroup_daily_report where spGroupId =#{spGroupId} and dayTime = #{dayTime}
+  </select>
+  
+  <select id="getDataSum" resultType="com.zjjf.analysis.beans.analysis.supplier.SpGroupDailyReport" parameterType="java.util.Map" >
+	 select 
+	        sum(todayAddReg) AS "todayAddReg",
+			sum(yestodayAddReg) AS "yestodayAddReg",
+			sum(monthReg) AS "monthReg",
+			sum(yesTodayAddActive) AS "yesTodayAddActive",
+			sum(todayAddActive) AS "todayAddActive",
+			sum(monthAddActive) AS "monthAddActive",
+			sum(totalStore) AS "totalStore",
+			sum(unorderStore) AS "unorderStore"
+	     from spgroup_daily_report 
+		   <where>
+		      <if test="spGroupId != null and spGroupId != '' " >
+		      	and spGroupId = #{spGroupId}
+		      </if>
+		      <if test="dayTimeBegin != null and dayTimeBegin != '' " >
+		      	and dayTime &gt;= #{dayTimeBegin}
+		      </if>
+		      <if test="dayTimeEnd != null and dayTimeEnd != '' " >
+		      	and dayTime &lt;= #{dayTimeEnd}
+		      </if>
+		      <if test="dayTime != null and dayTime != '' " >
+		      	and dayTime = #{dayTime}
+		      </if>
+		  </where>
+  </select>
+  
+ 
+</mapper>

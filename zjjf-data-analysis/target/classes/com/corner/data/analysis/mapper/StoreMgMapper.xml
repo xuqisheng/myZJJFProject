@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corner.data.analysis.dao.StoreMgMapper" >
+ 
+     <select id="getStoreList" parameterType ="com.corner.data.analysis.beans.vo.StoreVo" resultType="com.corner.data.analysis.beans.vo.StoreVo">
+			SELECT
+				s.id,
+				s. NAME,
+				s.contact,
+				r.NAME AS areaName,
+				s.address,
+				s.mobile AS shopTel,
+				DATE_FORMAT(s.addTime, '%Y-%m-%d') AS addTime,
+				sp. NAME AS shopRatedName,
+				si.yewuRenTel,
+				tt.userName AS yewuRenName,
+				case
+					when s.`status` = 0 then
+						'关闭'
+					when s.`status` = 1 then
+						'正常'
+					when s.`status` = 2 then
+						'审核中'
+					when s.`status` = 3 then
+						'审核不通过'
+					else
+						'其他'
+				end status,
+				si.licenseNum
+			FROM
+				Store s
+			LEFT JOIN StoreInfo si ON si.id = s.id
+			LEFT JOIN SpGroup sp ON s.spGroupId = sp.id
+			LEFT JOIN Region r ON s.areaId = r.id
+			LEFT JOIN Salesman tt ON tt.mobile = si.yewuRenTel
+			WHERE 1=1 
+			<if test="isDelete!=null">
+			 and s.isDelete = #{isDelete}
+			</if>
+			<if test="areaId!=null and areaId != ''">
+			 and r.id = #{areaId}
+			</if>
+			<if test="startTime !=null and startTime != ''">
+				and s.addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d')
+			</if>
+			<if test="endTime !=null and endTime != ''">
+				 AND s.addTime <![CDATA[<=]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d')
+			</if>
+			ORDER BY s.addTime desc
+   		  <include refid="BasePublicMapper.pageSql" />
+     </select>
+     
+     <select id="getStoreListSize" parameterType ="com.corner.data.analysis.beans.vo.StoreVo" resultType="int">
+			SELECT
+				count(1)
+			FROM
+				Store s
+			LEFT JOIN StoreInfo si ON si.id = s.id
+			LEFT JOIN SpGroup sp ON s.spGroupId = sp.id
+			LEFT JOIN Region r ON s.areaId = r.id
+			LEFT JOIN Salesman tt ON tt.mobile = si.yewuRenTel
+			WHERE 1=1 
+			<if test="isDelete!=null">
+			  and s.isDelete = #{isDelete}
+			</if>
+			<if test="areaId!=null and areaId != ''">
+			 and r.id = #{areaId}
+			</if>
+			<if test="startTime !=null and startTime != ''">
+				and s.addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d')
+			</if>
+			<if test="endTime !=null and endTime != ''">
+				 AND s.addTime <![CDATA[<=]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d')
+			</if>
+			ORDER BY s.addTime desc
+     </select>
+     
+      <select id="findStoreList" parameterType ="com.corner.data.analysis.beans.vo.StoreVo" resultType="com.corner.data.analysis.beans.vo.StoreVo">
+			SELECT
+				s.id,
+				s. NAME,
+				s.contact,
+				r. NAME AS areaName,
+				s.address,
+				s.mobile AS shopTel,
+				DATE_FORMAT(s.addTime, '%Y-%m-%d') AS addTime,
+				sp. NAME AS shopRatedName,
+				si.yewuRenTel,
+				tt.userName AS yewuRenName,
+				case
+					when s.`status` = 0 then
+						'关闭'
+					when s.`status` = 1 then
+						'正常'
+					when s.`status` = 2 then
+						'审核中'
+					when s.`status` = 3 then
+						'审核不通过'
+					else
+						'其他'
+				end status,
+				si.licenseNum
+			FROM
+				Store s
+			LEFT JOIN StoreInfo si ON si.id = s.id
+			LEFT JOIN SpGroup sp ON s.spGroupId = sp.id
+			LEFT JOIN Region r ON s.areaId = r.id
+			LEFT JOIN Salesman tt ON tt.mobile = si.yewuRenTel
+			WHERE 1=1 
+			<if test="isDelete!=null">
+			 and s.isDelete = #{isDelete}
+			</if>
+			<if test="areaId!=null and areaId != ''">
+			 and r.id = #{areaId}
+			</if>
+			<if test="startTime !=null and startTime != ''">
+				and s.addTime >=DATE_FORMAT(#{startTime}, '%Y-%m-%d')
+			</if>
+			<if test="endTime !=null and endTime != ''">
+				 AND s.addTime <![CDATA[<=]]>DATE_FORMAT(DATE_ADD(#{endTime},INTERVAL 1 DAY), '%Y-%m-%d')
+			</if>
+			ORDER BY s.addTime desc
+     </select>
+</mapper>
